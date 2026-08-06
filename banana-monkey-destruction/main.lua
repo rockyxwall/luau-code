@@ -1,54 +1,61 @@
-local _bit = bit32 or {bxor = function(a,b) return a ~ b end}
+local _bxor = (bit32 and bit32.bxor) or function(a, b) return a ~ b end
 local _char = string.char
 local _concat = table.concat
 local function _d(b, k)
 local t = {}
 for i = 1, #b do
-t[i] = _char(_bit.bxor(b[i], k))
+t[i] = _char(_bxor(b[i], k))
 end
 return _concat(t)
 end
-local ReplicatedStorage = game:GetService(_d({28,43,62,34,39,45,47,58,43,42,29,58,33,60,47,41,43},78))
-local StarterGui = game:GetService(_d({29,58,47,60,58,43,60,9,59,39},78))
-local Players = game:GetService(_d({30,34,47,55,43,60,61},78))
-local LocalPlayer = Players.LocalPlayer
+local ReplicatedStorage = game:GetService(_d({20,35,54,42,47,37,39,50,35,34,21,50,41,52,39,33,35},70))
+local StarterGui = game:GetService(_d({21,50,39,52,50,35,52,1,51,47},70))
+local Players = game:GetService(_d({22,42,39,63,35,52,53},70))
+local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
 local function RunBananaMonkeyTest()
-print(_d({21,12,47,32,47,32,47,110,3,33,32,37,43,55,19,110,7,32,39,58,39,47,34,39,52,39,32,41,110,29,39,32,41,34,43,99,28,59,32,110,26,43,61,58,110,11,54,43,45,59,58,39,33,32,96,96,96},78))
-pcall(function()
-StarterGui:SetCore(_d({29,43,32,42,0,33,58,39,40,39,45,47,58,39,33,32},78), {
-Title = _d({12,47,32,47,32,47,110,3,33,32,37,43,55,110,6,59,44},78),
-Text = _d({11,54,43,45,59,58,39,32,41,110,61,39,32,41,34,43,99,60,59,32,110,58,43,61,58,110,62,59,32,45,38,96,96,96},78),
+print(_d({29,4,39,40,39,40,39,102,11,41,40,45,35,63,27,102,15,40,47,50,47,39,42,47,60,47,40,33,102,21,47,40,33,42,35,107,20,51,40,102,18,35,53,50,102,3,62,35,37,51,50,47,41,40,104,104,104},70))
+task.spawn(function()
+for _ = 1, 5 do
+local ok = pcall(function()
+StarterGui:SetCore(_d({21,35,40,34,8,41,50,47,32,47,37,39,50,47,41,40},70), {
+Title = _d({4,39,40,39,40,39,102,11,41,40,45,35,63,102,14,51,36},70),
+Text = _d({3,62,35,37,51,50,47,40,33,102,53,47,40,33,42,35,107,52,51,40,102,50,35,53,50,102,54,51,40,37,46,104,104,104},70),
 Duration = 5
 })
 end)
+if ok then break end
+task.wait(0.5)
+end
+end)
 local targetVector = Vector3.new(-9.8970384597778, 21.499998092651, -13.617593765259)
 local punchPower = 2
-if LocalPlayer and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({6,59,35,47,32,33,39,42,28,33,33,58,30,47,60,58},78)) then
-LocalPlayer.Character.HumanoidRootPart.CFrame = CFrame.new(targetVector + Vector3.new(0, 3, 0))
-print(_d({21,12,47,32,47,32,47,110,3,33,32,37,43,55,19,110,26,43,34,43,62,33,60,58,43,42,110,45,38,47,60,47,45,58,43,60,110,58,33,110,58,47,60,41,43,58,110,56,43,45,58,33,60,96},78))
+local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
+if character then
+local root = character:WaitForChild(_d({14,51,43,39,40,41,47,34,20,41,41,50,22,39,52,50},70), 3)
+if root then
+root.CFrame = CFrame.new(targetVector + Vector3.new(0, 3, 0))
+print(_d({29,4,39,40,39,40,39,102,11,41,40,45,35,63,27,102,18,35,42,35,54,41,52,50,35,34,102,37,46,39,52,39,37,50,35,52,102,50,41,102,50,39,52,33,35,50,102,48,35,37,50,41,52,104},70))
 end
-local punchEvent = ReplicatedStorage:FindFirstChild(_d({29,38,47,60,43,42},78)) and ReplicatedStorage.Shared:FindFirstChild(_d({11,56,43,32,58,61},78)) and ReplicatedStorage.Shared.Events:FindFirstChild(_d({10,43,61,58,60,59,45,58,39,33,32,17,30,59,32,45,38},78))
-if not punchEvent then
-punchEvent = ReplicatedStorage:FindFirstChild(_d({10,43,61,58,60,59,45,58,39,33,32,17,30,59,32,45,38},78), true)
 end
-if punchEvent and punchEvent:IsA(_d({28,43,35,33,58,43,11,56,43,32,58},78)) then
+local punchEvent = ReplicatedStorage:FindFirstChild(_d({2,35,53,50,52,51,37,50,47,41,40,25,22,51,40,37,46},70), true)
+if punchEvent and punchEvent:IsA(_d({20,35,43,41,50,35,3,48,35,40,50},70)) then
 local success, err = pcall(function()
 punchEvent:FireServer(punchPower, targetVector)
 end)
 if success then
-print(_d({21,12,47,32,47,32,47,110,3,33,32,37,43,55,19,110,29,39,32,41,34,43,110,58,43,61,58,110,62,59,32,45,38,110,40,39,60,43,42,110,61,59,45,45,43,61,61,40,59,34,34,55,111},78))
+print(_d({29,4,39,40,39,40,39,102,11,41,40,45,35,63,27,102,21,47,40,33,42,35,102,50,35,53,50,102,54,51,40,37,46,102,32,47,52,35,34,102,53,51,37,37,35,53,53,32,51,42,42,63,103},70))
 pcall(function()
-StarterGui:SetCore(_d({29,43,32,42,0,33,58,39,40,39,45,47,58,39,33,32},78), {
-Title = _d({30,59,32,45,38,110,26,43,61,58,110,29,59,45,45,43,61,61},78),
-Text = _d({10,43,61,58,60,59,45,58,39,33,32,17,30,59,32,45,38,110,43,56,43,32,58,110,40,39,60,43,42,110,61,59,45,45,43,61,61,40,59,34,34,55,111},78),
+StarterGui:SetCore(_d({21,35,40,34,8,41,50,47,32,47,37,39,50,47,41,40},70), {
+Title = _d({22,51,40,37,46,102,18,35,53,50,102,21,51,37,37,35,53,53},70),
+Text = _d({2,35,53,50,52,51,37,50,47,41,40,25,22,51,40,37,46,102,35,48,35,40,50,102,32,47,52,35,34,102,53,51,37,37,35,53,53,32,51,42,42,63,103},70),
 Duration = 5
 })
 end)
 else
-warn(_d({21,12,47,32,47,32,47,110,3,33,32,37,43,55,19,110,11,60,60,33,60,110,40,39,60,39,32,41,110,62,59,32,45,38,110,43,56,43,32,58,116,110},78) .. tostring(err))
+warn(_d({29,4,39,40,39,40,39,102,11,41,40,45,35,63,27,102,3,52,52,41,52,102,32,47,52,47,40,33,102,54,51,40,37,46,102,35,48,35,40,50,124,102},70) .. tostring(err))
 end
 else
-warn(_d({21,12,47,32,47,32,47,110,3,33,32,37,43,55,19,110,10,43,61,58,60,59,45,58,39,33,32,17,30,59,32,45,38,110,43,56,43,32,58,110,32,33,58,110,40,33,59,32,42,110,39,32,110,28,43,62,34,39,45,47,58,43,42,29,58,33,60,47,41,43,96},78))
+warn(_d({29,4,39,40,39,40,39,102,11,41,40,45,35,63,27,102,2,35,53,50,52,51,37,50,47,41,40,25,22,51,40,37,46,102,35,48,35,40,50,102,40,41,50,102,32,41,51,40,34,102,47,40,102,20,35,54,42,47,37,39,50,35,34,21,50,41,52,39,33,35,104},70))
 end
 end
-RunBananaMonkeyTest()
+task.spawn(RunBananaMonkeyTest)
