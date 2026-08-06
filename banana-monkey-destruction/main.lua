@@ -8,55 +8,136 @@ t[i] = _char(b[i] + k)
 end
 return _concat(t)
 end
-local ReplicatedStorage = game:GetService(_d({31,50,61,57,54,48,46,65,50,49,32,65,60,63,46,52,50},51))
-local StarterGui = game:GetService(_d({32,65,46,63,65,50,63,20,66,54},51))
-local Players = game:GetService(_d({29,57,46,70,50,63,64},51))
+local ReplicatedStorage = game:GetService(_d({56,75,86,82,79,73,71,90,75,74,57,90,85,88,71,77,75},26))
+local CoreGui = game:GetService(_d({41,85,88,75,45,91,79},26))
+local Players = game:GetService(_d({54,82,71,95,75,88,89},26))
 local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
-local function RunBananaMonkeyTest()
-print(_d({40,15,46,59,46,59,46,-19,26,60,59,56,50,70,42,-19,22,59,54,65,54,46,57,54,71,54,59,52,-19,32,54,59,52,57,50,-6,31,66,59,-19,33,50,64,65,-19,18,69,50,48,66,65,54,60,59,-5,-5,-5},51))
+local Rayfield = nil
+local rayfieldSources = {
+_d({78,90,90,86,89,32,21,21,88,71,93,20,77,79,90,78,91,72,91,89,75,88,73,85,84,90,75,84,90,20,73,85,83,21,57,79,88,79,91,89,57,85,76,90,93,71,88,75,50,90,74,21,56,71,95,76,79,75,82,74,21,83,71,79,84,21,89,85,91,88,73,75,20,82,91,71},26),
+_d({78,90,90,86,89,32,21,21,89,79,88,79,91,89,20,83,75,84,91,21,88,71,95,76,79,75,82,74},26),
+_d({78,90,90,86,89,32,21,21,88,71,93,20,77,79,90,78,91,72,91,89,75,88,73,85,84,90,75,84,90,20,73,85,83,21,89,78,82,75,94,93,71,88,75,21,56,71,95,76,79,75,82,74,21,83,71,79,84,21,89,85,91,88,73,75},26)
+}
+for _, url in ipairs(rayfieldSources) do
+local success, result = pcall(function()
+return loadstring(game:HttpGet(url))()
+end)
+if success and result then
+Rayfield = result
+break
+end
+end
+if not Rayfield then
+error(_d({65,40,71,84,71,84,71,6,51,85,84,81,75,95,6,46,91,72,67,6,44,71,79,82,75,74,6,90,85,6,82,85,71,74,6,56,71,95,76,79,75,82,74,6,59,47,6,50,79,72,88,71,88,95,20},26))
+end
+local Window = Rayfield:CreateWindow({
+Name = _d({40,71,84,71,84,71,6,51,85,84,81,75,95,6,46,91,72,6,55330,57138},26),
+LoadingTitle = _d({65,59,54,42,67,6,17,23,6,40,71,84,71,84,71,6,51,85,84,81,75,95},26),
+LoadingSubtitle = _d({51,85,72,79,82,75,6,42,75,89,90,88,91,73,90,79,85,84,6,46,91,72},26),
+ConfigurationSaving = { Enabled = false },
+KeySystem = false
+})
 task.spawn(function()
-for _ = 1, 5 do
-local ok = pcall(function()
-StarterGui:SetCore(_d({32,50,59,49,27,60,65,54,51,54,48,46,65,54,60,59},51), {
-Title = _d({15,46,59,46,59,46,-19,26,60,59,56,50,70,-19,21,66,47},51),
-Text = _d({18,69,50,48,66,65,54,59,52,-19,64,54,59,52,57,50,-6,63,66,59,-19,65,50,64,65,-19,61,66,59,48,53,-5,-5,-5},51),
-Duration = 5
-})
-end)
-if ok then break end
-task.wait(0.5)
-end
-end)
-local targetVector = Vector3.new(-9.8970384597778, 21.499998092651, -13.617593765259)
-local punchPower = 2
-local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-if character then
-local root = character:WaitForChild(_d({21,66,58,46,59,60,54,49,31,60,60,65,29,46,63,65},51), 3)
-if root then
-root.CFrame = CFrame.new(targetVector + Vector3.new(0, 3, 0))
-print(_d({40,15,46,59,46,59,46,-19,26,60,59,56,50,70,42,-19,33,50,57,50,61,60,63,65,50,49,-19,48,53,46,63,46,48,65,50,63,-19,65,60,-19,65,46,63,52,50,65,-19,67,50,48,65,60,63,-5},51))
-end
-end
-local punchEvent = ReplicatedStorage:FindFirstChild(_d({17,50,64,65,63,66,48,65,54,60,59,44,29,66,59,48,53},51), true)
-if punchEvent and punchEvent:IsA(_d({31,50,58,60,65,50,18,67,50,59,65},51)) then
-local success, err = pcall(function()
-punchEvent:FireServer(punchPower, targetVector)
-end)
-if success then
-print(_d({40,15,46,59,46,59,46,-19,26,60,59,56,50,70,42,-19,32,54,59,52,57,50,-19,65,50,64,65,-19,61,66,59,48,53,-19,51,54,63,50,49,-19,64,66,48,48,50,64,64,51,66,57,57,70,-18},51))
+task.wait(1.2)
 pcall(function()
-StarterGui:SetCore(_d({32,50,59,49,27,60,65,54,51,54,48,46,65,54,60,59},51), {
-Title = _d({29,66,59,48,53,-19,33,50,64,65,-19,32,66,48,48,50,64,64},51),
-Text = _d({17,50,64,65,63,66,48,65,54,60,59,44,29,66,59,48,53,-19,50,67,50,59,65,-19,51,54,63,50,49,-19,64,66,48,48,50,64,64,51,66,57,57,70,-18},51),
-Duration = 5
-})
+local parentGui = (gethui and gethui()) or CoreGui or LocalPlayer:WaitForChild(_d({54,82,71,95,75,88,45,91,79},26))
+local gui = parentGui:FindFirstChild(_d({56,71,95,76,79,75,82,74},26)) or LocalPlayer:WaitForChild(_d({54,82,71,95,75,88,45,91,79},26)):FindFirstChild(_d({56,71,95,76,79,75,82,74},26))
+if gui and gui:FindFirstChild(_d({51,71,79,84},26)) then
+local scale = Instance.new(_d({59,47,57,73,71,82,75},26))
+scale.Scale = 0.82
+scale.Parent = gui.Main
+end
 end)
-else
-warn(_d({40,15,46,59,46,59,46,-19,26,60,59,56,50,70,42,-19,18,63,63,60,63,-19,51,54,63,54,59,52,-19,61,66,59,48,53,-19,50,67,50,59,65,7,-19},51) .. tostring(err))
+end)
+local mobileGui = nil
+pcall(function()
+local parentGui = (gethui and gethui()) or CoreGui or LocalPlayer:WaitForChild(_d({54,82,71,95,75,88,45,91,79},26))
+if parentGui:FindFirstChild(_d({40,71,84,71,84,71,51,85,84,81,75,95,51,85,72,79,82,75,58,85,77,77,82,75},26)) then
+parentGui.BananaMonkeyMobileToggle:Destroy()
 end
-else
-warn(_d({40,15,46,59,46,59,46,-19,26,60,59,56,50,70,42,-19,17,50,64,65,63,66,48,65,54,60,59,44,29,66,59,48,53,-19,50,67,50,59,65,-19,59,60,65,-19,51,60,66,59,49,-19,54,59,-19,31,50,61,57,54,48,46,65,50,49,32,65,60,63,46,52,50,-5},51))
+mobileGui = Instance.new(_d({57,73,88,75,75,84,45,91,79},26))
+mobileGui.Name = _d({40,71,84,71,84,71,51,85,84,81,75,95,51,85,72,79,82,75,58,85,77,77,82,75},26)
+mobileGui.ResetOnSpawn = false
+mobileGui.Parent = parentGui
+local toggleBtn = Instance.new(_d({58,75,94,90,40,91,90,90,85,84},26))
+toggleBtn.Name = _d({58,85,77,77,82,75,40,91,90,90,85,84},26)
+toggleBtn.Size = UDim2.new(0, 50, 0, 50)
+toggleBtn.Position = UDim2.new(0.02, 0, 0.2, 0)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(255, 170, 0)
+toggleBtn.Text = _d({55330,57138},26)
+toggleBtn.TextSize = 26
+toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleBtn.Font = Enum.Font.SourceSansBold
+toggleBtn.Active = true
+toggleBtn.Draggable = true
+toggleBtn.Parent = mobileGui
+local corner = Instance.new(_d({59,47,41,85,88,84,75,88},26))
+corner.CornerRadius = UDim.new(0.5, 0)
+corner.Parent = toggleBtn
+local stroke = Instance.new(_d({59,47,57,90,88,85,81,75},26))
+stroke.Color = Color3.fromRGB(255, 255, 255)
+stroke.Thickness = 2
+stroke.Parent = toggleBtn
+toggleBtn.MouseButton1Click:Connect(function()
+pcall(function()
+if Rayfield then
+Rayfield:ToggleUI()
+end
+end)
+end)
+end)
+local MainTab = Window:CreateTab(_d({39,91,90,85,83,71,90,79,85,84},26), 4483362458)
+local autoDestroying = false
+local destroyDelay = 0.1
+local punchPower = 2
+MainTab:CreateToggle({
+Name = _d({39,91,90,85,19,42,75,89,90,88,85,95,6,45,88,85,91,84,74},26),
+CurrentValue = false,
+Flag = _d({39,91,90,85,42,75,89,90,88,85,95},26),
+Callback = function(Value)
+autoDestroying = Value
+if autoDestroying then
+task.spawn(function()
+while autoDestroying do
+local character = LocalPlayer.Character
+if character then
+local root = character:FindFirstChild(_d({46,91,83,71,84,85,79,74,56,85,85,90,54,71,88,90},26))
+if root then
+local targetPos = root.Position - Vector3.new(0, 3.5, 0)
+local punchEvent = ReplicatedStorage:FindFirstChild(_d({42,75,89,90,88,91,73,90,79,85,84,69,54,91,84,73,78},26), true)
+if punchEvent and punchEvent:IsA(_d({56,75,83,85,90,75,43,92,75,84,90},26)) then
+pcall(function()
+punchEvent:FireServer(punchPower, targetPos)
+end)
 end
 end
-task.spawn(RunBananaMonkeyTest)
+end
+task.wait(destroyDelay)
+end
+end)
+end
+end,
+})
+MainTab:CreateSlider({
+Name = _d({54,91,84,73,78,6,42,75,82,71,95},26),
+Range = {0.05, 1},
+Increment = 0.05,
+Suffix = "s",
+CurrentValue = 0.1,
+Flag = _d({54,91,84,73,78,42,75,82,71,95},26),
+Callback = function(Value)
+destroyDelay = Value
+end,
+})
+MainTab:CreateButton({
+Name = _d({42,75,89,90,88,85,95,6,57,73,88,79,86,90},26),
+Callback = function()
+autoDestroying = false
+if mobileGui then
+pcall(function() mobileGui:Destroy() end)
+end
+Rayfield:Destroy()
+end,
+})
+Rayfield:LoadConfiguration()
 end)()
