@@ -8,9 +8,9 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({65,93,82,106,86,99,100},15))
-local RunService = game:GetService(_d({67,102,95,68,86,99,103,90,84,86},15))
-local UserInputService = game:GetService(_d({70,100,86,99,58,95,97,102,101,68,86,99,103,90,84,86},15))
+local Players = game:GetService(_d({23,51,40,64,44,57,58},57))
+local RunService = game:GetService(_d({25,60,53,26,44,57,61,48,42,44},57))
+local UserInputService = game:GetService(_d({28,58,44,57,16,53,55,60,59,26,44,57,61,48,42,44},57))
 local LocalPlayer = Players.LocalPlayer
 local enabled = false
 local navConn = nil
@@ -18,27 +18,28 @@ local hoverHeight = 10.3
 local localPlatform = nil
 local lastAim = nil
 local function debug(...)
-print(_d({76,65,93,82,101,87,96,99,94,69,86,100,101,86,99,78},15), ...)
+print(_d({34,23,51,40,59,45,54,57,52,27,44,58,59,44,57,36},57), ...)
 end
 local function getRoot()
 local char = LocalPlayer.Character
-return char and char:FindFirstChild(_d({57,102,94,82,95,96,90,85,67,96,96,101,65,82,99,101},15))
+return char and char:FindFirstChild(_d({15,60,52,40,53,54,48,43,25,54,54,59,23,40,57,59},57))
 end
 local function getHumanoid()
 local char = LocalPlayer.Character
-return char and char:FindFirstChildWhichIsA(_d({57,102,94,82,95,96,90,85},15))
+return char and char:FindFirstChildWhichIsA(_d({15,60,52,40,53,54,48,43},57))
 end
 local function getOrCreatePlatform(root)
 if localPlatform and localPlatform.Parent then return localPlatform end
 local ok, plat = pcall(function()
-local p = Instance.new(_d({65,82,99,101},15))
-p.Name = _d({80,80,69,86,100,101,61,96,84,82,93,65,93,82,101,87,96,99,94},15)
-p.Size = Vector3.new(6, 1, 6)
+local p = Instance.new(_d({23,40,57,59},57))
+p.Name = _d({27,44,58,59,10,40,52,44,57,40,12,45,45,44,42,59,23,40,57,59},57)
+p.Size = Vector3.new(3, 0.5, 3)
 p.Transparency = 0.5
 p.Color = Color3.fromRGB(0, 255, 100)
 p.Anchored = true
 p.CanCollide = true
-p.Parent = workspace
+p.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0, 0, 0)
+p.Parent = workspace.CurrentCamera
 return p
 end)
 if ok then
@@ -55,13 +56,13 @@ end
 end
 local function getOrCreateForce(root)
 local ok, result = pcall(function()
-local att = root:FindFirstChild(_d({80,80,69,86,100,101,57,96,103,86,99,50,101,101},15)) or Instance.new(_d({50,101,101,82,84,89,94,86,95,101},15))
-att.Name = _d({80,80,69,86,100,101,57,96,103,86,99,50,101,101},15)
+local att = root:FindFirstChild(_d({38,38,27,44,58,59,15,54,61,44,57,8,59,59},57)) or Instance.new(_d({8,59,59,40,42,47,52,44,53,59},57))
+att.Name = _d({38,38,27,44,58,59,15,54,61,44,57,8,59,59},57)
 att.Parent = root
-local force = root:FindFirstChild(_d({80,80,69,86,100,101,57,96,103,86,99,55,96,99,84,86},15))
+local force = root:FindFirstChild(_d({38,38,27,44,58,59,15,54,61,44,57,13,54,57,42,44},57))
 if not force then
-force = Instance.new(_d({61,90,95,86,82,99,71,86,93,96,84,90,101,106},15))
-force.Name = _d({80,80,69,86,100,101,57,96,103,86,99,55,96,99,84,86},15)
+force = Instance.new(_d({19,48,53,44,40,57,29,44,51,54,42,48,59,64},57))
+force.Name = _d({38,38,27,44,58,59,15,54,61,44,57,13,54,57,42,44},57)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -79,10 +80,10 @@ pcall(function()
 cleanupPlatform()
 local char = LocalPlayer.Character
 if not char then return end
-local root = char:FindFirstChild(_d({57,102,94,82,95,96,90,85,67,96,96,101,65,82,99,101},15))
+local root = char:FindFirstChild(_d({15,60,52,40,53,54,48,43,25,54,54,59,23,40,57,59},57))
 if not root then return end
-local force = root:FindFirstChild(_d({80,80,69,86,100,101,57,96,103,86,99,55,96,99,84,86},15))
-local att   = root:FindFirstChild(_d({80,80,69,86,100,101,57,96,103,86,99,50,101,101},15))
+local force = root:FindFirstChild(_d({38,38,27,44,58,59,15,54,61,44,57,13,54,57,42,44},57))
+local att   = root:FindFirstChild(_d({38,38,27,44,58,59,15,54,61,44,57,8,59,59},57))
 if force then force:Destroy() end
 if att   then att:Destroy()   end
 end)
@@ -92,12 +93,12 @@ if not enabled then return end
 enabled = false
 if navConn then navConn:Disconnect() navConn = nil end
 cleanupForce()
-debug(_d({69,86,100,101,86,99,17,53,90,100,82,83,93,86,85},15))
+debug(_d({27,44,58,59,44,57,231,11,48,58,40,41,51,44,43},57))
 end
 local function enableBot()
 if enabled then return end
 enabled = true
-debug(_d({69,86,100,101,86,99,17,54,95,82,83,93,86,85},15))
+debug(_d({27,44,58,59,44,57,231,12,53,40,41,51,44,43},57))
 local initialPos = getRoot() and getRoot().Position or Vector3.new(0, 50, 0)
 lastAim = initialPos
 navConn = RunService.Heartbeat:Connect(function()
@@ -105,7 +106,7 @@ local root = getRoot()
 if not root then return end
 local hum = getHumanoid()
 if hum and hum.Health <= 0 then
-debug(_d({65,93,82,106,86,99,17,85,90,86,85,18,17,53,90,100,82,83,93,90,95,88,17,97,93,82,101,87,96,99,94,31},15))
+debug(_d({23,51,40,64,44,57,231,43,48,44,43,232,231,11,48,58,40,41,51,48,53,46,231,55,51,40,59,45,54,57,52,245},57))
 disableBot()
 return
 end
@@ -126,16 +127,16 @@ end
 end)
 end
 local function CreateUI()
-local playerGui = LocalPlayer:WaitForChild(_d({65,93,82,106,86,99,56,102,90},15), 10)
+local playerGui = LocalPlayer:WaitForChild(_d({23,51,40,64,44,57,14,60,48},57), 10)
 if not playerGui then return end
-local existingGui = playerGui:FindFirstChild(_d({65,93,82,101,87,96,99,94,69,86,100,101,56,102,90},15))
+local existingGui = playerGui:FindFirstChild(_d({23,51,40,59,45,54,57,52,27,44,58,59,14,60,48},57))
 if existingGui then existingGui:Destroy() end
-local screenGui = Instance.new(_d({68,84,99,86,86,95,56,102,90},15))
-screenGui.Name = _d({65,93,82,101,87,96,99,94,69,86,100,101,56,102,90},15)
+local screenGui = Instance.new(_d({26,42,57,44,44,53,14,60,48},57))
+screenGui.Name = _d({23,51,40,59,45,54,57,52,27,44,58,59,14,60,48},57)
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
-local frame = Instance.new(_d({55,99,82,94,86},15))
-frame.Name = _d({62,82,90,95,55,99,82,94,86},15)
+local frame = Instance.new(_d({13,57,40,52,44},57))
+frame.Name = _d({20,40,48,53,13,57,40,52,44},57)
 frame.Size = UDim2.new(0, 260, 0, 180)
 frame.Position = UDim2.new(0.05, 0, 0.4, 0)
 frame.BackgroundColor3 = Color3.fromRGB(30, 32, 40)
@@ -143,86 +144,86 @@ frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
 frame.Parent = screenGui
-local uiCorner = Instance.new(_d({70,58,52,96,99,95,86,99},15))
+local uiCorner = Instance.new(_d({28,16,10,54,57,53,44,57},57))
 uiCorner.CornerRadius = UDim.new(0, 8)
 uiCorner.Parent = frame
-local title = Instance.new(_d({69,86,105,101,61,82,83,86,93},15))
+local title = Instance.new(_d({27,44,63,59,19,40,41,44,51},57))
 title.Size = UDim2.new(1, -20, 0, 30)
 title.Position = UDim2.new(0, 10, 0, 5)
 title.BackgroundTransparency = 1
-title.Text = _d({225,144,140,145,224,169,128,17,65,93,82,101,87,96,99,94,17,23,17,53,86,82,101,89,17,69,86,100,101,86,99},15)
+title.Text = _d({183,102,98,103,182,127,86,231,23,51,40,59,45,54,57,52,231,237,231,11,44,40,59,47,231,27,44,58,59,44,57},57)
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 14
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.Parent = frame
-local toggleBtn = Instance.new(_d({69,86,105,101,51,102,101,101,96,95},15))
+local toggleBtn = Instance.new(_d({27,44,63,59,9,60,59,59,54,53},57))
 toggleBtn.Size = UDim2.new(1, -20, 0, 35)
 toggleBtn.Position = UDim2.new(0, 10, 0, 40)
 toggleBtn.BackgroundColor3 = Color3.fromRGB(220, 50, 60)
-toggleBtn.Text = _d({65,93,82,101,87,96,99,94,17,55,93,106,43,17,64,55,55},15)
+toggleBtn.Text = _d({23,51,40,59,45,54,57,52,231,13,51,64,1,231,22,13,13},57)
 toggleBtn.TextColor3 = Color3.new(1, 1, 1)
 toggleBtn.Font = Enum.Font.GothamBold
 toggleBtn.TextSize = 12
 toggleBtn.Parent = frame
-local btnCorner = Instance.new(_d({70,58,52,96,99,95,86,99},15))
+local btnCorner = Instance.new(_d({28,16,10,54,57,53,44,57},57))
 btnCorner.CornerRadius = UDim.new(0, 6)
 btnCorner.Parent = toggleBtn
-local heightLabel = Instance.new(_d({69,86,105,101,61,82,83,86,93},15))
+local heightLabel = Instance.new(_d({27,44,63,59,19,40,41,44,51},57))
 heightLabel.Size = UDim2.new(1, -20, 0, 20)
 heightLabel.Position = UDim2.new(0, 10, 0, 85)
 heightLabel.BackgroundTransparency = 1
-heightLabel.Text = _d({57,86,90,88,89,101,17,64,87,87,100,86,101,43,17,34,33,31,36,17,100,101,102,85,100},15)
+heightLabel.Text = _d({15,44,48,46,47,59,231,22,45,45,58,44,59,1,231,248,247,245,250,231,58,59,60,43,58},57)
 heightLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
 heightLabel.Font = Enum.Font.GothamMedium
 heightLabel.TextSize = 11
 heightLabel.Parent = frame
-local addHeight = Instance.new(_d({69,86,105,101,51,102,101,101,96,95},15))
+local addHeight = Instance.new(_d({27,44,63,59,9,60,59,59,54,53},57))
 addHeight.Size = UDim2.new(0.45, 0, 0, 30)
 addHeight.Position = UDim2.new(0, 10, 0, 110)
 addHeight.BackgroundColor3 = Color3.fromRGB(50, 60, 80)
-addHeight.Text = _d({28,34,33,17,57,86,90,88,89,101,17,25,53,96,85,88,86,26},15)
+addHeight.Text = _d({242,248,247,231,15,44,48,46,47,59,231,239,11,54,43,46,44,240},57)
 addHeight.TextColor3 = Color3.new(1,1,1)
 addHeight.Font = Enum.Font.GothamBold
 addHeight.TextSize = 11
 addHeight.Parent = frame
-Instance.new(_d({70,58,52,96,99,95,86,99},15), addHeight).CornerRadius = UDim.new(0, 6)
-local subHeight = Instance.new(_d({69,86,105,101,51,102,101,101,96,95},15))
+Instance.new(_d({28,16,10,54,57,53,44,57},57), addHeight).CornerRadius = UDim.new(0, 6)
+local subHeight = Instance.new(_d({27,44,63,59,9,60,59,59,54,53},57))
 subHeight.Size = UDim2.new(0.45, 0, 0, 30)
 subHeight.Position = UDim2.new(0.55, 0, 0, 110)
 subHeight.BackgroundColor3 = Color3.fromRGB(50, 60, 80)
-subHeight.Text = _d({30,34,33,17,57,86,90,88,89,101},15)
+subHeight.Text = _d({244,248,247,231,15,44,48,46,47,59},57)
 subHeight.TextColor3 = Color3.new(1,1,1)
 subHeight.Font = Enum.Font.GothamBold
 subHeight.TextSize = 11
 subHeight.Parent = frame
-Instance.new(_d({70,58,52,96,99,95,86,99},15), subHeight).CornerRadius = UDim.new(0, 6)
+Instance.new(_d({28,16,10,54,57,53,44,57},57), subHeight).CornerRadius = UDim.new(0, 6)
 toggleBtn.MouseButton1Click:Connect(function()
 if enabled then
 disableBot()
 toggleBtn.BackgroundColor3 = Color3.fromRGB(220, 50, 60)
-toggleBtn.Text = _d({65,93,82,101,87,96,99,94,17,55,93,106,43,17,64,55,55},15)
+toggleBtn.Text = _d({23,51,40,59,45,54,57,52,231,13,51,64,1,231,22,13,13},57)
 else
 enableBot()
 toggleBtn.BackgroundColor3 = Color3.fromRGB(40, 180, 100)
-toggleBtn.Text = _d({65,93,82,101,87,96,99,94,17,55,93,106,43,17,64,63},15)
+toggleBtn.Text = _d({23,51,40,59,45,54,57,52,231,13,51,64,1,231,22,21},57)
 end
 end)
 addHeight.MouseButton1Click:Connect(function()
 hoverHeight = hoverHeight + 10
-heightLabel.Text = string.format(_d({57,86,90,88,89,101,17,64,87,87,100,86,101,43,17,22,31,34,87,17,100,101,102,85,100},15), hoverHeight)
+heightLabel.Text = string.format(_d({15,44,48,46,47,59,231,22,45,45,58,44,59,1,231,236,245,248,45,231,58,59,60,43,58},57), hoverHeight)
 end)
 subHeight.MouseButton1Click:Connect(function()
 hoverHeight = math.max(0, hoverHeight - 10)
-heightLabel.Text = string.format(_d({57,86,90,88,89,101,17,64,87,87,100,86,101,43,17,22,31,34,87,17,100,101,102,85,100},15), hoverHeight)
+heightLabel.Text = string.format(_d({15,44,48,46,47,59,231,22,45,45,58,44,59,1,231,236,245,248,45,231,58,59,60,43,58},57), hoverHeight)
 end)
 RunService.RenderStepped:Connect(function()
-if not enabled and toggleBtn.Text == _d({65,93,82,101,87,96,99,94,17,55,93,106,43,17,64,63},15) then
+if not enabled and toggleBtn.Text == _d({23,51,40,59,45,54,57,52,231,13,51,64,1,231,22,21},57) then
 toggleBtn.BackgroundColor3 = Color3.fromRGB(220, 50, 60)
-toggleBtn.Text = _d({65,93,82,101,87,96,99,94,17,55,93,106,43,17,64,55,55},15)
+toggleBtn.Text = _d({23,51,40,59,45,54,57,52,231,13,51,64,1,231,22,13,13},57)
 end
 end)
 end
 CreateUI()
-print(_d({76,65,93,82,101,87,96,99,94,69,86,100,101,86,99,78,17,61,96,82,85,86,85,17,100,102,84,84,86,100,100,87,102,93,93,106,31},15))
+print(_d({34,23,51,40,59,45,54,57,52,27,44,58,59,44,57,36,231,19,54,40,43,44,43,231,58,60,42,42,44,58,58,45,60,51,51,64,245},57))
 end)()
