@@ -8,61 +8,59 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({23,51,40,64,44,57,58},57))
-local RunService = game:GetService(_d({25,60,53,26,44,57,61,48,42,44},57))
-local UserInputService = game:GetService(_d({28,58,44,57,16,53,55,60,59,26,44,57,61,48,42,44},57))
+local Players = game:GetService(_d({29,57,46,70,50,63,64},51))
+local RunService = game:GetService(_d({31,66,59,32,50,63,67,54,48,50},51))
+local UserInputService = game:GetService(_d({34,64,50,63,22,59,61,66,65,32,50,63,67,54,48,50},51))
+local ReplicatedStorage = game:GetService(_d({31,50,61,57,54,48,46,65,50,49,32,65,60,63,46,52,50},51))
 local LocalPlayer = Players.LocalPlayer
 local enabled = false
 local navConn = nil
-local hoverHeight = 10.3
-local localPlatform = nil
-local lastAim = nil
+local flySpeed = 40
+local lastGeppoTime = 0
+local GEPPO_COOLDOWN = 4.5
 local function debug(...)
-print(_d({34,23,51,40,59,45,54,57,52,27,44,58,59,44,57,36},57), ...)
+print(_d({40,19,57,70,33,50,64,65,50,63,42},51), ...)
 end
 local function getRoot()
 local char = LocalPlayer.Character
-return char and char:FindFirstChild(_d({15,60,52,40,53,54,48,43,25,54,54,59,23,40,57,59},57))
+return char and char:FindFirstChild(_d({21,66,58,46,59,60,54,49,31,60,60,65,29,46,63,65},51))
 end
 local function getHumanoid()
 local char = LocalPlayer.Character
-return char and char:FindFirstChildWhichIsA(_d({15,60,52,40,53,54,48,43},57))
+return char and char:FindFirstChildWhichIsA(_d({21,66,58,46,59,60,54,49},51))
 end
-local function getOrCreatePlatform(root)
-if localPlatform and localPlatform.Parent then return localPlatform end
-local ok, plat = pcall(function()
-local p = Instance.new(_d({23,40,57,59},57))
-p.Name = _d({27,44,58,59,10,40,52,44,57,40,12,45,45,44,42,59,23,40,57,59},57)
-p.Size = Vector3.new(3, 0.5, 3)
-p.Transparency = 0.5
-p.Color = Color3.fromRGB(0, 255, 100)
-p.Anchored = true
-p.CanCollide = true
-p.CustomPhysicalProperties = PhysicalProperties.new(0, 0, 0, 0, 0)
-p.Parent = workspace.CurrentCamera
-return p
+local function invokeGeppo()
+local ok, err = pcall(function()
+local char = LocalPlayer.Character
+local root = char and char:FindFirstChild(_d({21,66,58,46,59,60,54,49,31,60,60,65,29,46,63,65},51))
+if not root then return end
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({32,65,46,65,64},51) .. LocalPlayer.Name)
+if not statsFolder then return end
+local style = statsFolder.Stats.FightingStyle.Value
+local cf = CFrame.lookAt(root.Position, root.Position + root.CFrame.LookVector)
+local args = {char = char, cf = cf}
+if style == _d({31,60,56,66,64,53,54,56,54},51) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({20,50,61,61,60},51), args)
+elseif style == _d({15,57,46,48,56,25,50,52},51) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({32,56,70,237,36,46,57,56},51), args)
+elseif style == _d({24,46,58,54,64,53,54,56,54},51) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({24,46,58,54,64,53,54,56,54,20,50,61,61,60},51), args)
+else
+ReplicatedStorage.Events.Skill:InvokeServer(_d({32,56,70,237,36,46,57,56,255},51), args)
+end
+debug(_d({19,54,63,50,49,237,20,50,61,61,60,237,31,50,58,60,65,50,237,245,21,50,54,52,53,65,237,36,53,54,65,50,57,54,64,65,246},51))
 end)
-if ok then
-localPlatform = plat
-return plat
-end
-return nil
-end
-local function cleanupPlatform()
-if localPlatform then
-pcall(function() localPlatform:Destroy() end)
-localPlatform = nil
-end
+if not ok then debug(_d({54,59,67,60,56,50,20,50,61,61,60,237,50,63,63,60,63,7},51), err) end
 end
 local function getOrCreateForce(root)
 local ok, result = pcall(function()
-local att = root:FindFirstChild(_d({38,38,27,44,58,59,15,54,61,44,57,8,59,59},57)) or Instance.new(_d({8,59,59,40,42,47,52,44,53,59},57))
-att.Name = _d({38,38,27,44,58,59,15,54,61,44,57,8,59,59},57)
+local att = root:FindFirstChild(_d({44,44,33,50,64,65,21,60,67,50,63,14,65,65},51)) or Instance.new(_d({14,65,65,46,48,53,58,50,59,65},51))
+att.Name = _d({44,44,33,50,64,65,21,60,67,50,63,14,65,65},51)
 att.Parent = root
-local force = root:FindFirstChild(_d({38,38,27,44,58,59,15,54,61,44,57,13,54,57,42,44},57))
+local force = root:FindFirstChild(_d({44,44,33,50,64,65,21,60,67,50,63,19,60,63,48,50},51))
 if not force then
-force = Instance.new(_d({19,48,53,44,40,57,29,44,51,54,42,48,59,64},57))
-force.Name = _d({38,38,27,44,58,59,15,54,61,44,57,13,54,57,42,44},57)
+force = Instance.new(_d({25,54,59,50,46,63,35,50,57,60,48,54,65,70},51))
+force.Name = _d({44,44,33,50,64,65,21,60,67,50,63,19,60,63,48,50},51)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -77,13 +75,12 @@ return nil
 end
 local function cleanupForce()
 pcall(function()
-cleanupPlatform()
 local char = LocalPlayer.Character
 if not char then return end
-local root = char:FindFirstChild(_d({15,60,52,40,53,54,48,43,25,54,54,59,23,40,57,59},57))
+local root = char:FindFirstChild(_d({21,66,58,46,59,60,54,49,31,60,60,65,29,46,63,65},51))
 if not root then return end
-local force = root:FindFirstChild(_d({38,38,27,44,58,59,15,54,61,44,57,13,54,57,42,44},57))
-local att   = root:FindFirstChild(_d({38,38,27,44,58,59,15,54,61,44,57,8,59,59},57))
+local force = root:FindFirstChild(_d({44,44,33,50,64,65,21,60,67,50,63,19,60,63,48,50},51))
+local att   = root:FindFirstChild(_d({44,44,33,50,64,65,21,60,67,50,63,14,65,65},51))
 if force then force:Destroy() end
 if att   then att:Destroy()   end
 end)
@@ -93,137 +90,133 @@ if not enabled then return end
 enabled = false
 if navConn then navConn:Disconnect() navConn = nil end
 cleanupForce()
-debug(_d({27,44,58,59,44,57,231,11,48,58,40,41,51,44,43},57))
+debug(_d({19,57,54,52,53,65,237,17,54,64,46,47,57,50,49},51))
 end
 local function enableBot()
 if enabled then return end
 enabled = true
-debug(_d({27,44,58,59,44,57,231,12,53,40,41,51,44,43},57))
-local initialPos = getRoot() and getRoot().Position or Vector3.new(0, 50, 0)
-lastAim = initialPos
+debug(_d({19,57,54,52,53,65,237,18,59,46,47,57,50,49},51))
+lastGeppoTime = 0
 navConn = RunService.Heartbeat:Connect(function()
 local root = getRoot()
 if not root then return end
 local hum = getHumanoid()
 if hum and hum.Health <= 0 then
-debug(_d({23,51,40,64,44,57,231,43,48,44,43,232,231,11,48,58,40,41,51,48,53,46,231,55,51,40,59,45,54,57,52,245},57))
+debug(_d({29,57,46,70,50,63,237,49,54,50,49,238,237,17,54,64,46,47,57,54,59,52,237,51,57,54,52,53,65,251},51))
 disableBot()
 return
 end
-local plat = getOrCreatePlatform(root)
-if plat then
-plat.CFrame = root.CFrame * CFrame.new(0, -3.5, 0)
+local now = tick()
+if now - lastGeppoTime >= GEPPO_COOLDOWN then
+lastGeppoTime = now
+invokeGeppo()
 end
-local targetPos = Vector3.new(lastAim.X, lastAim.Y + hoverHeight, lastAim.Z)
-local pos = root.Position
-local yErr = targetPos.Y - pos.Y
-local xzDir = Vector3.new(targetPos.X - pos.X, 0, targetPos.Z - pos.Z)
-local xzVel = xzDir.Magnitude > 0 and (xzDir.Unit * math.min(xzDir.Magnitude * 5, 20)) or Vector3.zero
+local moveDir = Vector3.zero
+local camera = workspace.CurrentCamera
+if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+local fwd = camera.CFrame.LookVector
+moveDir = moveDir + Vector3.new(fwd.X, 0, fwd.Z).Unit
+end
+if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+local fwd = camera.CFrame.LookVector
+moveDir = moveDir - Vector3.new(fwd.X, 0, fwd.Z).Unit
+end
+if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+local right = camera.CFrame.RightVector
+moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit
+end
+if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+local right = camera.CFrame.RightVector
+moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit
+end
+local ySpeed = 0
+if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+ySpeed = flySpeed
+elseif UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
+ySpeed = -flySpeed
+end
+if moveDir.Magnitude > 0 then
+moveDir = moveDir.Unit
+end
+local targetVel = Vector3.new(moveDir.X * flySpeed, ySpeed, moveDir.Z * flySpeed)
 local force = getOrCreateForce(root)
 if force then
-local yVel = math.clamp(yErr * 20, -120, 120)
-force.VectorVelocity = Vector3.new(xzVel.X, yVel, xzVel.Z)
+force.VectorVelocity = targetVel
 end
+root.CFrame = CFrame.lookAt(root.Position, root.Position + Vector3.new(camera.CFrame.LookVector.X, 0, camera.CFrame.LookVector.Z))
 end)
 end
 local function CreateUI()
-local playerGui = LocalPlayer:WaitForChild(_d({23,51,40,64,44,57,14,60,48},57), 10)
+local playerGui = LocalPlayer:WaitForChild(_d({29,57,46,70,50,63,20,66,54},51), 10)
 if not playerGui then return end
-local existingGui = playerGui:FindFirstChild(_d({23,51,40,59,45,54,57,52,27,44,58,59,14,60,48},57))
+local existingGui = playerGui:FindFirstChild(_d({29,57,46,65,51,60,63,58,33,50,64,65,20,66,54},51))
 if existingGui then existingGui:Destroy() end
-local screenGui = Instance.new(_d({26,42,57,44,44,53,14,60,48},57))
-screenGui.Name = _d({23,51,40,59,45,54,57,52,27,44,58,59,14,60,48},57)
+local screenGui = Instance.new(_d({32,48,63,50,50,59,20,66,54},51))
+screenGui.Name = _d({29,57,46,65,51,60,63,58,33,50,64,65,20,66,54},51)
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
-local frame = Instance.new(_d({13,57,40,52,44},57))
-frame.Name = _d({20,40,48,53,13,57,40,52,44},57)
-frame.Size = UDim2.new(0, 260, 0, 180)
+local frame = Instance.new(_d({19,63,46,58,50},51))
+frame.Name = _d({26,46,54,59,19,63,46,58,50},51)
+frame.Size = UDim2.new(0, 260, 0, 160)
 frame.Position = UDim2.new(0.05, 0, 0.4, 0)
 frame.BackgroundColor3 = Color3.fromRGB(30, 32, 40)
 frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
 frame.Parent = screenGui
-local uiCorner = Instance.new(_d({28,16,10,54,57,53,44,57},57))
+local uiCorner = Instance.new(_d({34,22,16,60,63,59,50,63},51))
 uiCorner.CornerRadius = UDim.new(0, 8)
 uiCorner.Parent = frame
-local title = Instance.new(_d({27,44,63,59,19,40,41,44,51},57))
+local title = Instance.new(_d({33,50,69,65,25,46,47,50,57},51))
 title.Size = UDim2.new(1, -20, 0, 30)
 title.Position = UDim2.new(0, 10, 0, 5)
 title.BackgroundTransparency = 1
-title.Text = _d({183,102,98,103,182,127,86,231,23,51,40,59,45,54,57,52,231,237,231,11,44,40,59,47,231,27,44,58,59,44,57},57)
+title.Text = _d({175,105,85,188,133,92,237,32,46,51,50,237,19,57,54,52,53,65,237,33,50,64,65,50,63,237,245,36,14,32,17,246},51)
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.Font = Enum.Font.GothamBold
-title.TextSize = 14
+title.TextSize = 13
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.Parent = frame
-local toggleBtn = Instance.new(_d({27,44,63,59,9,60,59,59,54,53},57))
+local toggleBtn = Instance.new(_d({33,50,69,65,15,66,65,65,60,59},51))
 toggleBtn.Size = UDim2.new(1, -20, 0, 35)
 toggleBtn.Position = UDim2.new(0, 10, 0, 40)
 toggleBtn.BackgroundColor3 = Color3.fromRGB(220, 50, 60)
-toggleBtn.Text = _d({23,51,40,59,45,54,57,52,231,13,51,64,1,231,22,13,13},57)
+toggleBtn.Text = _d({19,57,54,52,53,65,7,237,28,19,19},51)
 toggleBtn.TextColor3 = Color3.new(1, 1, 1)
 toggleBtn.Font = Enum.Font.GothamBold
 toggleBtn.TextSize = 12
 toggleBtn.Parent = frame
-local btnCorner = Instance.new(_d({28,16,10,54,57,53,44,57},57))
+local btnCorner = Instance.new(_d({34,22,16,60,63,59,50,63},51))
 btnCorner.CornerRadius = UDim.new(0, 6)
 btnCorner.Parent = toggleBtn
-local heightLabel = Instance.new(_d({27,44,63,59,19,40,41,44,51},57))
-heightLabel.Size = UDim2.new(1, -20, 0, 20)
-heightLabel.Position = UDim2.new(0, 10, 0, 85)
-heightLabel.BackgroundTransparency = 1
-heightLabel.Text = _d({15,44,48,46,47,59,231,22,45,45,58,44,59,1,231,248,247,245,250,231,58,59,60,43,58},57)
-heightLabel.TextColor3 = Color3.fromRGB(200, 200, 200)
-heightLabel.Font = Enum.Font.GothamMedium
-heightLabel.TextSize = 11
-heightLabel.Parent = frame
-local addHeight = Instance.new(_d({27,44,63,59,9,60,59,59,54,53},57))
-addHeight.Size = UDim2.new(0.45, 0, 0, 30)
-addHeight.Position = UDim2.new(0, 10, 0, 110)
-addHeight.BackgroundColor3 = Color3.fromRGB(50, 60, 80)
-addHeight.Text = _d({242,248,247,231,15,44,48,46,47,59,231,239,11,54,43,46,44,240},57)
-addHeight.TextColor3 = Color3.new(1,1,1)
-addHeight.Font = Enum.Font.GothamBold
-addHeight.TextSize = 11
-addHeight.Parent = frame
-Instance.new(_d({28,16,10,54,57,53,44,57},57), addHeight).CornerRadius = UDim.new(0, 6)
-local subHeight = Instance.new(_d({27,44,63,59,9,60,59,59,54,53},57))
-subHeight.Size = UDim2.new(0.45, 0, 0, 30)
-subHeight.Position = UDim2.new(0.55, 0, 0, 110)
-subHeight.BackgroundColor3 = Color3.fromRGB(50, 60, 80)
-subHeight.Text = _d({244,248,247,231,15,44,48,46,47,59},57)
-subHeight.TextColor3 = Color3.new(1,1,1)
-subHeight.Font = Enum.Font.GothamBold
-subHeight.TextSize = 11
-subHeight.Parent = frame
-Instance.new(_d({28,16,10,54,57,53,44,57},57), subHeight).CornerRadius = UDim.new(0, 6)
+local desc = Instance.new(_d({33,50,69,65,25,46,47,50,57},51))
+desc.Size = UDim2.new(1, -20, 0, 60)
+desc.Position = UDim2.new(0, 10, 0, 85)
+desc.BackgroundTransparency = 1
+desc.Text = "Controls:\nWASD to Move | Space = Go Up | Shift = Go Down\nFires safe Geppo remote once every 4.5s."
+desc.TextColor3 = Color3.fromRGB(180, 180, 180)
+desc.Font = Enum.Font.GothamMedium
+desc.TextSize = 10
+desc.TextWrapped = true
+desc.Parent = frame
 toggleBtn.MouseButton1Click:Connect(function()
 if enabled then
 disableBot()
 toggleBtn.BackgroundColor3 = Color3.fromRGB(220, 50, 60)
-toggleBtn.Text = _d({23,51,40,59,45,54,57,52,231,13,51,64,1,231,22,13,13},57)
+toggleBtn.Text = _d({19,57,54,52,53,65,7,237,28,19,19},51)
 else
 enableBot()
 toggleBtn.BackgroundColor3 = Color3.fromRGB(40, 180, 100)
-toggleBtn.Text = _d({23,51,40,59,45,54,57,52,231,13,51,64,1,231,22,21},57)
+toggleBtn.Text = _d({19,57,54,52,53,65,7,237,28,27},51)
 end
 end)
-addHeight.MouseButton1Click:Connect(function()
-hoverHeight = hoverHeight + 10
-heightLabel.Text = string.format(_d({15,44,48,46,47,59,231,22,45,45,58,44,59,1,231,236,245,248,45,231,58,59,60,43,58},57), hoverHeight)
-end)
-subHeight.MouseButton1Click:Connect(function()
-hoverHeight = math.max(0, hoverHeight - 10)
-heightLabel.Text = string.format(_d({15,44,48,46,47,59,231,22,45,45,58,44,59,1,231,236,245,248,45,231,58,59,60,43,58},57), hoverHeight)
-end)
 RunService.RenderStepped:Connect(function()
-if not enabled and toggleBtn.Text == _d({23,51,40,59,45,54,57,52,231,13,51,64,1,231,22,21},57) then
+if not enabled and toggleBtn.Text == _d({19,57,54,52,53,65,7,237,28,27},51) then
 toggleBtn.BackgroundColor3 = Color3.fromRGB(220, 50, 60)
-toggleBtn.Text = _d({23,51,40,59,45,54,57,52,231,13,51,64,1,231,22,13,13},57)
+toggleBtn.Text = _d({19,57,54,52,53,65,7,237,28,19,19},51)
 end
 end)
 end
 CreateUI()
-print(_d({34,23,51,40,59,45,54,57,52,27,44,58,59,44,57,36,231,19,54,40,43,44,43,231,58,60,42,42,44,58,58,45,60,51,51,64,245},57))
+print(_d({40,32,46,51,50,19,57,54,52,53,65,33,50,64,65,50,63,42,237,25,60,46,49,50,49,237,64,66,48,48,50,64,64,51,66,57,57,70,251},51))
 end)()
