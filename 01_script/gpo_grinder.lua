@@ -11,19 +11,19 @@ end
 if _G.GepoGrinderCleanup then
 pcall(_G.GepoGrinderCleanup)
 end
-local Players = game:GetService(_d({23,51,40,64,44,57,58},57))
-local ReplicatedStorage = game:GetService(_d({25,44,55,51,48,42,40,59,44,43,26,59,54,57,40,46,44},57))
-local RunService = game:GetService(_d({25,60,53,26,44,57,61,48,42,44},57))
-local VIM = game:GetService(_d({29,48,57,59,60,40,51,16,53,55,60,59,20,40,53,40,46,44,57},57))
-local UserInputService = game:GetService(_d({28,58,44,57,16,53,55,60,59,26,44,57,61,48,42,44},57))
+local Players = game:GetService(_d({47,75,64,88,68,81,82},33))
+local ReplicatedStorage = game:GetService(_d({49,68,79,75,72,66,64,83,68,67,50,83,78,81,64,70,68},33))
+local RunService = game:GetService(_d({49,84,77,50,68,81,85,72,66,68},33))
+local VIM = game:GetService(_d({53,72,81,83,84,64,75,40,77,79,84,83,44,64,77,64,70,68,81},33))
+local UserInputService = game:GetService(_d({52,82,68,81,40,77,79,84,83,50,68,81,85,72,66,68},33))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local function scanTools()
 local toolNames = {}
-local bp = LocalPlayer:FindFirstChild(_d({9,40,42,50,55,40,42,50},57))
+local bp = LocalPlayer:FindFirstChild(_d({33,64,66,74,79,64,66,74},33))
 if bp then
 for _, item in ipairs(bp:GetChildren()) do
-if item:IsA(_d({27,54,54,51},57)) then
+if item:IsA(_d({51,78,78,75},33)) then
 table.insert(toolNames, item.Name)
 end
 end
@@ -31,13 +31,13 @@ end
 local char = LocalPlayer.Character
 if char then
 for _, item in ipairs(char:GetChildren()) do
-if item:IsA(_d({27,54,54,51},57)) then
+if item:IsA(_d({51,78,78,75},33)) then
 table.insert(toolNames, item.Name)
 end
 end
 end
 if #toolNames == 0 then
-table.insert(toolNames, _d({10,54,52,41,40,59},57))
+table.insert(toolNames, _d({34,78,76,65,64,83},33))
 end
 return toolNames
 end
@@ -46,8 +46,8 @@ local autoGrind = false
 local autoFlight = false
 local autoBuyGeppo = false
 local bypassPeliCheck = false
-local selectedMob = _d({9,40,53,43,48,59},57)
-local selectedWeapon = availableWeapons[1] or _d({10,54,52,41,40,59},57)
+local selectedMob = _d({33,64,77,67,72,83},33)
+local selectedWeapon = availableWeapons[1] or _d({34,78,76,65,64,83},33)
 local hoverHeight = 6.5
 local flightSpeed = 50.0
 local geppoCooldown = 3.5
@@ -57,30 +57,30 @@ local boughtGeppo = false
 local lastPosition = Vector3.zero
 local stuckTime = 0
 local unstuckActive = false
-local mobList = {_d({9,40,53,43,48,59},57), _d({9,40,53,43,48,59,231,9,54,58,58},57), _d({11,40,55,47},57), _d({15,40,50,60},57), _d({19,48,51,64},57), _d({19,48,54,53,231,23,57,48,43,44},57), _d({20,40,57,56,60,40,53},57), _d({25,54,41,54},57), _d({25,54,53,53,64},57), _d({26,40,57,40,47},57)}
+local mobList = {_d({33,64,77,67,72,83},33), _d({33,64,77,67,72,83,255,33,78,82,82},33), _d({35,64,79,71},33), _d({39,64,74,84},33), _d({43,72,75,88},33), _d({43,72,78,77,255,47,81,72,67,68},33), _d({44,64,81,80,84,64,77},33), _d({49,78,65,78},33), _d({49,78,77,77,88},33), _d({50,64,81,64,71},33)}
 local function getRoot(player)
 local char = (player or LocalPlayer).Character
-return char and char:FindFirstChild(_d({15,60,52,40,53,54,48,43,25,54,54,59,23,40,57,59},57))
+return char and char:FindFirstChild(_d({39,84,76,64,77,78,72,67,49,78,78,83,47,64,81,83},33))
 end
 local function getHumanoid(player)
 local char = (player or LocalPlayer).Character
-return char and char:FindFirstChildWhichIsA(_d({15,60,52,40,53,54,48,43},57))
+return char and char:FindFirstChildWhichIsA(_d({39,84,76,64,77,78,72,67},33))
 end
 local function getPeli()
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({26,59,40,59,58},57) .. LocalPlayer.Name)
-if statsFolder and statsFolder:FindFirstChild(_d({26,59,40,59,58},57)) and statsFolder.Stats:FindFirstChild(_d({23,44,51,48},57)) then
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({50,83,64,83,82},33) .. LocalPlayer.Name)
+if statsFolder and statsFolder:FindFirstChild(_d({50,83,64,83,82},33)) and statsFolder.Stats:FindFirstChild(_d({47,68,75,72},33)) then
 return statsFolder.Stats.Peli.Value
 end
 return 0
 end
 local function getActiveTargetNPCs()
-local npcsFolder = Workspace:FindFirstChild(_d({21,23,10,58},57))
+local npcsFolder = Workspace:FindFirstChild(_d({45,47,34,82},33))
 if not npcsFolder then return {} end
 local targets = {}
 for _, npc in ipairs(npcsFolder:GetChildren()) do
 if npc.Name == selectedMob then
-local root = npc:FindFirstChild(_d({15,60,52,40,53,54,48,43,25,54,54,59,23,40,57,59},57))
-local hum = npc:FindFirstChildWhichIsA(_d({15,60,52,40,53,54,48,43},57))
+local root = npc:FindFirstChild(_d({39,84,76,64,77,78,72,67,49,78,78,83,47,64,81,83},33))
+local hum = npc:FindFirstChildWhichIsA(_d({39,84,76,64,77,78,72,67},33))
 if root and hum and hum.Health > 0 then
 table.insert(targets, npc)
 end
@@ -89,11 +89,11 @@ end
 return targets
 end
 local function findYiNPC()
-local folder = Workspace:FindFirstChild(_d({21,23,10,58},57))
-local yi = folder and folder:FindFirstChild(_d({32,48},57))
+local folder = Workspace:FindFirstChild(_d({45,47,34,82},33))
+local yi = folder and folder:FindFirstChild(_d({56,72},33))
 if yi then return yi end
 for _, obj in ipairs(Workspace:GetDescendants()) do
-if obj.Name == _d({32,48},57) and obj:IsA(_d({20,54,43,44,51},57)) then
+if obj.Name == _d({56,72},33) and obj:IsA(_d({44,78,67,68,75},33)) then
 return obj
 end
 end
@@ -102,7 +102,7 @@ end
 local function getSafeHeightAdjustment(pos)
 local raycastParams = RaycastParams.new()
 local excludeList = {LocalPlayer.Character}
-local npcsFolder = Workspace:FindFirstChild(_d({21,23,10,58},57))
+local npcsFolder = Workspace:FindFirstChild(_d({45,47,34,82},33))
 if npcsFolder then
 table.insert(excludeList, npcsFolder)
 end
@@ -111,7 +111,7 @@ raycastParams.FilterDescendantsInstances = excludeList
 local raycastResult = Workspace:Raycast(pos, Vector3.new(0, -300, 0), raycastParams)
 if raycastResult then
 local hitName = raycastResult.Instance.Name:lower()
-local isWater = hitName:find(_d({62,40,59,44,57},57)) or hitName:find(_d({58,44,40},57)) or hitName:find(_d({54,42,44,40,53},57)) or raycastResult.Material == Enum.Material.Water
+local isWater = hitName:find(_d({86,64,83,68,81},33)) or hitName:find(_d({82,68,64},33)) or hitName:find(_d({78,66,68,64,77},33)) or raycastResult.Material == Enum.Material.Water
 local currentHeight = pos.Y - raycastResult.Position.Y
 if currentHeight < 20 then
 return 20 - currentHeight
@@ -126,7 +126,7 @@ end
 local function setNPCPartsCollision(npc, enabled)
 if not npc then return end
 for _, part in ipairs(npc:GetDescendants()) do
-if part:IsA(_d({9,40,58,44,23,40,57,59},57)) then
+if part:IsA(_d({33,64,82,68,47,64,81,83},33)) then
 part.CanCollide = enabled
 end
 end
@@ -142,13 +142,13 @@ VIM:SendMouseButtonEvent(x, y, 0, false, game, 0)
 end)
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({38,38,14,57,48,53,43,44,57,8,59,59},57)) or Instance.new(_d({8,59,59,40,42,47,52,44,53,59},57))
-att.Name = _d({38,38,14,57,48,53,43,44,57,8,59,59},57)
+local att = root:FindFirstChild(_d({62,62,38,81,72,77,67,68,81,32,83,83},33)) or Instance.new(_d({32,83,83,64,66,71,76,68,77,83},33))
+att.Name = _d({62,62,38,81,72,77,67,68,81,32,83,83},33)
 att.Parent = root
-local force = root:FindFirstChild(_d({38,38,14,57,48,53,43,44,57,13,54,57,42,44},57))
+local force = root:FindFirstChild(_d({62,62,38,81,72,77,67,68,81,37,78,81,66,68},33))
 if not force then
-force = Instance.new(_d({19,48,53,44,40,57,29,44,51,54,42,48,59,64},57))
-force.Name = _d({38,38,14,57,48,53,43,44,57,13,54,57,42,44},57)
+force = Instance.new(_d({43,72,77,68,64,81,53,68,75,78,66,72,83,88},33))
+force.Name = _d({62,62,38,81,72,77,67,68,81,37,78,81,66,68},33)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -162,8 +162,8 @@ local function cleanupForce()
 if not autoGrind and not autoFlight then
 local root = getRoot()
 if root then
-local force = root:FindFirstChild(_d({38,38,14,57,48,53,43,44,57,13,54,57,42,44},57))
-local att = root:FindFirstChild(_d({38,38,14,57,48,53,43,44,57,8,59,59},57))
+local force = root:FindFirstChild(_d({62,62,38,81,72,77,67,68,81,37,78,81,66,68},33))
+local att = root:FindFirstChild(_d({62,62,38,81,72,77,67,68,81,32,83,83},33))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -210,18 +210,18 @@ pcall(function()
 local char = LocalPlayer.Character
 local root = getRoot()
 if not char or not root then return end
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({26,59,40,59,58},57) .. LocalPlayer.Name)
-local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({21,54,53,44},57)
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({50,83,64,83,82},33) .. LocalPlayer.Name)
+local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({45,78,77,68},33)
 local cf = CFrame.lookAt(root.Position, root.Position + root.CFrame.LookVector)
 local args = {char = char, cf = cf}
-if style == _d({25,54,50,60,58,47,48,50,48},57) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({14,44,55,55,54},57), args)
-elseif style == _d({9,51,40,42,50,19,44,46},57) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({26,50,64,231,30,40,51,50},57), args)
-elseif style == _d({18,40,52,48,58,47,48,50,48},57) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({18,40,52,48,58,47,48,50,48,14,44,55,55,54},57), args)
+if style == _d({49,78,74,84,82,71,72,74,72},33) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({38,68,79,79,78},33), args)
+elseif style == _d({33,75,64,66,74,43,68,70},33) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({50,74,88,255,54,64,75,74},33), args)
+elseif style == _d({42,64,76,72,82,71,72,74,72},33) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({42,64,76,72,82,71,72,74,72,38,68,79,79,78},33), args)
 else
-ReplicatedStorage.Events.Skill:InvokeServer(_d({26,50,64,231,30,40,51,50,249},57), args)
+ReplicatedStorage.Events.Skill:InvokeServer(_d({50,74,88,255,54,64,75,74,17},33), args)
 end
 end)
 end
@@ -254,7 +254,7 @@ local peli = getPeli()
 if autoBuyGeppo and (peli >= 50000 or bypassPeliCheck) and not boughtGeppo then
 local yi = findYiNPC()
 if yi then
-local yiRoot = yi:FindFirstChild(_d({15,60,52,40,53,54,48,43,25,54,54,59,23,40,57,59},57))
+local yiRoot = yi:FindFirstChild(_d({39,84,76,64,77,78,72,67,49,78,78,83,47,64,81,83},33))
 if yiRoot then
 local targetPos = yiRoot.Position + Vector3.new(0, hoverHeight, 0)
 local force = getOrCreateForce(myRoot)
@@ -269,12 +269,12 @@ force.VectorVelocity = velocityVec
 else
 force.VectorVelocity = Vector3.zero
 myRoot.CFrame = computeLockedCFrame(myRoot, targetPos, yiRoot.Position)
-local prompt = yi:FindFirstChildWhichIsA(_d({23,57,54,63,48,52,48,59,64,23,57,54,52,55,59},57), true)
+local prompt = yi:FindFirstChildWhichIsA(_d({47,81,78,87,72,76,72,83,88,47,81,78,76,79,83},33), true)
 if prompt then
 if fireproximityprompt then
 pcall(fireproximityprompt, prompt)
 else
-warn(_d({34,14,44,55,54,231,14,57,48,53,43,44,57,36,231,45,48,57,44,55,57,54,63,48,52,48,59,64,55,57,54,52,55,59,231,53,54,59,231,58,60,55,55,54,57,59,44,43,231,41,64,231,44,63,44,42,60,59,54,57,232},57))
+warn(_d({58,38,68,79,78,255,38,81,72,77,67,68,81,60,255,69,72,81,68,79,81,78,87,72,76,72,83,88,79,81,78,76,79,83,255,77,78,83,255,82,84,79,79,78,81,83,68,67,255,65,88,255,68,87,68,66,84,83,78,81,0},33))
 end
 task.wait(1.5)
 if getPeli() < 50000 and not bypassPeliCheck then
@@ -289,7 +289,7 @@ end
 local targets = getActiveTargetNPCs()
 local n = #targets
 if n > 0 then
-local bp = LocalPlayer:FindFirstChild(_d({9,40,42,50,55,40,42,50},57))
+local bp = LocalPlayer:FindFirstChild(_d({33,64,66,74,79,64,66,74},33))
 local weaponTool = bp and bp:FindFirstChild(selectedWeapon)
 if weaponTool then
 myHum:EquipTool(weaponTool)
@@ -298,8 +298,8 @@ if n > 1 then
 for i = 1, n - 1 do
 if not autoGrind then break end
 local npc = targets[i]
-local npcRoot = npc and npc:FindFirstChild(_d({15,60,52,40,53,54,48,43,25,54,54,59,23,40,57,59},57))
-if npcRoot and npc:FindFirstChildWhichIsA(_d({15,60,52,40,53,54,48,43},57)) and npc:FindFirstChildWhichIsA(_d({15,60,52,40,53,54,48,43},57)).Health > 0 then
+local npcRoot = npc and npc:FindFirstChild(_d({39,84,76,64,77,78,72,67,49,78,78,83,47,64,81,83},33))
+if npcRoot and npc:FindFirstChildWhichIsA(_d({39,84,76,64,77,78,72,67},33)) and npc:FindFirstChildWhichIsA(_d({39,84,76,64,77,78,72,67},33)).Health > 0 then
 pcall(setNPCPartsCollision, npc, false)
 local targetPos = npcRoot.Position + Vector3.new(0, hoverHeight, 0)
 local force = getOrCreateForce(myRoot)
@@ -333,8 +333,8 @@ end
 end
 if autoGrind then
 local finalNpc = targets[n]
-local finalRoot = finalNpc and finalNpc:FindFirstChild(_d({15,60,52,40,53,54,48,43,25,54,54,59,23,40,57,59},57))
-if finalRoot and finalNpc:FindFirstChildWhichIsA(_d({15,60,52,40,53,54,48,43},57)) and finalNpc:FindFirstChildWhichIsA(_d({15,60,52,40,53,54,48,43},57)).Health > 0 then
+local finalRoot = finalNpc and finalNpc:FindFirstChild(_d({39,84,76,64,77,78,72,67,49,78,78,83,47,64,81,83},33))
+if finalRoot and finalNpc:FindFirstChildWhichIsA(_d({39,84,76,64,77,78,72,67},33)) and finalNpc:FindFirstChildWhichIsA(_d({39,84,76,64,77,78,72,67},33)).Health > 0 then
 pcall(setNPCPartsCollision, finalNpc, false)
 local finalTargetPos = finalRoot.Position + Vector3.new(0, hoverHeight, 0)
 local force = getOrCreateForce(myRoot)
@@ -358,7 +358,7 @@ end
 task.wait(0.05)
 end
 local combatStartTime = tick()
-while autoGrind and finalNpc.Parent and finalRoot and finalNpc:FindFirstChildWhichIsA(_d({15,60,52,40,53,54,48,43},57)) and finalNpc:FindFirstChildWhichIsA(_d({15,60,52,40,53,54,48,43},57)).Health > 0 and (tick() - combatStartTime) < 8 do
+while autoGrind and finalNpc.Parent and finalRoot and finalNpc:FindFirstChildWhichIsA(_d({39,84,76,64,77,78,72,67},33)) and finalNpc:FindFirstChildWhichIsA(_d({39,84,76,64,77,78,72,67},33)).Health > 0 and (tick() - combatStartTime) < 8 do
 finalTargetPos = finalRoot.Position + Vector3.new(0, hoverHeight, 0)
 local dir = (finalTargetPos - myRoot.Position)
 if dir.Magnitude < 10 then
@@ -431,174 +431,312 @@ if _G.OrionGrinderLib then
 pcall(function() _G.OrionGrinderLib:Destroy() end)
 _G.OrionGrinderLib = nil
 end
-local playerGui = LocalPlayer:FindFirstChild(_d({23,51,40,64,44,57,14,60,48},57))
-local mobileBtn = playerGui and playerGui:FindFirstChild(_d({14,57,48,53,43,44,57,20,54,41,48,51,44,27,54,46,46,51,44},57))
+local playerGui = LocalPlayer:FindFirstChild(_d({47,75,64,88,68,81,38,84,72},33))
+local mobileBtn = playerGui and playerGui:FindFirstChild(_d({38,81,72,77,67,68,81,44,78,65,72,75,68,51,78,70,70,75,68},33))
 if mobileBtn then pcall(function() mobileBtn:Destroy() end) end
-print(_d({34,14,44,55,54,231,14,57,48,53,43,44,57,36,231,10,51,44,40,53,44,43,231,60,55,231,55,57,44,61,48,54,60,58,231,58,44,58,58,48,54,53,245},57))
+print(_d({58,38,68,79,78,255,38,81,72,77,67,68,81,60,255,34,75,68,64,77,68,67,255,84,79,255,79,81,68,85,72,78,84,82,255,82,68,82,82,72,78,77,13},33))
 end
-local OrionLib = nil
-local orionSources = {
-_d({47,59,59,55,58,1,246,246,57,40,62,245,46,48,59,47,60,41,60,58,44,57,42,54,53,59,44,53,59,245,42,54,52,246,49,44,53,58,54,53,47,48,57,58,59,246,22,57,48,54,53,246,52,40,48,53,246,58,54,60,57,42,44},57),
-}
-for _, url in ipairs(orionSources) do
-local ok, result = pcall(function()
-return loadstring(game:HttpGet(url, true))()
+local function buildUI()
+local playerGui = LocalPlayer:WaitForChild(_d({47,75,64,88,68,81,38,84,72},33), 10)
+if not playerGui then return end
+for _, name in ipairs({_d({38,47,46,62,38,81,72,77,67,68,81,52,40},33), _d({38,47,46,62,38,81,72,77,67,68,81,51,78,70,70,75,68},33)}) do
+local old = playerGui:FindFirstChild(name)
+if old then old:Destroy() end
+end
+local toggleSG = Instance.new(_d({50,66,81,68,68,77,38,84,72},33))
+toggleSG.Name = _d({38,47,46,62,38,81,72,77,67,68,81,51,78,70,70,75,68},33)
+toggleSG.ResetOnSpawn = false
+toggleSG.DisplayOrder = 100
+toggleSG.Parent = playerGui
+local toggleBtn = Instance.new(_d({51,68,87,83,33,84,83,83,78,77},33))
+toggleBtn.Size = UDim2.new(0, 54, 0, 54)
+toggleBtn.Position = UDim2.new(0, 6, 0.5, -27)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(30, 33, 50)
+toggleBtn.Text = "⚙"
+toggleBtn.TextSize = 22
+toggleBtn.TextColor3 = Color3.fromRGB(180, 200, 255)
+toggleBtn.Font = Enum.Font.GothamBold
+toggleBtn.BorderSizePixel = 0
+toggleBtn.Parent = toggleSG
+Instance.new(_d({52,40,34,78,81,77,68,81},33), toggleBtn).CornerRadius = UDim.new(1, 0)
+local ts = Instance.new(_d({52,40,50,83,81,78,74,68},33), toggleBtn)
+ts.Color = Color3.fromRGB(80, 100, 200)
+ts.Thickness = 1.5
+local sg = Instance.new(_d({50,66,81,68,68,77,38,84,72},33))
+sg.Name = _d({38,47,46,62,38,81,72,77,67,68,81,52,40},33)
+sg.ResetOnSpawn = false
+sg.DisplayOrder = 99
+sg.Parent = playerGui
+local panel = Instance.new(_d({37,81,64,76,68},33))
+panel.Name = _d({47,64,77,68,75},33)
+panel.Size = UDim2.new(0, 230, 0, 420)
+panel.Position = UDim2.new(0, 66, 0.5, -210)
+panel.BackgroundColor3 = Color3.fromRGB(18, 20, 32)
+panel.BorderSizePixel = 0
+panel.Visible = false
+panel.Parent = sg
+Instance.new(_d({52,40,34,78,81,77,68,81},33), panel).CornerRadius = UDim.new(0, 10)
+local ps = Instance.new(_d({52,40,50,83,81,78,74,68},33), panel)
+ps.Color = Color3.fromRGB(60, 70, 130)
+ps.Thickness = 1.5
+local header = Instance.new(_d({51,68,87,83,43,64,65,68,75},33))
+header.Size = UDim2.new(1, 0, 0, 34)
+header.BackgroundColor3 = Color3.fromRGB(26, 30, 50)
+header.BorderSizePixel = 0
+header.Text = _d({255,193,121,120,255,255,38,68,79,78,255,38,81,72,77,67,68,81,255,50,84,72,83,68},33)
+header.TextSize = 12
+header.Font = Enum.Font.GothamBold
+header.TextColor3 = Color3.fromRGB(200, 210, 255)
+header.TextXAlignment = Enum.TextXAlignment.Left
+header.Parent = panel
+Instance.new(_d({52,40,34,78,81,77,68,81},33), header).CornerRadius = UDim.new(0, 10)
+local dragging, dragStart, startPos
+header.InputBegan:Connect(function(i)
+if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+dragging = true
+dragStart = i.Position
+startPos = panel.Position
+end
 end)
-if ok and result then
-OrionLib = result
-break
+UserInputService.InputChanged:Connect(function(i)
+if dragging and (i.UserInputType == Enum.UserInputType.MouseMovement or i.UserInputType == Enum.UserInputType.Touch) then
+local delta = i.Position - dragStart
+panel.Position = UDim2.new(startPos.X.Scale, startPos.X.Offset + delta.X, startPos.Y.Scale, startPos.Y.Offset + delta.Y)
 end
+end)
+UserInputService.InputEnded:Connect(function(i)
+if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+dragging = false
 end
-if not OrionLib then
-warn(_d({34,14,44,55,54,231,14,57,48,53,43,44,57,36,231,13,40,48,51,44,43,231,59,54,231,51,54,40,43,231,22,57,48,54,53,231,28,16,231,169,71,91,231,45,40,51,51,48,53,46,231,41,40,42,50,231,59,54,231,55,57,48,53,59,231,54,60,59,55,60,59,231,54,53,51,64,245},57))
+end)
+local scroll = Instance.new(_d({50,66,81,78,75,75,72,77,70,37,81,64,76,68},33))
+scroll.Size = UDim2.new(1, 0, 1, -34)
+scroll.Position = UDim2.new(0, 0, 0, 34)
+scroll.BackgroundTransparency = 1
+scroll.BorderSizePixel = 0
+scroll.ScrollBarThickness = 3
+scroll.ScrollBarImageColor3 = Color3.fromRGB(80, 100, 200)
+scroll.CanvasSize = UDim2.new(0, 0, 0, 0)
+scroll.AutomaticCanvasSize = Enum.AutomaticSize.Y
+scroll.Parent = panel
+local layout = Instance.new(_d({52,40,43,72,82,83,43,64,88,78,84,83},33), scroll)
+layout.SortOrder = Enum.SortOrder.LayoutOrder
+layout.Padding = UDim.new(0, 4)
+Instance.new(_d({52,40,47,64,67,67,72,77,70},33), scroll).PaddingTop = UDim.new(0, 6)
+local function pad(parent)
+local p = Instance.new(_d({52,40,47,64,67,67,72,77,70},33), parent)
+p.PaddingLeft = UDim.new(0, 10)
+p.PaddingRight = UDim.new(0, 10)
 end
-local function buildOrionUI()
-if not OrionLib then return end
-local Window = OrionLib:MakeWindow({
-Name = _d({14,44,55,54,231,14,57,48,53,43,44,57,231,26,60,48,59,44},57),
-HidePremium = true,
-SaveConfig = false,
-ConfigFolder = _d({14,44,54,14,57,48,53,43,44,57},57),
-IntroEnabled = false,
-})
-_G.OrionGrinderLib = OrionLib
-local FarmTab = Window:MakeTab({
-Name = _d({8,60,59,54,231,13,40,57,52},57),
-Icon = _d({57,41,63,40,58,58,44,59,48,43,1,246,246,251,251,255,250,250,253,249,251,252,255},57),
-PremiumOnly = false,
-})
-FarmTab:AddToggle({
-Name = _d({8,60,59,54,231,14,57,48,53,43,231,20,54,41,58,231,231,239,23,231,18,44,64,240},57),
-Default = false,
-Callback = function(val)
-toggleAutoFarm(val)
-end,
-})
-FarmTab:AddDropdown({
-Name = _d({27,40,57,46,44,59,231,20,54,41},57),
-Default = _d({9,40,53,43,48,59},57),
-Options = mobList,
-Callback = function(val)
-selectedMob = tostring(val)
-targetNPC = nil
-end,
-})
-FarmTab:AddDropdown({
-Name = _d({30,44,40,55,54,53,231,246,231,20,44,51,44,44},57),
-Default = selectedWeapon,
-Options = availableWeapons,
-Callback = function(val)
-selectedWeapon = tostring(val)
-end,
-})
-FarmTab:AddSlider({
-Name = _d({15,54,61,44,57,231,15,44,48,46,47,59,231,239,58,59,60,43,58,240},57),
-Min = 4,
-Max = 15,
-Default = hoverHeight,
-Color = Color3.fromRGB(80, 110, 220),
-Increment = 0.5,
-ValueName = _d({58,59,60,43,58},57),
-Callback = function(val)
-hoverHeight = val
-end,
-})
-local peliSection = FarmTab:AddParagraph(_d({23,44,51,48,231,30,40,51,51,44,59},57), _d({19,54,40,43,48,53,46,245,245,245},57))
+local function makeSection(text, order)
+local lbl = Instance.new(_d({51,68,87,83,43,64,65,68,75},33))
+lbl.Size = UDim2.new(1, -20, 0, 18)
+lbl.BackgroundTransparency = 1
+lbl.Text = _d({193,115,95,193,115,95,255},33) .. text
+lbl.TextSize = 10
+lbl.Font = Enum.Font.GothamBold
+lbl.TextColor3 = Color3.fromRGB(100, 120, 200)
+lbl.TextXAlignment = Enum.TextXAlignment.Left
+lbl.LayoutOrder = order
+lbl.Parent = scroll
+pad(lbl)
+end
+local function makeToggle(text, getVal, setVal, order)
+local btn = Instance.new(_d({51,68,87,83,33,84,83,83,78,77},33))
+btn.Size = UDim2.new(1, -20, 0, 30)
+btn.BorderSizePixel = 0
+btn.Font = Enum.Font.GothamBold
+btn.TextSize = 11
+btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+btn.TextXAlignment = Enum.TextXAlignment.Left
+btn.LayoutOrder = order
+btn.Parent = scroll
+pad(btn)
+Instance.new(_d({52,40,34,78,81,77,68,81},33), btn).CornerRadius = UDim.new(0, 6)
+local function refresh()
+local on = getVal()
+btn.Text = (on and _d({193,123,115,255},33) or _d({193,123,117,255},33)) .. text
+btn.BackgroundColor3 = on and Color3.fromRGB(30, 110, 50) or Color3.fromRGB(90, 25, 25)
+end
+refresh()
+btn.MouseButton1Click:Connect(function()
+setVal(not getVal())
+refresh()
+end)
+return refresh
+end
+local function makeSlider(text, min, max, step, getVal, setVal, order)
+local cont = Instance.new(_d({37,81,64,76,68},33))
+cont.Size = UDim2.new(1, -20, 0, 44)
+cont.BackgroundTransparency = 1
+cont.LayoutOrder = order
+cont.Parent = scroll
+local lbl = Instance.new(_d({51,68,87,83,43,64,65,68,75},33))
+lbl.Size = UDim2.new(1, 0, 0, 18)
+lbl.BackgroundTransparency = 1
+lbl.Font = Enum.Font.GothamBold
+lbl.TextSize = 10
+lbl.TextColor3 = Color3.fromRGB(190, 195, 230)
+lbl.TextXAlignment = Enum.TextXAlignment.Left
+lbl.Text = text .. _d({25,255},33) .. tostring(getVal())
+lbl.Parent = cont
+pad(lbl)
+local track = Instance.new(_d({37,81,64,76,68},33))
+track.Size = UDim2.new(1, -20, 0, 8)
+track.Position = UDim2.new(0, 10, 0, 28)
+track.BackgroundColor3 = Color3.fromRGB(40, 44, 70)
+track.BorderSizePixel = 0
+track.Parent = cont
+Instance.new(_d({52,40,34,78,81,77,68,81},33), track).CornerRadius = UDim.new(1, 0)
+local fill = Instance.new(_d({37,81,64,76,68},33))
+fill.BackgroundColor3 = Color3.fromRGB(80, 110, 220)
+fill.BorderSizePixel = 0
+fill.Size = UDim2.new((getVal() - min) / (max - min), 0, 1, 0)
+fill.Parent = track
+Instance.new(_d({52,40,34,78,81,77,68,81},33), fill).CornerRadius = UDim.new(1, 0)
+local sliding = false
+local function update(inputPos)
+local rel = math.clamp((inputPos.X - track.AbsolutePosition.X) / track.AbsoluteSize.X, 0, 1)
+local raw = min + rel * (max - min)
+local steps = math.round((raw - min) / step)
+local val = math.clamp(min + steps * step, min, max)
+fill.Size = UDim2.new((val - min) / (max - min), 0, 1, 0)
+lbl.Text = text .. _d({25,255},33) .. tostring(val)
+setVal(val)
+end
+track.InputBegan:Connect(function(i)
+if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+sliding = true; update(i.Position)
+end
+end)
+UserInputService.InputChanged:Connect(function(i)
+if sliding and (i.UserInputType == Enum.UserInputType.MouseMovement or i.UserInputType == Enum.UserInputType.Touch) then
+update(i.Position)
+end
+end)
+UserInputService.InputEnded:Connect(function(i)
+if i.UserInputType == Enum.UserInputType.MouseButton1 or i.UserInputType == Enum.UserInputType.Touch then
+sliding = false
+end
+end)
+end
+local function makeDropdown(text, options, getVal, setVal, order)
+local btn = Instance.new(_d({51,68,87,83,33,84,83,83,78,77},33))
+btn.Size = UDim2.new(1, -20, 0, 30)
+btn.BackgroundColor3 = Color3.fromRGB(28, 32, 52)
+btn.BorderSizePixel = 0
+btn.Font = Enum.Font.GothamBold
+btn.TextSize = 10
+btn.TextColor3 = Color3.fromRGB(200, 205, 240)
+btn.TextXAlignment = Enum.TextXAlignment.Left
+btn.Text = _d({193,117,157,255},33) .. text .. _d({25,255},33) .. tostring(getVal())
+btn.LayoutOrder = order
+btn.Parent = scroll
+pad(btn)
+Instance.new(_d({52,40,34,78,81,77,68,81},33), btn).CornerRadius = UDim.new(0, 6)
+local stroke = Instance.new(_d({52,40,50,83,81,78,74,68},33), btn)
+stroke.Color = Color3.fromRGB(60, 70, 130)
+stroke.Thickness = 1
+local listFrame = nil
+btn.MouseButton1Click:Connect(function()
+if listFrame then listFrame:Destroy(); listFrame = nil; return end
+listFrame = Instance.new(_d({37,81,64,76,68},33))
+listFrame.Size = UDim2.new(1, 0, 0, math.min(#options, 5) * 26)
+listFrame.Position = UDim2.new(0, 0, 1, 2)
+listFrame.BackgroundColor3 = Color3.fromRGB(22, 25, 40)
+listFrame.BorderSizePixel = 0
+listFrame.ZIndex = 20
+listFrame.ClipsDescendants = true
+listFrame.Parent = btn
+Instance.new(_d({52,40,34,78,81,77,68,81},33), listFrame).CornerRadius = UDim.new(0, 6)
+local ll = Instance.new(_d({52,40,43,72,82,83,43,64,88,78,84,83},33), listFrame)
+ll.SortOrder = Enum.SortOrder.LayoutOrder
+for idx, opt in ipairs(options) do
+local ob = Instance.new(_d({51,68,87,83,33,84,83,83,78,77},33))
+ob.Size = UDim2.new(1, 0, 0, 26)
+ob.BackgroundTransparency = 1
+ob.Font = Enum.Font.GothamBold
+ob.TextSize = 10
+ob.TextColor3 = Color3.fromRGB(200, 205, 240)
+ob.Text = tostring(opt)
+ob.LayoutOrder = idx
+ob.ZIndex = 21
+ob.Parent = listFrame
+ob.MouseButton1Click:Connect(function()
+setVal(tostring(opt))
+btn.Text = _d({193,117,157,255},33) .. text .. _d({25,255},33) .. tostring(opt)
+listFrame:Destroy(); listFrame = nil
+end)
+end
+end)
+end
+local infoLbl = Instance.new(_d({51,68,87,83,43,64,65,68,75},33))
+infoLbl.Size = UDim2.new(1, -20, 0, 20)
+infoLbl.BackgroundTransparency = 1
+infoLbl.Font = Enum.Font.Code
+infoLbl.TextSize = 10
+infoLbl.TextColor3 = Color3.fromRGB(130, 220, 130)
+infoLbl.TextXAlignment = Enum.TextXAlignment.Left
+infoLbl.LayoutOrder = 99
+infoLbl.Parent = scroll
+pad(infoLbl)
+local destroyBtn = Instance.new(_d({51,68,87,83,33,84,83,83,78,77},33))
+destroyBtn.Size = UDim2.new(1, -20, 0, 28)
+destroyBtn.BackgroundColor3 = Color3.fromRGB(100, 20, 20)
+destroyBtn.BorderSizePixel = 0
+destroyBtn.Font = Enum.Font.GothamBold
+destroyBtn.TextSize = 11
+destroyBtn.TextColor3 = Color3.fromRGB(255, 200, 200)
+destroyBtn.Text = _d({193,123,116,255,255,35,68,82,83,81,78,88,255,5,255,50,83,78,79},33)
+destroyBtn.LayoutOrder = 100
+destroyBtn.Parent = scroll
+pad(destroyBtn)
+Instance.new(_d({52,40,34,78,81,77,68,81},33), destroyBtn).CornerRadius = UDim.new(0, 6)
+destroyBtn.MouseButton1Click:Connect(function()
+if _G.GepoGrinderCleanup then pcall(_G.GepoGrinderCleanup) end
+end)
+makeSection(_d({32,52,51,46,255,37,32,49,44},33), 1)
+makeToggle(_d({32,84,83,78,255,38,81,72,77,67,255,44,78,65,82,255,7,47,255,74,68,88,8},33), function() return autoGrind end, function(v)
+autoGrind = v
+if v then toggleAutoFarm(true) else toggleAutoFarm(false) end
+end, 2)
+makeDropdown(_d({51,64,81,70,68,83,255,44,78,65},33), mobList, function() return selectedMob end, function(v)
+selectedMob = v; targetNPC = nil
+end, 3)
+makeDropdown(_d({54,68,64,79,78,77},33), availableWeapons, function() return selectedWeapon end, function(v)
+selectedWeapon = v
+end, 4)
+makeSlider(_d({39,78,85,68,81,255,39,68,72,70,71,83},33), 4, 15, 0.5, function() return hoverHeight end, function(v) hoverHeight = v end, 5)
+makeSection(_d({37,43,40,38,39,51},33), 10)
+makeToggle(_d({40,77,69,72,77,72,83,68,255,37,75,72,70,71,83},33), function() return autoFlight end, function(v)
+autoFlight = v
+if not v then cleanupForce() end
+end, 11)
+makeSlider(_d({37,75,72,70,71,83,255,50,79,68,68,67},33), 10, 150, 5, function() return flightSpeed end, function(v) flightSpeed = v end, 12)
+makeSection(_d({38,36,47,47,46,255,33,52,56,36,49},33), 20)
+makeToggle(_d({32,84,83,78,255,33,84,88,255,38,68,79,79,78},33), function() return autoBuyGeppo end, function(v) autoBuyGeppo = v end, 21)
+makeToggle(_d({33,88,79,64,82,82,255,20,15,74,255,47,68,75,72,255,7,51,68,82,83,8},33), function() return bypassPeliCheck end, function(v) bypassPeliCheck = v end, 22)
+toggleBtn.MouseButton1Click:Connect(function()
+panel.Visible = not panel.Visible
+end)
 task.spawn(function()
-while _G.OrionGrinderLib do
+while sg.Parent do
 task.wait(1)
 pcall(function()
 local peli = getPeli()
-local msg = peli >= 50000 and _d({183,102,85,80,231,25,44,40,43,64,231,59,54,231,41,60,64,231,14,44,55,55,54,232},57) or _d({14,57,48,53,43,48,53,46,245,245,245},57)
-peliSection:Set(_d({23,44,51,48,231,30,40,51,51,44,59},57), tostring(peli) .. _d({231,231,231},57) .. msg)
+infoLbl.Text = _d({207,126,113,143,255,47,68,75,72,25,255},33) .. tostring(peli) .. (peli >= 50000 and _d({255,255,193,123,115,255,49,68,64,67,88,0},33) or "")
 end)
 end
 end)
-local GeppoTab = Window:MakeTab({
-Name = _d({14,44,55,55,54,231,9,60,64,44,57},57),
-Icon = _d({57,41,63,40,58,58,44,59,48,43,1,246,246,251,251,255,250,250,253,249,251,252,255},57),
-PremiumOnly = false,
-})
-GeppoTab:AddToggle({
-Name = _d({8,60,59,54,231,9,60,64,231,14,44,55,55,54,231,239,53,44,44,43,58,231,32,48,231,48,53,231,62,54,57,50,58,55,40,42,44,240},57),
-Default = false,
-Callback = function(val)
-autoBuyGeppo = val
-end,
-})
-GeppoTab:AddToggle({
-Name = _d({9,64,55,40,58,58,231,252,247,50,231,23,44,51,48,231,10,47,44,42,50,231,239,27,44,58,59,48,53,46,240},57),
-Default = false,
-Callback = function(val)
-bypassPeliCheck = val
-end,
-})
-local FlightTab = Window:MakeTab({
-Name = _d({26,40,45,44,231,13,51,48,46,47,59},57),
-Icon = _d({57,41,63,40,58,58,44,59,48,43,1,246,246,251,251,255,250,250,253,249,251,252,255},57),
-PremiumOnly = false,
-})
-FlightTab:AddToggle({
-Name = _d({16,53,45,48,53,48,59,44,231,14,44,55,55,54,231,13,51,64},57),
-Default = false,
-Callback = function(val)
-autoFlight = val
-if not autoFlight then cleanupForce() end
-end,
-})
-FlightTab:AddSlider({
-Name = _d({13,51,48,46,47,59,231,26,55,44,44,43},57),
-Min = 10,
-Max = 150,
-Default = flightSpeed,
-Color = Color3.fromRGB(80, 110, 220),
-Increment = 5,
-ValueName = _d({58,59,60,43,58,246,58},57),
-Callback = function(val)
-flightSpeed = val
-end,
-})
-local SettingsTab = Window:MakeTab({
-Name = _d({26,44,59,59,48,53,46,58},57),
-Icon = _d({57,41,63,40,58,58,44,59,48,43,1,246,246,251,251,255,250,250,253,249,251,252,255},57),
-PremiumOnly = false,
-})
-SettingsTab:AddButton({
-Name = _d({11,44,58,59,57,54,64,231,28,16,231,237,231,26,59,54,55,231,12,61,44,57,64,59,47,48,53,46},57),
-Callback = function()
-if _G.GepoGrinderCleanup then
-pcall(_G.GepoGrinderCleanup)
+_G.GPO_GrinderUISG = sg
+_G.GPO_GrinderToggleSG = toggleSG
 end
-end,
-})
-OrionLib:Init()
-local playerGui = LocalPlayer:WaitForChild(_d({23,51,40,64,44,57,14,60,48},57), 10)
-if playerGui then
-local oldBtn = playerGui:FindFirstChild(_d({14,57,48,53,43,44,57,20,54,41,48,51,44,27,54,46,46,51,44},57))
-if oldBtn then oldBtn:Destroy() end
-local sg = Instance.new(_d({26,42,57,44,44,53,14,60,48},57))
-sg.Name = _d({14,57,48,53,43,44,57,20,54,41,48,51,44,27,54,46,46,51,44},57)
-sg.ResetOnSpawn = false
-sg.Parent = playerGui
-local btn = Instance.new(_d({27,44,63,59,9,60,59,59,54,53},57))
-btn.Size = UDim2.new(0, 52, 0, 52)
-btn.Position = UDim2.new(0, 8, 0.45, 0)
-btn.BackgroundColor3 = Color3.fromRGB(24, 25, 38)
-btn.Font = Enum.Font.GothamBold
-btn.TextSize = 9
-btn.TextColor3 = Color3.fromRGB(255, 255, 255)
-btn.Text = _d({20,12,21,28},57)
-btn.Parent = sg
-Instance.new(_d({28,16,10,54,57,53,44,57},57), btn).CornerRadius = UDim.new(1, 0)
-local s = Instance.new(_d({28,16,26,59,57,54,50,44},57))
-s.Color = Color3.fromRGB(100, 105, 135)
-s.Thickness = 1.5
-s.Parent = btn
-btn.MouseButton1Click:Connect(function()
-OrionLib:Toggle()
-end)
+local _origCleanup = _G.GepoGrinderCleanup
+_G.GepoGrinderCleanup = function()
+if _origCleanup then pcall(_origCleanup) end
+if _G.GPO_GrinderUISG then pcall(function() _G.GPO_GrinderUISG:Destroy() end) end
+if _G.GPO_GrinderToggleSG then pcall(function() _G.GPO_GrinderToggleSG:Destroy() end) end
 end
-end
-task.spawn(buildOrionUI)
-print(_d({34,14,44,55,54,231,14,57,48,53,43,44,57,231,15,60,41,36,231,61,247,245,247,245,248,252,231,51,54,40,43,44,43,231,62,48,59,47,231,22,57,48,54,53,231,19,48,41,57,40,57,64,231,28,16,245},57))
+task.spawn(buildUI)
+print(_d({58,38,68,79,78,255,38,81,72,77,67,68,81,255,39,84,65,60,255,85,15,13,15,13,16,21,255,75,78,64,67,68,67,255,193,95,115,255,83,64,79,255,193,121,120,255,65,84,83,83,78,77,255,83,78,255,78,79,68,77,255,76,68,77,84,13},33))
 end)()
