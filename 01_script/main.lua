@@ -8,9 +8,9 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local PathfindingService = game:GetService(_d({61,78,97,85,83,86,91,81,86,91,84,64,82,95,99,86,80,82},19))
-local Players = game:GetService(_d({61,89,78,102,82,95,96},19))
-local RunService = game:GetService(_d({63,98,91,64,82,95,99,86,80,82},19))
+local PathfindingService = game:GetService(_d({58,75,94,82,80,83,88,78,83,88,81,61,79,92,96,83,77,79},22))
+local Players = game:GetService(_d({58,86,75,99,79,92,93},22))
+local RunService = game:GetService(_d({60,95,88,61,79,92,96,83,77,79},22))
 local LocalPlayer = Players.LocalPlayer
 local SafeNavigator = {
 IsNavigating = false,
@@ -18,8 +18,8 @@ TargetPosition = nil,
 }
 local function GetCharacter()
 local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-local humanoid = character:WaitForChild(_d({53,98,90,78,91,92,86,81},19), 5)
-local rootPart = character:WaitForChild(_d({53,98,90,78,91,92,86,81,63,92,92,97,61,78,95,97},19), 5)
+local humanoid = character:WaitForChild(_d({50,95,87,75,88,89,83,78},22), 5)
+local rootPart = character:WaitForChild(_d({50,95,87,75,88,89,83,78,60,89,89,94,58,75,92,94},22), 5)
 return character, humanoid, rootPart
 end
 function SafeNavigator.Stop()
@@ -34,7 +34,7 @@ SafeNavigator.Stop()
 task.wait(0.05)
 local character, humanoid, rootPart = GetCharacter()
 if not character or not humanoid or not rootPart then
-warn(_d({72,64,78,83,82,59,78,99,86,84,78,97,92,95,74,13,58,86,96,96,86,91,84,13,80,85,78,95,78,80,97,82,95,13,80,92,90,93,92,91,82,91,97,96,27},19))
+warn(_d({69,61,75,80,79,56,75,96,83,81,75,94,89,92,71,10,55,83,93,93,83,88,81,10,77,82,75,92,75,77,94,79,92,10,77,89,87,90,89,88,79,88,94,93,24},22))
 return
 end
 SafeNavigator.IsNavigating = true
@@ -77,21 +77,21 @@ task.wait(math.random(15, 35) / 1000)
 end
 end
 SafeNavigator.IsNavigating = false
-if onComplete and type(onComplete) == _d({83,98,91,80,97,86,92,91},19) then
+if onComplete and type(onComplete) == _d({80,95,88,77,94,83,89,88},22) then
 onComplete()
 end
 end)
 end
 local function CreateSafeUI()
-local playerGui = LocalPlayer:WaitForChild(_d({61,89,78,102,82,95,52,98,86},19), 10)
+local playerGui = LocalPlayer:WaitForChild(_d({58,86,75,99,79,92,49,95,83},22), 10)
 if not playerGui then return end
-local oldUI = playerGui:FindFirstChild(_d({64,78,83,82,59,78,99,86,84,78,97,92,95,66,54},19))
+local oldUI = playerGui:FindFirstChild(_d({61,75,80,79,56,75,96,83,81,75,94,89,92,63,51},22))
 if oldUI then oldUI:Destroy() end
-local screenGui = Instance.new(_d({64,80,95,82,82,91,52,98,86},19))
-screenGui.Name = _d({64,78,83,82,59,78,99,86,84,78,97,92,95,66,54},19)
+local screenGui = Instance.new(_d({61,77,92,79,79,88,49,95,83},22))
+screenGui.Name = _d({61,75,80,79,56,75,96,83,81,75,94,89,92,63,51},22)
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
-local main = Instance.new(_d({51,95,78,90,82},19))
+local main = Instance.new(_d({48,92,75,87,79},22))
 main.Size = UDim2.new(0, 320, 0, 290)
 main.Position = UDim2.new(0.05, 0, 0.25, 0)
 main.BackgroundColor3 = Color3.fromRGB(24, 26, 34)
@@ -99,12 +99,12 @@ main.BorderSizePixel = 0
 main.Active = true
 main.Draggable = true
 main.Parent = screenGui
-Instance.new(_d({66,54,48,92,95,91,82,95},19), main).CornerRadius = UDim.new(0, 8)
-local stroke = Instance.new(_d({66,54,64,97,95,92,88,82},19))
+Instance.new(_d({63,51,45,89,92,88,79,92},22), main).CornerRadius = UDim.new(0, 8)
+local stroke = Instance.new(_d({63,51,61,94,92,89,85,79},22))
 stroke.Color = Color3.fromRGB(60, 65, 80)
 stroke.Thickness = 1.5
 stroke.Parent = main
-local title = Instance.new(_d({65,82,101,97,57,78,79,82,89},19))
+local title = Instance.new(_d({62,79,98,94,54,75,76,79,86},22))
 title.Size = UDim2.new(1, -30, 0, 36)
 title.Position = UDim2.new(0, 12, 0, 0)
 title.BackgroundTransparency = 1
@@ -112,9 +112,9 @@ title.Font = Enum.Font.GothamBold
 title.TextSize = 13
 title.TextColor3 = Color3.fromRGB(240, 240, 250)
 title.TextXAlignment = Enum.TextXAlignment.Left
-title.Text = _d({64,78,83,82,13,59,78,99,86,84,78,97,86,92,91,13,57,78,79},19)
+title.Text = _d({61,75,80,79,10,56,75,96,83,81,75,94,83,89,88,10,54,75,76},22)
 title.Parent = main
-local closeBtn = Instance.new(_d({65,82,101,97,47,98,97,97,92,91},19))
+local closeBtn = Instance.new(_d({62,79,98,94,44,95,94,94,89,88},22))
 closeBtn.Size = UDim2.new(0, 24, 0, 24)
 closeBtn.Position = UDim2.new(1, -28, 0, 6)
 closeBtn.BackgroundColor3 = Color3.fromRGB(180, 50, 50)
@@ -123,11 +123,11 @@ closeBtn.Text = "X"
 closeBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 closeBtn.TextSize = 11
 closeBtn.Parent = main
-Instance.new(_d({66,54,48,92,95,91,82,95},19), closeBtn).CornerRadius = UDim.new(0, 5)
+Instance.new(_d({63,51,45,89,92,88,79,92},22), closeBtn).CornerRadius = UDim.new(0, 5)
 closeBtn.MouseButton1Click:Connect(function()
 screenGui:Destroy()
 end)
-local telemetry = Instance.new(_d({65,82,101,97,57,78,79,82,89},19))
+local telemetry = Instance.new(_d({62,79,98,94,54,75,76,79,86},22))
 telemetry.Size = UDim2.new(1, -24, 0, 42)
 telemetry.Position = UDim2.new(0, 12, 0, 40)
 telemetry.BackgroundColor3 = Color3.fromRGB(16, 18, 24)
@@ -137,22 +137,22 @@ telemetry.TextColor3 = Color3.fromRGB(100, 220, 150)
 telemetry.TextXAlignment = Enum.TextXAlignment.Left
 telemetry.Text = " Pos: X: 0 | Y: 0 | Z: 0\n Status: IDLE"
 telemetry.Parent = main
-Instance.new(_d({66,54,48,92,95,91,82,95},19), telemetry).CornerRadius = UDim.new(0, 6)
+Instance.new(_d({63,51,45,89,92,88,79,92},22), telemetry).CornerRadius = UDim.new(0, 6)
 RunService.RenderStepped:Connect(function()
 local _, _, root = GetCharacter()
 if root then
 local p = root.Position
-local statusStr = SafeNavigator.IsNavigating and _d({58,60,67,54,59,52,13,65,60,13,61,57,46,48,50,13,46},19) or _d({54,49,57,50},19)
+local statusStr = SafeNavigator.IsNavigating and _d({55,57,64,51,56,49,10,62,57,10,58,54,43,45,47,10,43},22) or _d({51,46,54,47},22)
 telemetry.Text = string.format(" Pos: X: %.1f | Y: %.1f | Z: %.1f\n Status: %s", p.X, p.Y, p.Z, statusStr)
 end
 end)
-local inputContainer = Instance.new(_d({51,95,78,90,82},19))
+local inputContainer = Instance.new(_d({48,92,75,87,79},22))
 inputContainer.Size = UDim2.new(1, -24, 0, 32)
 inputContainer.Position = UDim2.new(0, 12, 0, 92)
 inputContainer.BackgroundTransparency = 1
 inputContainer.Parent = main
 local function MakeBox(placeholder, xScale)
-local box = Instance.new(_d({65,82,101,97,47,92,101},19))
+local box = Instance.new(_d({62,79,98,94,44,89,98},22))
 box.Size = UDim2.new(0.31, 0, 1, 0)
 box.Position = UDim2.new(xScale, 0, 0, 0)
 box.BackgroundColor3 = Color3.fromRGB(36, 40, 50)
@@ -162,14 +162,14 @@ box.TextColor3 = Color3.fromRGB(255, 255, 255)
 box.PlaceholderText = placeholder
 box.Text = ""
 box.Parent = inputContainer
-Instance.new(_d({66,54,48,92,95,91,82,95},19), box).CornerRadius = UDim.new(0, 5)
+Instance.new(_d({63,51,45,89,92,88,79,92},22), box).CornerRadius = UDim.new(0, 5)
 return box
 end
 local inputX = MakeBox("X", 0)
 local inputY = MakeBox("Y", 0.345)
 local inputZ = MakeBox("Z", 0.69)
 local function MakeBtn(text, color, yPos)
-local btn = Instance.new(_d({65,82,101,97,47,98,97,97,92,91},19))
+local btn = Instance.new(_d({62,79,98,94,44,95,94,94,89,88},22))
 btn.Size = UDim2.new(1, -24, 0, 34)
 btn.Position = UDim2.new(0, 12, 0, yPos)
 btn.BackgroundColor3 = color
@@ -178,19 +178,19 @@ btn.TextSize = 12
 btn.TextColor3 = Color3.fromRGB(255, 255, 255)
 btn.Text = text
 btn.Parent = main
-Instance.new(_d({66,54,48,92,95,91,82,95},19), btn).CornerRadius = UDim.new(0, 6)
+Instance.new(_d({63,51,45,89,92,88,79,92},22), btn).CornerRadius = UDim.new(0, 6)
 return btn
 end
-local btnSetAhead = MakeBtn(_d({64,82,97,13,61,89,78,80,82,13,46,13,42,13,32,29,13,64,97,98,81,96,13,46,85,82,78,81},19), Color3.fromRGB(45, 85, 140), 132)
-local btnStart = MakeBtn(_d({64,97,78,95,97,13,58,92,99,82,13,97,92,13,61,89,78,80,82,13,46},19), Color3.fromRGB(40, 140, 80), 174)
-local btnStop = MakeBtn(_d({64,97,92,93,13,58,92,99,82,90,82,91,97},19), Color3.fromRGB(160, 50, 50), 216)
+local btnSetAhead = MakeBtn(_d({61,79,94,10,58,86,75,77,79,10,43,10,39,10,29,26,10,61,94,95,78,93,10,43,82,79,75,78},22), Color3.fromRGB(45, 85, 140), 132)
+local btnStart = MakeBtn(_d({61,94,75,92,94,10,55,89,96,79,10,94,89,10,58,86,75,77,79,10,43},22), Color3.fromRGB(40, 140, 80), 174)
+local btnStop = MakeBtn(_d({61,94,89,90,10,55,89,96,79,87,79,88,94},22), Color3.fromRGB(160, 50, 50), 216)
 btnSetAhead.MouseButton1Click:Connect(function()
 local _, _, root = GetCharacter()
 if root then
 local target = root.Position + (root.CFrame.LookVector * 30)
-inputX.Text = string.format(_d({18,27,30,83},19), target.X)
-inputY.Text = string.format(_d({18,27,30,83},19), target.Y)
-inputZ.Text = string.format(_d({18,27,30,83},19), target.Z)
+inputX.Text = string.format(_d({15,24,27,80},22), target.X)
+inputY.Text = string.format(_d({15,24,27,80},22), target.Y)
+inputZ.Text = string.format(_d({15,24,27,80},22), target.Z)
 end
 end)
 btnStart.MouseButton1Click:Connect(function()
@@ -209,6 +209,6 @@ task.spawn(function()
 task.wait(0.3)
 CreateSafeUI()
 end)
-print(_d({72,64,78,83,82,59,78,99,86,84,78,97,92,95,13,50,91,84,86,91,82,74,13,57,92,78,81,82,81,13,100,86,97,85,13,64,78,83,82,13,61,89,78,102,82,95,52,98,86,13,54,91,97,82,95,83,78,80,82,27},19))
+print(_d({69,61,75,80,79,56,75,96,83,81,75,94,89,92,10,47,88,81,83,88,79,71,10,54,89,75,78,79,78,10,97,83,94,82,10,61,75,80,79,10,58,86,75,99,79,92,49,95,83,10,51,88,94,79,92,80,75,77,79,24},22))
 return SafeNavigator
 end)()
