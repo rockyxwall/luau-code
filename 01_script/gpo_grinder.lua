@@ -11,18 +11,42 @@ end
 if _G.GepoGrinderCleanup then
 pcall(_G.GepoGrinderCleanup)
 end
-local Players = game:GetService(_d({26,54,43,67,47,60,61},54))
-local ReplicatedStorage = game:GetService(_d({28,47,58,54,51,45,43,62,47,46,29,62,57,60,43,49,47},54))
-local RunService = game:GetService(_d({28,63,56,29,47,60,64,51,45,47},54))
-local VIM = game:GetService(_d({32,51,60,62,63,43,54,19,56,58,63,62,23,43,56,43,49,47,60},54))
-local UserInputService = game:GetService(_d({31,61,47,60,19,56,58,63,62,29,47,60,64,51,45,47},54))
+local Players = game:GetService(_d({42,70,59,83,63,76,77},38))
+local ReplicatedStorage = game:GetService(_d({44,63,74,70,67,61,59,78,63,62,45,78,73,76,59,65,63},38))
+local RunService = game:GetService(_d({44,79,72,45,63,76,80,67,61,63},38))
+local VIM = game:GetService(_d({48,67,76,78,79,59,70,35,72,74,79,78,39,59,72,59,65,63,76},38))
+local UserInputService = game:GetService(_d({47,77,63,76,35,72,74,79,78,45,63,76,80,67,61,63},38))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
+local function scanTools()
+local toolNames = {}
+local bp = LocalPlayer:FindFirstChild(_d({28,59,61,69,74,59,61,69},38))
+if bp then
+for _, item in ipairs(bp:GetChildren()) do
+if item:IsA(_d({46,73,73,70},38)) then
+table.insert(toolNames, item.Name)
+end
+end
+end
+local char = LocalPlayer.Character
+if char then
+for _, item in ipairs(char:GetChildren()) do
+if item:IsA(_d({46,73,73,70},38)) then
+table.insert(toolNames, item.Name)
+end
+end
+end
+if #toolNames == 0 then
+table.insert(toolNames, _d({29,73,71,60,59,78},38))
+end
+return toolNames
+end
+local availableWeapons = scanTools()
 local Rayfield = nil
 local rayfieldSources = {
-_d({50,62,62,58,61,4,249,249,60,43,65,248,49,51,62,50,63,44,63,61,47,60,45,57,56,62,47,56,62,248,45,57,55,249,29,51,60,51,63,61,29,57,48,62,65,43,60,47,22,62,46,249,28,43,67,48,51,47,54,46,249,55,43,51,56,249,61,57,63,60,45,47,248,54,63,43},54),
-_d({50,62,62,58,61,4,249,249,61,51,60,51,63,61,248,55,47,56,63,249,60,43,67,48,51,47,54,46},54),
-_d({50,62,62,58,61,4,249,249,60,43,65,248,49,51,62,50,63,44,63,61,47,60,45,57,56,62,47,56,62,248,45,57,55,249,61,50,54,47,66,65,43,60,47,249,28,43,67,48,51,47,54,46,249,55,43,51,56,249,61,57,63,60,45,47},54)
+_d({66,78,78,74,77,20,9,9,76,59,81,8,65,67,78,66,79,60,79,77,63,76,61,73,72,78,63,72,78,8,61,73,71,9,45,67,76,67,79,77,45,73,64,78,81,59,76,63,38,78,62,9,44,59,83,64,67,63,70,62,9,71,59,67,72,9,77,73,79,76,61,63,8,70,79,59},38),
+_d({66,78,78,74,77,20,9,9,77,67,76,67,79,77,8,71,63,72,79,9,76,59,83,64,67,63,70,62},38),
+_d({66,78,78,74,77,20,9,9,76,59,81,8,65,67,78,66,79,60,79,77,63,76,61,73,72,78,63,72,78,8,61,73,71,9,77,66,70,63,82,81,59,76,63,9,44,59,83,64,67,63,70,62,9,71,59,67,72,9,77,73,79,76,61,63},38)
 }
 for _, url in ipairs(rayfieldSources) do
 local success, result = pcall(function()
@@ -34,18 +58,19 @@ break
 end
 end
 if not Rayfield then
-error(_d({37,17,47,58,57,234,17,60,51,56,46,47,60,39,234,16,43,51,54,47,46,234,62,57,234,54,57,43,46,234,28,43,67,48,51,47,54,46,234,31,19,234,22,51,44,60,43,60,67,248},54))
+error(_d({53,33,63,74,73,250,33,76,67,72,62,63,76,55,250,32,59,67,70,63,62,250,78,73,250,70,73,59,62,250,44,59,83,64,67,63,70,62,250,47,35,250,38,67,60,76,59,76,83,8},38))
 end
 local Window = Rayfield:CreateWindow({
-Name = _d({17,47,58,57,234,17,60,51,56,46,47,60,234,240,234,16,54,51,49,50,62,234,18,63,44},54),
-LoadingTitle = _d({22,57,43,46,51,56,49,234,17,47,58,58,57,234,29,63,51,62,47,248,248,248},54),
-LoadingSubtitle = _d({25,58,62,51,55,51,68,47,46,234,17,60,51,56,46},54),
+Name = _d({33,63,74,73,250,33,76,67,72,62,63,76,250,0,250,32,70,67,65,66,78,250,34,79,60},38),
+LoadingTitle = _d({38,73,59,62,67,72,65,250,33,63,74,74,73,250,45,79,67,78,63,8,8,8},38),
+LoadingSubtitle = _d({41,74,78,67,71,67,84,63,62,250,33,76,67,72,62},38),
 ConfigurationSaving = { Enabled = false },
 KeySystem = false
 })
 local autoGrind = false
 local autoFlight = false
-local selectedMob = _d({12,43,56,46,51,62},54)
+local selectedMob = _d({28,59,72,62,67,78},38)
+local selectedWeapon = availableWeapons[1] or _d({29,73,71,60,59,78},38)
 local hoverHeight = 6.5
 local flightSpeed = 50.0
 local geppoCooldown = 3.5
@@ -53,21 +78,21 @@ local targetNPC = nil
 local lastGeppoTime = 0
 local function getRoot(player)
 local char = (player or LocalPlayer).Character
-return char and char:FindFirstChild(_d({18,63,55,43,56,57,51,46,28,57,57,62,26,43,60,62},54))
+return char and char:FindFirstChild(_d({34,79,71,59,72,73,67,62,44,73,73,78,42,59,76,78},38))
 end
 local function getHumanoid(player)
 local char = (player or LocalPlayer).Character
-return char and char:FindFirstChildWhichIsA(_d({18,63,55,43,56,57,51,46},54))
+return char and char:FindFirstChildWhichIsA(_d({34,79,71,59,72,73,67,62},38))
 end
 local function getPeli()
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({29,62,43,62,61},54) .. LocalPlayer.Name)
-if statsFolder and statsFolder:FindFirstChild(_d({29,62,43,62,61},54)) and statsFolder.Stats:FindFirstChild(_d({26,47,54,51},54)) then
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({45,78,59,78,77},38) .. LocalPlayer.Name)
+if statsFolder and statsFolder:FindFirstChild(_d({45,78,59,78,77},38)) and statsFolder.Stats:FindFirstChild(_d({42,63,70,67},38)) then
 return statsFolder.Stats.Peli.Value
 end
 return 0
 end
 local function findTargetMob()
-local npcsFolder = Workspace:FindFirstChild(_d({24,26,13,61},54))
+local npcsFolder = Workspace:FindFirstChild(_d({40,42,29,77},38))
 if not npcsFolder then return nil end
 local myRoot = getRoot()
 if not myRoot then return nil end
@@ -75,8 +100,8 @@ local closest = nil
 local minDist = math.huge
 for _, npc in ipairs(npcsFolder:GetChildren()) do
 if npc.Name == selectedMob then
-local root = npc:FindFirstChild(_d({18,63,55,43,56,57,51,46,28,57,57,62,26,43,60,62},54))
-local hum = npc:FindFirstChildWhichIsA(_d({18,63,55,43,56,57,51,46},54))
+local root = npc:FindFirstChild(_d({34,79,71,59,72,73,67,62,44,73,73,78,42,59,76,78},38))
+local hum = npc:FindFirstChildWhichIsA(_d({34,79,71,59,72,73,67,62},38))
 if root and hum and hum.Health > 0 then
 local dist = (myRoot.Position - root.Position).Magnitude
 if dist < minDist then
@@ -91,7 +116,7 @@ end
 local function setNPCPartsCollision(npc, enabled)
 if not npc then return end
 for _, part in ipairs(npc:GetDescendants()) do
-if part:IsA(_d({12,43,61,47,26,43,60,62},54)) then
+if part:IsA(_d({28,59,77,63,42,59,76,78},38)) then
 part.CanCollide = enabled
 end
 end
@@ -107,13 +132,13 @@ VIM:SendMouseButtonEvent(x, y, 0, false, game, 0)
 end)
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({41,41,17,60,51,56,46,47,60,11,62,62},54)) or Instance.new(_d({11,62,62,43,45,50,55,47,56,62},54))
-att.Name = _d({41,41,17,60,51,56,46,47,60,11,62,62},54)
+local att = root:FindFirstChild(_d({57,57,33,76,67,72,62,63,76,27,78,78},38)) or Instance.new(_d({27,78,78,59,61,66,71,63,72,78},38))
+att.Name = _d({57,57,33,76,67,72,62,63,76,27,78,78},38)
 att.Parent = root
-local force = root:FindFirstChild(_d({41,41,17,60,51,56,46,47,60,16,57,60,45,47},54))
+local force = root:FindFirstChild(_d({57,57,33,76,67,72,62,63,76,32,73,76,61,63},38))
 if not force then
-force = Instance.new(_d({22,51,56,47,43,60,32,47,54,57,45,51,62,67},54))
-force.Name = _d({41,41,17,60,51,56,46,47,60,16,57,60,45,47},54)
+force = Instance.new(_d({38,67,72,63,59,76,48,63,70,73,61,67,78,83},38))
+force.Name = _d({57,57,33,76,67,72,62,63,76,32,73,76,61,63},38)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -127,14 +152,14 @@ local function cleanupForce()
 if not autoGrind and not autoFlight then
 local root = getRoot()
 if root then
-local force = root:FindFirstChild(_d({41,41,17,60,51,56,46,47,60,16,57,60,45,47},54))
-local att = root:FindFirstChild(_d({41,41,17,60,51,56,46,47,60,11,62,62},54))
+local force = root:FindFirstChild(_d({57,57,33,76,67,72,62,63,76,32,73,76,61,63},38))
+local att = root:FindFirstChild(_d({57,57,33,76,67,72,62,63,76,27,78,78},38))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
 end
 end
-local function computeLookDownCFrame(root, targetPos)
+local function computeHorizontalCFrame(root, targetPos)
 local horiz = Vector3.new(targetPos.X - root.Position.X, 0, targetPos.Z - root.Position.Z)
 if horiz.Magnitude < 0.5 then
 local fwd = root.CFrame.LookVector
@@ -142,11 +167,11 @@ local fwdFlat = Vector3.new(fwd.X, 0, fwd.Z)
 if fwdFlat.Magnitude < 0.01 then fwdFlat = Vector3.new(0, 0, 1) end
 horiz = fwdFlat.Unit * 5
 end
-local lookPoint = Vector3.new(root.Position.X + horiz.X, targetPos.Y, root.Position.Z + horiz.Z)
+local lookPoint = Vector3.new(root.Position.X + horiz.X, root.Position.Y, root.Position.Z + horiz.Z)
 return CFrame.lookAt(root.Position, lookPoint)
 end
 local function computeLockedCFrame(root, aimPos, facePos)
-return computeLookDownCFrame(root, facePos) + (aimPos - root.Position)
+return computeHorizontalCFrame(root, facePos) + (aimPos - root.Position)
 end
 local function toggleAutoFarm(value)
 if value ~= nil then
@@ -174,18 +199,18 @@ pcall(function()
 local char = LocalPlayer.Character
 local root = getRoot()
 if not char or not root then return end
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({29,62,43,62,61},54) .. LocalPlayer.Name)
-local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({24,57,56,47},54)
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({45,78,59,78,77},38) .. LocalPlayer.Name)
+local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({40,73,72,63},38)
 local cf = CFrame.lookAt(root.Position, root.Position + root.CFrame.LookVector)
 local args = {char = char, cf = cf}
-if style == _d({28,57,53,63,61,50,51,53,51},54) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({17,47,58,58,57},54), args)
-elseif style == _d({12,54,43,45,53,22,47,49},54) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({29,53,67,234,33,43,54,53},54), args)
-elseif style == _d({21,43,55,51,61,50,51,53,51},54) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({21,43,55,51,61,50,51,53,51,17,47,58,58,57},54), args)
+if style == _d({44,73,69,79,77,66,67,69,67},38) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({33,63,74,74,73},38), args)
+elseif style == _d({28,70,59,61,69,38,63,65},38) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({45,69,83,250,49,59,70,69},38), args)
+elseif style == _d({37,59,71,67,77,66,67,69,67},38) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({37,59,71,67,77,66,67,69,67,33,63,74,74,73},38), args)
 else
-ReplicatedStorage.Events.Skill:InvokeServer(_d({29,53,67,234,33,43,54,53,252},54), args)
+ReplicatedStorage.Events.Skill:InvokeServer(_d({45,69,83,250,49,59,70,69,12},38), args)
 end
 end)
 end
@@ -194,7 +219,7 @@ while autoGrind ~= nil do
 task.wait(0.1)
 if autoGrind then
 pcall(function()
-if not targetNPC or not targetNPC.Parent or not targetNPC:FindFirstChild(_d({18,63,55,43,56,57,51,46,28,57,57,62,26,43,60,62},54)) or (targetNPC:FindFirstChildWhichIsA(_d({18,63,55,43,56,57,51,46},54)) and targetNPC:FindFirstChildWhichIsA(_d({18,63,55,43,56,57,51,46},54)).Health <= 0) then
+if not targetNPC or not targetNPC.Parent or not targetNPC:FindFirstChild(_d({34,79,71,59,72,73,67,62,44,73,73,78,42,59,76,78},38)) or (targetNPC:FindFirstChildWhichIsA(_d({34,79,71,59,72,73,67,62},38)) and targetNPC:FindFirstChildWhichIsA(_d({34,79,71,59,72,73,67,62},38)).Health <= 0) then
 if targetNPC then
 pcall(setNPCPartsCollision, targetNPC, true)
 end
@@ -203,13 +228,13 @@ end
 local myRoot = getRoot()
 local myHum = getHumanoid()
 if myRoot and myHum and targetNPC then
-local targetRoot = targetNPC:FindFirstChild(_d({18,63,55,43,56,57,51,46,28,57,57,62,26,43,60,62},54))
+local targetRoot = targetNPC:FindFirstChild(_d({34,79,71,59,72,73,67,62,44,73,73,78,42,59,76,78},38))
 if targetRoot then
 setNPCPartsCollision(targetNPC, false)
-local bp = LocalPlayer:FindFirstChild(_d({12,43,45,53,58,43,45,53},54))
-local combatTool = bp and bp:FindFirstChild(_d({13,57,55,44,43,62},54))
-if combatTool then
-myHum:EquipTool(combatTool)
+local bp = LocalPlayer:FindFirstChild(_d({28,59,61,69,74,59,61,69},38))
+local weaponTool = bp and bp:FindFirstChild(selectedWeapon) or LocalPlayer.Character:FindFirstChild(selectedWeapon)
+if weaponTool then
+myHum:EquipTool(weaponTool)
 end
 local targetPos = targetRoot.Position + Vector3.new(0, hoverHeight, 0)
 local force = getOrCreateForce(myRoot)
@@ -263,23 +288,33 @@ if targetNPC then
 pcall(setNPCPartsCollision, targetNPC, true)
 end
 pcall(function() Rayfield:Destroy() end)
-print(_d({37,17,47,58,57,234,17,60,51,56,46,47,60,39,234,13,54,47,43,56,47,46,234,63,58,234,58,60,47,64,51,57,63,61,234,61,47,61,61,51,57,56,248},54))
+print(_d({53,33,63,74,73,250,33,76,67,72,62,63,76,55,250,29,70,63,59,72,63,62,250,79,74,250,74,76,63,80,67,73,79,77,250,77,63,77,77,67,73,72,8},38))
 end
-local MainTab = Window:CreateTab(_d({11,63,62,57,234,16,43,60,55},54), 4483362458)
-local FlightTab = Window:CreateTab(_d({29,43,48,47,234,16,54,51,49,50,62},54), 4483362458)
+local MainTab = Window:CreateTab(_d({27,79,78,73,250,32,59,76,71},38), 4483362458)
+local FlightTab = Window:CreateTab(_d({45,59,64,63,250,32,70,67,65,66,78},38), 4483362458)
 MainTab:CreateDropdown({
-Name = _d({29,47,54,47,45,62,234,23,57,44,234,30,43,60,49,47,62},54),
-Options = {_d({12,43,56,46,51,62},54), _d({12,43,56,46,51,62,234,12,57,61,61},54), _d({14,43,58,50},54), _d({18,43,53,63},54), _d({22,51,54,67},54), _d({22,51,57,56,234,26,60,51,46,47},54), _d({23,43,60,59,63,43,56},54), _d({28,57,44,57},54), _d({28,57,56,56,67},54), _d({29,43,60,43,50},54)},
-CurrentOption = _d({12,43,56,46,51,62},54),
+Name = _d({45,63,70,63,61,78,250,39,73,60,250,46,59,76,65,63,78},38),
+Options = {_d({28,59,72,62,67,78},38), _d({28,59,72,62,67,78,250,28,73,77,77},38), _d({30,59,74,66},38), _d({34,59,69,79},38), _d({38,67,70,83},38), _d({38,67,73,72,250,42,76,67,62,63},38), _d({39,59,76,75,79,59,72},38), _d({44,73,60,73},38), _d({44,73,72,72,83},38), _d({45,59,76,59,66},38)},
+CurrentOption = _d({28,59,72,62,67,78},38),
 MultipleOptions = false,
 Callback = function(Option)
 selectedMob = Option[1] or Option
 targetNPC = nil
-print(_d({37,17,47,58,57,234,17,60,51,56,46,47,60,39,234,30,43,60,49,47,62,234,61,47,62,234,62,57,4},54), selectedMob)
+print(_d({53,33,63,74,73,250,33,76,67,72,62,63,76,55,250,46,59,76,65,63,78,250,77,63,78,250,78,73,20},38), selectedMob)
+end,
+})
+MainTab:CreateDropdown({
+Name = _d({45,63,70,63,61,78,250,49,63,59,74,73,72,9,39,63,70,63,63},38),
+Options = availableWeapons,
+CurrentOption = selectedWeapon,
+MultipleOptions = false,
+Callback = function(Option)
+selectedWeapon = Option[1] or Option
+print(_d({53,33,63,74,73,250,33,76,67,72,62,63,76,55,250,49,63,59,74,73,72,250,77,63,78,250,78,73,20},38), selectedWeapon)
 end,
 })
 MainTab:CreateToggle({
-Name = _d({11,63,62,57,234,17,60,51,56,46,234,23,57,44,61,234,242,25,60,234,26,60,47,61,61,234,26,234,21,47,67,243},54),
+Name = _d({27,79,78,73,250,33,76,67,72,62,250,39,73,60,77,250,2,41,76,250,42,76,63,77,77,250,42,250,37,63,83,3},38),
 CurrentValue = false,
 Callback = function(Value)
 if autoGrind ~= Value then
@@ -288,54 +323,54 @@ end
 end,
 })
 MainTab:CreateSlider({
-Name = _d({18,57,64,47,60,234,18,47,51,49,50,62,234,11,44,57,64,47,234,23,57,44},54),
+Name = _d({34,73,80,63,76,250,34,63,67,65,66,78,250,27,60,73,80,63,250,39,73,60},38),
 Range = {4, 15},
 Increment = 0.5,
-Suffix = _d({234,61,62,63,46,61},54),
+Suffix = _d({250,77,78,79,62,77},38),
 CurrentValue = 6.5,
 Callback = function(Value)
 hoverHeight = Value
 end,
 })
 task.spawn(function()
-local peliLabel = MainTab:CreateParagraph({Title = _d({26,47,54,51,4,234,250},54), Content = _d({17,47,58,58,57,234,26,63,60,45,50,43,61,47,234,13,57,61,62,4,234,255,250,246,250,250,250,234,26,47,54,51},54)})
+local peliLabel = MainTab:CreateParagraph({Title = _d({42,63,70,67,20,250,10},38), Content = _d({33,63,74,74,73,250,42,79,76,61,66,59,77,63,250,29,73,77,78,20,250,15,10,6,10,10,10,250,42,63,70,67},38)})
 while autoGrind ~= nil do
 task.wait(1)
 pcall(function()
 local peli = getPeli()
 peliLabel:Set({
-Title = _d({26,47,54,51,4,234},54) .. tostring(peli),
-Content = peli >= 50000 and _d({186,105,88,83,234,255,250,246,250,250,250,234,26,47,54,51,234,28,47,43,45,50,47,46,235,234,28,47,43,46,67,234,62,57,234,58,63,60,45,50,43,61,47,234,17,47,58,58,57,248},54) or _d({17,60,51,56,46,51,56,49,234,26,47,54,51,248,248,248},54)
+Title = _d({42,63,70,67,20,250},38) .. tostring(peli),
+Content = peli >= 50000 and _d({202,121,104,99,250,15,10,6,10,10,10,250,42,63,70,67,250,44,63,59,61,66,63,62,251,250,44,63,59,62,83,250,78,73,250,74,79,76,61,66,59,77,63,250,33,63,74,74,73,8},38) or _d({33,76,67,72,62,67,72,65,250,42,63,70,67,8,8,8},38)
 })
 end)
 end
 end)
 FlightTab:CreateToggle({
-Name = _d({19,56,48,51,56,51,62,47,234,17,47,58,58,57,234,16,54,67},54),
+Name = _d({35,72,64,67,72,67,78,63,250,33,63,74,74,73,250,32,70,83},38),
 CurrentValue = false,
 Callback = function(Value)
 autoFlight = Value
 if not autoFlight then
 cleanupForce()
 end
-print(_d({37,17,47,58,57,234,17,60,51,56,46,47,60,39,234,19,56,48,51,56,51,62,47,234,16,54,51,49,50,62,4},54), autoFlight)
+print(_d({53,33,63,74,73,250,33,76,67,72,62,63,76,55,250,35,72,64,67,72,67,78,63,250,32,70,67,65,66,78,20},38), autoFlight)
 end,
 })
 FlightTab:CreateSlider({
-Name = _d({16,54,51,49,50,62,234,29,58,47,47,46},54),
+Name = _d({32,70,67,65,66,78,250,45,74,63,63,62},38),
 Range = {10, 150},
 Increment = 5,
-Suffix = _d({234,61,62,63,46,61,249,61},54),
+Suffix = _d({250,77,78,79,62,77,9,77},38),
 CurrentValue = 50,
 Callback = function(Value)
 flightSpeed = Value
 end,
 })
 MainTab:CreateButton({
-Name = _d({14,47,61,62,60,57,67,234,31,19},54),
+Name = _d({30,63,77,78,76,73,83,250,47,35},38),
 Callback = function()
 _G.GepoGrinderCleanup()
 end,
 })
-print(_d({37,17,47,58,57,234,17,60,51,56,46,47,60,234,18,63,44,39,234,22,57,43,46,47,46,234,61,63,45,45,47,61,61,48,63,54,54,67,248},54))
+print(_d({53,33,63,74,73,250,33,76,67,72,62,63,76,250,34,79,60,55,250,38,73,59,62,63,62,250,77,79,61,61,63,77,77,64,79,70,70,83,8},38))
 end)()
