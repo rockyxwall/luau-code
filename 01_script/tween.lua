@@ -11,10 +11,10 @@ end
 if _G.GPOTweenCleanup then
 pcall(_G.GPOTweenCleanup)
 end
-local Players = game:GetService(_d({39,67,56,80,60,73,74},41))
-local ReplicatedStorage = game:GetService(_d({41,60,71,67,64,58,56,75,60,59,42,75,70,73,56,62,60},41))
-local RunService = game:GetService(_d({41,76,69,42,60,73,77,64,58,60},41))
-local UserInputService = game:GetService(_d({44,74,60,73,32,69,71,76,75,42,60,73,77,64,58,60},41))
+local Players = game:GetService(_d({21,49,38,62,42,55,56},59))
+local ReplicatedStorage = game:GetService(_d({23,42,53,49,46,40,38,57,42,41,24,57,52,55,38,44,42},59))
+local RunService = game:GetService(_d({23,58,51,24,42,55,59,46,40,42},59))
+local UserInputService = game:GetService(_d({26,56,42,55,14,51,53,58,57,24,42,55,59,46,40,42},59))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local travelEnabled = false
@@ -30,20 +30,20 @@ local activeSeat = nil
 local activeBoat = nil
 local function getRoot()
 local char = LocalPlayer.Character
-return char and char:FindFirstChild(_d({31,76,68,56,69,70,64,59,41,70,70,75,39,56,73,75},41))
+return char and char:FindFirstChild(_d({13,58,50,38,51,52,46,41,23,52,52,57,21,38,55,57},59))
 end
 local function getHumanoid()
 local char = LocalPlayer.Character
-return char and char:FindFirstChildWhichIsA(_d({31,76,68,56,69,70,64,59},41))
+return char and char:FindFirstChildWhichIsA(_d({13,58,50,38,51,52,46,41},59))
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({54,54,43,78,60,60,69,24,75,75},41)) or Instance.new(_d({24,75,75,56,58,63,68,60,69,75},41))
-att.Name = _d({54,54,43,78,60,60,69,24,75,75},41)
+local att = root:FindFirstChild(_d({36,36,25,60,42,42,51,6,57,57},59)) or Instance.new(_d({6,57,57,38,40,45,50,42,51,57},59))
+att.Name = _d({36,36,25,60,42,42,51,6,57,57},59)
 att.Parent = root
-local force = root:FindFirstChild(_d({54,54,43,78,60,60,69,29,70,73,58,60},41))
+local force = root:FindFirstChild(_d({36,36,25,60,42,42,51,11,52,55,40,42},59))
 if not force then
-force = Instance.new(_d({35,64,69,60,56,73,45,60,67,70,58,64,75,80},41))
-force.Name = _d({54,54,43,78,60,60,69,29,70,73,58,60},41)
+force = Instance.new(_d({17,46,51,42,38,55,27,42,49,52,40,46,57,62},59))
+force.Name = _d({36,36,25,60,42,42,51,11,52,55,40,42},59)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -56,8 +56,8 @@ end
 local function cleanupForce()
 local root = getRoot()
 if root then
-local force = root:FindFirstChild(_d({54,54,43,78,60,60,69,29,70,73,58,60},41))
-local att = root:FindFirstChild(_d({54,54,43,78,60,60,69,24,75,75},41))
+local force = root:FindFirstChild(_d({36,36,25,60,42,42,51,11,52,55,40,42},59))
+local att = root:FindFirstChild(_d({36,36,25,60,42,42,51,6,57,57},59))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -70,37 +70,37 @@ pcall(function()
 local char = LocalPlayer.Character
 local root = getRoot()
 if not char or not root then return end
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({42,75,56,75,74},41) .. LocalPlayer.Name)
-local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({37,70,69,60},41)
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({24,57,38,57,56},59) .. LocalPlayer.Name)
+local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({19,52,51,42},59)
 local cf = CFrame.lookAt(root.Position, root.Position + root.CFrame.LookVector)
 local args = {char = char, cf = cf}
-if style == _d({41,70,66,76,74,63,64,66,64},41) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({30,60,71,71,70},41), args)
-elseif style == _d({25,67,56,58,66,35,60,62},41) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({42,66,80,247,46,56,67,66},41), args)
-elseif style == _d({34,56,68,64,74,63,64,66,64},41) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({34,56,68,64,74,63,64,66,64,30,60,71,71,70},41), args)
+if style == _d({23,52,48,58,56,45,46,48,46},59) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({12,42,53,53,52},59), args)
+elseif style == _d({7,49,38,40,48,17,42,44},59) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({24,48,62,229,28,38,49,48},59), args)
+elseif style == _d({16,38,50,46,56,45,46,48,46},59) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({16,38,50,46,56,45,46,48,46,12,42,53,53,52},59), args)
 else
-ReplicatedStorage.Events.Skill:InvokeServer(_d({42,66,80,247,46,56,67,66,9},41), args)
+ReplicatedStorage.Events.Skill:InvokeServer(_d({24,48,62,229,28,38,49,48,247},59), args)
 end
 end)
 end
 local function findNearbyBoat()
 local root = getRoot()
 if not root then return nil, nil end
-local shipsFolder = Workspace:FindFirstChild(_d({42,63,64,71,74},41))
+local shipsFolder = Workspace:FindFirstChild(_d({24,45,46,53,56},59))
 if shipsFolder then
-local myShip = shipsFolder:FindFirstChild(LocalPlayer.Name .. _d({42,63,64,71},41))
+local myShip = shipsFolder:FindFirstChild(LocalPlayer.Name .. _d({24,45,46,53},59))
 if myShip then
-local seat = myShip:FindFirstChildWhichIsA(_d({45,60,63,64,58,67,60,42,60,56,75},41), true) or myShip:FindFirstChildWhichIsA(_d({42,60,56,75},41), true)
+local seat = myShip:FindFirstChildWhichIsA(_d({27,42,45,46,40,49,42,24,42,38,57},59), true) or myShip:FindFirstChildWhichIsA(_d({24,42,38,57},59), true)
 if seat then
 return myShip, seat
 end
 end
 end
 for _, obj in ipairs(Workspace:GetChildren()) do
-if obj:IsA(_d({36,70,59,60,67},41)) then
-local seat = obj:FindFirstChildWhichIsA(_d({45,60,63,64,58,67,60,42,60,56,75},41), true) or obj:FindFirstChildWhichIsA(_d({42,60,56,75},41), true)
+if obj:IsA(_d({18,52,41,42,49},59)) then
+local seat = obj:FindFirstChildWhichIsA(_d({27,42,45,46,40,49,42,24,42,38,57},59), true) or obj:FindFirstChildWhichIsA(_d({24,42,38,57},59), true)
 if seat then
 local dist = (seat.Position - root.Position).Magnitude
 if dist < 150 then
@@ -131,11 +131,11 @@ if seat then
 activeBoat = boat
 activeSeat = seat
 mountBoat(seat)
-print(_d({50,30,39,38,247,43,78,60,60,69,52,247,36,70,76,69,75,60,59,247,69,60,56,73,57,80,247,57,70,56,75,247,61,70,73,247,75,73,56,77,60,67,5},41))
+print(_d({32,12,21,20,229,25,60,42,42,51,34,229,18,52,58,51,57,42,41,229,51,42,38,55,39,62,229,39,52,38,57,229,43,52,55,229,57,55,38,59,42,49,243},59))
 else
 activeBoat = nil
 activeSeat = nil
-print(_d({50,30,39,38,247,43,78,60,60,69,52,247,37,70,247,69,60,56,73,57,80,247,57,70,56,75,247,59,60,75,60,58,75,60,59,5,247,29,56,67,67,64,69,62,247,57,56,58,66,247,75,70,247,71,67,56,80,60,73,4,70,69,67,80,247,61,67,64,62,63,75,5},41))
+print(_d({32,12,21,20,229,25,60,42,42,51,34,229,19,52,229,51,42,38,55,39,62,229,39,52,38,57,229,41,42,57,42,40,57,42,41,243,229,11,38,49,49,46,51,44,229,39,38,40,48,229,57,52,229,53,49,38,62,42,55,242,52,51,49,62,229,43,49,46,44,45,57,243},59))
 end
 loopConn = RunService.Heartbeat:Connect(function(dt)
 local root = getRoot()
@@ -154,7 +154,7 @@ if activeSeat then
 pcall(function() activeSeat.Anchored = false end)
 activeSeat = nil
 activeBoat = nil
-print(_d({50,30,39,38,247,43,78,60,60,69,52,247,42,60,56,75,247,67,70,74,75,5,247,29,56,67,67,64,69,62,247,57,56,58,66,247,75,70,247,71,67,56,80,60,73,247,61,67,64,62,63,75,5},41))
+print(_d({32,12,21,20,229,25,60,42,42,51,34,229,24,42,38,57,229,49,52,56,57,243,229,11,38,49,49,46,51,44,229,39,38,40,48,229,57,52,229,53,49,38,62,42,55,229,43,49,46,44,45,57,243},59))
 end
 end
 local camera = Workspace.CurrentCamera
@@ -197,7 +197,7 @@ if dist < 5 then
 travelEnabled = false
 seat.Anchored = false
 if loopConn then loopConn:Disconnect() loopConn = nil end
-print(_d({50,30,39,38,247,43,78,60,60,69,52,247,25,70,56,75,247,56,73,73,64,77,60,59,247,56,75,247,59,60,74,75,64,69,56,75,64,70,69,5},41))
+print(_d({32,12,21,20,229,25,60,42,42,51,34,229,7,52,38,57,229,38,55,55,46,59,42,41,229,38,57,229,41,42,56,57,46,51,38,57,46,52,51,243},59))
 return
 end
 local dir = (targetPos - currentPos).Unit
@@ -243,7 +243,7 @@ if dist < 5 then
 travelEnabled = false
 cleanupForce()
 if loopConn then loopConn:Disconnect() loopConn = nil end
-print(_d({50,30,39,38,247,43,78,60,60,69,52,247,39,67,56,80,60,73,247,56,73,73,64,77,60,59,247,56,75,247,59,60,74,75,64,69,56,75,64,70,69,5},41))
+print(_d({32,12,21,20,229,25,60,42,42,51,34,229,21,49,38,62,42,55,229,38,55,55,46,59,42,41,229,38,57,229,41,42,56,57,46,51,38,57,46,52,51,243},59))
 return
 end
 local xzDir = Vector3.new(targetPos.X - currentPos.X, 0, targetPos.Z - currentPos.Z)
@@ -272,17 +272,17 @@ end)
 if ok then return end
 pcall(function()
 for _, obj in ipairs(paragraph) do
-if type(obj) == _d({75,56,57,67,60},41) then
+if type(obj) == _d({57,38,39,49,42},59) then
 for k, v in pairs(obj) do
-if type(v) == _d({76,74,60,73,59,56,75,56},41) and v:IsA(_d({43,60,79,75,35,56,57,60,67},41)) then
-if v.Name:lower():find(_d({75,64,75,67,60},41)) then
+if type(v) == _d({58,56,42,55,41,38,57,38},59) and v:IsA(_d({25,42,61,57,17,38,39,42,49},59)) then
+if v.Name:lower():find(_d({57,46,57,49,42},59)) then
 v.Text = title
-elseif v.Name:lower():find(_d({58,70,69,75,60,69,75},41)) or v.Name:lower():find(_d({59,60,74,58},41)) then
+elseif v.Name:lower():find(_d({40,52,51,57,42,51,57},59)) or v.Name:lower():find(_d({41,42,56,40},59)) then
 v.Text = content
 end
 end
 end
-elseif type(obj) == _d({76,74,60,73,59,56,75,56},41) and obj:IsA(_d({43,60,79,75,35,56,57,60,67},41)) then
+elseif type(obj) == _d({58,56,42,55,41,38,57,38},59) and obj:IsA(_d({25,42,61,57,17,38,39,42,49},59)) then
 obj.Text = content
 end
 end
@@ -291,27 +291,27 @@ end
 local function buildUI()
 local Rayfield = nil
 local success, result = pcall(function()
-return loadstring(game:HttpGet(_d({63,75,75,71,74,17,6,6,73,56,78,5,62,64,75,63,76,57,76,74,60,73,58,70,69,75,60,69,75,5,58,70,68,6,73,70,58,66,80,79,78,56,67,67,6,41,56,80,61,64,60,67,59,6,68,56,64,69,6,74,70,76,73,58,60,5,67,76,56},41)))()
+return loadstring(game:HttpGet(_d({45,57,57,53,56,255,244,244,55,38,60,243,44,46,57,45,58,39,58,56,42,55,40,52,51,57,42,51,57,243,40,52,50,244,55,52,40,48,62,61,60,38,49,49,244,23,38,62,43,46,42,49,41,244,50,38,46,51,244,56,52,58,55,40,42,243,49,58,38},59)))()
 end)
 if success and result then
 Rayfield = result
 end
 if not Rayfield then
-warn(_d({50,30,39,38,247,43,78,60,60,69,52,247,29,56,64,67,60,59,247,75,70,247,67,70,56,59,247,41,56,80,61,64,60,67,59,247,44,32,247,67,64,57,73,56,73,80,247,61,73,70,68,247,56,69,80,247,74,70,76,73,58,60,5},41))
+warn(_d({32,12,21,20,229,25,60,42,42,51,34,229,11,38,46,49,42,41,229,57,52,229,49,52,38,41,229,23,38,62,43,46,42,49,41,229,26,14,229,49,46,39,55,38,55,62,229,43,55,52,50,229,38,51,62,229,56,52,58,55,40,42,243},59))
 return
 end
 local Window = Rayfield:CreateWindow({
-Name = _d({30,39,38,247,43,78,60,60,69,247,253,247,29,67,64,62,63,75,247,42,76,64,75,60},41),
-LoadingTitle = _d({30,39,38,247,37,56,77,64,62,56,75,70,73},41),
-LoadingSubtitle = _d({41,56,80,61,64,60,67,59,247,44,32,247,45,60,73,74,64,70,69},41),
+Name = _d({12,21,20,229,25,60,42,42,51,229,235,229,11,49,46,44,45,57,229,24,58,46,57,42},59),
+LoadingTitle = _d({12,21,20,229,19,38,59,46,44,38,57,52,55},59),
+LoadingSubtitle = _d({23,38,62,43,46,42,49,41,229,26,14,229,27,42,55,56,46,52,51},59),
 ConfigurationSaving = { Enabled = false },
 KeySystem = false
 })
 _G.GPOTweenLibrary = Rayfield
-local MainTab = Window:CreateTab(_d({43,73,56,77,60,67,247,26,70,69,75,73,70,67,74},41), 4483362458)
+local MainTab = Window:CreateTab(_d({25,55,38,59,42,49,229,8,52,51,57,55,52,49,56},59), 4483362458)
 local posParagraph = MainTab:CreateParagraph({
-Title = _d({26,76,73,73,60,69,75,247,39,70,74,64,75,64,70,69},41),
-Content = _d({47,17,247,7,5,7,7,247,83,247,48,17,247,7,5,7,7,247,83,247,49,17,247,7,5,7,7},41)
+Title = _d({8,58,55,55,42,51,57,229,21,52,56,46,57,46,52,51},59),
+Content = _d({29,255,229,245,243,245,245,229,65,229,30,255,229,245,243,245,245,229,65,229,31,255,229,245,243,245,245},59)
 })
 task.spawn(function()
 while _G.GPOTweenLibrary do
@@ -320,44 +320,44 @@ pcall(function()
 local root = getRoot()
 if root then
 local pos = root.Position
-local text = string.format(_d({47,17,247,252,5,9,61,247,83,247,48,17,247,252,5,9,61,247,83,247,49,17,247,252,5,9,61},41), pos.X, pos.Y, pos.Z)
-updateRayfieldParagraph(posParagraph, _d({26,76,73,73,60,69,75,247,39,70,74,64,75,64,70,69},41), text)
+local text = string.format(_d({29,255,229,234,243,247,43,229,65,229,30,255,229,234,243,247,43,229,65,229,31,255,229,234,243,247,43},59), pos.X, pos.Y, pos.Z)
+updateRayfieldParagraph(posParagraph, _d({8,58,55,55,42,51,57,229,21,52,56,46,57,46,52,51},59), text)
 end
 end)
 end
 end)
 MainTab:CreateButton({
-Name = _d({26,70,71,80,247,26,76,73,73,60,69,75,247,26,70,70,73,59,64,69,56,75,60,74},41),
+Name = _d({8,52,53,62,229,8,58,55,55,42,51,57,229,8,52,52,55,41,46,51,38,57,42,56},59),
 Callback = function()
 local root = getRoot()
 if root then
 local pos = root.Position
-local text = string.format(_d({252,5,9,61,3,247,252,5,9,61,3,247,252,5,9,61},41), pos.X, pos.Y, pos.Z)
+local text = string.format(_d({234,243,247,43,241,229,234,243,247,43,241,229,234,243,247,43},59), pos.X, pos.Y, pos.Z)
 if setclipboard then
 pcall(setclipboard, text)
-print(_d({50,30,39,38,247,43,78,60,60,69,52,247,26,70,71,64,60,59,247,58,70,70,73,59,64,69,56,75,60,74,247,75,70,247,58,67,64,71,57,70,56,73,59,17,247},41) .. text)
+print(_d({32,12,21,20,229,25,60,42,42,51,34,229,8,52,53,46,42,41,229,40,52,52,55,41,46,51,38,57,42,56,229,57,52,229,40,49,46,53,39,52,38,55,41,255,229},59) .. text)
 else
-warn(_d({50,30,39,38,247,43,78,60,60,69,52,247,74,60,75,58,67,64,71,57,70,56,73,59,247,69,70,75,247,74,76,71,71,70,73,75,60,59,247,57,80,247,60,79,60,58,76,75,70,73,248},41))
+warn(_d({32,12,21,20,229,25,60,42,42,51,34,229,56,42,57,40,49,46,53,39,52,38,55,41,229,51,52,57,229,56,58,53,53,52,55,57,42,41,229,39,62,229,42,61,42,40,58,57,52,55,230},59))
 end
 end
 end,
 })
 MainTab:CreateInput({
-Name = _d({43,56,73,62,60,75,247,26,70,70,73,59,64,69,56,75,60,74,247,255,47,3,247,48,3,247,49,0},41),
-PlaceholderText = _d({28,79,56,68,71,67,60,17,247,8,9,7,5,12,3,247,11,7,5,9,3,247,4,8,7,10,7,5,7},41),
+Name = _d({25,38,55,44,42,57,229,8,52,52,55,41,46,51,38,57,42,56,229,237,29,241,229,30,241,229,31,238},59),
+PlaceholderText = _d({10,61,38,50,53,49,42,255,229,246,247,245,243,250,241,229,249,245,243,247,241,229,242,246,245,248,245,243,245},59),
 RemoveTextAfterFocusLost = false,
 Callback = function(val)
-local x, y, z = string.match(val, _d({255,50,252,59,252,5,252,4,52,2,0,252,74,1,252,3,22,252,74,1,255,50,252,59,252,5,252,4,52,2,0,252,74,1,252,3,22,252,74,1,255,50,252,59,252,5,252,4,52,2,0},41))
+local x, y, z = string.match(val, _d({237,32,234,41,234,243,234,242,34,240,238,234,56,239,234,241,4,234,56,239,237,32,234,41,234,243,234,242,34,240,238,234,56,239,234,241,4,234,56,239,237,32,234,41,234,243,234,242,34,240,238},59))
 if x and y and z then
 targetX = tonumber(x)
 targetY = tonumber(y)
 targetZ = tonumber(z)
-print(string.format(_d({50,30,39,38,247,43,78,60,60,69,52,247,42,60,75,247,59,60,74,75,64,69,56,75,64,70,69,247,75,56,73,62,60,75,247,75,70,17,247,252,5,9,61,3,247,252,5,9,61,3,247,252,5,9,61},41), targetX, targetY, targetZ))
+print(string.format(_d({32,12,21,20,229,25,60,42,42,51,34,229,24,42,57,229,41,42,56,57,46,51,38,57,46,52,51,229,57,38,55,44,42,57,229,57,52,255,229,234,243,247,43,241,229,234,243,247,43,241,229,234,243,247,43},59), targetX, targetY, targetZ))
 end
 end,
 })
 MainTab:CreateToggle({
-Name = _d({42,75,56,73,75,247,32,74,67,56,69,59,247,43,73,56,77,60,67},41),
+Name = _d({24,57,38,55,57,229,14,56,49,38,51,41,229,25,55,38,59,42,49},59),
 CurrentValue = false,
 Callback = function(val)
 travelEnabled = val
@@ -370,7 +370,7 @@ end
 end,
 })
 MainTab:CreateToggle({
-Name = _d({28,69,56,57,67,60,247,46,24,42,27,247,29,67,64,62,63,75},41),
+Name = _d({10,51,38,39,49,42,229,28,6,24,9,229,11,49,46,44,45,57},59),
 CurrentValue = false,
 Callback = function(val)
 wasdFlightEnabled = val
@@ -383,27 +383,27 @@ end
 end,
 })
 MainTab:CreateSlider({
-Name = _d({43,73,56,77,60,67,247,253,247,29,67,64,62,63,75,247,42,71,60,60,59},41),
+Name = _d({25,55,38,59,42,49,229,235,229,11,49,46,44,45,57,229,24,53,42,42,41},59),
 Range = {10, 150},
 Increment = 1,
-Suffix = _d({247,74,75,76,59,74,6,74,60,58},41),
+Suffix = _d({229,56,57,58,41,56,244,56,42,40},59),
 CurrentValue = 70,
 Callback = function(Value)
 flightSpeed = Value
 end,
 })
 altitudeSlider = MainTab:CreateSlider({
-Name = _d({29,67,64,62,63,75,247,24,67,75,64,75,76,59,60,247,255,48,0},41),
+Name = _d({11,49,46,44,45,57,229,6,49,57,46,57,58,41,42,229,237,30,238},59),
 Range = {-50, 1500},
 Increment = 5,
-Suffix = _d({247,48,4,74,75,76,59,74},41),
+Suffix = _d({229,30,242,56,57,58,41,56},59),
 CurrentValue = 50,
 Callback = function(Value)
 flightAltitudeY = Value
 end,
 })
 MainTab:CreateButton({
-Name = _d({27,60,74,75,73,70,80,247,44,32,247,253,247,42,75,70,71,247,28,77,60,73,80,75,63,64,69,62},41),
+Name = _d({9,42,56,57,55,52,62,229,26,14,229,235,229,24,57,52,53,229,10,59,42,55,62,57,45,46,51,44},59),
 Callback = function()
 if _G.GPOTweenCleanup then
 pcall(_G.GPOTweenCleanup)
@@ -428,7 +428,7 @@ if _G.GPOTweenLibrary then
 pcall(function() _G.GPOTweenLibrary:Destroy() end)
 _G.GPOTweenLibrary = nil
 end
-print(_d({50,30,39,38,247,43,78,60,60,69,52,247,26,67,60,56,69,60,59,247,76,71,247,56,69,59,247,59,60,74,75,73,70,80,60,59,247,41,56,80,61,64,60,67,59,247,44,32,5},41))
+print(_d({32,12,21,20,229,25,60,42,42,51,34,229,8,49,42,38,51,42,41,229,58,53,229,38,51,41,229,41,42,56,57,55,52,62,42,41,229,23,38,62,43,46,42,49,41,229,26,14,243},59))
 end
 UserInputService.InputBegan:Connect(function(input, processed)
 if not processed then
@@ -440,5 +440,5 @@ end
 end
 end)
 task.spawn(buildUI)
-print(_d({50,30,39,38,247,43,78,60,60,69,247,43,60,74,75,60,73,52,247,67,70,56,59,60,59,247,78,64,75,63,247,60,68,60,73,62,60,69,58,80,247,74,75,70,71,247,66,60,80,247,50,39,52,5},41))
+print(_d({32,12,21,20,229,25,60,42,42,51,229,25,42,56,57,42,55,34,229,49,52,38,41,42,41,229,60,46,57,45,229,42,50,42,55,44,42,51,40,62,229,56,57,52,53,229,48,42,62,229,32,21,34,243},59))
 end)()
