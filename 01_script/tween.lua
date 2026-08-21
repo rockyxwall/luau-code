@@ -11,10 +11,10 @@ end
 if _G.GPOTweenCleanup then
 pcall(_G.GPOTweenCleanup)
 end
-local Players = game:GetService(_d({19,47,36,60,40,53,54},61))
-local ReplicatedStorage = game:GetService(_d({21,40,51,47,44,38,36,55,40,39,22,55,50,53,36,42,40},61))
-local RunService = game:GetService(_d({21,56,49,22,40,53,57,44,38,40},61))
-local UserInputService = game:GetService(_d({24,54,40,53,12,49,51,56,55,22,40,53,57,44,38,40},61))
+local Players = game:GetService(_d({44,72,61,85,65,78,79},36))
+local ReplicatedStorage = game:GetService(_d({46,65,76,72,69,63,61,80,65,64,47,80,75,78,61,67,65},36))
+local RunService = game:GetService(_d({46,81,74,47,65,78,82,69,63,65},36))
+local UserInputService = game:GetService(_d({49,79,65,78,37,74,76,81,80,47,65,78,82,69,63,65},36))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local travelEnabled = false
@@ -22,6 +22,8 @@ local wasdFlightEnabled = false
 local flightSpeed = 70.0
 local hoverHeight = 15.0
 local targetX, targetY, targetZ = 0, 0, 0
+local flightAltitudeY = 50.0
+local altitudeSlider = nil
 local lastGeppoTime = 0
 local geppoCooldown = 2.0
 local lastGroundingTime = tick()
@@ -30,16 +32,16 @@ local groundingDuration = 0.5
 local groundingInterval = 12.0
 local function getRoot()
 local char = LocalPlayer.Character
-return char and char:FindFirstChild(_d({11,56,48,36,49,50,44,39,21,50,50,55,19,36,53,55},61))
+return char and char:FindFirstChild(_d({36,81,73,61,74,75,69,64,46,75,75,80,44,61,78,80},36))
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({34,34,23,58,40,40,49,4,55,55},61)) or Instance.new(_d({4,55,55,36,38,43,48,40,49,55},61))
-att.Name = _d({34,34,23,58,40,40,49,4,55,55},61)
+local att = root:FindFirstChild(_d({59,59,48,83,65,65,74,29,80,80},36)) or Instance.new(_d({29,80,80,61,63,68,73,65,74,80},36))
+att.Name = _d({59,59,48,83,65,65,74,29,80,80},36)
 att.Parent = root
-local force = root:FindFirstChild(_d({34,34,23,58,40,40,49,9,50,53,38,40},61))
+local force = root:FindFirstChild(_d({59,59,48,83,65,65,74,34,75,78,63,65},36))
 if not force then
-force = Instance.new(_d({15,44,49,40,36,53,25,40,47,50,38,44,55,60},61))
-force.Name = _d({34,34,23,58,40,40,49,9,50,53,38,40},61)
+force = Instance.new(_d({40,69,74,65,61,78,50,65,72,75,63,69,80,85},36))
+force.Name = _d({59,59,48,83,65,65,74,34,75,78,63,65},36)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -54,8 +56,8 @@ local function getOrCreatePlatform(root)
 if localPlatform and localPlatform.Parent then
 return localPlatform
 end
-localPlatform = Instance.new(_d({19,36,53,55},61))
-localPlatform.Name = _d({34,34,23,58,40,40,49,19,47,36,55,41,50,53,48},61)
+localPlatform = Instance.new(_d({44,61,78,80},36))
+localPlatform.Name = _d({59,59,48,83,65,65,74,44,72,61,80,66,75,78,73},36)
 localPlatform.Size = Vector3.new(8, 1, 8)
 localPlatform.Transparency = 1
 localPlatform.Anchored = true
@@ -72,8 +74,8 @@ end
 local function cleanupForce()
 local root = getRoot()
 if root then
-local force = root:FindFirstChild(_d({34,34,23,58,40,40,49,9,50,53,38,40},61))
-local att = root:FindFirstChild(_d({34,34,23,58,40,40,49,4,55,55},61))
+local force = root:FindFirstChild(_d({59,59,48,83,65,65,74,34,75,78,63,65},36))
+local att = root:FindFirstChild(_d({59,59,48,83,65,65,74,29,80,80},36))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -87,18 +89,18 @@ pcall(function()
 local char = LocalPlayer.Character
 local root = getRoot()
 if not char or not root then return end
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({22,55,36,55,54},61) .. LocalPlayer.Name)
-local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({17,50,49,40},61)
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({47,80,61,80,79},36) .. LocalPlayer.Name)
+local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({42,75,74,65},36)
 local cf = CFrame.lookAt(root.Position, root.Position + root.CFrame.LookVector)
 local args = {char = char, cf = cf}
-if style == _d({21,50,46,56,54,43,44,46,44},61) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({10,40,51,51,50},61), args)
-elseif style == _d({5,47,36,38,46,15,40,42},61) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({22,46,60,227,26,36,47,46},61), args)
-elseif style == _d({14,36,48,44,54,43,44,46,44},61) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({14,36,48,44,54,43,44,46,44,10,40,51,51,50},61), args)
+if style == _d({46,75,71,81,79,68,69,71,69},36) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({35,65,76,76,75},36), args)
+elseif style == _d({30,72,61,63,71,40,65,67},36) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({47,71,85,252,51,61,72,71},36), args)
+elseif style == _d({39,61,73,69,79,68,69,71,69},36) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({39,61,73,69,79,68,69,71,69,35,65,76,76,75},36), args)
 else
-ReplicatedStorage.Events.Skill:InvokeServer(_d({22,46,60,227,26,36,47,46,245},61), args)
+ReplicatedStorage.Events.Skill:InvokeServer(_d({47,71,85,252,51,61,72,71,14},36), args)
 end
 end)
 end
@@ -125,13 +127,25 @@ if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + Vector3.n
 if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit end
 if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit end
 if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit end
-if UserInputService:IsKeyDown(Enum.KeyCode.Space) then moveDir = moveDir + Vector3.new(0, 1, 0) end
-if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then moveDir = moveDir - Vector3.new(0, 1, 0) end
+local targetYChanged = false
+if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
+flightAltitudeY = math.clamp(flightAltitudeY + (dt * 150), -50, 1500)
+targetYChanged = true
+end
+if UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
+flightAltitudeY = math.clamp(flightAltitudeY - (dt * 150), -50, 1500)
+targetYChanged = true
+end
+if targetYChanged and altitudeSlider and altitudeSlider.Set then
+pcall(function() altitudeSlider:Set(math.round(flightAltitudeY)) end)
+end
 local targetVelocity = moveDir.Magnitude > 0 and (moveDir.Unit * flightSpeed) or Vector3.zero
+local yErr = flightAltitudeY - root.Position.Y
+local yVel = math.clamp(yErr * 2, -120, 120)
 if moveDir.Magnitude > 0 then
 root.CFrame = CFrame.lookAt(root.Position, root.Position + Vector3.new(look.X, 0, look.Z).Unit)
 end
-force.VectorVelocity = targetVelocity
+force.VectorVelocity = Vector3.new(targetVelocity.X, yVel, targetVelocity.Z)
 if platform then
 platform.CanCollide = true
 platform.CFrame = root.CFrame - Vector3.new(0, 3.0, 0)
@@ -147,7 +161,7 @@ if dist < 5 then
 travelEnabled = false
 if loopConn then loopConn:Disconnect() loopConn = nil end
 cleanupForce()
-print(_d({30,10,19,18,227,23,58,40,40,49,32,227,4,53,53,44,57,40,39,227,36,55,227,55,36,53,42,40,55,241},61))
+print(_d({55,35,44,43,252,48,83,65,65,74,57,252,29,78,78,69,82,65,64,252,61,80,252,80,61,78,67,65,80,10},36))
 return
 end
 local now = tick()
@@ -195,17 +209,17 @@ end)
 if ok then return end
 pcall(function()
 for _, obj in ipairs(paragraph) do
-if type(obj) == _d({55,36,37,47,40},61) then
+if type(obj) == _d({80,61,62,72,65},36) then
 for k, v in pairs(obj) do
-if type(v) == _d({56,54,40,53,39,36,55,36},61) and v:IsA(_d({23,40,59,55,15,36,37,40,47},61)) then
-if v.Name:lower():find(_d({55,44,55,47,40},61)) then
+if type(v) == _d({81,79,65,78,64,61,80,61},36) and v:IsA(_d({48,65,84,80,40,61,62,65,72},36)) then
+if v.Name:lower():find(_d({80,69,80,72,65},36)) then
 v.Text = title
-elseif v.Name:lower():find(_d({38,50,49,55,40,49,55},61)) or v.Name:lower():find(_d({39,40,54,38},61)) then
+elseif v.Name:lower():find(_d({63,75,74,80,65,74,80},36)) or v.Name:lower():find(_d({64,65,79,63},36)) then
 v.Text = content
 end
 end
 end
-elseif type(obj) == _d({56,54,40,53,39,36,55,36},61) and obj:IsA(_d({23,40,59,55,15,36,37,40,47},61)) then
+elseif type(obj) == _d({81,79,65,78,64,61,80,61},36) and obj:IsA(_d({48,65,84,80,40,61,62,65,72},36)) then
 obj.Text = content
 end
 end
@@ -214,27 +228,27 @@ end
 local function buildUI()
 local Rayfield = nil
 local success, result = pcall(function()
-return loadstring(game:HttpGet(_d({43,55,55,51,54,253,242,242,53,36,58,241,42,44,55,43,56,37,56,54,40,53,38,50,49,55,40,49,55,241,38,50,48,242,53,50,38,46,60,59,58,36,47,47,242,21,36,60,41,44,40,47,39,242,48,36,44,49,242,54,50,56,53,38,40,241,47,56,36},61)))()
+return loadstring(game:HttpGet(_d({68,80,80,76,79,22,11,11,78,61,83,10,67,69,80,68,81,62,81,79,65,78,63,75,74,80,65,74,80,10,63,75,73,11,78,75,63,71,85,84,83,61,72,72,11,46,61,85,66,69,65,72,64,11,73,61,69,74,11,79,75,81,78,63,65,10,72,81,61},36)))()
 end)
 if success and result then
 Rayfield = result
 end
 if not Rayfield then
-warn(_d({30,10,19,18,227,23,58,40,40,49,32,227,9,36,44,47,40,39,227,55,50,227,47,50,36,39,227,21,36,60,41,44,40,47,39,227,24,12,227,47,44,37,53,36,53,60,227,41,53,50,48,227,36,49,60,227,54,50,56,53,38,40,241},61))
+warn(_d({55,35,44,43,252,48,83,65,65,74,57,252,34,61,69,72,65,64,252,80,75,252,72,75,61,64,252,46,61,85,66,69,65,72,64,252,49,37,252,72,69,62,78,61,78,85,252,66,78,75,73,252,61,74,85,252,79,75,81,78,63,65,10},36))
 return
 end
 local Window = Rayfield:CreateWindow({
-Name = _d({10,19,18,227,23,58,40,40,49,227,233,227,9,47,44,42,43,55,227,22,56,44,55,40},61),
-LoadingTitle = _d({10,19,18,227,17,36,57,44,42,36,55,50,53},61),
-LoadingSubtitle = _d({21,36,60,41,44,40,47,39,227,24,12,227,25,40,53,54,44,50,49},61),
+Name = _d({35,44,43,252,48,83,65,65,74,252,2,252,34,72,69,67,68,80,252,47,81,69,80,65},36),
+LoadingTitle = _d({35,44,43,252,42,61,82,69,67,61,80,75,78},36),
+LoadingSubtitle = _d({46,61,85,66,69,65,72,64,252,49,37,252,50,65,78,79,69,75,74},36),
 ConfigurationSaving = { Enabled = false },
 KeySystem = false
 })
 _G.GPOTweenLibrary = Rayfield
-local MainTab = Window:CreateTab(_d({23,53,36,57,40,47,227,6,50,49,55,53,50,47,54},61), 4483362458)
+local MainTab = Window:CreateTab(_d({48,78,61,82,65,72,252,31,75,74,80,78,75,72,79},36), 4483362458)
 local posParagraph = MainTab:CreateParagraph({
-Title = _d({6,56,53,53,40,49,55,227,19,50,54,44,55,44,50,49},61),
-Content = _d({27,253,227,243,241,243,243,227,63,227,28,253,227,243,241,243,243,227,63,227,29,253,227,243,241,243,243},61)
+Title = _d({31,81,78,78,65,74,80,252,44,75,79,69,80,69,75,74},36),
+Content = _d({52,22,252,12,10,12,12,252,88,252,53,22,252,12,10,12,12,252,88,252,54,22,252,12,10,12,12},36)
 })
 task.spawn(function()
 while _G.GPOTweenLibrary do
@@ -243,44 +257,44 @@ pcall(function()
 local root = getRoot()
 if root then
 local pos = root.Position
-local text = string.format(_d({27,253,227,232,241,245,41,227,63,227,28,253,227,232,241,245,41,227,63,227,29,253,227,232,241,245,41},61), pos.X, pos.Y, pos.Z)
-updateRayfieldParagraph(posParagraph, _d({6,56,53,53,40,49,55,227,19,50,54,44,55,44,50,49},61), text)
+local text = string.format(_d({52,22,252,1,10,14,66,252,88,252,53,22,252,1,10,14,66,252,88,252,54,22,252,1,10,14,66},36), pos.X, pos.Y, pos.Z)
+updateRayfieldParagraph(posParagraph, _d({31,81,78,78,65,74,80,252,44,75,79,69,80,69,75,74},36), text)
 end
 end)
 end
 end)
 MainTab:CreateButton({
-Name = _d({6,50,51,60,227,6,56,53,53,40,49,55,227,6,50,50,53,39,44,49,36,55,40,54},61),
+Name = _d({31,75,76,85,252,31,81,78,78,65,74,80,252,31,75,75,78,64,69,74,61,80,65,79},36),
 Callback = function()
 local root = getRoot()
 if root then
 local pos = root.Position
-local text = string.format(_d({232,241,245,41,239,227,232,241,245,41,239,227,232,241,245,41},61), pos.X, pos.Y, pos.Z)
+local text = string.format(_d({1,10,14,66,8,252,1,10,14,66,8,252,1,10,14,66},36), pos.X, pos.Y, pos.Z)
 if setclipboard then
 pcall(setclipboard, text)
-print(_d({30,10,19,18,227,23,58,40,40,49,32,227,6,50,51,44,40,39,227,38,50,50,53,39,44,49,36,55,40,54,227,55,50,227,38,47,44,51,37,50,36,53,39,253,227},61) .. text)
+print(_d({55,35,44,43,252,48,83,65,65,74,57,252,31,75,76,69,65,64,252,63,75,75,78,64,69,74,61,80,65,79,252,80,75,252,63,72,69,76,62,75,61,78,64,22,252},36) .. text)
 else
-warn(_d({30,10,19,18,227,23,58,40,40,49,32,227,54,40,55,38,47,44,51,37,50,36,53,39,227,49,50,55,227,54,56,51,51,50,53,55,40,39,227,37,60,227,40,59,40,38,56,55,50,53,228},61))
+warn(_d({55,35,44,43,252,48,83,65,65,74,57,252,79,65,80,63,72,69,76,62,75,61,78,64,252,74,75,80,252,79,81,76,76,75,78,80,65,64,252,62,85,252,65,84,65,63,81,80,75,78,253},36))
 end
 end
 end,
 })
 MainTab:CreateInput({
-Name = _d({23,36,53,42,40,55,227,6,50,50,53,39,44,49,36,55,40,54,227,235,27,239,227,28,239,227,29,236},61),
-PlaceholderText = _d({8,59,36,48,51,47,40,253,227,244,245,243,241,248,239,227,247,243,241,245,239,227,240,244,243,246,243,241,243},61),
+Name = _d({48,61,78,67,65,80,252,31,75,75,78,64,69,74,61,80,65,79,252,4,52,8,252,53,8,252,54,5},36),
+PlaceholderText = _d({33,84,61,73,76,72,65,22,252,13,14,12,10,17,8,252,16,12,10,14,8,252,9,13,12,15,12,10,12},36),
 RemoveTextAfterFocusLost = false,
 Callback = function(val)
-local x, y, z = string.match(val, _d({235,30,232,39,232,241,232,240,32,238,236,232,54,237,232,239,2,232,54,237,235,30,232,39,232,241,232,240,32,238,236,232,54,237,232,239,2,232,54,237,235,30,232,39,232,241,232,240,32,238,236},61))
+local x, y, z = string.match(val, _d({4,55,1,64,1,10,1,9,57,7,5,1,79,6,1,8,27,1,79,6,4,55,1,64,1,10,1,9,57,7,5,1,79,6,1,8,27,1,79,6,4,55,1,64,1,10,1,9,57,7,5},36))
 if x and y and z then
 targetX = tonumber(x)
 targetY = tonumber(y)
 targetZ = tonumber(z)
-print(string.format(_d({30,10,19,18,227,23,58,40,40,49,32,227,22,40,55,227,39,40,54,55,44,49,36,55,44,50,49,227,55,36,53,42,40,55,227,55,50,253,227,232,241,245,41,239,227,232,241,245,41,239,227,232,241,245,41},61), targetX, targetY, targetZ))
+print(string.format(_d({55,35,44,43,252,48,83,65,65,74,57,252,47,65,80,252,64,65,79,80,69,74,61,80,69,75,74,252,80,61,78,67,65,80,252,80,75,22,252,1,10,14,66,8,252,1,10,14,66,8,252,1,10,14,66},36), targetX, targetY, targetZ))
 end
 end,
 })
 MainTab:CreateToggle({
-Name = _d({22,55,36,53,55,227,12,54,47,36,49,39,227,23,53,36,57,40,47},61),
+Name = _d({47,80,61,78,80,252,37,79,72,61,74,64,252,48,78,61,82,65,72},36),
 CurrentValue = false,
 Callback = function(val)
 travelEnabled = val
@@ -293,7 +307,7 @@ end
 end,
 })
 MainTab:CreateToggle({
-Name = _d({8,49,36,37,47,40,227,26,4,22,7,227,9,47,44,42,43,55},61),
+Name = _d({33,74,61,62,72,65,252,51,29,47,32,252,34,72,69,67,68,80},36),
 CurrentValue = false,
 Callback = function(val)
 wasdFlightEnabled = val
@@ -306,17 +320,27 @@ end
 end,
 })
 MainTab:CreateSlider({
-Name = _d({23,53,36,57,40,47,227,233,227,9,47,44,42,43,55,227,22,51,40,40,39},61),
+Name = _d({48,78,61,82,65,72,252,2,252,34,72,69,67,68,80,252,47,76,65,65,64},36),
 Range = {10, 150},
 Increment = 1,
-Suffix = _d({227,54,55,56,39,54,242,54,40,38},61),
+Suffix = _d({252,79,80,81,64,79,11,79,65,63},36),
 CurrentValue = 70,
 Callback = function(Value)
 flightSpeed = Value
 end,
 })
+altitudeSlider = MainTab:CreateSlider({
+Name = _d({34,72,69,67,68,80,252,29,72,80,69,80,81,64,65,252,4,53,5},36),
+Range = {-50, 1500},
+Increment = 5,
+Suffix = _d({252,53,9,79,80,81,64,79},36),
+CurrentValue = 50,
+Callback = function(Value)
+flightAltitudeY = Value
+end,
+})
 MainTab:CreateButton({
-Name = _d({7,40,54,55,53,50,60,227,24,12,227,233,227,22,55,50,51,227,8,57,40,53,60,55,43,44,49,42},61),
+Name = _d({32,65,79,80,78,75,85,252,49,37,252,2,252,47,80,75,76,252,33,82,65,78,85,80,68,69,74,67},36),
 Callback = function()
 if _G.GPOTweenCleanup then
 pcall(_G.GPOTweenCleanup)
@@ -336,7 +360,7 @@ if _G.GPOTweenLibrary then
 pcall(function() _G.GPOTweenLibrary:Destroy() end)
 _G.GPOTweenLibrary = nil
 end
-print(_d({30,10,19,18,227,23,58,40,40,49,32,227,6,47,40,36,49,40,39,227,56,51,227,36,49,39,227,39,40,54,55,53,50,60,40,39,227,21,36,60,41,44,40,47,39,227,24,12,241},61))
+print(_d({55,35,44,43,252,48,83,65,65,74,57,252,31,72,65,61,74,65,64,252,81,76,252,61,74,64,252,64,65,79,80,78,75,85,65,64,252,46,61,85,66,69,65,72,64,252,49,37,10},36))
 end
 UserInputService.InputBegan:Connect(function(input, processed)
 if not processed then
@@ -348,5 +372,5 @@ end
 end
 end)
 task.spawn(buildUI)
-print(_d({30,10,19,18,227,23,58,40,40,49,227,23,40,54,55,40,53,32,227,47,50,36,39,40,39,227,58,44,55,43,227,40,48,40,53,42,40,49,38,60,227,54,55,50,51,227,46,40,60,227,30,19,32,241},61))
+print(_d({55,35,44,43,252,48,83,65,65,74,252,48,65,79,80,65,78,57,252,72,75,61,64,65,64,252,83,69,80,68,252,65,73,65,78,67,65,74,63,85,252,79,80,75,76,252,71,65,85,252,55,44,57,10},36))
 end)()
