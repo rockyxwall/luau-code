@@ -11,10 +11,10 @@ end
 if _G.GPOTweenCleanup then
 pcall(_G.GPOTweenCleanup)
 end
-local Players = game:GetService(_d({55,83,72,96,76,89,90},25))
-local ReplicatedStorage = game:GetService(_d({57,76,87,83,80,74,72,91,76,75,58,91,86,89,72,78,76},25))
-local RunService = game:GetService(_d({57,92,85,58,76,89,93,80,74,76},25))
-local UserInputService = game:GetService(_d({60,90,76,89,48,85,87,92,91,58,76,89,93,80,74,76},25))
+local Players = game:GetService(_d({44,72,61,85,65,78,79},36))
+local ReplicatedStorage = game:GetService(_d({46,65,76,72,69,63,61,80,65,64,47,80,75,78,61,67,65},36))
+local RunService = game:GetService(_d({46,81,74,47,65,78,82,69,63,65},36))
+local UserInputService = game:GetService(_d({49,79,65,78,37,74,76,81,80,47,65,78,82,69,63,65},36))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local travelEnabled = false
@@ -29,16 +29,16 @@ local groundingDuration = 0.5
 local groundingInterval = 12.0
 local function getRoot()
 local char = LocalPlayer.Character
-return char and char:FindFirstChild(_d({47,92,84,72,85,86,80,75,57,86,86,91,55,72,89,91},25))
+return char and char:FindFirstChild(_d({36,81,73,61,74,75,69,64,46,75,75,80,44,61,78,80},36))
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({70,70,59,94,76,76,85,40,91,91},25)) or Instance.new(_d({40,91,91,72,74,79,84,76,85,91},25))
-att.Name = _d({70,70,59,94,76,76,85,40,91,91},25)
+local att = root:FindFirstChild(_d({59,59,48,83,65,65,74,29,80,80},36)) or Instance.new(_d({29,80,80,61,63,68,73,65,74,80},36))
+att.Name = _d({59,59,48,83,65,65,74,29,80,80},36)
 att.Parent = root
-local force = root:FindFirstChild(_d({70,70,59,94,76,76,85,45,86,89,74,76},25))
+local force = root:FindFirstChild(_d({59,59,48,83,65,65,74,34,75,78,63,65},36))
 if not force then
-force = Instance.new(_d({51,80,85,76,72,89,61,76,83,86,74,80,91,96},25))
-force.Name = _d({70,70,59,94,76,76,85,45,86,89,74,76},25)
+force = Instance.new(_d({40,69,74,65,61,78,50,65,72,75,63,69,80,85},36))
+force.Name = _d({59,59,48,83,65,65,74,34,75,78,63,65},36)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -51,8 +51,8 @@ end
 local function cleanupForce()
 local root = getRoot()
 if root then
-local force = root:FindFirstChild(_d({70,70,59,94,76,76,85,45,86,89,74,76},25))
-local att = root:FindFirstChild(_d({70,70,59,94,76,76,85,40,91,91},25))
+local force = root:FindFirstChild(_d({59,59,48,83,65,65,74,34,75,78,63,65},36))
+local att = root:FindFirstChild(_d({59,59,48,83,65,65,74,29,80,80},36))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -65,18 +65,18 @@ pcall(function()
 local char = LocalPlayer.Character
 local root = getRoot()
 if not char or not root then return end
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({58,91,72,91,90},25) .. LocalPlayer.Name)
-local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({53,86,85,76},25)
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({47,80,61,80,79},36) .. LocalPlayer.Name)
+local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({42,75,74,65},36)
 local cf = CFrame.lookAt(root.Position, root.Position + root.CFrame.LookVector)
 local args = {char = char, cf = cf}
-if style == _d({57,86,82,92,90,79,80,82,80},25) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({46,76,87,87,86},25), args)
-elseif style == _d({41,83,72,74,82,51,76,78},25) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({58,82,96,7,62,72,83,82},25), args)
-elseif style == _d({50,72,84,80,90,79,80,82,80},25) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({50,72,84,80,90,79,80,82,80,46,76,87,87,86},25), args)
+if style == _d({46,75,71,81,79,68,69,71,69},36) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({35,65,76,76,75},36), args)
+elseif style == _d({30,72,61,63,71,40,65,67},36) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({47,71,85,252,51,61,72,71},36), args)
+elseif style == _d({39,61,73,69,79,68,69,71,69},36) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({39,61,73,69,79,68,69,71,69,35,65,76,76,75},36), args)
 else
-ReplicatedStorage.Events.Skill:InvokeServer(_d({58,82,96,7,62,72,83,82,25},25), args)
+ReplicatedStorage.Events.Skill:InvokeServer(_d({47,71,85,252,51,61,72,71,14},36), args)
 end
 end)
 end
@@ -98,7 +98,7 @@ local dist = (targetPos - currentPos).Magnitude
 if dist < 5 then
 travelEnabled = false
 cleanupForce()
-print(_d({66,46,55,54,7,59,94,76,76,85,68,7,40,89,89,80,93,76,75,7,72,91,7,91,72,89,78,76,91,21},25))
+print(_d({55,35,44,43,252,48,83,65,65,74,57,252,29,78,78,69,82,65,64,252,61,80,252,80,61,78,67,65,80,10},36))
 if navConn then navConn:Disconnect() navConn = nil end
 return
 end
@@ -134,32 +134,32 @@ end)
 end
 local function buildUI()
 local ok, WindUI = pcall(function()
-return loadstring(game:HttpGet(_d({79,91,91,87,90,33,22,22,89,72,94,21,78,80,91,79,92,73,92,90,76,89,74,86,85,91,76,85,91,21,74,86,84,22,89,86,74,82,96,95,94,72,83,83,22,62,80,85,75,60,48,22,84,72,80,85,22,75,80,90,91,22,84,72,80,85,21,83,92,72},25)))()
+return loadstring(game:HttpGet(_d({68,80,80,76,79,22,11,11,78,61,83,10,67,69,80,68,81,62,81,79,65,78,63,75,74,80,65,74,80,10,63,75,73,11,78,75,63,71,85,84,83,61,72,72,11,51,69,74,64,49,37,11,73,61,69,74,11,64,69,79,80,11,73,61,69,74,10,72,81,61},36)))()
 end)
-if not ok or type(WindUI) ~= _d({91,72,73,83,76},25) then
-warn(_d({66,46,55,54,7,59,94,76,76,85,68,7,45,72,80,83,76,75,7,91,86,7,83,86,72,75,7,62,80,85,75,60,48,21},25))
+if not ok or type(WindUI) ~= _d({80,61,62,72,65},36) then
+warn(_d({55,35,44,43,252,48,83,65,65,74,57,252,34,61,69,72,65,64,252,80,75,252,72,75,61,64,252,51,69,74,64,49,37,10},36))
 return
 end
 local Window = WindUI:CreateWindow({
-Title = _d({46,55,54,7,59,94,76,76,85,7,59,76,90,91,76,89,7,93,23,21,23,21,24},25),
-Icon = _d({87,83,72,85,76},25),
-Folder = _d({46,55,54,59,94,76,76,85},25),
+Title = _d({35,44,43,252,48,83,65,65,74,252,48,65,79,80,65,78,252,82,12,10,12,10,13},36),
+Icon = _d({76,72,61,74,65},36),
+Folder = _d({35,44,43,48,83,65,65,74},36),
 Size = UDim2.fromOffset(500, 420),
 Transparent = true,
-Theme = _d({43,72,89,82},25),
+Theme = _d({32,61,78,71},36),
 OpenButton = {
-Title = _d({59,94,76,76,85,7,59,76,90,91,76,89},25),
+Title = _d({48,83,65,65,74,252,48,65,79,80,65,78},36),
 Enabled = true,
 Draggable = true,
 OnlyMobile = false,
 },
 })
 _G.GPOTweenLibrary = Window
-local tabMain = Window:Tab({ Title = _d({53,72,93,80,78,72,91,80,86,85},25), Icon = _d({84,72,87,20,87,80,85},25) })
-local tabSettings = Window:Tab({ Title = _d({58,76,91,91,80,85,78,90},25), Icon = _d({90,76,91,91,80,85,78,90},25) })
-local xLabel = tabMain:Paragraph({ Title = _d({42,92,89,89,76,85,91,7,63},25), Desc = "0" })
-local yLabel = tabMain:Paragraph({ Title = _d({42,92,89,89,76,85,91,7,64},25), Desc = "0" })
-local zLabel = tabMain:Paragraph({ Title = _d({42,92,89,89,76,85,91,7,65},25), Desc = "0" })
+local tabMain = Window:Tab({ Title = _d({42,61,82,69,67,61,80,69,75,74},36), Icon = _d({73,61,76,9,76,69,74},36) })
+local tabSettings = Window:Tab({ Title = _d({47,65,80,80,69,74,67,79},36), Icon = _d({79,65,80,80,69,74,67,79},36) })
+local xLabel = tabMain:Paragraph({ Title = _d({31,81,78,78,65,74,80,252,52},36), Desc = "0" })
+local yLabel = tabMain:Paragraph({ Title = _d({31,81,78,78,65,74,80,252,53},36), Desc = "0" })
+local zLabel = tabMain:Paragraph({ Title = _d({31,81,78,78,65,74,80,252,54},36), Desc = "0" })
 task.spawn(function()
 while _G.GPOTweenLibrary do
 task.wait(0.2)
@@ -167,52 +167,52 @@ pcall(function()
 local root = getRoot()
 if root then
 local pos = root.Position
-if xLabel and xLabel.Set then xLabel:Set({ Title = _d({42,92,89,89,76,85,91,7,63},25), Desc = string.format(_d({12,21,25,77},25), pos.X) }) end
-if yLabel and yLabel.Set then yLabel:Set({ Title = _d({42,92,89,89,76,85,91,7,64},25), Desc = string.format(_d({12,21,25,77},25), pos.Y) }) end
-if zLabel and zLabel.Set then zLabel:Set({ Title = _d({42,92,89,89,76,85,91,7,65},25), Desc = string.format(_d({12,21,25,77},25), pos.Z) }) end
+if xLabel and xLabel.Set then xLabel:Set({ Title = _d({31,81,78,78,65,74,80,252,52},36), Desc = string.format(_d({1,10,14,66},36), pos.X) }) end
+if yLabel and yLabel.Set then yLabel:Set({ Title = _d({31,81,78,78,65,74,80,252,53},36), Desc = string.format(_d({1,10,14,66},36), pos.Y) }) end
+if zLabel and zLabel.Set then zLabel:Set({ Title = _d({31,81,78,78,65,74,80,252,54},36), Desc = string.format(_d({1,10,14,66},36), pos.Z) }) end
 end
 end)
 end
 end)
 tabMain:Button({
-Title = _d({42,86,87,96,7,42,92,89,89,76,85,91,7,42,86,86,89,75,80,85,72,91,76,90},25),
+Title = _d({31,75,76,85,252,31,81,78,78,65,74,80,252,31,75,75,78,64,69,74,61,80,65,79},36),
 Callback = function()
 local root = getRoot()
 if root then
 local pos = root.Position
-local text = string.format(_d({12,21,25,77,19,7,12,21,25,77,19,7,12,21,25,77},25), pos.X, pos.Y, pos.Z)
+local text = string.format(_d({1,10,14,66,8,252,1,10,14,66,8,252,1,10,14,66},36), pos.X, pos.Y, pos.Z)
 if setclipboard then
 pcall(setclipboard, text)
-print(_d({66,46,55,54,7,59,94,76,76,85,68,7,42,86,87,80,76,75,7,74,86,86,89,75,80,85,72,91,76,90,33,7},25) .. text)
+print(_d({55,35,44,43,252,48,83,65,65,74,57,252,31,75,76,69,65,64,252,63,75,75,78,64,69,74,61,80,65,79,22,252},36) .. text)
 else
-warn(_d({66,46,55,54,7,59,94,76,76,85,68,7,90,76,91,74,83,80,87,73,86,72,89,75,7,76,95,76,74,92,91,86,89,7,77,92,85,74,91,80,86,85,7,85,86,91,7,90,92,87,87,86,89,91,76,75,8},25))
+warn(_d({55,35,44,43,252,48,83,65,65,74,57,252,79,65,80,63,72,69,76,62,75,61,78,64,252,65,84,65,63,81,80,75,78,252,66,81,74,63,80,69,75,74,252,74,75,80,252,79,81,76,76,75,78,80,65,64,253},36))
 end
 end
 end
 })
 tabMain:Input({
-Title = _d({59,72,89,78,76,91,7,63,7,42,86,86,89,75,80,85,72,91,76},25),
+Title = _d({48,61,78,67,65,80,252,52,252,31,75,75,78,64,69,74,61,80,65},36),
 Placeholder = "0",
 Callback = function(val)
 targetX = tonumber(val) or 0
 end
 })
 tabMain:Input({
-Title = _d({59,72,89,78,76,91,7,64,7,42,86,86,89,75,80,85,72,91,76},25),
+Title = _d({48,61,78,67,65,80,252,53,252,31,75,75,78,64,69,74,61,80,65},36),
 Placeholder = "0",
 Callback = function(val)
 targetY = tonumber(val) or 0
 end
 })
 tabMain:Input({
-Title = _d({59,72,89,78,76,91,7,65,7,42,86,86,89,75,80,85,72,91,76},25),
+Title = _d({48,61,78,67,65,80,252,54,252,31,75,75,78,64,69,74,61,80,65},36),
 Placeholder = "0",
 Callback = function(val)
 targetZ = tonumber(val) or 0
 end
 })
 tabMain:Toggle({
-Title = _d({58,91,72,89,91,7,48,90,83,72,85,75,7,59,89,72,93,76,83},25),
+Title = _d({47,80,61,78,80,252,37,79,72,61,74,64,252,48,78,61,82,65,72},36),
 Value = false,
 Callback = function(val)
 travelEnabled = val
@@ -224,7 +224,7 @@ end
 end
 })
 tabSettings:Slider({
-Title = _d({59,89,72,93,76,83,7,58,87,76,76,75,7,15,63,65,16},25),
+Title = _d({48,78,61,82,65,72,252,47,76,65,65,64,252,4,52,54,5},36),
 Default = 70,
 Min = 10,
 Max = 150,
@@ -234,7 +234,7 @@ travelSpeed = val
 end
 })
 tabSettings:Slider({
-Title = _d({47,86,93,76,89,7,54,77,77,90,76,91,7,47,76,80,78,79,91},25),
+Title = _d({36,75,82,65,78,252,43,66,66,79,65,80,252,36,65,69,67,68,80},36),
 Default = 15,
 Min = 5,
 Max = 40,
@@ -244,7 +244,7 @@ hoverHeight = val
 end
 })
 tabSettings:Button({
-Title = _d({43,76,90,91,89,86,96,7,60,48,7,13,7,42,83,76,72,85,92,87},25),
+Title = _d({32,65,79,80,78,75,85,252,49,37,252,2,252,31,72,65,61,74,81,76},36),
 Callback = function()
 if _G.GPOTweenCleanup then pcall(_G.GPOTweenCleanup) end
 end
@@ -257,17 +257,26 @@ if navConn then
 pcall(function() navConn:Disconnect() end)
 navConn = nil
 end
-local playerGui = LocalPlayer:FindFirstChild(_d({55,83,72,96,76,89,46,92,80},25))
+local playerGui = LocalPlayer:FindFirstChild(_d({44,72,61,85,65,78,35,81,69},36))
 if playerGui then
-local oldUI = playerGui:FindFirstChild(_d({46,55,54,59,94,76,76,85,53,72,91,80,93,76,60,48},25))
+local oldUI = playerGui:FindFirstChild(_d({35,44,43,48,83,65,65,74,42,61,80,69,82,65,49,37},36))
 if oldUI then pcall(function() oldUI:Destroy() end) end
 end
 if _G.GPOTweenLibrary then
 pcall(function() _G.GPOTweenLibrary:Unload() end)
 _G.GPOTweenLibrary = nil
 end
-print(_d({66,46,55,54,7,59,94,76,76,85,68,7,42,83,76,72,85,76,75,7,92,87,7,90,76,90,90,80,86,85,21},25))
+print(_d({55,35,44,43,252,48,83,65,65,74,57,252,31,72,65,61,74,65,64,252,81,76,252,79,65,79,79,69,75,74,10},36))
 end
+UserInputService.InputBegan:Connect(function(input, processed)
+if not processed then
+if input.KeyCode == Enum.KeyCode.P then
+if _G.GPOTweenCleanup then
+pcall(_G.GPOTweenCleanup)
+end
+end
+end
+end)
 task.spawn(buildUI)
-print(_d({66,46,55,54,7,59,94,76,76,85,7,59,76,90,91,76,89,68,7,83,86,72,75,76,75,21},25))
+print(_d({55,35,44,43,252,48,83,65,65,74,252,48,65,79,80,65,78,57,252,72,75,61,64,65,64,252,83,69,80,68,252,65,73,65,78,67,65,74,63,85,252,79,80,75,76,252,71,65,85,252,55,44,57,10},36))
 end)()
