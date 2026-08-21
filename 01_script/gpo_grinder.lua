@@ -11,19 +11,19 @@ end
 if _G.GepoGrinderCleanup then
 pcall(_G.GepoGrinderCleanup)
 end
-local Players = game:GetService(_d({36,64,53,77,57,70,71},44))
-local ReplicatedStorage = game:GetService(_d({38,57,68,64,61,55,53,72,57,56,39,72,67,70,53,59,57},44))
-local RunService = game:GetService(_d({38,73,66,39,57,70,74,61,55,57},44))
-local VIM = game:GetService(_d({42,61,70,72,73,53,64,29,66,68,73,72,33,53,66,53,59,57,70},44))
-local UserInputService = game:GetService(_d({41,71,57,70,29,66,68,73,72,39,57,70,74,61,55,57},44))
+local Players = game:GetService(_d({25,53,42,66,46,59,60},55))
+local ReplicatedStorage = game:GetService(_d({27,46,57,53,50,44,42,61,46,45,28,61,56,59,42,48,46},55))
+local RunService = game:GetService(_d({27,62,55,28,46,59,63,50,44,46},55))
+local VIM = game:GetService(_d({31,50,59,61,62,42,53,18,55,57,62,61,22,42,55,42,48,46,59},55))
+local UserInputService = game:GetService(_d({30,60,46,59,18,55,57,62,61,28,46,59,63,50,44,46},55))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local function scanTools()
 local toolNames = {}
-local bp = LocalPlayer:FindFirstChild(_d({22,53,55,63,68,53,55,63},44))
+local bp = LocalPlayer:FindFirstChild(_d({11,42,44,52,57,42,44,52},55))
 if bp then
 for _, item in ipairs(bp:GetChildren()) do
-if item:IsA(_d({40,67,67,64},44)) then
+if item:IsA(_d({29,56,56,53},55)) then
 table.insert(toolNames, item.Name)
 end
 end
@@ -31,13 +31,13 @@ end
 local char = LocalPlayer.Character
 if char then
 for _, item in ipairs(char:GetChildren()) do
-if item:IsA(_d({40,67,67,64},44)) then
+if item:IsA(_d({29,56,56,53},55)) then
 table.insert(toolNames, item.Name)
 end
 end
 end
 if #toolNames == 0 then
-table.insert(toolNames, _d({23,67,65,54,53,72},44))
+table.insert(toolNames, _d({12,56,54,43,42,61},55))
 end
 return toolNames
 end
@@ -45,8 +45,8 @@ local availableWeapons = scanTools()
 local autoGrind = false
 local autoBuyGeppo = false
 local bypassPeliCheck = false
-local selectedMob = _d({22,53,66,56,61,72},44)
-local selectedWeapon = availableWeapons[1] or _d({23,67,65,54,53,72},44)
+local selectedMob = _d({11,42,55,45,50,61},55)
+local selectedWeapon = availableWeapons[1] or _d({12,56,54,43,42,61},55)
 local hoverHeight = 6.5
 local geppoCooldown = 3.5
 local targetNPC = nil
@@ -55,30 +55,30 @@ local boughtGeppo = false
 local lastPosition = Vector3.zero
 local stuckTime = 0
 local unstuckActive = false
-local mobList = {_d({22,53,66,56,61,72},44), _d({22,53,66,56,61,72,244,22,67,71,71},44), _d({24,53,68,60},44), _d({28,53,63,73},44), _d({32,61,64,77},44), _d({32,61,67,66,244,36,70,61,56,57},44), _d({33,53,70,69,73,53,66},44), _d({38,67,54,67},44), _d({38,67,66,66,77},44), _d({39,53,70,53,60},44)}
+local mobList = {_d({11,42,55,45,50,61},55), _d({11,42,55,45,50,61,233,11,56,60,60},55), _d({13,42,57,49},55), _d({17,42,52,62},55), _d({21,50,53,66},55), _d({21,50,56,55,233,25,59,50,45,46},55), _d({22,42,59,58,62,42,55},55), _d({27,56,43,56},55), _d({27,56,55,55,66},55), _d({28,42,59,42,49},55)}
 local function getRoot(player)
 local char = (player or LocalPlayer).Character
-return char and char:FindFirstChild(_d({28,73,65,53,66,67,61,56,38,67,67,72,36,53,70,72},44))
+return char and char:FindFirstChild(_d({17,62,54,42,55,56,50,45,27,56,56,61,25,42,59,61},55))
 end
 local function getHumanoid(player)
 local char = (player or LocalPlayer).Character
-return char and char:FindFirstChildWhichIsA(_d({28,73,65,53,66,67,61,56},44))
+return char and char:FindFirstChildWhichIsA(_d({17,62,54,42,55,56,50,45},55))
 end
 local function getPeli()
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({39,72,53,72,71},44) .. LocalPlayer.Name)
-if statsFolder and statsFolder:FindFirstChild(_d({39,72,53,72,71},44)) and statsFolder.Stats:FindFirstChild(_d({36,57,64,61},44)) then
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({28,61,42,61,60},55) .. LocalPlayer.Name)
+if statsFolder and statsFolder:FindFirstChild(_d({28,61,42,61,60},55)) and statsFolder.Stats:FindFirstChild(_d({25,46,53,50},55)) then
 return statsFolder.Stats.Peli.Value
 end
 return 0
 end
 local function getActiveTargetNPCs()
-local npcsFolder = Workspace:FindFirstChild(_d({34,36,23,71},44))
+local npcsFolder = Workspace:FindFirstChild(_d({23,25,12,60},55))
 if not npcsFolder then return {} end
 local targets = {}
 for _, npc in ipairs(npcsFolder:GetChildren()) do
 if npc.Name == selectedMob then
-local root = npc:FindFirstChild(_d({28,73,65,53,66,67,61,56,38,67,67,72,36,53,70,72},44))
-local hum = npc:FindFirstChildWhichIsA(_d({28,73,65,53,66,67,61,56},44))
+local root = npc:FindFirstChild(_d({17,62,54,42,55,56,50,45,27,56,56,61,25,42,59,61},55))
+local hum = npc:FindFirstChildWhichIsA(_d({17,62,54,42,55,56,50,45},55))
 if root and hum and hum.Health > 0 then
 table.insert(targets, npc)
 end
@@ -87,11 +87,11 @@ end
 return targets
 end
 local function findYiNPC()
-local folder = Workspace:FindFirstChild(_d({34,36,23,71},44))
-local yi = folder and folder:FindFirstChild(_d({45,61},44))
+local folder = Workspace:FindFirstChild(_d({23,25,12,60},55))
+local yi = folder and folder:FindFirstChild(_d({34,50},55))
 if yi then return yi end
 for _, obj in ipairs(Workspace:GetDescendants()) do
-if obj.Name == _d({45,61},44) and obj:IsA(_d({33,67,56,57,64},44)) then
+if obj.Name == _d({34,50},55) and obj:IsA(_d({22,56,45,46,53},55)) then
 return obj
 end
 end
@@ -100,7 +100,7 @@ end
 local function getSafeHeightAdjustment(pos)
 local raycastParams = RaycastParams.new()
 local excludeList = {LocalPlayer.Character}
-local npcsFolder = Workspace:FindFirstChild(_d({34,36,23,71},44))
+local npcsFolder = Workspace:FindFirstChild(_d({23,25,12,60},55))
 if npcsFolder then
 table.insert(excludeList, npcsFolder)
 end
@@ -109,7 +109,7 @@ raycastParams.FilterDescendantsInstances = excludeList
 local raycastResult = Workspace:Raycast(pos, Vector3.new(0, -300, 0), raycastParams)
 if raycastResult then
 local hitName = raycastResult.Instance.Name:lower()
-local isWater = hitName:find(_d({75,53,72,57,70},44)) or hitName:find(_d({71,57,53},44)) or hitName:find(_d({67,55,57,53,66},44)) or raycastResult.Material == Enum.Material.Water
+local isWater = hitName:find(_d({64,42,61,46,59},55)) or hitName:find(_d({60,46,42},55)) or hitName:find(_d({56,44,46,42,55},55)) or raycastResult.Material == Enum.Material.Water
 local currentHeight = pos.Y - raycastResult.Position.Y
 if currentHeight < 20 then
 return 20 - currentHeight
@@ -124,7 +124,7 @@ end
 local function setNPCPartsCollision(npc, enabled)
 if not npc then return end
 for _, part in ipairs(npc:GetDescendants()) do
-if part:IsA(_d({22,53,71,57,36,53,70,72},44)) then
+if part:IsA(_d({11,42,60,46,25,42,59,61},55)) then
 part.CanCollide = enabled
 end
 end
@@ -140,13 +140,13 @@ VIM:SendMouseButtonEvent(x, y, 0, false, game, 0)
 end)
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({51,51,27,70,61,66,56,57,70,21,72,72},44)) or Instance.new(_d({21,72,72,53,55,60,65,57,66,72},44))
-att.Name = _d({51,51,27,70,61,66,56,57,70,21,72,72},44)
+local att = root:FindFirstChild(_d({40,40,16,59,50,55,45,46,59,10,61,61},55)) or Instance.new(_d({10,61,61,42,44,49,54,46,55,61},55))
+att.Name = _d({40,40,16,59,50,55,45,46,59,10,61,61},55)
 att.Parent = root
-local force = root:FindFirstChild(_d({51,51,27,70,61,66,56,57,70,26,67,70,55,57},44))
+local force = root:FindFirstChild(_d({40,40,16,59,50,55,45,46,59,15,56,59,44,46},55))
 if not force then
-force = Instance.new(_d({32,61,66,57,53,70,42,57,64,67,55,61,72,77},44))
-force.Name = _d({51,51,27,70,61,66,56,57,70,26,67,70,55,57},44)
+force = Instance.new(_d({21,50,55,46,42,59,31,46,53,56,44,50,61,66},55))
+force.Name = _d({40,40,16,59,50,55,45,46,59,15,56,59,44,46},55)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -160,8 +160,8 @@ local function cleanupForce()
 if not autoGrind then
 local root = getRoot()
 if root then
-local force = root:FindFirstChild(_d({51,51,27,70,61,66,56,57,70,26,67,70,55,57},44))
-local att = root:FindFirstChild(_d({51,51,27,70,61,66,56,57,70,21,72,72},44))
+local force = root:FindFirstChild(_d({40,40,16,59,50,55,45,46,59,15,56,59,44,46},55))
+local att = root:FindFirstChild(_d({40,40,16,59,50,55,45,46,59,10,61,61},55))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -210,18 +210,18 @@ pcall(function()
 local char = LocalPlayer.Character
 local root = getRoot()
 if not char or not root then return end
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({39,72,53,72,71},44) .. LocalPlayer.Name)
-local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({34,67,66,57},44)
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({28,61,42,61,60},55) .. LocalPlayer.Name)
+local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({23,56,55,46},55)
 local cf = CFrame.lookAt(root.Position, root.Position + root.CFrame.LookVector)
 local args = {char = char, cf = cf}
-if style == _d({38,67,63,73,71,60,61,63,61},44) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({27,57,68,68,67},44), args)
-elseif style == _d({22,64,53,55,63,32,57,59},44) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({39,63,77,244,43,53,64,63},44), args)
-elseif style == _d({31,53,65,61,71,60,61,63,61},44) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({31,53,65,61,71,60,61,63,61,27,57,68,68,67},44), args)
+if style == _d({27,56,52,62,60,49,50,52,50},55) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({16,46,57,57,56},55), args)
+elseif style == _d({11,53,42,44,52,21,46,48},55) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({28,52,66,233,32,42,53,52},55), args)
+elseif style == _d({20,42,54,50,60,49,50,52,50},55) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({20,42,54,50,60,49,50,52,50,16,46,57,57,56},55), args)
 else
-ReplicatedStorage.Events.Skill:InvokeServer(_d({39,63,77,244,43,53,64,63,6},44), args)
+ReplicatedStorage.Events.Skill:InvokeServer(_d({28,52,66,233,32,42,53,52,251},55), args)
 end
 end)
 end
@@ -254,7 +254,7 @@ local peli = getPeli()
 if autoBuyGeppo and (peli >= 50000 or bypassPeliCheck) and not boughtGeppo then
 local yi = findYiNPC()
 if yi then
-local yiRoot = yi:FindFirstChild(_d({28,73,65,53,66,67,61,56,38,67,67,72,36,53,70,72},44))
+local yiRoot = yi:FindFirstChild(_d({17,62,54,42,55,56,50,45,27,56,56,61,25,42,59,61},55))
 if yiRoot then
 local targetPos = yiRoot.Position + Vector3.new(0, hoverHeight, 0)
 local force = getOrCreateForce(myRoot)
@@ -269,12 +269,12 @@ force.VectorVelocity = velocityVec
 else
 force.VectorVelocity = Vector3.zero
 myRoot.CFrame = computeLockedCFrame(myRoot, targetPos, yiRoot.Position)
-local prompt = yi:FindFirstChildWhichIsA(_d({36,70,67,76,61,65,61,72,77,36,70,67,65,68,72},44), true)
+local prompt = yi:FindFirstChildWhichIsA(_d({25,59,56,65,50,54,50,61,66,25,59,56,54,57,61},55), true)
 if prompt then
 if fireproximityprompt then
 pcall(fireproximityprompt, prompt)
 else
-warn(_d({47,27,57,68,67,244,27,70,61,66,56,57,70,49,244,58,61,70,57,68,70,67,76,61,65,61,72,77,68,70,67,65,68,72,244,66,67,72,244,71,73,68,68,67,70,72,57,56,244,54,77,244,57,76,57,55,73,72,67,70,245},44))
+warn(_d({36,16,46,57,56,233,16,59,50,55,45,46,59,38,233,47,50,59,46,57,59,56,65,50,54,50,61,66,57,59,56,54,57,61,233,55,56,61,233,60,62,57,57,56,59,61,46,45,233,43,66,233,46,65,46,44,62,61,56,59,234},55))
 end
 task.wait(1.5)
 if getPeli() < 50000 and not bypassPeliCheck then
@@ -289,7 +289,7 @@ end
 local targets = getActiveTargetNPCs()
 local n = #targets
 if n > 0 then
-local bp = LocalPlayer:FindFirstChild(_d({22,53,55,63,68,53,55,63},44))
+local bp = LocalPlayer:FindFirstChild(_d({11,42,44,52,57,42,44,52},55))
 local weaponTool = bp and bp:FindFirstChild(selectedWeapon)
 if weaponTool then
 myHum:EquipTool(weaponTool)
@@ -298,8 +298,8 @@ if n > 1 then
 for i = 1, n - 1 do
 if not autoGrind then break end
 local npc = targets[i]
-local npcRoot = npc and npc:FindFirstChild(_d({28,73,65,53,66,67,61,56,38,67,67,72,36,53,70,72},44))
-if npcRoot and npc:FindFirstChildWhichIsA(_d({28,73,65,53,66,67,61,56},44)) and npc:FindFirstChildWhichIsA(_d({28,73,65,53,66,67,61,56},44)).Health > 0 then
+local npcRoot = npc and npc:FindFirstChild(_d({17,62,54,42,55,56,50,45,27,56,56,61,25,42,59,61},55))
+if npcRoot and npc:FindFirstChildWhichIsA(_d({17,62,54,42,55,56,50,45},55)) and npc:FindFirstChildWhichIsA(_d({17,62,54,42,55,56,50,45},55)).Health > 0 then
 pcall(setNPCPartsCollision, npc, false)
 local targetPos = npcRoot.Position + Vector3.new(0, hoverHeight, 0)
 local force = getOrCreateForce(myRoot)
@@ -333,8 +333,8 @@ end
 end
 if autoGrind then
 local finalNpc = targets[n]
-local finalRoot = finalNpc and finalNpc:FindFirstChild(_d({28,73,65,53,66,67,61,56,38,67,67,72,36,53,70,72},44))
-if finalRoot and finalNpc:FindFirstChildWhichIsA(_d({28,73,65,53,66,67,61,56},44)) and finalNpc:FindFirstChildWhichIsA(_d({28,73,65,53,66,67,61,56},44)).Health > 0 then
+local finalRoot = finalNpc and finalNpc:FindFirstChild(_d({17,62,54,42,55,56,50,45,27,56,56,61,25,42,59,61},55))
+if finalRoot and finalNpc:FindFirstChildWhichIsA(_d({17,62,54,42,55,56,50,45},55)) and finalNpc:FindFirstChildWhichIsA(_d({17,62,54,42,55,56,50,45},55)).Health > 0 then
 pcall(setNPCPartsCollision, finalNpc, false)
 local finalTargetPos = finalRoot.Position + Vector3.new(0, hoverHeight, 0)
 local force = getOrCreateForce(myRoot)
@@ -358,7 +358,7 @@ end
 task.wait(0.05)
 end
 local combatStartTime = tick()
-while autoGrind and finalNpc.Parent and finalRoot and finalNpc:FindFirstChildWhichIsA(_d({28,73,65,53,66,67,61,56},44)) and finalNpc:FindFirstChildWhichIsA(_d({28,73,65,53,66,67,61,56},44)).Health > 0 and (tick() - combatStartTime) < 8 do
+while autoGrind and finalNpc.Parent and finalRoot and finalNpc:FindFirstChildWhichIsA(_d({17,62,54,42,55,56,50,45},55)) and finalNpc:FindFirstChildWhichIsA(_d({17,62,54,42,55,56,50,45},55)).Health > 0 and (tick() - combatStartTime) < 8 do
 finalTargetPos = finalRoot.Position + Vector3.new(0, hoverHeight, 0)
 local dir = (finalTargetPos - myRoot.Position)
 if dir.Magnitude < 10 then
@@ -394,54 +394,54 @@ local targets = getActiveTargetNPCs()
 for _, npc in ipairs(targets) do
 pcall(setNPCPartsCollision, npc, true)
 end
-local playerGui = LocalPlayer:FindFirstChild(_d({36,64,53,77,57,70,27,73,61},44))
+local playerGui = LocalPlayer:FindFirstChild(_d({25,53,42,66,46,59,16,62,50},55))
 if playerGui then
-local oldUI = playerGui:FindFirstChild(_d({27,36,35,27,70,61,66,56,57,70,34,53,72,61,74,57,41,29},44))
+local oldUI = playerGui:FindFirstChild(_d({16,25,24,16,59,50,55,45,46,59,23,42,61,50,63,46,30,18},55))
 if oldUI then pcall(function() oldUI:Destroy() end) end
-local mobileBtn = playerGui:FindFirstChild(_d({27,70,61,66,56,57,70,33,67,54,61,64,57,40,67,59,59,64,57},44))
+local mobileBtn = playerGui:FindFirstChild(_d({16,59,50,55,45,46,59,22,56,43,50,53,46,29,56,48,48,53,46},55))
 if mobileBtn then pcall(function() mobileBtn:Destroy() end) end
 end
 if _G.GrinderLibrary then
 pcall(function() _G.GrinderLibrary:Unload() end)
 _G.GrinderLibrary = nil
 end
-print(_d({47,27,57,68,67,244,27,70,61,66,56,57,70,49,244,23,64,57,53,66,57,56,244,73,68,244,68,70,57,74,61,67,73,71,244,71,57,71,71,61,67,66,2},44))
+print(_d({36,16,46,57,56,233,16,59,50,55,45,46,59,38,233,12,53,46,42,55,46,45,233,62,57,233,57,59,46,63,50,56,62,60,233,60,46,60,60,50,56,55,247},55))
 end
 local function buildWindUI()
 local ok, WindUI = pcall(function()
-return loadstring(game:HttpGet(_d({60,72,72,68,71,14,3,3,70,53,75,2,59,61,72,60,73,54,73,71,57,70,55,67,66,72,57,66,72,2,55,67,65,3,70,67,55,63,77,76,75,53,64,64,3,43,61,66,56,41,29,3,65,53,61,66,3,56,61,71,72,3,65,53,61,66,2,64,73,53},44)))()
+return loadstring(game:HttpGet(_d({49,61,61,57,60,3,248,248,59,42,64,247,48,50,61,49,62,43,62,60,46,59,44,56,55,61,46,55,61,247,44,56,54,248,59,56,44,52,66,65,64,42,53,53,248,32,50,55,45,30,18,248,54,42,50,55,248,45,50,60,61,248,54,42,50,55,247,53,62,42},55)))()
 end)
-if not ok or type(WindUI) ~= _d({72,53,54,64,57},44) then
-warn(_d({47,27,57,68,67,244,27,70,61,66,56,57,70,49,244,26,53,61,64,57,56,244,72,67,244,64,67,53,56,244,43,61,66,56,41,29,2},44))
+if not ok or type(WindUI) ~= _d({61,42,43,53,46},55) then
+warn(_d({36,16,46,57,56,233,16,59,50,55,45,46,59,38,233,15,42,50,53,46,45,233,61,56,233,53,56,42,45,233,32,50,55,45,30,18,247},55))
 return
 end
 local Window = WindUI:CreateWindow({
-Title = _d({27,57,68,67,244,27,70,61,66,56,57,70,244,74,4,2,4,2,5,12},44),
-Icon = _d({71,75,67,70,56},44),
-Folder = _d({27,57,68,67,27,70,61,66,56,57,70},44),
+Title = _d({16,46,57,56,233,16,59,50,55,45,46,59,233,63,249,247,249,247,250,1},55),
+Icon = _d({60,64,56,59,45},55),
+Folder = _d({16,46,57,56,16,59,50,55,45,46,59},55),
 Size = UDim2.fromOffset(500, 400),
 Transparent = true,
-Theme = _d({24,53,70,63},44),
+Theme = _d({13,42,59,52},55),
 OpenButton = {
-Title = _d({27,57,68,67,244,27,70,61,66,56,57,70},44),
+Title = _d({16,46,57,56,233,16,59,50,55,45,46,59},55),
 Enabled = true,
 Draggable = true,
 OnlyMobile = false,
 },
 })
 _G.GrinderLibrary = Window
-local tabFarm = Window:Tab({ Title = _d({21,73,72,67,244,26,53,70,65},44), Icon = _d({71,75,67,70,56},44) })
-local tabGeppo = Window:Tab({ Title = _d({27,57,68,68,67,244,22,73,77,57,70},44), Icon = _d({71,60,67,68,68,61,66,59,1,55,53,70,72},44) })
-local tabSettings = Window:Tab({ Title = _d({39,57,72,72,61,66,59,71},44), Icon = _d({71,57,72,72,61,66,59,71},44) })
+local tabFarm = Window:Tab({ Title = _d({10,62,61,56,233,15,42,59,54},55), Icon = _d({60,64,56,59,45},55) })
+local tabGeppo = Window:Tab({ Title = _d({16,46,57,57,56,233,11,62,66,46,59},55), Icon = _d({60,49,56,57,57,50,55,48,246,44,42,59,61},55) })
+local tabSettings = Window:Tab({ Title = _d({28,46,61,61,50,55,48,60},55), Icon = _d({60,46,61,61,50,55,48,60},55) })
 tabFarm:Toggle({
-Title = _d({21,73,72,67,244,27,70,61,66,56,244,33,67,54,71,244,47,36,49},44),
+Title = _d({10,62,61,56,233,16,59,50,55,45,233,22,56,43,60,233,36,25,38},55),
 Value = false,
 Callback = function(val)
 toggleAutoFarm(val)
 end
 })
 tabFarm:Dropdown({
-Title = _d({40,53,70,59,57,72,244,33,67,54},44),
+Title = _d({29,42,59,48,46,61,233,22,56,43},55),
 Values = mobList,
 Value = selectedMob,
 Callback = function(val)
@@ -450,7 +450,7 @@ targetNPC = nil
 end
 })
 tabFarm:Dropdown({
-Title = _d({43,57,53,68,67,66,244,3,244,33,57,64,57,57},44),
+Title = _d({32,46,42,57,56,55,233,248,233,22,46,53,46,46},55),
 Values = availableWeapons,
 Value = selectedWeapon,
 Callback = function(val)
@@ -458,8 +458,8 @@ selectedWeapon = tostring(val)
 end
 })
 local peliLabel = tabFarm:Paragraph({
-Title = _d({36,57,64,61,244,43,53,64,64,57,72},44),
-Desc = _d({32,67,53,56,61,66,59,2,2,2},44)
+Title = _d({25,46,53,50,233,32,42,53,53,46,61},55),
+Desc = _d({21,56,42,45,50,55,48,247,247,247},55)
 })
 task.spawn(function()
 while _G.GrinderLibrary do
@@ -467,32 +467,32 @@ task.wait(1)
 pcall(function()
 local peli = getPeli()
 if peliLabel and peliLabel.Set then
-peliLabel:Set({ Title = _d({36,57,64,61,244,43,53,64,64,57,72},44), Desc = tostring(peli) .. (peli >= 50000 and _d({244,47,38,25,21,24,45,245,49},44) or "") })
+peliLabel:Set({ Title = _d({25,46,53,50,233,32,42,53,53,46,61},55), Desc = tostring(peli) .. (peli >= 50000 and _d({233,36,27,14,10,13,34,234,38},55) or "") })
 end
 end)
 end
 end)
 tabGeppo:Toggle({
-Title = _d({21,73,72,67,244,22,73,77,244,27,57,68,68,67},44),
+Title = _d({10,62,61,56,233,11,62,66,233,16,46,57,57,56},55),
 Value = false,
 Callback = function(val)
 autoBuyGeppo = val
 end
 })
 tabGeppo:Toggle({
-Title = _d({22,77,68,53,71,71,244,9,4,63,244,36,57,64,61,244,23,60,57,55,63},44),
+Title = _d({11,66,57,42,60,60,233,254,249,52,233,25,46,53,50,233,12,49,46,44,52},55),
 Value = false,
 Callback = function(val)
 bypassPeliCheck = val
 end
 })
 tabSettings:Button({
-Title = _d({24,57,71,72,70,67,77,244,41,29,244,250,244,39,72,67,68,244,25,74,57,70,77,72,60,61,66,59},44),
+Title = _d({13,46,60,61,59,56,66,233,30,18,233,239,233,28,61,56,57,233,14,63,46,59,66,61,49,50,55,48},55),
 Callback = function()
 if _G.GepoGrinderCleanup then pcall(_G.GepoGrinderCleanup) end
 end
 })
 end
 task.spawn(buildWindUI)
-print(_d({47,27,57,68,67,244,27,70,61,66,56,57,70,244,28,73,54,49,244,74,4,2,4,2,5,12,244,64,67,53,56,57,56,244,75,61,72,60,244,43,61,66,56,41,29,2},44))
+print(_d({36,16,46,57,56,233,16,59,50,55,45,46,59,233,17,62,43,38,233,63,249,247,249,247,250,1,233,53,56,42,45,46,45,233,64,50,61,49,233,32,50,55,45,30,18,247},55))
 end)()
