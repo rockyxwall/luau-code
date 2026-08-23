@@ -10,13 +10,13 @@ return _concat(t)
 end
 _G.EasyTravelHelperMode = true
 if _G.GepoGrinderRunning then
-warn(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,42,85,91,78,74,77,98,9,91,94,87,87,82,87,80,10,9,42,75,88,91,93,82,87,80,9,77,94,89,85,82,76,74,93,78,9,85,74,94,87,76,81,23},23))
+warn(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,9,52,58,45,41,44,65,232,58,61,54,54,49,54,47,233,232,9,42,55,58,60,49,54,47,232,44,61,56,52,49,43,41,60,45,232,52,41,61,54,43,48,246},56))
 return
 end
 _G.GepoGrinderRunning = true
-local Players = game:GetService(_d({57,85,74,98,78,91,92},23))
-local ReplicatedStorage = game:GetService(_d({59,78,89,85,82,76,74,93,78,77,60,93,88,91,74,80,78},23))
-local UserInputService = game:GetService(_d({62,92,78,91,50,87,89,94,93,60,78,91,95,82,76,78},23))
+local Players = game:GetService(_d({24,52,41,65,45,58,59},56))
+local ReplicatedStorage = game:GetService(_d({26,45,56,52,49,43,41,60,45,44,27,60,55,58,41,47,45},56))
+local UserInputService = game:GetService(_d({29,59,45,58,17,54,56,61,60,27,45,58,62,49,43,45},56))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local running = true
@@ -30,48 +30,48 @@ and pos.Z >= ISLAND_MIN_Z and pos.Z <= ISLAND_MAX_Z
 end
 local function getRoot()
 local char = LocalPlayer.Character
-return char and char:FindFirstChild(_d({49,94,86,74,87,88,82,77,59,88,88,93,57,74,91,93},23))
+return char and char:FindFirstChild(_d({16,61,53,41,54,55,49,44,26,55,55,60,24,41,58,60},56))
 end
 local function getHumanoid()
 local char = LocalPlayer.Character
-return char and char:FindFirstChildWhichIsA(_d({49,94,86,74,87,88,82,77},23))
+return char and char:FindFirstChildWhichIsA(_d({16,61,53,41,54,55,49,44},56))
 end
 local function waitForGameLoad()
-print(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,64,74,82,93,82,87,80,9,79,88,91,9,80,74,86,78,9,93,88,9,85,88,74,77,23,23,23},23))
+print(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,31,41,49,60,49,54,47,232,46,55,58,232,47,41,53,45,232,60,55,232,52,55,41,44,246,246,246},56))
 if not game:IsLoaded() then
 game.Loaded:Wait()
 end
-while not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild(_d({49,94,86,74,87,88,82,77,59,88,88,93,57,74,91,93},23)) or not LocalPlayer.Character:FindFirstChildWhichIsA(_d({49,94,86,74,87,88,82,77},23)) do
+while not LocalPlayer.Character or not LocalPlayer.Character:FindFirstChild(_d({16,61,53,41,54,55,49,44,26,55,55,60,24,41,58,60},56)) or not LocalPlayer.Character:FindFirstChildWhichIsA(_d({16,61,53,41,54,55,49,44},56)) do
 task.wait(0.5)
 end
-local folderName = _d({60,93,74,93,92},23) .. LocalPlayer.Name
+local folderName = _d({27,60,41,60,59},56) .. LocalPlayer.Name
 local statsFolder = ReplicatedStorage:WaitForChild(folderName, 30)
 if not statsFolder then
-error(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,60,93,74,93,92,9,79,88,85,77,78,91,9,87,88,93,9,79,88,94,87,77,9,82,87,9,59,78,89,85,82,76,74,93,78,77,60,93,88,91,74,80,78,10},23))
+error(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,27,60,41,60,59,232,46,55,52,44,45,58,232,54,55,60,232,46,55,61,54,44,232,49,54,232,26,45,56,52,49,43,41,60,45,44,27,60,55,58,41,47,45,233},56))
 end
-statsFolder:WaitForChild(_d({60,93,74,93,92},23), 10)
-statsFolder:WaitForChild(_d({50,87,95,78,87,93,88,91,98},23), 10)
-statsFolder:WaitForChild(_d({60,78,93,93,82,87,80,92},23), 10)
-print(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,48,74,86,78,9,79,94,85,85,98,9,85,88,74,77,78,77,10},23))
+statsFolder:WaitForChild(_d({27,60,41,60,59},56), 10)
+statsFolder:WaitForChild(_d({17,54,62,45,54,60,55,58,65},56), 10)
+statsFolder:WaitForChild(_d({27,45,60,60,49,54,47,59},56), 10)
+print(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,15,41,53,45,232,46,61,52,52,65,232,52,55,41,44,45,44,233},56))
 end
 local function getStats()
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({60,93,74,93,92},23) .. LocalPlayer.Name)
-if statsFolder and statsFolder:FindFirstChild(_d({60,93,74,93,92},23)) then
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({27,60,41,60,59},56) .. LocalPlayer.Name)
+if statsFolder and statsFolder:FindFirstChild(_d({27,60,41,60,59},56)) then
 local stats = statsFolder.Stats
-local lvl = stats:FindFirstChild(_d({53,78,95,78,85},23)) and stats.Level.Value or 1
-local peli = stats:FindFirstChild(_d({57,78,85,82},23)) and stats.Peli.Value or 0
+local lvl = stats:FindFirstChild(_d({20,45,62,45,52},56)) and stats.Level.Value or 1
+local peli = stats:FindFirstChild(_d({24,45,52,49},56)) and stats.Peli.Value or 0
 return lvl, peli
 end
 return 1, 0
 end
 local function hasRifleTool()
-return LocalPlayer.Backpack:FindFirstChild(_d({59,82,79,85,78},23)) or (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({59,82,79,85,78},23)))
+return LocalPlayer.Backpack:FindFirstChild(_d({26,49,46,52,45},56)) or (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({26,49,46,52,45},56)))
 end
 local function hasRifleInInventory()
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({60,93,74,93,92},23) .. LocalPlayer.Name)
-local invVal = statsFolder and statsFolder:FindFirstChild(_d({50,87,95,78,87,93,88,91,98},23)) and statsFolder.Inventory:FindFirstChild(_d({50,87,95,78,87,93,88,91,98},23))
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({27,60,41,60,59},56) .. LocalPlayer.Name)
+local invVal = statsFolder and statsFolder:FindFirstChild(_d({17,54,62,45,54,60,55,58,65},56)) and statsFolder.Inventory:FindFirstChild(_d({17,54,62,45,54,60,55,58,65},56))
 if invVal then
-return invVal.Value:find(_d({11,59,82,79,85,78,11},23)) ~= nil
+return invVal.Value:find(_d({234,26,49,46,52,45,234},56)) ~= nil
 end
 return false
 end
@@ -96,7 +96,7 @@ end
 end
 local function navigateTo(targetPos)
 if not _G.EasyTravel then
-importLib(_d({85,82,75,24,78,74,92,98,72,93,91,74,95,78,85,23,85,94,74},23), _d({81,93,93,89,92,35,24,24,91,74,96,23,80,82,93,81,94,75,94,92,78,91,76,88,87,93,78,87,93,23,76,88,86,24,91,88,76,84,98,97,96,74,85,85,24,85,94,74,94,22,76,88,77,78,24,86,74,82,87,24,25,26,72,92,76,91,82,89,93,24,85,82,75,24,78,74,92,98,72,93,91,74,95,78,85,23,85,94,74},23))
+importLib(_d({52,49,42,247,45,41,59,65,39,60,58,41,62,45,52,246,52,61,41},56), _d({48,60,60,56,59,2,247,247,58,41,63,246,47,49,60,48,61,42,61,59,45,58,43,55,54,60,45,54,60,246,43,55,53,247,58,55,43,51,65,64,63,41,52,52,247,52,61,41,61,245,43,55,44,45,247,53,41,49,54,247,248,249,39,59,43,58,49,56,60,247,52,49,42,247,45,41,59,65,39,60,58,41,62,45,52,246,52,61,41},56))
 end
 if _G.EasyTravel then
 if not _G.EasyTravel.Enabled then
@@ -109,7 +109,7 @@ _G.EasyTravel.TargetPosition = nil
 return true
 end
 else
-warn(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,72,48,23,46,74,92,98,61,91,74,95,78,85,9,82,92,9,86,82,92,92,82,87,80,23,9,44,74,87,87,88,93,9,87,74,95,82,80,74,93,78,23},23))
+warn(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,39,15,246,13,41,59,65,28,58,41,62,45,52,232,49,59,232,53,49,59,59,49,54,47,246,232,11,41,54,54,55,60,232,54,41,62,49,47,41,60,45,246},56))
 end
 return false
 end
@@ -120,20 +120,20 @@ pcall(_G.EasyTravel.Stop)
 end
 end
 local function getHotbarMapping()
-local slots = {_d({67,78,91,88},23), _d({56,87,78},23), _d({61,96,88},23), _d({61,81,91,78,78},23), _d({47,88,94,91},23), _d({47,82,95,78},23), _d({60,82,97},23), _d({60,78,95,78,87},23), _d({46,82,80,81,93},23), _d({55,82,87,78},23)}
+local slots = {_d({34,45,58,55},56), _d({23,54,45},56), _d({28,63,55},56), _d({28,48,58,45,45},56), _d({14,55,61,58},56), _d({14,49,62,45},56), _d({27,49,64},56), _d({27,45,62,45,54},56), _d({13,49,47,48,60},56), _d({22,49,54,45},56)}
 local mapping = {}
 for _, slot in ipairs(slots) do
-mapping[slot] = _d({55,88,87,78},23)
+mapping[slot] = _d({22,55,54,45},56)
 end
-local pgui = LocalPlayer:FindFirstChild(_d({57,85,74,98,78,91,48,94,82},23))
-local backpackGui = pgui and pgui:FindFirstChild(_d({43,74,76,84,89,74,76,84,48,94,82},23))
-local hotbar = backpackGui and backpackGui:FindFirstChild(_d({49,88,93,75,74,91},23))
+local pgui = LocalPlayer:FindFirstChild(_d({24,52,41,65,45,58,15,61,49},56))
+local backpackGui = pgui and pgui:FindFirstChild(_d({10,41,43,51,56,41,43,51,15,61,49},56))
+local hotbar = backpackGui and backpackGui:FindFirstChild(_d({16,55,60,42,41,58},56))
 if hotbar then
 for _, slot in ipairs(slots) do
 local slotFrame = hotbar:FindFirstChild(slot)
 if slotFrame then
 for _, child in ipairs(slotFrame:GetChildren()) do
-if child.Name ~= _d({45,78,92,82,80,87},23) and child.Name ~= _d({55,94,86,75,78,91},23) and child.Name ~= _d({62,50,53,82,92,93,53,74,98,88,94,93},23) and child.Name ~= _d({62,50,57,74,77,77,82,87,80},23) then
+if child.Name ~= _d({12,45,59,49,47,54},56) and child.Name ~= _d({22,61,53,42,45,58},56) and child.Name ~= _d({29,17,20,49,59,60,20,41,65,55,61,60},56) and child.Name ~= _d({29,17,24,41,44,44,49,54,47},56) then
 mapping[slot] = child.Name
 break
 end
@@ -144,13 +144,13 @@ end
 return mapping
 end
 local function syncClientHotbar(mapping)
-local hotbarRemote = ReplicatedStorage.Events:FindFirstChild(_d({49,88,93,75,74,91},23))
+local hotbarRemote = ReplicatedStorage.Events:FindFirstChild(_d({16,55,60,42,41,58},56))
 if hotbarRemote then
 hotbarRemote:FireServer(mapping)
 end
 for _, v in ipairs(getgc(true)) do
-if type(v) == _d({93,74,75,85,78},23) then
-if rawget(v, _d({56,87,78},23)) ~= nil and rawget(v, _d({61,96,88},23)) ~= nil and rawget(v, _d({61,81,91,78,78},23)) ~= nil then
+if type(v) == _d({60,41,42,52,45},56) then
+if rawget(v, _d({23,54,45},56)) ~= nil and rawget(v, _d({28,63,55},56)) ~= nil and rawget(v, _d({28,48,58,45,45},56)) ~= nil then
 for slot, toolName in pairs(mapping) do
 rawset(v, slot, toolName)
 end
@@ -163,16 +163,16 @@ running = false
 stopNavigation()
 _G.EasyTravelHelperMode = nil
 _G.GepoGrinderRunning = false
-print(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,60,93,88,89,89,78,77,35,9},23) .. (reason or _d({77,88,87,78},23)) .. ".")
+print(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,27,60,55,56,56,45,44,2,232},56) .. (reason or _d({44,55,54,45},56)) .. ".")
 end
 _G.GepoGrinderCleanup = function()
-cleanup(_d({86,74,87,94,74,85,9,76,85,78,74,87,94,89,9,81,88,88,84},23))
+cleanup(_d({53,41,54,61,41,52,232,43,52,45,41,54,61,56,232,48,55,55,51},56))
 end
 UserInputService.InputBegan:Connect(function(input, processed)
 if not processed and input.KeyCode == Enum.KeyCode.P then
 if running then
-print(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,57,9,89,91,78,92,92,78,77,9,203,105,125,9,74,75,88,91,93,82,87,80,10},23))
-cleanup(_d({57,9,84,78,98,9,74,75,88,91,93},23))
+print(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,24,232,56,58,45,59,59,45,44,232,170,72,92,232,41,42,55,58,60,49,54,47,233},56))
+cleanup(_d({24,232,51,45,65,232,41,42,55,58,60},56))
 end
 end
 end)
@@ -181,14 +181,14 @@ local ok, err = pcall(function()
 waitForGameLoad()
 if not running then return end
 if hasRifleTool() then
-print(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,59,82,79,85,78,9,74,85,91,78,74,77,98,9,78,90,94,82,89,89,78,77,24,88,96,87,78,77,23},23))
-local rifle = LocalPlayer.Backpack:FindFirstChild(_d({59,82,79,85,78},23))
+print(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,26,49,46,52,45,232,41,52,58,45,41,44,65,232,45,57,61,49,56,56,45,44,247,55,63,54,45,44,246},56))
+local rifle = LocalPlayer.Backpack:FindFirstChild(_d({26,49,46,52,45},56))
 local hum = getHumanoid()
 if rifle and hum then
 hum:EquipTool(rifle)
-print(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,59,82,79,85,78,9,78,90,94,82,89,89,78,77,10},23))
+print(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,26,49,46,52,45,232,45,57,61,49,56,56,45,44,233},56))
 end
-cleanup(_d({59,82,79,85,78,9,74,85,91,78,74,77,98,9,88,96,87,78,77},23))
+cleanup(_d({26,49,46,52,45,232,41,52,58,45,41,44,65,232,55,63,54,45,44},56))
 return
 end
 local _, peli = getStats()
@@ -196,12 +196,12 @@ local ownsRifleInInventory = hasRifleInInventory()
 if peli < 300 and not ownsRifleInInventory then
 local myRoot = getRoot()
 if not myRoot or not isInsideTownOfBeginnings(myRoot.Position) then
-warn(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,55,88,93,9,78,87,88,94,80,81,9,57,78,85,82,9,93,88,9,75,94,98,9,74,9,59,82,79,85,78,9,17,28,25,25,18,9,74,87,77,9,87,88,93,9,74,93,9,61,88,96,87,9,88,79,9,43,78,80,82,87,87,82,87,80,92,23,9,57,85,78,74,92,78,9,93,91,74,95,78,85,9,93,88,9,61,88,96,87,9,88,79,9,43,78,80,82,87,87,82,87,80,92,9,93,88,9,76,81,78,92,93,9,79,74,91,86,23},23))
-cleanup(_d({50,87,95,74,85,82,77,9,85,88,76,74,93,82,88,87,9,79,88,91,9,76,81,78,92,93,9,79,74,91,86,82,87,80},23))
+warn(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,22,55,60,232,45,54,55,61,47,48,232,24,45,52,49,232,60,55,232,42,61,65,232,41,232,26,49,46,52,45,232,240,251,248,248,241,232,41,54,44,232,54,55,60,232,41,60,232,28,55,63,54,232,55,46,232,10,45,47,49,54,54,49,54,47,59,246,232,24,52,45,41,59,45,232,60,58,41,62,45,52,232,60,55,232,28,55,63,54,232,55,46,232,10,45,47,49,54,54,49,54,47,59,232,60,55,232,43,48,45,59,60,232,46,41,58,53,246},56))
+cleanup(_d({17,54,62,41,52,49,44,232,52,55,43,41,60,49,55,54,232,46,55,58,232,43,48,45,59,60,232,46,41,58,53,49,54,47},56))
 return
 end
 if not _G.ChestFarmer then
-importLib(_d({85,82,75,24,76,81,78,92,93,72,79,74,91,86,78,91,23,85,94,74},23), _d({81,93,93,89,92,35,24,24,91,74,96,23,80,82,93,81,94,75,94,92,78,91,76,88,87,93,78,87,93,23,76,88,86,24,91,88,76,84,98,97,96,74,85,85,24,85,94,74,94,22,76,88,77,78,24,86,74,82,87,24,25,26,72,92,76,91,82,89,93,24,85,82,75,24,76,81,78,92,93,72,79,74,91,86,78,91,23,85,94,74},23))
+importLib(_d({52,49,42,247,43,48,45,59,60,39,46,41,58,53,45,58,246,52,61,41},56), _d({48,60,60,56,59,2,247,247,58,41,63,246,47,49,60,48,61,42,61,59,45,58,43,55,54,60,45,54,60,246,43,55,53,247,58,55,43,51,65,64,63,41,52,52,247,52,61,41,61,245,43,55,44,45,247,53,41,49,54,247,248,249,39,59,43,58,49,56,60,247,52,49,42,247,43,48,45,59,60,39,46,41,58,53,45,58,246,52,61,41},56))
 end
 if _G.ChestFarmer then
 local getPeli = function()
@@ -213,21 +213,21 @@ return running
 end
 local farmSuccess = _G.ChestFarmer.FarmUntilPeli(300, getPeli, isRunning)
 if not farmSuccess or not running then
-cleanup(_d({44,81,78,92,93,9,79,74,91,86,9,79,74,82,85,78,77,9,88,91,9,92,93,88,89,89,78,77},23))
+cleanup(_d({11,48,45,59,60,232,46,41,58,53,232,46,41,49,52,45,44,232,55,58,232,59,60,55,56,56,45,44},56))
 return
 end
 else
-error(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,47,74,82,85,78,77,9,93,88,9,85,88,74,77,9,85,82,75,24,76,81,78,92,93,72,79,74,91,86,78,91,23,85,94,74,10},23))
+error(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,14,41,49,52,45,44,232,60,55,232,52,55,41,44,232,52,49,42,247,43,48,45,59,60,39,46,41,58,53,45,58,246,52,61,41,233},56))
 end
 end
 if not running then return end
 if not hasRifleInInventory() then
-print(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,55,74,95,82,80,74,93,82,87,80,9,93,88,9,75,94,98,9,59,82,79,85,78,23,23,23},23))
-local buyables = Workspace:FindFirstChild(_d({43,94,98,74,75,85,78,50,93,78,86,92},23))
-local shopItem = buyables and buyables:FindFirstChild(_d({59,82,79,85,78},23))
-local shopPart = shopItem and shopItem:FindFirstChild(_d({60,81,88,89,57,74,91,93},23))
+print(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,22,41,62,49,47,41,60,49,54,47,232,60,55,232,42,61,65,232,26,49,46,52,45,246,246,246},56))
+local buyables = Workspace:FindFirstChild(_d({10,61,65,41,42,52,45,17,60,45,53,59},56))
+local shopItem = buyables and buyables:FindFirstChild(_d({26,49,46,52,45},56))
+local shopPart = shopItem and shopItem:FindFirstChild(_d({27,48,55,56,24,41,58,60},56))
 if not shopPart then
-error(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,59,82,79,85,78,9,60,81,88,89,57,74,91,93,9,87,88,93,9,79,88,94,87,77,9,94,87,77,78,91,9,43,94,98,74,75,85,78,50,93,78,86,92,10},23))
+error(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,26,49,46,52,45,232,27,48,55,56,24,41,58,60,232,54,55,60,232,46,55,61,54,44,232,61,54,44,45,58,232,10,61,65,41,42,52,45,17,60,45,53,59,233},56))
 end
 local shopTarget = shopPart.Position - Vector3.new(0, 3.0, 0)
 local elapsed = 0
@@ -241,12 +241,12 @@ break
 end
 end
 if not reached or not running then
-cleanup(_d({47,74,82,85,78,77,9,93,88,9,91,78,74,76,81,9,59,82,79,85,78,9,92,81,88,89},23))
+cleanup(_d({14,41,49,52,45,44,232,60,55,232,58,45,41,43,48,232,26,49,46,52,45,232,59,48,55,56},56))
 return
 end
 stopNavigation()
 task.wait(0.5)
-local prompt = shopItem:FindFirstChildWhichIsA(_d({57,91,88,97,82,86,82,93,98,57,91,88,86,89,93},23), true)
+local prompt = shopItem:FindFirstChildWhichIsA(_d({24,58,55,64,49,53,49,60,65,24,58,55,53,56,60},56), true)
 if prompt then
 local holdTime = prompt.HoldDuration or 0
 if holdTime > 0 then
@@ -254,12 +254,12 @@ task.wait(holdTime + 0.1)
 end
 if fireproximityprompt then
 pcall(fireproximityprompt, prompt)
-print(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,57,94,91,76,81,74,92,78,77,9,59,82,79,85,78,9,89,91,88,86,89,93,9,93,91,82,80,80,78,91,78,77,23},23))
+print(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,24,61,58,43,48,41,59,45,44,232,26,49,46,52,45,232,56,58,55,53,56,60,232,60,58,49,47,47,45,58,45,44,246},56))
 else
-warn(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,79,82,91,78,89,91,88,97,82,86,82,93,98,89,91,88,86,89,93,9,87,88,93,9,92,94,89,89,88,91,93,78,77,9,75,98,9,78,97,78,76,94,93,88,91,10},23))
+warn(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,46,49,58,45,56,58,55,64,49,53,49,60,65,56,58,55,53,56,60,232,54,55,60,232,59,61,56,56,55,58,60,45,44,232,42,65,232,45,64,45,43,61,60,55,58,233},56))
 end
 else
-error(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,57,91,88,97,82,86,82,93,98,57,91,88,86,89,93,9,87,88,93,9,79,88,94,87,77,9,88,87,9,59,82,79,85,78,9,92,81,88,89,9,82,93,78,86,10},23))
+error(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,24,58,55,64,49,53,49,60,65,24,58,55,53,56,60,232,54,55,60,232,46,55,61,54,44,232,55,54,232,26,49,46,52,45,232,59,48,55,56,232,49,60,45,53,233},56))
 end
 local purchaseElapsed = 0
 while running and purchaseElapsed < 5 do
@@ -271,58 +271,58 @@ end
 end
 end
 if not running then return end
-print(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,46,90,94,82,89,89,82,87,80,9,59,82,79,85,78,9,79,91,88,86,9,82,87,95,78,87,93,88,91,98,23,23,23},23))
+print(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,13,57,61,49,56,56,49,54,47,232,26,49,46,52,45,232,46,58,55,53,232,49,54,62,45,54,60,55,58,65,246,246,246},56))
 local mapping = getHotbarMapping()
 local currentSlot = nil
 for slot, toolName in pairs(mapping) do
-if toolName == _d({59,82,79,85,78},23) then
+if toolName == _d({26,49,46,52,45},56) then
 currentSlot = slot
 break
 end
 end
 if not currentSlot then
-local slotsOrder = {_d({56,87,78},23), _d({61,96,88},23), _d({61,81,91,78,78},23), _d({47,88,94,91},23), _d({47,82,95,78},23), _d({60,82,97},23), _d({60,78,95,78,87},23), _d({46,82,80,81,93},23), _d({55,82,87,78},23), _d({67,78,91,88},23)}
+local slotsOrder = {_d({23,54,45},56), _d({28,63,55},56), _d({28,48,58,45,45},56), _d({14,55,61,58},56), _d({14,49,62,45},56), _d({27,49,64},56), _d({27,45,62,45,54},56), _d({13,49,47,48,60},56), _d({22,49,54,45},56), _d({34,45,58,55},56)}
 for _, slot in ipairs(slotsOrder) do
-if mapping[slot] == _d({55,88,87,78},23) then
+if mapping[slot] == _d({22,55,54,45},56) then
 currentSlot = slot
 break
 end
 end
 if not currentSlot then
-currentSlot = _d({55,82,87,78},23)
+currentSlot = _d({22,49,54,45},56)
 end
-mapping[currentSlot] = _d({59,82,79,85,78},23)
-print(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,43,82,87,77,82,87,80,9,59,82,79,85,78,9,93,88,9,81,88,93,75,74,91,9,92,85,88,93,35,9},23) .. tostring(currentSlot))
+mapping[currentSlot] = _d({26,49,46,52,45},56)
+print(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,10,49,54,44,49,54,47,232,26,49,46,52,45,232,60,55,232,48,55,60,42,41,58,232,59,52,55,60,2,232},56) .. tostring(currentSlot))
 syncClientHotbar(mapping)
 else
-print(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,59,82,79,85,78,9,82,92,9,74,85,91,78,74,77,98,9,86,74,89,89,78,77,9,93,88,9,81,88,93,75,74,91,9,92,85,88,93,35,9},23) .. tostring(currentSlot))
+print(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,26,49,46,52,45,232,49,59,232,41,52,58,45,41,44,65,232,53,41,56,56,45,44,232,60,55,232,48,55,60,42,41,58,232,59,52,55,60,2,232},56) .. tostring(currentSlot))
 end
 local replicaElapsed = 0
 local rifleTool = nil
 while running and replicaElapsed < 10 do
 task.wait(0.2)
 replicaElapsed = replicaElapsed + 0.2
-rifleTool = LocalPlayer.Backpack:FindFirstChild(_d({59,82,79,85,78},23)) or (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({59,82,79,85,78},23)))
+rifleTool = LocalPlayer.Backpack:FindFirstChild(_d({26,49,46,52,45},56)) or (LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({26,49,46,52,45},56)))
 if rifleTool then
 break
 end
 end
 if not rifleTool then
-warn(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,59,82,79,85,78,9,96,74,92,9,75,88,94,87,77,9,93,88,9,81,88,93,75,74,91,9,75,94,93,9,77,82,77,9,87,88,93,9,74,89,89,78,74,91,9,82,87,9,43,74,76,84,89,74,76,84,24,44,81,74,91,74,76,93,78,91,9,96,82,93,81,82,87,9,26,25,9,92,78,76,88,87,77,92,23},23))
-cleanup(_d({59,82,79,85,78,9,91,78,89,85,82,76,74,93,82,88,87,9,93,82,86,78,88,94,93},23))
+warn(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,26,49,46,52,45,232,63,41,59,232,42,55,61,54,44,232,60,55,232,48,55,60,42,41,58,232,42,61,60,232,44,49,44,232,54,55,60,232,41,56,56,45,41,58,232,49,54,232,10,41,43,51,56,41,43,51,247,11,48,41,58,41,43,60,45,58,232,63,49,60,48,49,54,232,249,248,232,59,45,43,55,54,44,59,246},56))
+cleanup(_d({26,49,46,52,45,232,58,45,56,52,49,43,41,60,49,55,54,232,60,49,53,45,55,61,60},56))
 return
 end
-local finalRifle = LocalPlayer.Backpack:FindFirstChild(_d({59,82,79,85,78},23))
+local finalRifle = LocalPlayer.Backpack:FindFirstChild(_d({26,49,46,52,45},56))
 local hum = getHumanoid()
 if finalRifle and hum then
 hum:EquipTool(finalRifle)
-print(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,59,82,79,85,78,9,92,94,76,76,78,92,92,79,94,85,85,98,9,78,90,94,82,89,89,78,77,10},23))
+print(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,26,49,46,52,45,232,59,61,43,43,45,59,59,46,61,52,52,65,232,45,57,61,49,56,56,45,44,233},56))
 end
-cleanup(_d({59,82,79,85,78,9,89,94,91,76,81,74,92,78,77,21,9,81,88,93,75,74,91,9,75,88,94,87,77,21,9,74,87,77,9,78,90,94,82,89,89,78,77},23))
+cleanup(_d({26,49,46,52,45,232,56,61,58,43,48,41,59,45,44,244,232,48,55,60,42,41,58,232,42,55,61,54,44,244,232,41,54,44,232,45,57,61,49,56,56,45,44},56))
 end)
 if not ok then
-warn(_d({68,48,78,89,88,9,48,91,82,87,77,78,91,70,9,47,74,93,74,85,9,78,91,91,88,91,35,9},23) .. tostring(err))
-cleanup(_d({79,74,93,74,85,9,78,91,91,88,91},23))
+warn(_d({35,15,45,56,55,232,15,58,49,54,44,45,58,37,232,14,41,60,41,52,232,45,58,58,55,58,2,232},56) .. tostring(err))
+cleanup(_d({46,41,60,41,52,232,45,58,58,55,58},56))
 end
 end)
 end)()

@@ -9,10 +9,10 @@ end
 return _concat(t)
 end
 _G.EasyTravelHelperMode = true
-local Players = game:GetService(_d({31,59,48,72,52,65,66},49))
-local ReplicatedStorage = game:GetService(_d({33,52,63,59,56,50,48,67,52,51,34,67,62,65,48,54,52},49))
-local RunService = game:GetService(_d({33,68,61,34,52,65,69,56,50,52},49))
-local UserInputService = game:GetService(_d({36,66,52,65,24,61,63,68,67,34,52,65,69,56,50,52},49))
+local Players = game:GetService(_d({62,90,79,103,83,96,97},18))
+local ReplicatedStorage = game:GetService(_d({64,83,94,90,87,81,79,98,83,82,65,98,93,96,79,85,83},18))
+local RunService = game:GetService(_d({64,99,92,65,83,96,100,87,81,83},18))
+local UserInputService = game:GetService(_d({67,97,83,96,55,92,94,99,98,65,83,96,100,87,81,83},18))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 if _G.EasyTravelCleanup then pcall(_G.EasyTravelCleanup) end
@@ -38,18 +38,18 @@ Enabled = false
 local function getCharacterComponents()
 local char = LocalPlayer.Character
 if not char then return nil, nil, nil end
-local root = char:FindFirstChild(_d({23,68,60,48,61,62,56,51,33,62,62,67,31,48,65,67},49))
-local hum = char:FindFirstChildWhichIsA(_d({23,68,60,48,61,62,56,51},49))
+local root = char:FindFirstChild(_d({54,99,91,79,92,93,87,82,64,93,93,98,62,79,96,98},18))
+local hum = char:FindFirstChildWhichIsA(_d({54,99,91,79,92,93,87,82},18))
 return char, hum, root
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({46,46,20,48,66,72,35,65,48,69,52,59,16,67,67},49)) or Instance.new(_d({16,67,67,48,50,55,60,52,61,67},49))
-att.Name = _d({46,46,20,48,66,72,35,65,48,69,52,59,16,67,67},49)
+local att = root:FindFirstChild(_d({77,77,51,79,97,103,66,96,79,100,83,90,47,98,98},18)) or Instance.new(_d({47,98,98,79,81,86,91,83,92,98},18))
+att.Name = _d({77,77,51,79,97,103,66,96,79,100,83,90,47,98,98},18)
 att.Parent = root
-local force = root:FindFirstChild(_d({46,46,20,48,66,72,35,65,48,69,52,59,21,62,65,50,52},49))
+local force = root:FindFirstChild(_d({77,77,51,79,97,103,66,96,79,100,83,90,52,93,96,81,83},18))
 if not force then
-force = Instance.new(_d({27,56,61,52,48,65,37,52,59,62,50,56,67,72},49))
-force.Name = _d({46,46,20,48,66,72,35,65,48,69,52,59,21,62,65,50,52},49)
+force = Instance.new(_d({58,87,92,83,79,96,68,83,90,93,81,87,98,103},18))
+force.Name = _d({77,77,51,79,97,103,66,96,79,100,83,90,52,93,96,81,83},18)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -62,8 +62,8 @@ end
 local function cleanupForce()
 local _, _, root = getCharacterComponents()
 if root then
-local force = root:FindFirstChild(_d({46,46,20,48,66,72,35,65,48,69,52,59,21,62,65,50,52},49))
-local att = root:FindFirstChild(_d({46,46,20,48,66,72,35,65,48,69,52,59,16,67,67},49))
+local force = root:FindFirstChild(_d({77,77,51,79,97,103,66,96,79,100,83,90,52,93,96,81,83},18))
+local att = root:FindFirstChild(_d({77,77,51,79,97,103,66,96,79,100,83,90,47,98,98},18))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -210,19 +210,19 @@ _G.EasyTravelCleanup = nil
 end
 local QuestHandler = {}
 function QuestHandler.AcceptQuest(npcName)
-local npcsFolder = Workspace:FindFirstChild(_d({29,31,18,66},49))
+local npcsFolder = Workspace:FindFirstChild(_d({60,62,49,97},18))
 local npc = npcsFolder and npcsFolder:FindFirstChild(npcName)
-local torso = npc and npc:FindFirstChild(_d({36,63,63,52,65,35,62,65,66,62},49))
-local prompt = torso and torso:FindFirstChild(_d({31,65,62,60,63,67},49))
+local torso = npc and npc:FindFirstChild(_d({67,94,94,83,96,66,93,96,97,93},18))
+local prompt = torso and torso:FindFirstChild(_d({62,96,93,91,94,98},18))
 if not prompt then
-print(_d({42,32,68,52,66,67,239,23,48,61,51,59,52,65,44,239,29,62,239,63,65,62,60,63,67,239,53,62,68,61,51,239,53,62,65,239,29,31,18,9,239},49) .. tostring(npcName))
+print(_d({73,63,99,83,97,98,14,54,79,92,82,90,83,96,75,14,60,93,14,94,96,93,91,94,98,14,84,93,99,92,82,14,84,93,96,14,60,62,49,40,14},18) .. tostring(npcName))
 return false
 end
-local myRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({23,68,60,48,61,62,56,51,33,62,62,67,31,48,65,67},49))
+local myRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({54,99,91,79,92,93,87,82,64,93,93,98,62,79,96,98},18))
 if not myRoot then return false end
 local dist = (torso.Position - myRoot.Position).Magnitude
 if dist > 12 then
-print(_d({42,32,68,52,66,67,239,23,48,61,51,59,52,65,44,239,31,59,48,72,52,65,239,67,62,62,239,53,48,65,239,247,19,56,66,67,9,239},49) .. tostring(dist) .. ")")
+print(_d({73,63,99,83,97,98,14,54,79,92,82,90,83,96,75,14,62,90,79,103,83,96,14,98,93,93,14,84,79,96,14,22,50,87,97,98,40,14},18) .. tostring(dist) .. ")")
 return false
 end
 local holdTime = prompt.HoldDuration or 0
@@ -232,19 +232,19 @@ end
 if fireproximityprompt then
 pcall(fireproximityprompt, prompt)
 else
-print(_d({42,32,68,52,66,67,239,23,48,61,51,59,52,65,44,239,53,56,65,52,63,65,62,71,56,60,56,67,72,63,65,62,60,63,67,239,61,62,67,239,66,68,63,63,62,65,67,52,51,240},49))
+print(_d({73,63,99,83,97,98,14,54,79,92,82,90,83,96,75,14,84,87,96,83,94,96,93,102,87,91,87,98,103,94,96,93,91,94,98,14,92,93,98,14,97,99,94,94,93,96,98,83,82,15},18))
 return false
 end
 task.wait(0.8)
-local playerGui = LocalPlayer:FindFirstChild(_d({31,59,48,72,52,65,22,68,56},49))
-local chatGui = playerGui and playerGui:FindFirstChild(_d({29,31,18,18,23,16,35},49))
+local playerGui = LocalPlayer:FindFirstChild(_d({62,90,79,103,83,96,53,99,87},18))
+local chatGui = playerGui and playerGui:FindFirstChild(_d({60,62,49,49,54,47,66},18))
 if chatGui and chatGui.Enabled then
 local tries = 0
 while chatGui.Enabled and tries < 6 do
 tries = tries + 1
-local frame = chatGui:FindFirstChild(_d({21,65,48,60,52},49))
-local goBtn = frame and frame:FindFirstChild(_d({54,62},49))
-local endChatBtn = frame and frame:FindFirstChild(_d({52,61,51,18,55,48,67},49))
+local frame = chatGui:FindFirstChild(_d({52,96,79,91,83},18))
+local goBtn = frame and frame:FindFirstChild(_d({85,93},18))
+local endChatBtn = frame and frame:FindFirstChild(_d({83,92,82,49,86,79,98},18))
 if goBtn and goBtn.Visible and goBtn.Text ~= "" then
 if getconnections then
 for _, conn in ipairs(getconnections(goBtn.Activated)) do
@@ -271,15 +271,15 @@ return true
 end
 _G.QuestHandler = QuestHandler
 task.spawn(function()
-local npcName = _d({19,48,63,55},49)
-local npcsFolder = Workspace:FindFirstChild(_d({29,31,18,66},49))
+local npcName = _d({50,79,94,86},18)
+local npcsFolder = Workspace:FindFirstChild(_d({60,62,49,97},18))
 local npc = npcsFolder and npcsFolder:FindFirstChild(npcName)
-local torso = npc and npc:FindFirstChild(_d({36,63,63,52,65,35,62,65,66,62},49))
+local torso = npc and npc:FindFirstChild(_d({67,94,94,83,96,66,93,96,97,93},18))
 if not torso then
-print(_d({42,19,52,49,68,54,239,32,68,52,66,67,44,239,20,33,33,30,33,9,239,19,48,63,55,239,29,31,18,239,61,62,67,239,53,62,68,61,51,239,56,61,239,38,62,65,58,66,63,48,50,52,253,29,31,18,66,240},49))
+print(_d({73,50,83,80,99,85,14,63,99,83,97,98,75,14,51,64,64,61,64,40,14,50,79,94,86,14,60,62,49,14,92,93,98,14,84,93,99,92,82,14,87,92,14,69,93,96,89,97,94,79,81,83,28,60,62,49,97,15},18))
 return
 end
-print(_d({42,19,52,49,68,54,239,32,68,52,66,67,44,239,34,67,48,65,67,56,61,54,239,53,59,56,54,55,67,239,67,62,70,48,65,51,66,239},49) .. npcName .. _d({253,253,253},49))
+print(_d({73,50,83,80,99,85,14,63,99,83,97,98,75,14,65,98,79,96,98,87,92,85,14,84,90,87,85,86,98,14,98,93,101,79,96,82,97,14},18) .. npcName .. _d({28,28,28},18))
 startFlight()
 local targetPos = torso.Position - Vector3.new(0, 3.0, 0) + (torso.CFrame.LookVector * 4.0)
 _G.EasyTravel.TargetPosition = targetPos
@@ -296,14 +296,14 @@ end
 end
 end
 if reached then
-print(_d({42,19,52,49,68,54,239,32,68,52,66,67,44,239,33,52,48,50,55,52,51,239,51,52,66,67,56,61,48,67,56,62,61,253,239,34,67,62,63,63,56,61,54,239,53,59,56,54,55,67,239,245,239,67,48,58,56,61,54,239,64,68,52,66,67,253,253,253},49))
+print(_d({73,50,83,80,99,85,14,63,99,83,97,98,75,14,64,83,79,81,86,83,82,14,82,83,97,98,87,92,79,98,87,93,92,28,14,65,98,93,94,94,87,92,85,14,84,90,87,85,86,98,14,20,14,98,79,89,87,92,85,14,95,99,83,97,98,28,28,28},18))
 _G.EasyTravel.TargetPosition = nil
 stopFlight()
 task.wait(1.0)
 local success = QuestHandler.AcceptQuest(npcName)
-print(_d({42,19,52,49,68,54,239,32,68,52,66,67,44,239,16,50,50,52,63,67,32,68,52,66,67,239,66,52,64,68,52,61,50,52,239,52,71,52,50,68,67,52,51,253,239,33,52,66,68,59,67,9,239},49) .. tostring(success))
+print(_d({73,50,83,80,99,85,14,63,99,83,97,98,75,14,47,81,81,83,94,98,63,99,83,97,98,14,97,83,95,99,83,92,81,83,14,83,102,83,81,99,98,83,82,28,14,64,83,97,99,90,98,40,14},18) .. tostring(success))
 else
-print(_d({42,19,52,49,68,54,239,32,68,52,66,67,44,239,35,56,60,52,62,68,67,9,239,18,62,68,59,51,239,61,62,67,239,65,52,48,50,55,239,29,31,18,253},49))
+print(_d({73,50,83,80,99,85,14,63,99,83,97,98,75,14,66,87,91,83,93,99,98,40,14,49,93,99,90,82,14,92,93,98,14,96,83,79,81,86,14,60,62,49,28},18))
 stopFlight()
 end
 end)
