@@ -11,15 +11,15 @@ end
 if _G.HoroFarmCleanup then
 pcall(_G.HoroFarmCleanup)
 end
-local Players = game:GetService(_d({26,54,43,67,47,60,61},54))
-local ReplicatedStorage = game:GetService(_d({28,47,58,54,51,45,43,62,47,46,29,62,57,60,43,49,47},54))
-local RunService = game:GetService(_d({28,63,56,29,47,60,64,51,45,47},54))
-local VIM = game:GetService(_d({32,51,60,62,63,43,54,19,56,58,63,62,23,43,56,43,49,47,60},54))
+local Players = game:GetService(_d({48,76,65,89,69,82,83},32))
+local ReplicatedStorage = game:GetService(_d({50,69,80,76,73,67,65,84,69,68,51,84,79,82,65,71,69},32))
+local RunService = game:GetService(_d({50,85,78,51,69,82,86,73,67,69},32))
+local VIM = game:GetService(_d({54,73,82,84,85,65,76,41,78,80,85,84,45,65,78,65,71,69,82},32))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local Rayfield = nil
 local rayfieldSources = {
-_d({50,62,62,58,61,4,249,249,60,43,65,248,49,51,62,50,63,44,63,61,47,60,45,57,56,62,47,56,62,248,45,57,55,249,60,57,45,53,67,66,65,43,54,54,249,28,43,67,48,51,47,54,46,249,55,43,51,56,249,61,57,63,60,45,47,248,54,63,43},54)
+_d({72,84,84,80,83,26,15,15,82,65,87,14,71,73,84,72,85,66,85,83,69,82,67,79,78,84,69,78,84,14,67,79,77,15,82,79,67,75,89,88,87,65,76,76,15,50,65,89,70,73,69,76,68,15,77,65,73,78,15,83,79,85,82,67,69,14,76,85,65},32)
 }
 for _, url in ipairs(rayfieldSources) do
 local success, result = pcall(function()
@@ -31,12 +31,12 @@ break
 end
 end
 if not Rayfield then
-error(_d({37,18,57,60,57,234,64,252,39,234,16,43,51,54,47,46,234,62,57,234,54,57,43,46,234,28,43,67,48,51,47,54,46,234,31,19,234,22,51,44,60,43,60,67,248},54))
+error(_d({59,40,79,82,79,0,86,18,61,0,38,65,73,76,69,68,0,84,79,0,76,79,65,68,0,50,65,89,70,73,69,76,68,0,53,41,0,44,73,66,82,65,82,89,14},32))
 end
 local Window = Rayfield:CreateWindow({
-Name = _d({18,57,60,57,234,18,57,60,57,234,36,247,16,43,60,55,234,64,252},54),
-LoadingTitle = _d({22,57,43,46,51,56,49,234,18,57,60,57,234,64,252,248,248,248},54),
-LoadingSubtitle = _d({29,51,54,47,56,62,234,11,51,55,234,25,58,62,51,55,51,68,47,46},54),
+Name = _d({40,79,82,79,0,40,79,82,79,0,58,13,38,65,82,77,0,86,18},32),
+LoadingTitle = _d({44,79,65,68,73,78,71,0,40,79,82,79,0,86,18,14,14,14},32),
+LoadingSubtitle = _d({51,73,76,69,78,84,0,33,73,77,0,47,80,84,73,77,73,90,69,68},32),
 ConfigurationSaving = { Enabled = false },
 KeySystem = false
 })
@@ -52,19 +52,19 @@ local lastZ = 0
 local lastC = 0
 local lastR = 0
 local statusLabel = nil
-local MainTab = Window:CreateTab(_d({11,63,62,57,234,16,43,60,55},54), 4483362458)
-local SkillTab = Window:CreateTab(_d({29,53,51,54,54,234,29,47,62,62,51,56,49,61},54), 4483362458)
+local MainTab = Window:CreateTab(_d({33,85,84,79,0,38,65,82,77},32), 4483362458)
+local SkillTab = Window:CreateTab(_d({51,75,73,76,76,0,51,69,84,84,73,78,71,83},32), 4483362458)
 local function getRoot()
 local char = LocalPlayer.Character
-return char and char:FindFirstChild(_d({18,63,55,43,56,57,51,46,28,57,57,62,26,43,60,62},54))
+return char and char:FindFirstChild(_d({40,85,77,65,78,79,73,68,50,79,79,84,48,65,82,84},32))
 end
 local function equipHoroTool()
-local bp = LocalPlayer:FindFirstChild(_d({12,43,45,53,58,43,45,53},54))
+local bp = LocalPlayer:FindFirstChild(_d({34,65,67,75,80,65,67,75},32))
 local char = LocalPlayer.Character
 if not char then return nil end
-local tool = char:FindFirstChild(_d({18,57,60,57,247,18,57,60,57},54)) or (bp and bp:FindFirstChild(_d({18,57,60,57,247,18,57,60,57},54)))
+local tool = char:FindFirstChild(_d({40,79,82,79,13,40,79,82,79},32)) or (bp and bp:FindFirstChild(_d({40,79,82,79,13,40,79,82,79},32)))
 if tool and tool.Parent ~= char then
-local hum = char:FindFirstChildWhichIsA(_d({18,63,55,43,56,57,51,46},54))
+local hum = char:FindFirstChildWhichIsA(_d({40,85,77,65,78,79,73,68},32))
 if hum then
 hum:EquipTool(tool)
 end
@@ -73,12 +73,12 @@ return tool
 end
 local function getBossPart(name)
 if not name or name == "" then return nil end
-local npts = Workspace:FindFirstChild(_d({24,26,13,61},54))
+local npts = Workspace:FindFirstChild(_d({46,48,35,83},32))
 if not npts then return nil end
 local boss = npts:FindFirstChild(name)
 if boss then
-local root = boss:FindFirstChild(_d({18,63,55,43,56,57,51,46,28,57,57,62,26,43,60,62},54))
-local hum = boss:FindFirstChildWhichIsA(_d({18,63,55,43,56,57,51,46},54))
+local root = boss:FindFirstChild(_d({40,85,77,65,78,79,73,68,50,79,79,84,48,65,82,84},32))
+local hum = boss:FindFirstChildWhichIsA(_d({40,85,77,65,78,79,73,68},32))
 if root and hum and hum.Health > 0 then
 return root
 end
@@ -96,9 +96,9 @@ mt.__index = newcclosure(function(self, key)
 if not checkcaller() and self == Mouse and _G.HoroAutoZLoop and _G.HoroSelectedBoss then
 local target = getBossPart(_G.HoroSelectedBoss)
 if target then
-if key == _d({18,51,62},54) then
+if key == _d({40,73,84},32) then
 return target.CFrame
-elseif key == _d({30,43,60,49,47,62},54) then
+elseif key == _d({52,65,82,71,69,84},32) then
 return target
 end
 end
@@ -108,25 +108,25 @@ end)
 if setreadonly then setreadonly(mt, true) elseif make_readonly then make_readonly(mt) end
 end)
 if not successHook then
-warn(_d({37,18,57,60,57,234,64,252,39,234,23,47,62,43,62,43,44,54,47,234,50,57,57,53,234,48,43,51,54,47,46,4,234},54) .. tostring(err))
+warn(_d({59,40,79,82,79,0,86,18,61,0,45,69,84,65,84,65,66,76,69,0,72,79,79,75,0,70,65,73,76,69,68,26,0},32) .. tostring(err))
 end
 end
 _G.HoroFarmCleanup = function()
 _G.HoroAutoZLoop = nil
 _G.HoroSelectedBoss = nil
 pcall(function() Rayfield:Destroy() end)
-print(_d({37,18,57,60,57,234,64,252,39,234,13,54,47,43,56,47,46,234,63,58,234,58,60,47,64,51,57,63,61,234,61,47,61,61,51,57,56,248},54))
+print(_d({59,40,79,82,79,0,86,18,61,0,35,76,69,65,78,69,68,0,85,80,0,80,82,69,86,73,79,85,83,0,83,69,83,83,73,79,78,14},32))
 end
 task.spawn(function()
 while _G.HoroAutoZLoop ~= nil do
 if _G.HoroAutoZLoop then
 local targetRoot = getBossPart(_G.HoroSelectedBoss)
 if not targetRoot then
-if statusLabel then statusLabel:Set(_d({29,62,43,62,63,61,4,234,33,43,51,62,51,56,49,234,48,57,60,234,12,57,61,61,234,29,58,43,65,56},54)) end
-print(_d({37,18,57,60,57,234,64,252,39,234,12,57,61,61},54), _G.HoroSelectedBoss, _d({51,61,234,56,57,62,234,61,58,43,65,56,47,46,248,234,33,43,51,62,51,56,49,248,248,248},54))
+if statusLabel then statusLabel:Set(_d({51,84,65,84,85,83,26,0,55,65,73,84,73,78,71,0,70,79,82,0,34,79,83,83,0,51,80,65,87,78},32)) end
+print(_d({59,40,79,82,79,0,86,18,61,0,34,79,83,83},32), _G.HoroSelectedBoss, _d({73,83,0,78,79,84,0,83,80,65,87,78,69,68,14,0,55,65,73,84,73,78,71,14,14,14},32))
 task.wait(5)
 else
-if statusLabel then statusLabel:Set(_d({29,62,43,62,63,61,4,234,28,63,56,56,51,56,49,234,13,57,55,44,57},54)) end
+if statusLabel then statusLabel:Set(_d({51,84,65,84,85,83,26,0,50,85,78,78,73,78,71,0,35,79,77,66,79},32)) end
 equipHoroTool()
 local comboStart = tick()
 local hollowsAttached = false
@@ -136,7 +136,7 @@ task.wait(0.05)
 VIM:SendKeyEvent(false, Enum.KeyCode.C, false, game)
 lastC = tick()
 hollowsAttached = true
-print(_d({37,18,57,60,57,234,64,252,39,234,16,51,60,47,46,234,13,234,242,21,43,55,51,53,43,68,47,243},54))
+print(_d({59,40,79,82,79,0,86,18,61,0,38,73,82,69,68,0,35,0,8,43,65,77,73,75,65,90,69,9},32))
 elseif useZ then
 VIM:SendKeyEvent(true, Enum.KeyCode.Z, false, game)
 task.wait(0.05)
@@ -149,7 +149,7 @@ task.wait(0.05)
 VIM:SendKeyEvent(false, Enum.KeyCode.Z, false, game)
 lastZ = tick()
 hollowsAttached = true
-print(_d({37,18,57,60,57,234,64,252,39,234,16,51,60,47,46,234,36,234,242,23,51,56,51,234,12,43,60,60,43,49,47,243},54))
+print(_d({59,40,79,82,79,0,86,18,61,0,38,73,82,69,68,0,58,0,8,45,73,78,73,0,34,65,82,82,65,71,69,9},32))
 end
 end
 if useE then
@@ -159,7 +159,7 @@ VIM:SendKeyEvent(true, Enum.KeyCode.E, false, game)
 task.wait(0.05)
 VIM:SendKeyEvent(false, Enum.KeyCode.E, false, game)
 lastE = tick()
-print(_d({37,18,57,60,57,234,64,252,39,234,16,51,60,47,46,234,15,234,242,29,62,63,56,243},54))
+print(_d({59,40,79,82,79,0,86,18,61,0,38,73,82,69,68,0,37,0,8,51,84,85,78,9},32))
 end
 end
 if useR and hollowsAttached then
@@ -168,7 +168,7 @@ VIM:SendKeyEvent(true, Enum.KeyCode.R, false, game)
 task.wait(0.05)
 VIM:SendKeyEvent(false, Enum.KeyCode.R, false, game)
 lastR = tick()
-print(_d({37,18,57,60,57,234,64,252,39,234,16,51,60,47,46,234,28,234,242,14,47,62,57,56,43,62,51,57,56,243},54))
+print(_d({59,40,79,82,79,0,86,18,61,0,38,73,82,69,68,0,50,0,8,36,69,84,79,78,65,84,73,79,78,9},32))
 end
 local baseCD = 5
 if useE then
@@ -178,7 +178,7 @@ baseCD = 10
 end
 local elapsed = tick() - comboStart
 local finalSleep = math.max(baseCD - elapsed, 1)
-if statusLabel then statusLabel:Set(_d({29,62,43,62,63,61,4,234,29,54,47,47,58,51,56,49,234,242},54) .. string.format(_d({239,248,251,48},54), finalSleep) .. _d({61,243},54)) end
+if statusLabel then statusLabel:Set(_d({51,84,65,84,85,83,26,0,51,76,69,69,80,73,78,71,0,8},32) .. string.format(_d({5,14,17,70},32), finalSleep) .. _d({83,9},32)) end
 task.wait(finalSleep)
 end
 else
@@ -186,26 +186,26 @@ task.wait(1)
 end
 end
 end)
-statusLabel = MainTab:CreateLabel(_d({29,62,43,62,63,61,4,234,19,46,54,47},54))
+statusLabel = MainTab:CreateLabel(_d({51,84,65,84,85,83,26,0,41,68,76,69},32))
 MainTab:CreateDropdown({
-Name = _d({29,47,54,47,45,62,234,12,57,61,61},54),
-Options = {_d({11,66,47,234,18,43,56,46,234,22,57,49,43,56},54), _d({12,43,56,46,51,62,234,12,57,61,61},54), _d({20,63,68,57,234,62,50,47,234,14,51,43,55,57,56,46,44,43,45,53},54)},
+Name = _d({51,69,76,69,67,84,0,34,79,83,83},32),
+Options = {_d({33,88,69,0,40,65,78,68,0,44,79,71,65,78},32), _d({34,65,78,68,73,84,0,34,79,83,83},32), _d({42,85,90,79,0,84,72,69,0,36,73,65,77,79,78,68,66,65,67,75},32)},
 CurrentOption = "",
 MultipleOptions = false,
 Callback = function(Option)
 _G.HoroSelectedBoss = Option[1] or Option
-print(_d({37,18,57,60,57,234,64,252,39,234,29,47,54,47,45,62,47,46,234,62,43,60,49,47,62,4},54), _G.HoroSelectedBoss)
+print(_d({59,40,79,82,79,0,86,18,61,0,51,69,76,69,67,84,69,68,0,84,65,82,71,69,84,26},32), _G.HoroSelectedBoss)
 end,
 })
 local AutoZToggle
 AutoZToggle = MainTab:CreateToggle({
-Name = _d({29,62,43,60,62,234,11,63,62,57,234,16,43,60,55},54),
+Name = _d({51,84,65,82,84,0,33,85,84,79,0,38,65,82,77},32),
 CurrentValue = false,
 Callback = function(Value)
 if Value and (not _G.HoroSelectedBoss or _G.HoroSelectedBoss == "") then
 Rayfield:Notify({
-Title = _d({29,47,54,47,45,62,234,12,57,61,61,234,28,47,59,63,51,60,47,46},54),
-Content = _d({35,57,63,234,55,63,61,62,234,61,47,54,47,45,62,234,43,234,44,57,61,61,234,48,51,60,61,62,234,44,47,48,57,60,47,234,47,56,43,44,54,51,56,49,234,11,63,62,57,234,16,43,60,55,235},54),
+Title = _d({51,69,76,69,67,84,0,34,79,83,83,0,50,69,81,85,73,82,69,68},32),
+Content = _d({57,79,85,0,77,85,83,84,0,83,69,76,69,67,84,0,65,0,66,79,83,83,0,70,73,82,83,84,0,66,69,70,79,82,69,0,69,78,65,66,76,73,78,71,0,33,85,84,79,0,38,65,82,77,1},32),
 Duration = 5,
 Image = 4483362458
 })
@@ -214,13 +214,13 @@ return
 end
 _G.HoroAutoZLoop = Value
 if not _G.HoroAutoZLoop then
-if statusLabel then statusLabel:Set(_d({29,62,43,62,63,61,4,234,19,46,54,47},54)) end
+if statusLabel then statusLabel:Set(_d({51,84,65,84,85,83,26,0,41,68,76,69},32)) end
 end
-print(_d({37,18,57,60,57,234,64,252,39,234,11,63,62,57,234,16,43,60,55,4},54), _G.HoroAutoZLoop)
+print(_d({59,40,79,82,79,0,86,18,61,0,33,85,84,79,0,38,65,82,77,26},32), _G.HoroAutoZLoop)
 end,
 })
 MainTab:CreateButton({
-Name = _d({14,47,61,62,60,57,67,234,31,19},54),
+Name = _d({36,69,83,84,82,79,89,0,53,41},32),
 Callback = function()
 _G.HoroFarmCleanup()
 end,
