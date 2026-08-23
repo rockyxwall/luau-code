@@ -12,42 +12,42 @@ _G.EasyTravelHelperMode = true
 if _G.GepoGrinderCleanup then
 pcall(_G.GepoGrinderCleanup)
 end
-local Players = game:GetService(_d({20,48,37,61,41,54,55},60))
-local ReplicatedStorage = game:GetService(_d({22,41,52,48,45,39,37,56,41,40,23,56,51,54,37,43,41},60))
-local RunService = game:GetService(_d({22,57,50,23,41,54,58,45,39,41},60))
-local VIM = game:GetService(_d({26,45,54,56,57,37,48,13,50,52,57,56,17,37,50,37,43,41,54},60))
-local UserInputService = game:GetService(_d({25,55,41,54,13,50,52,57,56,23,41,54,58,45,39,41},60))
+local Players = game:GetService(_d({56,84,73,97,77,90,91},24))
+local ReplicatedStorage = game:GetService(_d({58,77,88,84,81,75,73,92,77,76,59,92,87,90,73,79,77},24))
+local RunService = game:GetService(_d({58,93,86,59,77,90,94,81,75,77},24))
+local VIM = game:GetService(_d({62,81,90,92,93,73,84,49,86,88,93,92,53,73,86,73,79,77,90},24))
+local UserInputService = game:GetService(_d({61,91,77,90,49,86,88,93,92,59,77,90,94,81,75,77},24))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local autoGrind = true
 local hoverHeight = 6.5
-local targetMob = _d({6,37,50,40,45,56},60)
+local targetMob = _d({42,73,86,76,81,92},24)
 local function getRoot(player)
 local char = (player or LocalPlayer).Character
-return char and char:FindFirstChild(_d({12,57,49,37,50,51,45,40,22,51,51,56,20,37,54,56},60))
+return char and char:FindFirstChild(_d({48,93,85,73,86,87,81,76,58,87,87,92,56,73,90,92},24))
 end
 local function getHumanoid(player)
 local char = (player or LocalPlayer).Character
-return char and char:FindFirstChildWhichIsA(_d({12,57,49,37,50,51,45,40},60))
+return char and char:FindFirstChildWhichIsA(_d({48,93,85,73,86,87,81,76},24))
 end
 local function getStats()
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({23,56,37,56,55},60) .. LocalPlayer.Name)
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({59,92,73,92,91},24) .. LocalPlayer.Name)
 if statsFolder then
-local lvl = statsFolder:FindFirstChild(_d({23,56,37,56,55},60)) and statsFolder.Stats:FindFirstChild(_d({16,41,58,41,48},60)) and statsFolder.Stats.Level.Value or 1
-local peli = statsFolder:FindFirstChild(_d({23,56,37,56,55},60)) and statsFolder.Stats:FindFirstChild(_d({20,41,48,45},60)) and statsFolder.Stats.Peli.Value or 0
-local quest = statsFolder:FindFirstChild(_d({21,57,41,55,56},60)) and statsFolder.Quest:FindFirstChild(_d({7,57,54,54,41,50,56,21,57,41,55,56},60)) and statsFolder.Quest.CurrentQuest.Value or _d({18,51,50,41},60)
+local lvl = statsFolder:FindFirstChild(_d({59,92,73,92,91},24)) and statsFolder.Stats:FindFirstChild(_d({52,77,94,77,84},24)) and statsFolder.Stats.Level.Value or 1
+local peli = statsFolder:FindFirstChild(_d({59,92,73,92,91},24)) and statsFolder.Stats:FindFirstChild(_d({56,77,84,81},24)) and statsFolder.Stats.Peli.Value or 0
+local quest = statsFolder:FindFirstChild(_d({57,93,77,91,92},24)) and statsFolder.Quest:FindFirstChild(_d({43,93,90,90,77,86,92,57,93,77,91,92},24)) and statsFolder.Quest.CurrentQuest.Value or _d({54,87,86,77},24)
 return lvl, peli, quest
 end
-return 1, 0, _d({18,51,50,41},60)
+return 1, 0, _d({54,87,86,77},24)
 end
 local function getActiveTargetNPCs()
-local npcsFolder = Workspace:FindFirstChild(_d({18,20,7,55},60))
+local npcsFolder = Workspace:FindFirstChild(_d({54,56,43,91},24))
 if not npcsFolder then return {} end
 local targets = {}
 for _, npc in ipairs(npcsFolder:GetChildren()) do
 if npc.Name == targetMob then
-local root = npc:FindFirstChild(_d({12,57,49,37,50,51,45,40,22,51,51,56,20,37,54,56},60))
-local hum = npc:FindFirstChildWhichIsA(_d({12,57,49,37,50,51,45,40},60))
+local root = npc:FindFirstChild(_d({48,93,85,73,86,87,81,76,58,87,87,92,56,73,90,92},24))
+local hum = npc:FindFirstChildWhichIsA(_d({48,93,85,73,86,87,81,76},24))
 if root and hum and hum.Health > 0 then
 table.insert(targets, npc)
 end
@@ -58,7 +58,7 @@ end
 local function setNPCPartsCollision(npc, enabled)
 if not npc then return end
 for _, part in ipairs(npc:GetDescendants()) do
-if part:IsA(_d({6,37,55,41,20,37,54,56},60)) then
+if part:IsA(_d({42,73,91,77,56,73,90,92},24)) then
 part.CanCollide = enabled
 end
 end
@@ -90,7 +90,7 @@ end
 local function navigateTo(targetPos)
 if not _G.EasyTravel then
 pcall(function()
-loadstring(game:HttpGet(_d({44,56,56,52,55,254,243,243,54,37,59,242,43,45,56,44,57,38,57,55,41,54,39,51,50,56,41,50,56,242,39,51,49,243,54,51,39,47,61,60,59,37,48,48,243,48,57,37,57,241,39,51,40,41,243,49,37,45,50,243,244,245,35,55,39,54,45,52,56,243,48,45,38,243,41,37,55,61,35,56,54,37,58,41,48,242,48,57,37},60)))()
+loadstring(game:HttpGet(_d({80,92,92,88,91,34,23,23,90,73,95,22,79,81,92,80,93,74,93,91,77,90,75,87,86,92,77,86,92,22,75,87,85,23,90,87,75,83,97,96,95,73,84,84,23,84,93,73,93,21,75,87,76,77,23,85,73,81,86,23,24,25,71,91,75,90,81,88,92,23,84,81,74,23,77,73,91,97,71,92,90,73,94,77,84,22,84,93,73},24)))()
 end)
 end
 if _G.EasyTravel then
@@ -104,7 +104,7 @@ _G.EasyTravel.TargetPosition = nil
 return true
 end
 else
-warn(_d({31,11,41,52,51,228,11,54,45,50,40,41,54,33,228,35,11,242,9,37,55,61,24,54,37,58,41,48,228,45,55,228,49,45,55,55,45,50,43,242,228,20,48,41,37,55,41,228,41,50,55,57,54,41,228,41,37,55,61,35,56,54,37,58,41,48,242,48,57,37,228,45,55,228,54,57,50,50,45,50,43,228,42,45,54,55,56,242},60))
+warn(_d({67,47,77,88,87,8,47,90,81,86,76,77,90,69,8,71,47,22,45,73,91,97,60,90,73,94,77,84,8,81,91,8,85,81,91,91,81,86,79,22,8,56,84,77,73,91,77,8,77,86,91,93,90,77,8,77,73,91,97,71,92,90,73,94,77,84,22,84,93,73,8,81,91,8,90,93,86,86,81,86,79,8,78,81,90,91,92,22},24))
 end
 return false
 end
@@ -115,54 +115,25 @@ pcall(_G.EasyTravel.Stop)
 end
 end
 local function acceptQuest(npcName)
-local npcsFolder = Workspace:FindFirstChild(_d({18,20,7,55},60))
+local npcsFolder = Workspace:FindFirstChild(_d({54,56,43,91},24))
 local npc = npcsFolder and npcsFolder:FindFirstChild(npcName)
-local torso = npc and npc:FindFirstChild(_d({25,52,52,41,54,24,51,54,55,51},60))
-local prompt = torso and torso:FindFirstChild(_d({20,54,51,49,52,56},60))
-if not prompt then return false end
-local myRoot = getRoot()
-if not myRoot then return false end
+local torso = npc and npc:FindFirstChild(_d({61,88,88,77,90,60,87,90,91,87},24))
+if not torso then return false end
 local targetPos = torso.Position - Vector3.new(0, 3.0, 0) + (torso.CFrame.LookVector * 4.0)
 local reached = navigateTo(targetPos)
 if reached then
 stopNavigation()
 task.wait(0.5)
-local holdTime = prompt.HoldDuration or 0
-if holdTime > 0 then
-task.wait(holdTime + 0.1)
+if not _G.QuestHandler then
+pcall(function()
+loadstring(game:HttpGet(_d({80,92,92,88,91,34,23,23,90,73,95,22,79,81,92,80,93,74,93,91,77,90,75,87,86,92,77,86,92,22,75,87,85,23,90,87,75,83,97,96,95,73,84,84,23,84,93,73,93,21,75,87,76,77,23,85,73,81,86,23,24,25,71,91,75,90,81,88,92,23,84,81,74,23,89,93,77,91,92,71,80,73,86,76,84,77,90,22,84,93,73},24)))()
+end)
 end
-if fireproximityprompt then
-pcall(fireproximityprompt, prompt)
+if _G.QuestHandler then
+return _G.QuestHandler.AcceptQuest(npcName)
 else
-warn(_d({31,21,57,41,55,56,228,5,39,39,41,52,56,37,50,39,41,33,228,42,45,54,41,52,54,51,60,45,49,45,56,61,52,54,51,49,52,56,228,50,51,56,228,55,57,52,52,51,54,56,41,40,228,38,61,228,41,60,41,39,57,56,51,54,229},60))
+warn(_d({67,47,77,88,87,8,47,90,81,86,76,77,90,69,8,45,58,58,55,58,34,8,57,93,77,91,92,48,73,86,76,84,77,90,8,84,81,74,90,73,90,97,8,75,87,93,84,76,8,86,87,92,8,74,77,8,84,87,73,76,77,76,9},24))
 end
-task.wait(0.8)
-local playerGui = LocalPlayer:FindFirstChild(_d({20,48,37,61,41,54,11,57,45},60))
-local chatGui = playerGui and playerGui:FindFirstChild(_d({18,20,7,7,12,5,24},60))
-if chatGui and chatGui.Enabled then
-local tries = 0
-while chatGui.Enabled and tries < 6 do
-tries = tries + 1
-local frame = chatGui:FindFirstChild(_d({10,54,37,49,41},60))
-local goBtn = frame and frame:FindFirstChild(_d({43,51},60))
-local endChatBtn = frame and frame:FindFirstChild(_d({41,50,40,7,44,37,56},60))
-if goBtn and goBtn.Visible and goBtn.Text ~= "" then
-if getconnections then
-for _, conn in ipairs(getconnections(goBtn.MouseButton1Click)) do
-conn:Fire()
-end
-end
-elseif endChatBtn and endChatBtn.Visible then
-if getconnections then
-for _, conn in ipairs(getconnections(endChatBtn.MouseButton1Click)) do
-conn:Fire()
-end
-end
-end
-task.wait(0.8)
-end
-end
-return true
 end
 return false
 end
@@ -184,7 +155,7 @@ UserInputService.InputBegan:Connect(function(input, processed)
 if not processed then
 if input.KeyCode == Enum.KeyCode.P then
 toggleAutoFarm()
-print(_d({31,11,41,52,51,228,11,54,45,50,40,41,54,33,228,5,57,56,51,228,42,37,54,49,228,56,51,43,43,48,41,40,228,56,51,254,228},60) .. tostring(autoGrind))
+print(_d({67,47,77,88,87,8,47,90,81,86,76,77,90,69,8,41,93,92,87,8,78,73,90,85,8,92,87,79,79,84,77,76,8,92,87,34,8},24) .. tostring(autoGrind))
 end
 end
 end)
@@ -197,37 +168,37 @@ local myRoot = getRoot()
 local myHum = getHumanoid()
 if myRoot and myHum then
 local lvl, peli, quest = getStats()
-local hasRifle = LocalPlayer.Backpack:FindFirstChild(_d({22,45,42,48,41},60)) or LocalPlayer.Character:FindFirstChild(_d({22,45,42,48,41},60))
+local hasRifle = LocalPlayer.Backpack:FindFirstChild(_d({58,81,78,84,77},24)) or LocalPlayer.Character:FindFirstChild(_d({58,81,78,84,77},24))
 if lvl < 5 and peli < 300 and not hasRifle then
-targetMob = _d({6,37,50,40,45,56},60)
+targetMob = _d({42,73,86,76,81,92},24)
 if lvl < 3 then
-if quest == _d({18,51,50,41},60) then
-acceptQuest(_d({8,37,52,44},60))
+if quest == _d({54,87,86,77},24) then
+acceptQuest(_d({44,73,88,80},24))
 return
 end
 else
-if quest == _d({18,51,50,41},60) then
-acceptQuest(_d({23,37,54,37,44},60))
+if quest == _d({54,87,86,77},24) then
+acceptQuest(_d({59,73,90,73,80},24))
 return
 end
 end
 elseif lvl >= 5 and peli < 300 and not hasRifle then
-targetMob = _d({6,37,50,40,45,56,228,6,51,55,55},60)
-if quest == _d({18,51,50,41},60) then
-acceptQuest(_d({22,51,50,50,61},60))
+targetMob = _d({42,73,86,76,81,92,8,42,87,91,91},24)
+if quest == _d({54,87,86,77},24) then
+acceptQuest(_d({58,87,86,86,97},24))
 return
 end
 elseif peli >= 300 and not hasRifle then
-local buyables = Workspace:FindFirstChild(_d({6,57,61,37,38,48,41,13,56,41,49,55},60))
-local shopItem = buyables and buyables:FindFirstChild(_d({22,45,42,48,41},60))
-local shopPart = shopItem and shopItem:FindFirstChild(_d({23,44,51,52,20,37,54,56},60))
+local buyables = Workspace:FindFirstChild(_d({42,93,97,73,74,84,77,49,92,77,85,91},24))
+local shopItem = buyables and buyables:FindFirstChild(_d({58,81,78,84,77},24))
+local shopPart = shopItem and shopItem:FindFirstChild(_d({59,80,87,88,56,73,90,92},24))
 if shopPart then
 local targetPos = shopPart.Position - Vector3.new(0, 3.0, 0)
 local reached = navigateTo(targetPos)
 if reached then
 stopNavigation()
 task.wait(0.5)
-local prompt = shopItem:FindFirstChildWhichIsA(_d({20,54,51,60,45,49,45,56,61,20,54,51,49,52,56},60), true)
+local prompt = shopItem:FindFirstChildWhichIsA(_d({56,90,87,96,81,85,81,92,97,56,90,87,85,88,92},24), true)
 if prompt then
 local holdTime = prompt.HoldDuration or 0
 if holdTime > 0 then
@@ -236,7 +207,7 @@ end
 if fireproximityprompt then
 pcall(fireproximityprompt, prompt)
 else
-warn(_d({31,22,45,42,48,41,228,20,57,54,39,44,37,55,41,33,228,42,45,54,41,52,54,51,60,45,49,45,56,61,52,54,51,49,52,56,228,50,51,56,228,55,57,52,52,51,54,56,41,40,228,38,61,228,41,60,41,39,57,56,51,54,229},60))
+warn(_d({67,58,81,78,84,77,8,56,93,90,75,80,73,91,77,69,8,78,81,90,77,88,90,87,96,81,85,81,92,97,88,90,87,85,88,92,8,86,87,92,8,91,93,88,88,87,90,92,77,76,8,74,97,8,77,96,77,75,93,92,87,90,9},24))
 end
 task.wait(1.5)
 end
@@ -245,15 +216,15 @@ return
 end
 elseif hasRifle then
 stopNavigation()
-print(_d({31,11,41,52,51,228,11,54,45,50,40,41,54,33,228,22,45,42,48,41,228,52,57,54,39,44,37,55,41,40,229,228,23,56,37,54,56,41,54,228,13,55,48,37,50,40,228,52,54,51,43,54,41,55,55,45,51,50,228,39,51,49,52,48,41,56,41,40,242,228,27,37,45,56,45,50,43,228,42,51,54,228,10,45,55,44,49,37,50,228,7,37,58,41,228,56,54,37,58,41,48,228,52,44,37,55,41,242},60))
+print(_d({67,47,77,88,87,8,47,90,81,86,76,77,90,69,8,58,81,78,84,77,8,88,93,90,75,80,73,91,77,76,9,8,59,92,73,90,92,77,90,8,49,91,84,73,86,76,8,88,90,87,79,90,77,91,91,81,87,86,8,75,87,85,88,84,77,92,77,76,22,8,63,73,81,92,81,86,79,8,78,87,90,8,46,81,91,80,85,73,86,8,43,73,94,77,8,92,90,73,94,77,84,8,88,80,73,91,77,22},24))
 task.wait(5)
 return
 end
 local targets = getActiveTargetNPCs()
 local n = #targets
 if n > 0 then
-local bp = LocalPlayer:FindFirstChild(_d({6,37,39,47,52,37,39,47},60))
-local weaponTool = bp and bp:FindFirstChild(_d({17,41,48,41,41},60))
+local bp = LocalPlayer:FindFirstChild(_d({42,73,75,83,88,73,75,83},24))
+local weaponTool = bp and bp:FindFirstChild(_d({53,77,84,77,77},24))
 if weaponTool then
 myHum:EquipTool(weaponTool)
 end
@@ -261,8 +232,8 @@ if n > 1 then
 for i = 1, n - 1 do
 if not autoGrind then break end
 local npc = targets[i]
-local npcRoot = npc and npc:FindFirstChild(_d({12,57,49,37,50,51,45,40,22,51,51,56,20,37,54,56},60))
-if npcRoot and npc:FindFirstChildWhichIsA(_d({12,57,49,37,50,51,45,40},60)) and npc:FindFirstChildWhichIsA(_d({12,57,49,37,50,51,45,40},60)).Health > 0 then
+local npcRoot = npc and npc:FindFirstChild(_d({48,93,85,73,86,87,81,76,58,87,87,92,56,73,90,92},24))
+if npcRoot and npc:FindFirstChildWhichIsA(_d({48,93,85,73,86,87,81,76},24)) and npc:FindFirstChildWhichIsA(_d({48,93,85,73,86,87,81,76},24)).Health > 0 then
 pcall(setNPCPartsCollision, npc, false)
 local targetPos = npcRoot.Position + Vector3.new(0, hoverHeight, 0)
 local startTime = tick()
@@ -282,8 +253,8 @@ end
 end
 if autoGrind then
 local finalNpc = targets[n]
-local finalRoot = finalNpc and finalNpc:FindFirstChild(_d({12,57,49,37,50,51,45,40,22,51,51,56,20,37,54,56},60))
-if finalRoot and finalNpc:FindFirstChildWhichIsA(_d({12,57,49,37,50,51,45,40},60)) and finalNpc:FindFirstChildWhichIsA(_d({12,57,49,37,50,51,45,40},60)).Health > 0 then
+local finalRoot = finalNpc and finalNpc:FindFirstChild(_d({48,93,85,73,86,87,81,76,58,87,87,92,56,73,90,92},24))
+if finalRoot and finalNpc:FindFirstChildWhichIsA(_d({48,93,85,73,86,87,81,76},24)) and finalNpc:FindFirstChildWhichIsA(_d({48,93,85,73,86,87,81,76},24)).Health > 0 then
 pcall(setNPCPartsCollision, finalNpc, false)
 local finalTargetPos = finalRoot.Position + Vector3.new(0, hoverHeight, 0)
 local startTime = tick()
@@ -293,7 +264,7 @@ navigateTo(finalTargetPos)
 task.wait(0.05)
 end
 local combatStartTime = tick()
-while autoGrind and finalNpc.Parent and finalRoot and finalNpc:FindFirstChildWhichIsA(_d({12,57,49,37,50,51,45,40},60)) and finalNpc:FindFirstChildWhichIsA(_d({12,57,49,37,50,51,45,40},60)).Health > 0 and (tick() - combatStartTime) < 8 do
+while autoGrind and finalNpc.Parent and finalRoot and finalNpc:FindFirstChildWhichIsA(_d({48,93,85,73,86,87,81,76},24)) and finalNpc:FindFirstChildWhichIsA(_d({48,93,85,73,86,87,81,76},24)).Health > 0 and (tick() - combatStartTime) < 8 do
 finalTargetPos = finalRoot.Position + Vector3.new(0, hoverHeight, 0)
 local dir = (finalTargetPos - myRoot.Position)
 if dir.Magnitude < 10 then
@@ -325,13 +296,13 @@ end)
 _G.GepoGrinderCleanup = function()
 autoGrind = nil
 stopNavigation()
-local npcsFolder = Workspace:FindFirstChild(_d({18,20,7,55},60))
+local npcsFolder = Workspace:FindFirstChild(_d({54,56,43,91},24))
 if npcsFolder then
 for _, npc in ipairs(npcsFolder:GetChildren()) do
 pcall(setNPCPartsCollision, npc, true)
 end
 end
-print(_d({31,11,41,52,51,228,11,54,45,50,40,41,54,33,228,7,48,41,37,50,41,40,228,57,52,228,52,54,41,58,45,51,57,55,228,55,41,55,55,45,51,50,242},60))
+print(_d({67,47,77,88,87,8,47,90,81,86,76,77,90,69,8,43,84,77,73,86,77,76,8,93,88,8,88,90,77,94,81,87,93,91,8,91,77,91,91,81,87,86,22},24))
 end
-print(_d({31,11,41,52,51,228,11,54,45,50,40,41,54,33,228,5,57,56,51,49,37,56,41,40,228,55,39,54,45,52,56,228,48,51,37,40,41,40,242,228,20,54,41,55,55,228,235,20,235,228,56,51,228,56,51,43,43,48,41,228,37,57,56,51,228,42,37,54,49,242},60))
+print(_d({67,47,77,88,87,8,47,90,81,86,76,77,90,69,8,41,93,92,87,85,73,92,77,76,8,91,75,90,81,88,92,8,84,87,73,76,77,76,22,8,56,90,77,91,91,8,15,56,15,8,92,87,8,92,87,79,79,84,77,8,73,93,92,87,8,78,73,90,85,22},24))
 end)()
