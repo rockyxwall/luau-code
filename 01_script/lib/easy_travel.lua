@@ -11,10 +11,10 @@ end
 if _G.EasyTravelCleanup then
 pcall(_G.EasyTravelCleanup)
 end
-local Players = game:GetService(_d({16,44,33,57,37,50,51},64))
-local ReplicatedStorage = game:GetService(_d({18,37,48,44,41,35,33,52,37,36,19,52,47,50,33,39,37},64))
-local RunService = game:GetService(_d({18,53,46,19,37,50,54,41,35,37},64))
-local UserInputService = game:GetService(_d({21,51,37,50,9,46,48,53,52,19,37,50,54,41,35,37},64))
+local Players = game:GetService(_d({62,90,79,103,83,96,97},18))
+local ReplicatedStorage = game:GetService(_d({64,83,94,90,87,81,79,98,83,82,65,98,93,96,79,85,83},18))
+local RunService = game:GetService(_d({64,99,92,65,83,96,100,87,81,83},18))
+local UserInputService = game:GetService(_d({67,97,83,96,55,92,94,99,98,65,83,96,100,87,81,83},18))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local FLIGHT_SPEED = 70.0
@@ -39,18 +39,18 @@ Enabled = false
 local function getCharacterComponents()
 local char = LocalPlayer.Character
 if not char then return nil, nil, nil end
-local root = char:FindFirstChild(_d({8,53,45,33,46,47,41,36,18,47,47,52,16,33,50,52},64))
-local hum = char:FindFirstChildWhichIsA(_d({8,53,45,33,46,47,41,36},64))
+local root = char:FindFirstChild(_d({54,99,91,79,92,93,87,82,64,93,93,98,62,79,96,98},18))
+local hum = char:FindFirstChildWhichIsA(_d({54,99,91,79,92,93,87,82},18))
 return char, hum, root
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({31,31,5,33,51,57,20,50,33,54,37,44,1,52,52},64)) or Instance.new(_d({1,52,52,33,35,40,45,37,46,52},64))
-att.Name = _d({31,31,5,33,51,57,20,50,33,54,37,44,1,52,52},64)
+local att = root:FindFirstChild(_d({77,77,51,79,97,103,66,96,79,100,83,90,47,98,98},18)) or Instance.new(_d({47,98,98,79,81,86,91,83,92,98},18))
+att.Name = _d({77,77,51,79,97,103,66,96,79,100,83,90,47,98,98},18)
 att.Parent = root
-local force = root:FindFirstChild(_d({31,31,5,33,51,57,20,50,33,54,37,44,6,47,50,35,37},64))
+local force = root:FindFirstChild(_d({77,77,51,79,97,103,66,96,79,100,83,90,52,93,96,81,83},18))
 if not force then
-force = Instance.new(_d({12,41,46,37,33,50,22,37,44,47,35,41,52,57},64))
-force.Name = _d({31,31,5,33,51,57,20,50,33,54,37,44,6,47,50,35,37},64)
+force = Instance.new(_d({58,87,92,83,79,96,68,83,90,93,81,87,98,103},18))
+force.Name = _d({77,77,51,79,97,103,66,96,79,100,83,90,52,93,96,81,83},18)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -63,8 +63,8 @@ end
 local function cleanupForce()
 local _, _, root = getCharacterComponents()
 if root then
-local force = root:FindFirstChild(_d({31,31,5,33,51,57,20,50,33,54,37,44,6,47,50,35,37},64))
-local att = root:FindFirstChild(_d({31,31,5,33,51,57,20,50,33,54,37,44,1,52,52},64))
+local force = root:FindFirstChild(_d({77,77,51,79,97,103,66,96,79,100,83,90,52,93,96,81,83},18))
+local att = root:FindFirstChild(_d({77,77,51,79,97,103,66,96,79,100,83,90,47,98,98},18))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -223,7 +223,7 @@ if moveDir.Magnitude > 0 then
 currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + moveDir)
 end
 end)
-print(_d({27,5,33,51,57,224,20,50,33,54,37,44,29,224,6,44,41,39,40,52,224,37,46,33,34,44,37,36,238},64))
+print(_d({73,51,79,97,103,14,66,96,79,100,83,90,75,14,52,90,87,85,86,98,14,83,92,79,80,90,83,82,28},18))
 end
 local function stopFlight()
 flightEnabled = false
@@ -233,7 +233,7 @@ loopConnection:Disconnect();
 loopConnection = nil;
 end
 cleanupForce()
-print(_d({27,5,33,51,57,224,20,50,33,54,37,44,29,224,6,44,41,39,40,52,224,36,41,51,33,34,44,37,36,238},64))
+print(_d({73,51,79,97,103,14,66,96,79,100,83,90,75,14,52,90,87,85,86,98,14,82,87,97,79,80,90,83,82,28},18))
 end
 _G.EasyTravel.Start = startFlight
 _G.EasyTravel.Stop = stopFlight
@@ -262,12 +262,12 @@ inputConnection = nil
 end
 _G.EasyTravel = nil
 _G.EasyTravelCleanup = nil
-print(_d({27,5,33,51,57,224,20,50,33,54,37,44,29,224,3,47,45,48,44,37,52,37,44,57,224,53,46,44,47,33,36,37,36,224,33,46,36,224,35,44,37,33,46,37,36,224,53,48,224,51,35,50,41,48,52,224,51,52,33,52,37,238},64))
+print(_d({73,51,79,97,103,14,66,96,79,100,83,90,75,14,49,93,91,94,90,83,98,83,90,103,14,99,92,90,93,79,82,83,82,14,79,92,82,14,81,90,83,79,92,83,82,14,99,94,14,97,81,96,87,94,98,14,97,98,79,98,83,28},18))
 end
 if _G.EasyTravelHelperMode then
-print(_d({27,5,33,51,57,224,20,50,33,54,37,44,29,224,12,47,33,36,37,36,224,41,46,224,40,37,44,48,37,50,224,45,47,36,37,238,224,11,37,57,34,47,33,50,36,224,41,46,48,53,52,51,224,36,41,51,33,34,44,37,36,238},64))
+print(_d({73,51,79,97,103,14,66,96,79,100,83,90,75,14,58,93,79,82,83,82,14,87,92,14,86,83,90,94,83,96,14,91,93,82,83,28,14,57,83,103,80,93,79,96,82,14,87,92,94,99,98,97,14,82,87,97,79,80,90,83,82,28},18))
 else
-print(_d({27,5,33,51,57,224,20,50,33,54,37,44,29,224,12,47,33,36,37,36,238,224,16,50,37,51,51,224,231,16,231,224,52,47,224,52,47,39,39,44,37,224,38,44,41,39,40,52,238,224,31,7,238,5,33,51,57,20,50,33,54,37,44,224,1,16,9,224,50,37,39,41,51,52,37,50,37,36,238},64))
+print(_d({73,51,79,97,103,14,66,96,79,100,83,90,75,14,58,93,79,82,83,82,28,14,62,96,83,97,97,14,21,62,21,14,98,93,14,98,93,85,85,90,83,14,84,90,87,85,86,98,28,14,77,53,28,51,79,97,103,66,96,79,100,83,90,14,47,62,55,14,96,83,85,87,97,98,83,96,83,82,28},18))
 end
 return _G.EasyTravel
 end)()
