@@ -11,27 +11,27 @@ end
 if _G.HoroFarmCleanup then
 pcall(_G.HoroFarmCleanup)
 end
-local Players = game:GetService(_d({64,92,81,105,85,98,99},16))
-local ReplicatedStorage = game:GetService(_d({66,85,96,92,89,83,81,100,85,84,67,100,95,98,81,87,85},16))
-local RunService = game:GetService(_d({66,101,94,67,85,98,102,89,83,85},16))
-local VIM = game:GetService(_d({70,89,98,100,101,81,92,57,94,96,101,100,61,81,94,81,87,85,98},16))
+local Players = game:GetService(_d({50,78,67,91,71,84,85},30))
+local ReplicatedStorage = game:GetService(_d({52,71,82,78,75,69,67,86,71,70,53,86,81,84,67,73,71},30))
+local RunService = game:GetService(_d({52,87,80,53,71,84,88,75,69,71},30))
+local VIM = game:GetService(_d({56,75,84,86,87,67,78,43,80,82,87,86,47,67,80,67,73,71,84},30))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local Camera = Workspace.CurrentCamera
 local Rayfield = nil
 local success, result = pcall(function()
-return loadstring(game:HttpGet(_d({88,100,100,96,99,42,31,31,98,81,103,30,87,89,100,88,101,82,101,99,85,98,83,95,94,100,85,94,100,30,83,95,93,31,98,95,83,91,105,104,103,81,92,92,31,66,81,105,86,89,85,92,84,31,93,81,89,94,31,99,95,101,98,83,85,30,92,101,81},16)))()
+return loadstring(game:HttpGet(_d({74,86,86,82,85,28,17,17,84,67,89,16,73,75,86,74,87,68,87,85,71,84,69,81,80,86,71,80,86,16,69,81,79,17,84,81,69,77,91,90,89,67,78,78,17,52,67,91,72,75,71,78,70,17,79,67,75,80,17,85,81,87,84,69,71,16,78,87,67},30)))()
 end)
 if success and result then
 Rayfield = result
 end
 if not Rayfield then
-error(_d({75,51,95,93,96,81,83,100,16,56,101,82,77,16,54,81,89,92,85,84,16,100,95,16,92,95,81,84,16,66,81,105,86,89,85,92,84,16,69,57,16,60,89,82,98,81,98,105,30},16))
+error(_d({61,37,81,79,82,67,69,86,2,42,87,68,63,2,40,67,75,78,71,70,2,86,81,2,78,81,67,70,2,52,67,91,72,75,71,78,70,2,55,43,2,46,75,68,84,67,84,91,16},30))
 end
 local Window = Rayfield:CreateWindow({
-Name = _d({56,95,98,95,16,56,95,98,95,16,74,29,54,81,98,93,16,102,33},16),
-LoadingTitle = _d({60,95,81,84,89,94,87,16,56,95,98,95,16,74,16,60,95,95,96,30,30,30},16),
-LoadingSubtitle = _d({63,96,100,89,93,89,106,85,84},16),
+Name = _d({42,81,84,81,2,42,81,84,81,2,60,15,40,67,84,79,2,88,19},30),
+LoadingTitle = _d({46,81,67,70,75,80,73,2,42,81,84,81,2,60,2,46,81,81,82,16,16,16},30),
+LoadingSubtitle = _d({49,82,86,75,79,75,92,71,70},30),
 ConfigurationSaving = { Enabled = false },
 KeySystem = false
 })
@@ -40,18 +40,18 @@ local autoZLoop = false
 local loopDelay = 10.5
 local checkSpawnInterval = 60
 local cameraHeight = 30.0
-local MainTab = Window:CreateTab(_d({49,101,100,95,16,54,81,98,93},16), 4483362458)
+local MainTab = Window:CreateTab(_d({35,87,86,81,2,40,67,84,79},30), 4483362458)
 local function getRoot()
 local char = LocalPlayer.Character
-return char and char:FindFirstChild(_d({56,101,93,81,94,95,89,84,66,95,95,100,64,81,98,100},16))
+return char and char:FindFirstChild(_d({42,87,79,67,80,81,75,70,52,81,81,86,50,67,84,86},30))
 end
 local function equipHoroTool()
-local bp = LocalPlayer:FindFirstChild(_d({50,81,83,91,96,81,83,91},16))
+local bp = LocalPlayer:FindFirstChild(_d({36,67,69,77,82,67,69,77},30))
 local char = LocalPlayer.Character
 if not char then return nil end
-local tool = char:FindFirstChild(_d({56,95,98,95,29,56,95,98,95},16)) or (bp and bp:FindFirstChild(_d({56,95,98,95,29,56,95,98,95},16)))
+local tool = char:FindFirstChild(_d({42,81,84,81,15,42,81,84,81},30)) or (bp and bp:FindFirstChild(_d({42,81,84,81,15,42,81,84,81},30)))
 if tool and tool.Parent ~= char then
-local hum = char:FindFirstChildWhichIsA(_d({56,101,93,81,94,95,89,84},16))
+local hum = char:FindFirstChildWhichIsA(_d({42,87,79,67,80,81,75,70},30))
 if hum then
 hum:EquipTool(tool)
 end
@@ -59,12 +59,12 @@ end
 return tool
 end
 local function getBossPart(name)
-local npts = Workspace:FindFirstChild(_d({62,64,51,99},16))
+local npts = Workspace:FindFirstChild(_d({48,50,37,85},30))
 if not npts then return nil end
 local boss = npts:FindFirstChild(name)
 if boss then
-local root = boss:FindFirstChild(_d({56,101,93,81,94,95,89,84,66,95,95,100,64,81,98,100},16))
-local hum = boss:FindFirstChildWhichIsA(_d({56,101,93,81,94,95,89,84},16))
+local root = boss:FindFirstChild(_d({42,87,79,67,80,81,75,70,52,81,81,86,50,67,84,86},30))
+local hum = boss:FindFirstChildWhichIsA(_d({42,87,79,67,80,81,75,70},30))
 if root and hum and hum.Health > 0 then
 return root
 end
@@ -74,7 +74,7 @@ end
 local cameraBound = false
 local savedCameraCF = nil
 local savedCameraType = nil
-local BIND_NAME = _d({56,95,98,95,51,81,93,85,98,81,60,95,83,91},16)
+local BIND_NAME = _d({42,81,84,81,37,67,79,71,84,67,46,81,69,77},30)
 local function lockCameraToBoss(targetRoot)
 if not savedCameraCF then
 savedCameraCF = Camera.CFrame
@@ -83,7 +83,7 @@ end
 if not cameraBound then
 cameraBound = true
 RunService:BindToRenderStep(BIND_NAME, Enum.RenderPriority.Camera.Value + 1, function()
-if targetRoot and targetRoot.Parent and targetRoot.Parent:FindFirstChildWhichIsA(_d({56,101,93,81,94,95,89,84},16)) and targetRoot.Parent:FindFirstChildWhichIsA(_d({56,101,93,81,94,95,89,84},16)).Health > 0 then
+if targetRoot and targetRoot.Parent and targetRoot.Parent:FindFirstChildWhichIsA(_d({42,87,79,67,80,81,75,70},30)) and targetRoot.Parent:FindFirstChildWhichIsA(_d({42,87,79,67,80,81,75,70},30)).Health > 0 then
 Camera.CameraType = Enum.CameraType.Scriptable
 Camera.CFrame = CFrame.lookAt(targetRoot.Position + Vector3.new(0, cameraHeight, 0), targetRoot.Position)
 else
@@ -119,7 +119,7 @@ _G.HoroFarmCleanup = function()
 autoZLoop = nil
 unlockCamera()
 pcall(function() Rayfield:Destroy() end)
-print(_d({75,56,95,98,95,16,74,29,54,81,98,93,77,16,51,92,85,81,94,85,84,16,101,96,16,96,98,85,102,89,95,101,99,16,99,85,99,99,89,95,94,30},16))
+print(_d({61,42,81,84,81,2,60,15,40,67,84,79,63,2,37,78,71,67,80,71,70,2,87,82,2,82,84,71,88,75,81,87,85,2,85,71,85,85,75,81,80,16},30))
 end
 task.spawn(function()
 while autoZLoop ~= nil do
@@ -127,7 +127,7 @@ task.wait(1)
 if autoZLoop then
 local targetRoot = getBossPart(selectedBoss)
 if not targetRoot then
-print(_d({75,56,95,98,95,16,74,29,54,81,98,93,77,16,50,95,99,99},16), selectedBoss, _d({89,99,16,94,95,100,16,99,96,81,103,94,85,84,30,16,71,81,89,100,89,94,87},16), checkSpawnInterval, _d({99,85,83,95,94,84,99,30,30,30},16))
+print(_d({61,42,81,84,81,2,60,15,40,67,84,79,63,2,36,81,85,85},30), selectedBoss, _d({75,85,2,80,81,86,2,85,82,67,89,80,71,70,16,2,57,67,75,86,75,80,73},30), checkSpawnInterval, _d({85,71,69,81,80,70,85,16,16,16},30))
 unlockCamera()
 task.wait(checkSpawnInterval)
 else
@@ -148,16 +148,16 @@ task.wait(0.1)
 VIM:SendKeyEvent(true, Enum.KeyCode.Z, false, game)
 task.wait(0.05)
 VIM:SendKeyEvent(false, Enum.KeyCode.Z, false, game)
-print(_d({75,56,95,98,95,16,74,29,54,81,98,93,77,16,56,95,102,85,98,85,84,16,81,94,84,16,86,89,98,85,84,16,74,16,81,100},16), selectedBoss)
+print(_d({61,42,81,84,81,2,60,15,40,67,84,79,63,2,42,81,88,71,84,71,70,2,67,80,70,2,72,75,84,71,70,2,60,2,67,86},30), selectedBoss)
 else
-warn(_d({75,56,95,98,95,16,74,29,54,81,98,93,77,16,54,81,89,92,85,84,16,100,95,16,96,98,95,90,85,83,100,16,100,81,98,87,85,100,16,100,95,16,102,89,85,103,96,95,98,100,30},16))
+warn(_d({61,42,81,84,81,2,60,15,40,67,84,79,63,2,40,67,75,78,71,70,2,86,81,2,82,84,81,76,71,69,86,2,86,67,84,73,71,86,2,86,81,2,88,75,71,89,82,81,84,86,16},30))
 end
 else
-print(_d({75,56,95,98,95,16,74,29,54,81,98,93,77,16,68,81,98,87,85,100,16,92,95,99,100,16,95,98,16,84,89,85,84,16,84,101,98,89,94,87,16,84,85,92,81,105,30},16))
+print(_d({61,42,81,84,81,2,60,15,40,67,84,79,63,2,54,67,84,73,71,86,2,78,81,85,86,2,81,84,2,70,75,71,70,2,70,87,84,75,80,73,2,70,71,78,67,91,16},30))
 end
 end
 else
-warn(_d({75,56,95,98,95,16,74,29,54,81,98,93,77,16,23,56,95,98,95,29,56,95,98,95,23,16,100,95,95,92,16,94,95,100,16,86,95,101,94,84,16,89,94,16,82,81,83,91,96,81,83,91,16,95,98,16,83,88,81,98,81,83,100,85,98,17},16))
+warn(_d({61,42,81,84,81,2,60,15,40,67,84,79,63,2,9,42,81,84,81,15,42,81,84,81,9,2,86,81,81,78,2,80,81,86,2,72,81,87,80,70,2,75,80,2,68,67,69,77,82,67,69,77,2,81,84,2,69,74,67,84,67,69,86,71,84,3},30))
 end
 task.wait(loopDelay)
 end
@@ -167,24 +167,24 @@ end
 end
 end)
 MainTab:CreateDropdown({
-Name = _d({67,85,92,85,83,100,16,50,95,99,99},16),
-Options = {_d({49,104,85,16,56,81,94,84,16,60,95,87,81,94},16), _d({50,81,94,84,89,100,16,50,95,99,99},16), _d({58,101,106,95,16,100,88,85,16,52,89,81,93,95,94,84,82,81,83,91},16)},
+Name = _d({53,71,78,71,69,86,2,36,81,85,85},30),
+Options = {_d({35,90,71,2,42,67,80,70,2,46,81,73,67,80},30), _d({36,67,80,70,75,86,2,36,81,85,85},30), _d({44,87,92,81,2,86,74,71,2,38,75,67,79,81,80,70,68,67,69,77},30)},
 CurrentOption = "",
 MultipleOptions = false,
 Callback = function(Option)
 selectedBoss = Option[1] or Option
-print(_d({75,56,95,98,95,16,74,29,54,81,98,93,77,16,67,85,92,85,83,100,85,84,16,100,81,98,87,85,100,42},16), selectedBoss)
+print(_d({61,42,81,84,81,2,60,15,40,67,84,79,63,2,53,71,78,71,69,86,71,70,2,86,67,84,73,71,86,28},30), selectedBoss)
 end,
 })
 local AutoZToggle
 AutoZToggle = MainTab:CreateToggle({
-Name = _d({49,101,100,95,16,74,16,60,95,95,96},16),
+Name = _d({35,87,86,81,2,60,2,46,81,81,82},30),
 CurrentValue = false,
 Callback = function(Value)
 if Value and (not selectedBoss or selectedBoss == "") then
 Rayfield:Notify({
-Title = _d({67,85,92,85,83,100,16,50,95,99,99,16,66,85,97,101,89,98,85,84},16),
-Content = _d({73,95,101,16,93,101,99,100,16,99,85,92,85,83,100,16,81,16,82,95,99,99,16,86,89,98,99,100,16,82,85,86,95,98,85,16,85,94,81,82,92,89,94,87,16,49,101,100,95,16,74,16,60,95,95,96,17},16),
+Title = _d({53,71,78,71,69,86,2,36,81,85,85,2,52,71,83,87,75,84,71,70},30),
+Content = _d({59,81,87,2,79,87,85,86,2,85,71,78,71,69,86,2,67,2,68,81,85,85,2,72,75,84,85,86,2,68,71,72,81,84,71,2,71,80,67,68,78,75,80,73,2,35,87,86,81,2,60,2,46,81,81,82,3},30),
 Duration = 5,
 Image = 4483362458
 })
@@ -195,11 +195,11 @@ autoZLoop = Value
 if not autoZLoop then
 unlockCamera()
 end
-print(_d({75,56,95,98,95,16,74,29,54,81,98,93,77,16,49,101,100,95,16,74,16,60,95,95,96,42},16), autoZLoop)
+print(_d({61,42,81,84,81,2,60,15,40,67,84,79,63,2,35,87,86,81,2,60,2,46,81,81,82,28},30), autoZLoop)
 end,
 })
 MainTab:CreateSlider({
-Name = _d({60,95,95,96,16,52,85,92,81,105,16,24,67,85,83,95,94,84,99,25},16),
+Name = _d({46,81,81,82,2,38,71,78,67,91,2,10,53,71,69,81,80,70,85,11},30),
 Range = {10, 30},
 Increment = 0.5,
 Suffix = "s",
@@ -209,18 +209,18 @@ loopDelay = Value
 end,
 })
 MainTab:CreateSlider({
-Name = _d({51,81,93,85,98,81,16,56,85,89,87,88,100},16),
+Name = _d({37,67,79,71,84,67,2,42,71,75,73,74,86},30),
 Range = {10, 60},
 Increment = 1,
-Suffix = _d({16,99,100,101,84,99},16),
+Suffix = _d({2,85,86,87,70,85},30),
 CurrentValue = 30,
 Callback = function(Value)
 cameraHeight = Value
-print(_d({75,56,95,98,95,16,74,29,54,81,98,93,77,16,51,81,93,85,98,81,16,88,85,89,87,88,100,16,101,96,84,81,100,85,84,16,100,95,42},16), cameraHeight)
+print(_d({61,42,81,84,81,2,60,15,40,67,84,79,63,2,37,67,79,71,84,67,2,74,71,75,73,74,86,2,87,82,70,67,86,71,70,2,86,81,28},30), cameraHeight)
 end,
 })
 MainTab:CreateButton({
-Name = _d({52,85,99,100,98,95,105,16,69,57},16),
+Name = _d({38,71,85,86,84,81,91,2,55,43},30),
 Callback = function()
 _G.HoroFarmCleanup()
 end,
