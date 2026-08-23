@@ -8,8 +8,8 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local PathfindingService = game:GetService(_d({36,53,72,60,58,61,66,56,61,66,59,39,57,70,74,61,55,57},44))
-local Players = game:GetService(_d({36,64,53,77,57,70,71},44))
+local PathfindingService = game:GetService(_d({33,50,69,57,55,58,63,53,58,63,56,36,54,67,71,58,52,54},47))
+local Players = game:GetService(_d({33,61,50,74,54,67,68},47))
 local LocalPlayer = Players.LocalPlayer
 local SafeNavigator = {
 IsNavigating = false,
@@ -17,8 +17,8 @@ TargetPosition = nil,
 }
 local function GetCharacter()
 local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-local humanoid = character:WaitForChild(_d({28,73,65,53,66,67,61,56},44), 5)
-local rootPart = character:WaitForChild(_d({28,73,65,53,66,67,61,56,38,67,67,72,36,53,70,72},44), 5)
+local humanoid = character:WaitForChild(_d({25,70,62,50,63,64,58,53},47), 5)
+local rootPart = character:WaitForChild(_d({25,70,62,50,63,64,58,53,35,64,64,69,33,50,67,69},47), 5)
 return character, humanoid, rootPart
 end
 function SafeNavigator.Stop()
@@ -33,7 +33,7 @@ SafeNavigator.Stop()
 task.wait(0.05)
 local character, humanoid, rootPart = GetCharacter()
 if not character or not humanoid or not rootPart then
-warn(_d({47,39,53,58,57,34,53,74,61,59,53,72,67,70,49,244,33,61,71,71,61,66,59,244,55,60,53,70,53,55,72,57,70,244,55,67,65,68,67,66,57,66,72,71,2},44))
+warn(_d({44,36,50,55,54,31,50,71,58,56,50,69,64,67,46,241,30,58,68,68,58,63,56,241,52,57,50,67,50,52,69,54,67,241,52,64,62,65,64,63,54,63,69,68,255},47))
 return
 end
 SafeNavigator.IsNavigating = true
@@ -76,7 +76,7 @@ task.wait(math.random(15, 35) / 1000)
 end
 end
 SafeNavigator.IsNavigating = false
-if onComplete and type(onComplete) == _d({58,73,66,55,72,61,67,66},44) then
+if onComplete and type(onComplete) == _d({55,70,63,52,69,58,64,63},47) then
 onComplete()
 end
 end)
