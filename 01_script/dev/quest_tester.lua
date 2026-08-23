@@ -8,23 +8,40 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({48,76,65,89,69,82,83},32))
+local Players = game:GetService(_d({64,92,81,105,85,98,99},16))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
-if not _G.QuestHandler then
+local function importLib(localPath, rawUrl)
+local loaded = false
+if isfile and readfile then
 pcall(function()
-loadstring(game:HttpGet(_d({72,84,84,80,83,26,15,15,82,65,87,14,71,73,84,72,85,66,85,83,69,82,67,79,78,84,69,78,84,14,67,79,77,15,82,79,67,75,89,88,87,65,76,76,15,76,85,65,85,13,67,79,68,69,15,77,65,73,78,15,16,17,63,83,67,82,73,80,84,15,76,73,66,15,81,85,69,83,84,63,72,65,78,68,76,69,82,14,76,85,65},32)))()
+if isfile(localPath) then
+local content = readfile(localPath)
+if content and content ~= "" then
+loadstring(content)()
+loaded = true
+end
+end
 end)
 end
+if not loaded then
+pcall(function()
+loadstring(game:HttpGet(rawUrl))()
+end)
+end
+end
+if not _G.QuestHandler then
+importLib(_d({92,89,82,31,97,101,85,99,100,79,88,81,94,84,92,85,98,30,92,101,81},16), _d({88,100,100,96,99,42,31,31,98,81,103,30,87,89,100,88,101,82,101,99,85,98,83,95,94,100,85,94,100,30,83,95,93,31,98,95,83,91,105,104,103,81,92,92,31,92,101,81,101,29,83,95,84,85,31,93,81,89,94,31,32,33,79,99,83,98,89,96,100,31,92,89,82,31,97,101,85,99,100,79,88,81,94,84,92,85,98,30,92,101,81},16))
+end
 local function getNearestNPC()
-local myRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({40,85,77,65,78,79,73,68,50,79,79,84,48,65,82,84},32))
+local myRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({56,101,93,81,94,95,89,84,66,95,95,100,64,81,98,100},16))
 if not myRoot then return nil end
-local npcsFolder = Workspace:FindFirstChild(_d({46,48,35,83},32))
+local npcsFolder = Workspace:FindFirstChild(_d({62,64,51,99},16))
 if not npcsFolder then return nil end
 local nearest, minDist = nil, 12
 for _, npc in ipairs(npcsFolder:GetChildren()) do
-local torso = npc:FindFirstChild(_d({53,80,80,69,82,52,79,82,83,79},32))
-local prompt = torso and torso:FindFirstChild(_d({48,82,79,77,80,84},32))
+local torso = npc:FindFirstChild(_d({69,96,96,85,98,68,95,98,99,95},16))
+local prompt = torso and torso:FindFirstChild(_d({64,98,95,93,96,100},16))
 if prompt then
 local dist = (torso.Position - myRoot.Position).Magnitude
 if dist < minDist then
@@ -38,13 +55,13 @@ end
 local npc = getNearestNPC()
 if npc then
 if _G.QuestHandler then
-print(_d({59,49,85,69,83,84,0,52,69,83,84,69,82,61,0,41,78,86,79,75,73,78,71,0,83,72,65,82,69,68,0,49,85,69,83,84,40,65,78,68,76,69,82,0,70,79,82,0,46,48,35,26,0},32) .. npc.Name)
+print(_d({75,65,101,85,99,100,16,68,85,99,100,85,98,77,16,57,94,102,95,91,89,94,87,16,99,88,81,98,85,84,16,65,101,85,99,100,56,81,94,84,92,85,98,16,86,95,98,16,62,64,51,42,16},16) .. npc.Name)
 local success = _G.QuestHandler.AcceptQuest(npc.Name)
-print(_d({59,49,85,69,83,84,0,52,69,83,84,69,82,61,0,38,73,78,73,83,72,69,68,0,83,69,81,85,69,78,67,69,14,0,50,69,83,85,76,84,26,0},32) .. tostring(success))
+print(_d({75,65,101,85,99,100,16,68,85,99,100,85,98,77,16,54,89,94,89,99,88,85,84,16,99,85,97,101,85,94,83,85,30,16,66,85,99,101,92,100,42,16},16) .. tostring(success))
 else
-warn(_d({59,49,85,69,83,84,0,52,69,83,84,69,82,61,0,37,50,50,47,50,26,0,49,85,69,83,84,40,65,78,68,76,69,82,0,76,73,66,82,65,82,89,0,67,79,85,76,68,0,78,79,84,0,66,69,0,76,79,65,68,69,68,1},32))
+warn(_d({75,65,101,85,99,100,16,68,85,99,100,85,98,77,16,53,66,66,63,66,42,16,65,101,85,99,100,56,81,94,84,92,85,98,16,92,89,82,98,81,98,105,16,83,95,101,92,84,16,94,95,100,16,82,85,16,92,95,81,84,85,84,17},16))
 end
 else
-print(_d({59,49,85,69,83,84,0,52,69,83,84,69,82,61,0,46,79,0,81,85,69,83,84,0,46,48,35,0,70,79,85,78,68,0,87,73,84,72,73,78,0,17,18,0,83,84,85,68,83,14},32))
+print(_d({75,65,101,85,99,100,16,68,85,99,100,85,98,77,16,62,95,16,97,101,85,99,100,16,62,64,51,16,86,95,101,94,84,16,103,89,100,88,89,94,16,33,34,16,99,100,101,84,99,30},16))
 end
 end)()
