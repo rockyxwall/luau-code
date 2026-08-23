@@ -8,25 +8,25 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({57,85,74,98,78,91,92},23))
-local RunService = game:GetService(_d({59,94,87,60,78,91,95,82,76,78},23))
-local PathfindingService = game:GetService(_d({57,74,93,81,79,82,87,77,82,87,80,60,78,91,95,82,76,78},23))
-local TweenService = game:GetService(_d({61,96,78,78,87,60,78,91,95,82,76,78},23))
-local UserInputService = game:GetService(_d({62,92,78,91,50,87,89,94,93,60,78,91,95,82,76,78},23))
+local Players = game:GetService(_d({24,52,41,65,45,58,59},56))
+local RunService = game:GetService(_d({26,61,54,27,45,58,62,49,43,45},56))
+local PathfindingService = game:GetService(_d({24,41,60,48,46,49,54,44,49,54,47,27,45,58,62,49,43,45},56))
+local TweenService = game:GetService(_d({28,63,45,45,54,27,45,58,62,49,43,45},56))
+local UserInputService = game:GetService(_d({29,59,45,58,17,54,56,61,60,27,45,58,62,49,43,45},56))
 local LocalPlayer = Players.LocalPlayer
 local PathRecorder = {
 IsRecording = false,
 IsReplaying = false,
 RecordedPoints = {},
-ReplayMode = _d({60,93,78,74,85,93,81},23),
+ReplayMode = _d({27,60,45,41,52,60,48},56),
 RecordConnection = nil,
 LastRecordTime = 0,
 TotalRecordTime = 0,
 }
 local function GetCharacter()
 local character = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-local humanoid = character:WaitForChild(_d({49,94,86,74,87,88,82,77},23), 5)
-local rootPart = character:WaitForChild(_d({49,94,86,74,87,88,82,77,59,88,88,93,57,74,91,93},23), 5)
+local humanoid = character:WaitForChild(_d({16,61,53,41,54,55,49,44},56), 5)
+local rootPart = character:WaitForChild(_d({16,61,53,41,54,55,49,44,26,55,55,60,24,41,58,60},56), 5)
 return character, humanoid, rootPart
 end
 function PathRecorder.StartRecording()
@@ -81,7 +81,7 @@ if dist <= 3.5 then
 return true
 end
 if statusCallback then
-statusCallback(string.format(_d({42,85,82,80,87,82,87,80,9,93,88,9,92,93,74,91,93,9,17,14,23,26,79,86,9,74,96,74,98,18,23,23,23},23), dist))
+statusCallback(string.format(_d({9,52,49,47,54,49,54,47,232,60,55,232,59,60,41,58,60,232,240,237,246,249,46,53,232,41,63,41,65,241,246,246,246},56), dist))
 end
 humanoid:MoveTo(targetPos)
 local startTime = os.clock()
@@ -109,7 +109,7 @@ end
 end
 function PathRecorder.StartReplay(reverse, statusCallback)
 if PathRecorder.IsRecording or #PathRecorder.RecordedPoints == 0 then
-if statusCallback then statusCallback(_d({55,88,9,91,78,76,88,91,77,78,77,9,89,74,93,81,9,74,95,74,82,85,74,75,85,78,10},23)) end
+if statusCallback then statusCallback(_d({22,55,232,58,45,43,55,58,44,45,44,232,56,41,60,48,232,41,62,41,49,52,41,42,52,45,233},56)) end
 return
 end
 PathRecorder.IsReplaying = true
@@ -135,13 +135,13 @@ end
 pointsProcessed = pointsProcessed + 1
 local pt = points[currentIndex]
 if statusCallback then
-local modeText = reverse and _d({59,78,95,78,91,92,78,9,59,78,89,85,74,98},23) or _d({59,78,89,85,74,98},23)
-statusCallback(string.format(_d({14,92,35,9,14,77,24,14,77,9,89,93,92},23), modeText, pointsProcessed, totalPoints))
+local modeText = reverse and _d({26,45,62,45,58,59,45,232,26,45,56,52,41,65},56) or _d({26,45,56,52,41,65},56)
+statusCallback(string.format(_d({237,59,2,232,237,44,247,237,44,232,56,60,59},56), modeText, pointsProcessed, totalPoints))
 end
 if pt.Jump then
 humanoid.Jump = true
 end
-if PathRecorder.ReplayMode == _d({60,93,78,74,85,93,81},23) then
+if PathRecorder.ReplayMode == _d({27,60,45,41,52,60,48},56) then
 humanoid:MoveTo(pt.Position)
 local startTime = os.clock()
 local timeOut = math.clamp(pt.DeltaTime * 2.5, 0.1, 1.5)
@@ -161,21 +161,21 @@ currentIndex = currentIndex + stepDir
 end
 PathRecorder.IsReplaying = false
 if statusCallback then
-statusCallback(_d({59,78,89,85,74,98,9,44,88,86,89,85,78,93,78,77,10},23))
+statusCallback(_d({26,45,56,52,41,65,232,11,55,53,56,52,45,60,45,44,233},56))
 end
 end)
 end
 local function CreateUI()
-local playerGui = LocalPlayer:WaitForChild(_d({57,85,74,98,78,91,48,94,82},23), 10)
+local playerGui = LocalPlayer:WaitForChild(_d({24,52,41,65,45,58,15,61,49},56), 10)
 if not playerGui then return end
-local existingGui = playerGui:FindFirstChild(_d({57,74,93,81,59,78,76,88,91,77,78,91,48,94,82},23))
+local existingGui = playerGui:FindFirstChild(_d({24,41,60,48,26,45,43,55,58,44,45,58,15,61,49},56))
 if existingGui then existingGui:Destroy() end
-local screenGui = Instance.new(_d({60,76,91,78,78,87,48,94,82},23))
-screenGui.Name = _d({57,74,93,81,59,78,76,88,91,77,78,91,48,94,82},23)
+local screenGui = Instance.new(_d({27,43,58,45,45,54,15,61,49},56))
+screenGui.Name = _d({24,41,60,48,26,45,43,55,58,44,45,58,15,61,49},56)
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
-local frame = Instance.new(_d({47,91,74,86,78},23))
-frame.Name = _d({54,74,82,87,47,91,74,86,78},23)
+local frame = Instance.new(_d({14,58,41,53,45},56))
+frame.Name = _d({21,41,49,54,14,58,41,53,45},56)
 frame.Size = UDim2.new(0, 300, 0, 260)
 frame.Position = UDim2.new(0.05, 0, 0.3, 0)
 frame.BackgroundColor3 = Color3.fromRGB(24, 26, 32)
@@ -183,63 +183,63 @@ frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
 frame.Parent = screenGui
-local uiCorner = Instance.new(_d({62,50,44,88,91,87,78,91},23))
+local uiCorner = Instance.new(_d({29,17,11,55,58,54,45,58},56))
 uiCorner.CornerRadius = UDim.new(0, 10)
 uiCorner.Parent = frame
-local uiStroke = Instance.new(_d({62,50,60,93,91,88,84,78},23))
+local uiStroke = Instance.new(_d({29,17,27,60,58,55,51,45},56))
 uiStroke.Color = Color3.fromRGB(55, 62, 78)
 uiStroke.Thickness = 1.5
 uiStroke.Parent = frame
-local title = Instance.new(_d({61,78,97,93,53,74,75,78,85},23))
+local title = Instance.new(_d({28,45,64,60,20,41,42,45,52},56))
 title.Size = UDim2.new(1, -20, 0, 35)
 title.Position = UDim2.new(0, 10, 0, 5)
 title.BackgroundTransparency = 1
-title.Text = _d({203,131,138,9,60,93,78,74,85,93,81,9,57,74,93,81,9,59,78,76,88,91,77,78,91},23)
+title.Text = _d({170,98,105,232,27,60,45,41,52,60,48,232,24,41,60,48,232,26,45,43,55,58,44,45,58},56)
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 15
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.Parent = frame
-local statusLabel = Instance.new(_d({61,78,97,93,53,74,75,78,85},23))
-statusLabel.Name = _d({60,93,74,93,94,92,53,74,75,78,85},23)
+local statusLabel = Instance.new(_d({28,45,64,60,20,41,42,45,52},56))
+statusLabel.Name = _d({27,60,41,60,61,59,20,41,42,45,52},56)
 statusLabel.Size = UDim2.new(1, -20, 0, 25)
 statusLabel.Position = UDim2.new(0, 10, 0, 40)
 statusLabel.BackgroundColor3 = Color3.fromRGB(34, 38, 48)
 statusLabel.BorderSizePixel = 0
-statusLabel.Text = _d({60,93,74,93,94,92,35,9,50,77,85,78,9,101,9,25,9,57,88,82,87,93,92},23)
+statusLabel.Text = _d({27,60,41,60,61,59,2,232,17,44,52,45,232,68,232,248,232,24,55,49,54,60,59},56)
 statusLabel.TextColor3 = Color3.fromRGB(180, 190, 210)
 statusLabel.Font = Enum.Font.GothamMedium
 statusLabel.TextSize = 12
 statusLabel.Parent = frame
-local statusCorner = Instance.new(_d({62,50,44,88,91,87,78,91},23))
+local statusCorner = Instance.new(_d({29,17,11,55,58,54,45,58},56))
 statusCorner.CornerRadius = UDim.new(0, 6)
 statusCorner.Parent = statusLabel
-local modeBtn = Instance.new(_d({61,78,97,93,43,94,93,93,88,87},23))
+local modeBtn = Instance.new(_d({28,45,64,60,10,61,60,60,55,54},56))
 modeBtn.Size = UDim2.new(1, -20, 0, 28)
 modeBtn.Position = UDim2.new(0, 10, 0, 72)
 modeBtn.BackgroundColor3 = Color3.fromRGB(42, 50, 65)
 modeBtn.BorderSizePixel = 0
-modeBtn.Text = _d({54,88,77,78,35,9,217,136,132,138,216,161,120,9,60,93,78,74,85,93,81,9,57,81,98,92,82,76,92,9,17,54,88,95,78,61,88,18},23)
+modeBtn.Text = _d({21,55,44,45,2,232,184,103,99,105,183,128,87,232,27,60,45,41,52,60,48,232,24,48,65,59,49,43,59,232,240,21,55,62,45,28,55,241},56)
 modeBtn.TextColor3 = Color3.fromRGB(100, 220, 255)
 modeBtn.Font = Enum.Font.GothamSemibold
 modeBtn.TextSize = 11
 modeBtn.Parent = frame
-local modeCorner = Instance.new(_d({62,50,44,88,91,87,78,91},23))
+local modeCorner = Instance.new(_d({29,17,11,55,58,54,45,58},56))
 modeCorner.CornerRadius = UDim.new(0, 6)
 modeCorner.Parent = modeBtn
 modeBtn.MouseButton1Click:Connect(function()
-if PathRecorder.ReplayMode == _d({60,93,78,74,85,93,81},23) then
-PathRecorder.ReplayMode = _d({46,97,74,76,93},23)
-modeBtn.Text = _d({54,88,77,78,35,9,217,136,119,152,9,46,97,74,76,93,9,44,47,91,74,86,78,9,50,87,93,78,91,89,88,85,74,93,82,88,87},23)
+if PathRecorder.ReplayMode == _d({27,60,45,41,52,60,48},56) then
+PathRecorder.ReplayMode = _d({13,64,41,43,60},56)
+modeBtn.Text = _d({21,55,44,45,2,232,184,103,86,119,232,13,64,41,43,60,232,11,14,58,41,53,45,232,17,54,60,45,58,56,55,52,41,60,49,55,54},56)
 modeBtn.TextColor3 = Color3.fromRGB(255, 200, 100)
 else
-PathRecorder.ReplayMode = _d({60,93,78,74,85,93,81},23)
-modeBtn.Text = _d({54,88,77,78,35,9,217,136,132,138,216,161,120,9,60,93,78,74,85,93,81,9,57,81,98,92,82,76,92,9,17,54,88,95,78,61,88,18},23)
+PathRecorder.ReplayMode = _d({27,60,45,41,52,60,48},56)
+modeBtn.Text = _d({21,55,44,45,2,232,184,103,99,105,183,128,87,232,27,60,45,41,52,60,48,232,24,48,65,59,49,43,59,232,240,21,55,62,45,28,55,241},56)
 modeBtn.TextColor3 = Color3.fromRGB(100, 220, 255)
 end
 end)
 local function CreateButton(text, pos, bgColor, textColor)
-local btn = Instance.new(_d({61,78,97,93,43,94,93,93,88,87},23))
+local btn = Instance.new(_d({28,45,64,60,10,61,60,60,55,54},56))
 btn.Size = UDim2.new(0.46, 0, 0, 34)
 btn.Position = pos
 btn.BackgroundColor3 = bgColor
@@ -249,23 +249,23 @@ btn.TextColor3 = textColor
 btn.Font = Enum.Font.GothamBold
 btn.TextSize = 12
 btn.Parent = frame
-local btnCorner = Instance.new(_d({62,50,44,88,91,87,78,91},23))
+local btnCorner = Instance.new(_d({29,17,11,55,58,54,45,58},56))
 btnCorner.CornerRadius = UDim.new(0, 6)
 btnCorner.Parent = btn
 return btn
 end
-local recBtn = CreateButton(_d({203,120,163,9,59,78,76,88,91,77},23), UDim2.new(0, 10, 0, 110), Color3.fromRGB(220, 50, 60), Color3.new(1,1,1))
-local stopBtn = CreateButton(_d({203,120,162,9,60,93,88,89},23), UDim2.new(0.52, 0, 0, 110), Color3.fromRGB(80, 85, 95), Color3.new(1,1,1))
-local playFwdBtn = CreateButton(_d({203,127,159,9,57,85,74,98,9,47,88,91,96,74,91,77},23), UDim2.new(0, 10, 0, 152), Color3.fromRGB(40, 160, 90), Color3.new(1,1,1))
-local playRevBtn = CreateButton(_d({203,128,105,9,57,85,74,98,9,59,78,95,78,91,92,78},23), UDim2.new(0.52, 0, 0, 152), Color3.fromRGB(160, 100, 40), Color3.new(1,1,1))
-local clearBtn = CreateButton(_d({217,136,128,122,9,44,85,78,74,91,9,57,74,93,81},23), UDim2.new(0, 10, 0, 194), Color3.fromRGB(50, 55, 65), Color3.fromRGB(200, 200, 200))
+local recBtn = CreateButton(_d({170,87,130,232,26,45,43,55,58,44},56), UDim2.new(0, 10, 0, 110), Color3.fromRGB(220, 50, 60), Color3.new(1,1,1))
+local stopBtn = CreateButton(_d({170,87,129,232,27,60,55,56},56), UDim2.new(0.52, 0, 0, 110), Color3.fromRGB(80, 85, 95), Color3.new(1,1,1))
+local playFwdBtn = CreateButton(_d({170,94,126,232,24,52,41,65,232,14,55,58,63,41,58,44},56), UDim2.new(0, 10, 0, 152), Color3.fromRGB(40, 160, 90), Color3.new(1,1,1))
+local playRevBtn = CreateButton(_d({170,95,72,232,24,52,41,65,232,26,45,62,45,58,59,45},56), UDim2.new(0.52, 0, 0, 152), Color3.fromRGB(160, 100, 40), Color3.new(1,1,1))
+local clearBtn = CreateButton(_d({184,103,95,89,232,11,52,45,41,58,232,24,41,60,48},56), UDim2.new(0, 10, 0, 194), Color3.fromRGB(50, 55, 65), Color3.fromRGB(200, 200, 200))
 clearBtn.Size = UDim2.new(1, -20, 0, 30)
 RunService.RenderStepped:Connect(function()
 if PathRecorder.IsRecording then
-statusLabel.Text = string.format(_d({217,136,125,157,9,59,78,76,88,91,77,82,87,80,35,9,14,77,9,89,93,92,9,17,14,23,26,79,92,18},23), #PathRecorder.RecordedPoints, PathRecorder.TotalRecordTime)
+statusLabel.Text = string.format(_d({184,103,92,124,232,26,45,43,55,58,44,49,54,47,2,232,237,44,232,56,60,59,232,240,237,246,249,46,59,241},56), #PathRecorder.RecordedPoints, PathRecorder.TotalRecordTime)
 statusLabel.TextColor3 = Color3.fromRGB(255, 100, 100)
 elseif not PathRecorder.IsReplaying then
-statusLabel.Text = string.format(_d({60,93,74,93,94,92,35,9,50,77,85,78,9,101,9,14,77,9,57,88,82,87,93,92,9,60,74,95,78,77},23), #PathRecorder.RecordedPoints)
+statusLabel.Text = string.format(_d({27,60,41,60,61,59,2,232,17,44,52,45,232,68,232,237,44,232,24,55,49,54,60,59,232,27,41,62,45,44},56), #PathRecorder.RecordedPoints)
 statusLabel.TextColor3 = Color3.fromRGB(180, 190, 210)
 end
 end)
@@ -279,7 +279,7 @@ end)
 stopBtn.MouseButton1Click:Connect(function()
 PathRecorder.StopRecording()
 PathRecorder.StopReplay()
-statusLabel.Text = _d({60,93,74,93,94,92,35,9,60,93,88,89,89,78,77},23)
+statusLabel.Text = _d({27,60,41,60,61,59,2,232,27,60,55,56,56,45,44},56)
 end)
 playFwdBtn.MouseButton1Click:Connect(function()
 PathRecorder.StartReplay(false, function(msg)
@@ -293,9 +293,9 @@ end)
 end)
 clearBtn.MouseButton1Click:Connect(function()
 PathRecorder.ClearData()
-statusLabel.Text = _d({60,93,74,93,94,92,35,9,57,74,93,81,9,44,85,78,74,91,78,77},23)
+statusLabel.Text = _d({27,60,41,60,61,59,2,232,24,41,60,48,232,11,52,45,41,58,45,44},56)
 end)
 end
 CreateUI()
-print(_d({68,60,93,78,74,85,93,81,57,74,93,81,59,78,76,88,91,77,78,91,70,9,53,88,74,77,78,77,9,92,94,76,76,78,92,92,79,94,85,85,98,23},23))
+print(_d({35,27,60,45,41,52,60,48,24,41,60,48,26,45,43,55,58,44,45,58,37,232,20,55,41,44,45,44,232,59,61,43,43,45,59,59,46,61,52,52,65,246},56))
 end)()
