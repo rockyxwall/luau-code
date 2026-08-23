@@ -8,17 +8,17 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({33,61,50,74,54,67,68},47))
-local RunService = game:GetService(_d({35,70,63,36,54,67,71,58,52,54},47))
-local UserInputService = game:GetService(_d({38,68,54,67,26,63,65,70,69,36,54,67,71,58,52,54},47))
-local ReplicatedStorage = game:GetService(_d({35,54,65,61,58,52,50,69,54,53,36,69,64,67,50,56,54},47))
+local Players = game:GetService(_d({17,45,34,58,38,51,52},63))
+local RunService = game:GetService(_d({19,54,47,20,38,51,55,42,36,38},63))
+local UserInputService = game:GetService(_d({22,52,38,51,10,47,49,54,53,20,38,51,55,42,36,38},63))
+local ReplicatedStorage = game:GetService(_d({19,38,49,45,42,36,34,53,38,37,20,53,48,51,34,40,38},63))
 local LocalPlayer = Players.LocalPlayer
 local Workspace = workspace
 local enabled = false
 local navConn = nil
 local lastAim = nil
 local lastFace = nil
-local mode = _d({58,53,61,54},47)
+local mode = _d({42,37,45,38},63)
 local lastGeppoTime = 0
 local GEPPO_COOLDOWN = 4.5
 local HOVER_OFFSET = 10.3
@@ -29,15 +29,15 @@ local Y_THRESHOLD = 1.5
 local currentHoverOffset = HOVER_OFFSET
 local currentDodgeHeight = 70
 local function debug(...)
-print(_d({44,32,71,54,67,72,64,67,61,53,37,54,68,69,54,67,46},47), ...)
+print(_d({28,16,55,38,51,56,48,51,45,37,21,38,52,53,38,51,30},63), ...)
 end
 local function getRoot()
 local char = LocalPlayer.Character
-return char and char:FindFirstChild(_d({25,70,62,50,63,64,58,53,35,64,64,69,33,50,67,69},47))
+return char and char:FindFirstChild(_d({9,54,46,34,47,48,42,37,19,48,48,53,17,34,51,53},63))
 end
 local function getHumanoid()
 local char = LocalPlayer.Character
-return char and char:FindFirstChildWhichIsA(_d({25,70,62,50,63,64,58,53},47))
+return char and char:FindFirstChildWhichIsA(_d({9,54,46,34,47,48,42,37},63))
 end
 local function invokeGeppo()
 local now = tick()
@@ -45,35 +45,35 @@ if now - lastGeppoTime < GEPPO_COOLDOWN then return end
 lastGeppoTime = now
 local ok, err = pcall(function()
 local char = LocalPlayer.Character
-local root = char and char:FindFirstChild(_d({25,70,62,50,63,64,58,53,35,64,64,69,33,50,67,69},47))
+local root = char and char:FindFirstChild(_d({9,54,46,34,47,48,42,37,19,48,48,53,17,34,51,53},63))
 if not root then return end
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({36,69,50,69,68},47) .. LocalPlayer.Name)
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({20,53,34,53,52},63) .. LocalPlayer.Name)
 if not statsFolder then return end
 local style = statsFolder.Stats.FightingStyle.Value
 local cf = CFrame.lookAt(root.Position, root.Position + root.CFrame.LookVector)
 local args = {char = char, cf = cf}
-if style == _d({35,64,60,70,68,57,58,60,58},47) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({24,54,65,65,64},47), args)
-elseif style == _d({19,61,50,52,60,29,54,56},47) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({36,60,74,241,40,50,61,60},47), args)
-elseif style == _d({28,50,62,58,68,57,58,60,58},47) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({28,50,62,58,68,57,58,60,58,24,54,65,65,64},47), args)
+if style == _d({19,48,44,54,52,41,42,44,42},63) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({8,38,49,49,48},63), args)
+elseif style == _d({3,45,34,36,44,13,38,40},63) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({20,44,58,225,24,34,45,44},63), args)
+elseif style == _d({12,34,46,42,52,41,42,44,42},63) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({12,34,46,42,52,41,42,44,42,8,38,49,49,48},63), args)
 else
-ReplicatedStorage.Events.Skill:InvokeServer(_d({36,60,74,241,40,50,61,60,3},47), args)
+ReplicatedStorage.Events.Skill:InvokeServer(_d({20,44,58,225,24,34,45,44,243},63), args)
 end
-debug(_d({23,58,67,54,53,241,24,54,65,65,64,241,35,54,62,64,69,54},47))
+debug(_d({7,42,51,38,37,225,8,38,49,49,48,225,19,38,46,48,53,38},63))
 end)
-if not ok then debug(_d({58,63,71,64,60,54,24,54,65,65,64,241,54,67,67,64,67,11},47), err) end
+if not ok then debug(_d({42,47,55,48,44,38,8,38,49,49,48,225,38,51,51,48,51,251},63), err) end
 end
 local function getOrCreateForce(root)
 local ok, result = pcall(function()
-local att = root:FindFirstChild(_d({48,48,37,54,68,69,25,64,71,54,67,18,69,69},47)) or Instance.new(_d({18,69,69,50,52,57,62,54,63,69},47))
-att.Name = _d({48,48,37,54,68,69,25,64,71,54,67,18,69,69},47)
+local att = root:FindFirstChild(_d({32,32,21,38,52,53,9,48,55,38,51,2,53,53},63)) or Instance.new(_d({2,53,53,34,36,41,46,38,47,53},63))
+att.Name = _d({32,32,21,38,52,53,9,48,55,38,51,2,53,53},63)
 att.Parent = root
-local force = root:FindFirstChild(_d({48,48,37,54,68,69,25,64,71,54,67,23,64,67,52,54},47))
+local force = root:FindFirstChild(_d({32,32,21,38,52,53,9,48,55,38,51,7,48,51,36,38},63))
 if not force then
-force = Instance.new(_d({29,58,63,54,50,67,39,54,61,64,52,58,69,74},47))
-force.Name = _d({48,48,37,54,68,69,25,64,71,54,67,23,64,67,52,54},47)
+force = Instance.new(_d({13,42,47,38,34,51,23,38,45,48,36,42,53,58},63))
+force.Name = _d({32,32,21,38,52,53,9,48,55,38,51,7,48,51,36,38},63)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -90,25 +90,25 @@ local function cleanupForce()
 pcall(function()
 local char = LocalPlayer.Character
 if not char then return end
-local root = char:FindFirstChild(_d({25,70,62,50,63,64,58,53,35,64,64,69,33,50,67,69},47))
+local root = char:FindFirstChild(_d({9,54,46,34,47,48,42,37,19,48,48,53,17,34,51,53},63))
 if not root then return end
-local force = root:FindFirstChild(_d({48,48,37,54,68,69,25,64,71,54,67,23,64,67,52,54},47))
-local att   = root:FindFirstChild(_d({48,48,37,54,68,69,25,64,71,54,67,18,69,69},47))
+local force = root:FindFirstChild(_d({32,32,21,38,52,53,9,48,55,38,51,7,48,51,36,38},63))
+local att   = root:FindFirstChild(_d({32,32,21,38,52,53,9,48,55,38,51,2,53,53},63))
 if force then force:Destroy() end
 if att   then att:Destroy()   end
 end)
 end
-local VIM = game:GetService(_d({39,58,67,69,70,50,61,26,63,65,70,69,30,50,63,50,56,54,67},47))
+local VIM = game:GetService(_d({23,42,51,53,54,34,45,10,47,49,54,53,14,34,47,34,40,38,51},63))
 local function walkToPoint(pos, timeout)
 timeout = timeout or 30
 local root = getRoot()
 if not root then return end
-debug(_d({40,50,61,60,58,63,56,241,69,64,11},47), pos)
+debug(_d({24,34,45,44,42,47,40,225,53,48,251},63), pos)
 cleanupForce()
 local ok, err = pcall(function()
 VIM:SendKeyEvent(true, Enum.KeyCode.W, false, game)
 end)
-if not ok then debug(_d({72,50,61,60,37,64,33,64,58,63,69,241,40,241,53,64,72,63,241,54,67,67,64,67,11},47), err) end
+if not ok then debug(_d({56,34,45,44,21,48,17,48,42,47,53,225,24,225,37,48,56,47,225,38,51,51,48,51,251},63), err) end
 local startT = tick()
 local lastDash = 0
 local dashCooldown = 3
@@ -117,7 +117,7 @@ local currentRoot = getRoot()
 if not currentRoot then break end
 local dist = (currentRoot.Position * Vector3.new(1, 0, 1) - pos * Vector3.new(1, 0, 1)).Magnitude
 if dist < 5 then
-debug(_d({18,67,67,58,71,54,53,241,50,69,11},47), pos)
+debug(_d({2,51,51,42,55,38,37,225,34,53,251},63), pos)
 break
 end
 pcall(function()
@@ -144,8 +144,8 @@ local root = getRoot()
 if not root then return nil end
 local nearest, nearestDist = nil, math.huge
 for _, item in ipairs(Workspace:GetDescendants()) do
-if item:IsA(_d({30,64,53,54,61},47)) and item:FindFirstChild(_d({25,70,62,50,63,64,58,53,35,64,64,69,33,50,67,69},47)) and item:FindFirstChildWhichIsA(_d({25,70,62,50,63,64,58,53},47)) then
-if item ~= LocalPlayer.Character and item:FindFirstChildWhichIsA(_d({25,70,62,50,63,64,58,53},47)).Health > 0 then
+if item:IsA(_d({14,48,37,38,45},63)) and item:FindFirstChild(_d({9,54,46,34,47,48,42,37,19,48,48,53,17,34,51,53},63)) and item:FindFirstChildWhichIsA(_d({9,54,46,34,47,48,42,37},63)) then
+if item ~= LocalPlayer.Character and item:FindFirstChildWhichIsA(_d({9,54,46,34,47,48,42,37},63)).Health > 0 then
 local dist = (item.HumanoidRootPart.Position - root.Position).Magnitude
 if dist < nearestDist then
 nearestDist = dist
@@ -170,16 +170,16 @@ end
 local function disableBot()
 if not enabled then return end
 enabled = false
-mode = _d({58,53,61,54},47)
+mode = _d({42,37,45,38},63)
 if navConn then navConn:Disconnect() navConn = nil end
 cleanupForce()
-debug(_d({37,54,68,69,54,67,241,21,58,68,50,51,61,54,53},47))
+debug(_d({21,38,52,53,38,51,225,5,42,52,34,35,45,38,37},63))
 end
 local function enableBot(targetMode)
 if enabled then disableBot() end
 enabled = true
 mode = targetMode
-debug(_d({37,54,68,69,54,67,241,22,63,50,51,61,54,53,255,241,30,64,53,54,11},47), mode)
+debug(_d({21,38,52,53,38,51,225,6,47,34,35,45,38,37,239,225,14,48,37,38,251},63), mode)
 local initialPos = getRoot() and getRoot().Position or Vector3.new(0, 50, 0)
 local climbStart = tick()
 navConn = RunService.Heartbeat:Connect(function()
@@ -187,22 +187,22 @@ local root = getRoot()
 if not root then return end
 local hum = getHumanoid()
 if hum and hum.Health <= 0 then
-debug(_d({33,61,50,74,54,67,241,53,58,54,53,242,241,21,58,68,50,51,61,58,63,56,241,51,64,69,255},47))
+debug(_d({17,45,34,58,38,51,225,37,42,38,37,226,225,5,42,52,34,35,45,42,47,40,225,35,48,53,239},63))
 disableBot()
 return
 end
 local aim, face = nil, nil
-if mode == _d({57,64,71,54,67},47) then
+if mode == _d({41,48,55,38,51},63) then
 local targetChar = getNearestTarget()
 if targetChar then
 aim = targetChar.HumanoidRootPart.Position + Vector3.new(0, currentHoverOffset, 0)
 face = targetChar.HumanoidRootPart.Position
 end
-elseif mode == _d({53,64,53,56,54},47) then
+elseif mode == _d({37,48,37,40,38},63) then
 aim = initialPos + Vector3.new(0, currentDodgeHeight, 0)
 face = initialPos
 invokeGeppo()
-elseif mode == _d({68,66,70,50,67,54,48,53,64,53,56,54},47) then
+elseif mode == _d({52,50,54,34,51,38,32,37,48,37,40,38},63) then
 return
 end
 if not aim then
@@ -236,16 +236,16 @@ end
 end)
 end
 local function CreateUI()
-local playerGui = LocalPlayer:WaitForChild(_d({33,61,50,74,54,67,24,70,58},47), 10)
+local playerGui = LocalPlayer:WaitForChild(_d({17,45,34,58,38,51,8,54,42},63), 10)
 if not playerGui then return end
-local existingGui = playerGui:FindFirstChild(_d({32,71,54,67,72,64,67,61,53,37,54,68,69,24,70,58},47))
+local existingGui = playerGui:FindFirstChild(_d({16,55,38,51,56,48,51,45,37,21,38,52,53,8,54,42},63))
 if existingGui then existingGui:Destroy() end
-local screenGui = Instance.new(_d({36,52,67,54,54,63,24,70,58},47))
-screenGui.Name = _d({32,71,54,67,72,64,67,61,53,37,54,68,69,24,70,58},47)
+local screenGui = Instance.new(_d({20,36,51,38,38,47,8,54,42},63))
+screenGui.Name = _d({16,55,38,51,56,48,51,45,37,21,38,52,53,8,54,42},63)
 screenGui.ResetOnSpawn = false
 screenGui.Parent = playerGui
-local frame = Instance.new(_d({23,67,50,62,54},47))
-frame.Name = _d({30,50,58,63,23,67,50,62,54},47)
+local frame = Instance.new(_d({7,51,34,46,38},63))
+frame.Name = _d({14,34,42,47,7,51,34,46,38},63)
 frame.Size = UDim2.new(0, 240, 0, 230)
 frame.Position = UDim2.new(0.05, 0, 0.4, 0)
 frame.BackgroundColor3 = Color3.fromRGB(30, 32, 40)
@@ -253,30 +253,30 @@ frame.BorderSizePixel = 0
 frame.Active = true
 frame.Draggable = true
 frame.Parent = screenGui
-local uiCorner = Instance.new(_d({38,26,20,64,67,63,54,67},47))
+local uiCorner = Instance.new(_d({22,10,4,48,51,47,38,51},63))
 uiCorner.CornerRadius = UDim.new(0, 8)
 uiCorner.Parent = frame
-local title = Instance.new(_d({37,54,73,69,29,50,51,54,61},47))
+local title = Instance.new(_d({21,38,57,53,13,34,35,38,45},63))
 title.Size = UDim2.new(1, -20, 0, 30)
 title.Position = UDim2.new(0, 10, 0, 5)
 title.BackgroundTransparency = 1
-title.Text = _d({193,112,108,114,192,137,96,241,20,70,65,58,53,241,22,63,56,58,63,54,241,32,71,54,67,72,64,67,61,53,241,37,54,68,69},47)
+title.Text = _d({177,96,92,98,176,121,80,225,4,54,49,42,37,225,6,47,40,42,47,38,225,16,55,38,51,56,48,51,45,37,225,21,38,52,53},63)
 title.TextColor3 = Color3.fromRGB(255, 255, 255)
 title.Font = Enum.Font.GothamBold
 title.TextSize = 13
 title.TextXAlignment = Enum.TextXAlignment.Left
 title.Parent = frame
-local statusLabel = Instance.new(_d({37,54,73,69,29,50,51,54,61},47))
+local statusLabel = Instance.new(_d({21,38,57,53,13,34,35,38,45},63))
 statusLabel.Size = UDim2.new(1, -20, 0, 20)
 statusLabel.Position = UDim2.new(0, 10, 0, 35)
 statusLabel.BackgroundTransparency = 1
-statusLabel.Text = _d({36,69,50,69,70,68,11,241,26,53,61,54},47)
+statusLabel.Text = _d({20,53,34,53,54,52,251,225,10,37,45,38},63)
 statusLabel.TextColor3 = Color3.fromRGB(180, 180, 180)
 statusLabel.Font = Enum.Font.GothamMedium
 statusLabel.TextSize = 11
 statusLabel.Parent = frame
 local function createInputBtn(text, defaultVal, pos, callback, color)
-local btn = Instance.new(_d({37,54,73,69,19,70,69,69,64,63},47))
+local btn = Instance.new(_d({21,38,57,53,3,54,53,53,48,47},63))
 btn.Size = UDim2.new(0.65, -10, 0, 30)
 btn.Position = pos
 btn.BackgroundColor3 = color or Color3.fromRGB(50, 60, 80)
@@ -285,8 +285,8 @@ btn.TextColor3 = Color3.new(1,1,1)
 btn.Font = Enum.Font.GothamBold
 btn.TextSize = 11
 btn.Parent = frame
-Instance.new(_d({38,26,20,64,67,63,54,67},47), btn).CornerRadius = UDim.new(0, 6)
-local input = Instance.new(_d({37,54,73,69,19,64,73},47))
+Instance.new(_d({22,10,4,48,51,47,38,51},63), btn).CornerRadius = UDim.new(0, 6)
+local input = Instance.new(_d({21,38,57,53,3,48,57},63))
 input.Size = UDim2.new(0.35, -10, 0, 30)
 input.Position = UDim2.new(0.65, 0, 0, 0) + UDim2.new(0, pos.X.Offset, 0, pos.Y.Offset)
 input.BackgroundColor3 = Color3.fromRGB(20, 22, 30)
@@ -295,25 +295,25 @@ input.Text = tostring(defaultVal)
 input.Font = Enum.Font.GothamMedium
 input.TextSize = 11
 input.Parent = frame
-Instance.new(_d({38,26,20,64,67,63,54,67},47), input).CornerRadius = UDim.new(0, 6)
+Instance.new(_d({22,10,4,48,51,47,38,51},63), input).CornerRadius = UDim.new(0, 6)
 btn.MouseButton1Click:Connect(function()
 local val = tonumber(input.Text) or defaultVal
 callback(val)
 end)
 end
-createInputBtn(_d({25,64,71,54,67,241,18,51,64,71,54,241,37,50,67,56,54,69},47), 10.3, UDim2.new(0, 10, 0, 65), function(val)
+createInputBtn(_d({9,48,55,38,51,225,2,35,48,55,38,225,21,34,51,40,38,53},63), 10.3, UDim2.new(0, 10, 0, 65), function(val)
 currentHoverOffset = val
-enableBot(_d({57,64,71,54,67},47))
-statusLabel.Text = _d({36,69,50,69,70,68,11,241,25,64,71,54,67,58,63,56,241},47) .. val .. _d({241,68,69,70,53,68,241,70,65},47)
+enableBot(_d({41,48,55,38,51},63))
+statusLabel.Text = _d({20,53,34,53,54,52,251,225,9,48,55,38,51,42,47,40,225},63) .. val .. _d({225,52,53,54,37,52,225,54,49},63)
 end)
-createInputBtn(_d({21,64,53,56,54,241,20,61,58,62,51},47), 70, UDim2.new(0, 10, 0, 105), function(val)
+createInputBtn(_d({5,48,37,40,38,225,4,45,42,46,35},63), 70, UDim2.new(0, 10, 0, 105), function(val)
 currentDodgeHeight = val
-enableBot(_d({53,64,53,56,54},47))
-statusLabel.Text = _d({36,69,50,69,70,68,11,241,21,64,53,56,54,254,57,64,61,53,58,63,56,241,249},47) .. val .. _d({241,68,69,70,53,68,250},47)
+enableBot(_d({37,48,37,40,38},63))
+statusLabel.Text = _d({20,53,34,53,54,52,251,225,5,48,37,40,38,238,41,48,45,37,42,47,40,225,233},63) .. val .. _d({225,52,53,54,37,52,234},63)
 end)
-createInputBtn(_d({37,54,68,69,241,36,66,70,50,67,54,241,21,64,53,56,54},47), 40, UDim2.new(0, 10, 0, 145), function(val)
-enableBot(_d({68,66,70,50,67,54,48,53,64,53,56,54},47))
-statusLabel.Text = _d({36,69,50,69,70,68,11,241,36,66,70,50,67,54,241,40,50,61,60,58,63,56,241,249},47) .. val .. _d({241,68,69,70,53,68,250},47)
+createInputBtn(_d({21,38,52,53,225,20,50,54,34,51,38,225,5,48,37,40,38},63), 40, UDim2.new(0, 10, 0, 145), function(val)
+enableBot(_d({52,50,54,34,51,38,32,37,48,37,40,38},63))
+statusLabel.Text = _d({20,53,34,53,54,52,251,225,20,50,54,34,51,38,225,24,34,45,44,42,47,40,225,233},63) .. val .. _d({225,52,53,54,37,52,234},63)
 task.spawn(function()
 local root = getRoot()
 if not root then return end
@@ -327,34 +327,34 @@ center + Vector3.new(d, 0, -d)
 }
 local startT = tick()
 local cornerIdx = 1
-while enabled and mode == _d({68,66,70,50,67,54,48,53,64,53,56,54},47) and (tick() - startT) < 30 do
+while enabled and mode == _d({52,50,54,34,51,38,32,37,48,37,40,38},63) and (tick() - startT) < 30 do
 walkToPoint(corners[cornerIdx], 5)
 cornerIdx = (cornerIdx % 4) + 1
 end
-if mode == _d({68,66,70,50,67,54,48,53,64,53,56,54},47) then
+if mode == _d({52,50,54,34,51,38,32,37,48,37,40,38},63) then
 disableBot()
-statusLabel.Text = _d({36,69,50,69,70,68,11,241,26,53,61,54,241,249,36,66,70,50,67,54,241,53,64,53,56,54,241,53,64,63,54,250},47)
+statusLabel.Text = _d({20,53,34,53,54,52,251,225,10,37,45,38,225,233,20,50,54,34,51,38,225,37,48,37,40,38,225,37,48,47,38,234},63)
 end
 end)
 end)
-local stopBtn = Instance.new(_d({37,54,73,69,19,70,69,69,64,63},47))
+local stopBtn = Instance.new(_d({21,38,57,53,3,54,53,53,48,47},63))
 stopBtn.Size = UDim2.new(1, -20, 0, 30)
 stopBtn.Position = UDim2.new(0, 10, 0, 185)
 stopBtn.BackgroundColor3 = Color3.fromRGB(220, 50, 60)
-stopBtn.Text = _d({22,30,22,35,24,22,31,20,42,241,36,37,32,33},47)
+stopBtn.Text = _d({6,14,6,19,8,6,15,4,26,225,20,21,16,17},63)
 stopBtn.TextColor3 = Color3.new(1,1,1)
 stopBtn.Font = Enum.Font.GothamBlack
 stopBtn.TextSize = 13
 stopBtn.Parent = frame
-Instance.new(_d({38,26,20,64,67,63,54,67},47), stopBtn).CornerRadius = UDim.new(0, 6)
+Instance.new(_d({22,10,4,48,51,47,38,51},63), stopBtn).CornerRadius = UDim.new(0, 6)
 stopBtn.MouseButton1Click:Connect(function()
 disableBot()
-statusLabel.Text = _d({36,69,50,69,70,68,11,241,36,37,32,33,33,22,21,241,249,26,53,61,54,250},47)
-local VIM = game:GetService(_d({39,58,67,69,70,50,61,26,63,65,70,69,30,50,63,50,56,54,67},47))
+statusLabel.Text = _d({20,53,34,53,54,52,251,225,20,21,16,17,17,6,5,225,233,10,37,45,38,234},63)
+local VIM = game:GetService(_d({23,42,51,53,54,34,45,10,47,49,54,53,14,34,47,34,40,38,51},63))
 VIM:SendKeyEvent(false, Enum.KeyCode.W, false, game)
 VIM:SendKeyEvent(false, Enum.KeyCode.Q, false, game)
 end)
 end
 CreateUI()
-print(_d({44,32,71,54,67,72,64,67,61,53,37,54,68,69,54,67,46,241,29,64,50,53,54,53,241,68,70,52,52,54,68,68,55,70,61,61,74,255},47))
+print(_d({28,16,55,38,51,56,48,51,45,37,21,38,52,53,38,51,30,225,13,48,34,37,38,37,225,52,54,36,36,38,52,52,39,54,45,45,58,239},63))
 end)()
