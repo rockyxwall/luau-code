@@ -8,15 +8,14 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-if _G.EasyTravelCleanup then
-pcall(_G.EasyTravelCleanup)
-end
-local Players = game:GetService(_d({61,89,78,102,82,95,96},19))
-local ReplicatedStorage = game:GetService(_d({63,82,93,89,86,80,78,97,82,81,64,97,92,95,78,84,82},19))
-local RunService = game:GetService(_d({63,98,91,64,82,95,99,86,80,82},19))
-local UserInputService = game:GetService(_d({66,96,82,95,54,91,93,98,97,64,82,95,99,86,80,82},19))
+_G.EasyTravelHelperMode = true
+local Players = game:GetService(_d({26,54,43,67,47,60,61},54))
+local ReplicatedStorage = game:GetService(_d({28,47,58,54,51,45,43,62,47,46,29,62,57,60,43,49,47},54))
+local RunService = game:GetService(_d({28,63,56,29,47,60,64,51,45,47},54))
+local UserInputService = game:GetService(_d({31,61,47,60,19,56,58,63,62,29,47,60,64,51,45,47},54))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
+if _G.EasyTravelCleanup then pcall(_G.EasyTravelCleanup) end
 local FLIGHT_SPEED = 70.0
 local HEIGHT_OFFSET = 6.0
 local SEA_LEVEL_Y = -2.63
@@ -32,25 +31,25 @@ local distanceToWall = 999
 local inputConnection = nil
 _G.EasyTravel = {
 TargetPosition = nil,
-DisableKeyboard = (_G.EasyTravelHelperMode == true),
+DisableKeyboard = true,
 Speed = FLIGHT_SPEED,
 Enabled = false
 }
 local function getCharacterComponents()
 local char = LocalPlayer.Character
 if not char then return nil, nil, nil end
-local root = char:FindFirstChild(_d({53,98,90,78,91,92,86,81,63,92,92,97,61,78,95,97},19))
-local hum = char:FindFirstChildWhichIsA(_d({53,98,90,78,91,92,86,81},19))
+local root = char:FindFirstChild(_d({18,63,55,43,56,57,51,46,28,57,57,62,26,43,60,62},54))
+local hum = char:FindFirstChildWhichIsA(_d({18,63,55,43,56,57,51,46},54))
 return char, hum, root
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,46,97,97},19)) or Instance.new(_d({46,97,97,78,80,85,90,82,91,97},19))
-att.Name = _d({76,76,50,78,96,102,65,95,78,99,82,89,46,97,97},19)
+local att = root:FindFirstChild(_d({41,41,15,43,61,67,30,60,43,64,47,54,11,62,62},54)) or Instance.new(_d({11,62,62,43,45,50,55,47,56,62},54))
+att.Name = _d({41,41,15,43,61,67,30,60,43,64,47,54,11,62,62},54)
 att.Parent = root
-local force = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,51,92,95,80,82},19))
+local force = root:FindFirstChild(_d({41,41,15,43,61,67,30,60,43,64,47,54,16,57,60,45,47},54))
 if not force then
-force = Instance.new(_d({57,86,91,82,78,95,67,82,89,92,80,86,97,102},19))
-force.Name = _d({76,76,50,78,96,102,65,95,78,99,82,89,51,92,95,80,82},19)
+force = Instance.new(_d({22,51,56,47,43,60,32,47,54,57,45,51,62,67},54))
+force.Name = _d({41,41,15,43,61,67,30,60,43,64,47,54,16,57,60,45,47},54)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -63,8 +62,8 @@ end
 local function cleanupForce()
 local _, _, root = getCharacterComponents()
 if root then
-local force = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,51,92,95,80,82},19))
-local att = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,46,97,97},19))
+local force = root:FindFirstChild(_d({41,41,15,43,61,67,30,60,43,64,47,54,16,57,60,45,47},54))
+local att = root:FindFirstChild(_d({41,41,15,43,61,67,30,60,43,64,47,54,11,62,62},54))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -95,12 +94,6 @@ local camera = Workspace.CurrentCamera
 local look = camera.CFrame.LookVector
 local right = camera.CFrame.RightVector
 local moveDir = Vector3.zero
-if _G.EasyTravel and not _G.EasyTravel.DisableKeyboard then
-if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit end
-if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit end
-if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit end
-if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit end
-end
 local currentPos = root.Position
 local raycastParams = RaycastParams.new()
 raycastParams.FilterType = Enum.RaycastFilterType.Exclude
@@ -175,9 +168,6 @@ cleanupForce()
 return
 end
 local force = getOrCreateForce(currentRoot)
-local camera = Workspace.CurrentCamera
-local look = camera.CFrame.LookVector
-local right = camera.CFrame.RightVector
 local moveDir = Vector3.zero
 local finalTargetY = currentTargetY
 if _G.EasyTravel and _G.EasyTravel.TargetPosition then
@@ -187,28 +177,12 @@ if flatDiff.Magnitude > 2 then
 moveDir = flatDiff.Unit
 end
 finalTargetY = _G.EasyTravel.TargetPosition.Y
-else
-if _G.EasyTravel and not _G.EasyTravel.DisableKeyboard then
-if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit end
-if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit end
-if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit end
-if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit end
-end
-finalTargetY = isClimbing and climbTargetY or currentTargetY
 end
 local yError = finalTargetY - currentRoot.Position.Y
 local targetVelocity = Vector3.zero
 local currentSpeed = _G.EasyTravel.Speed or FLIGHT_SPEED
 if moveDir.Magnitude > 0 then
-local speedMultiplier = 1
-if isClimbing and yError > 3 then
-if distanceToWall < 6 then
-speedMultiplier = 0
-else
-speedMultiplier = 1
-end
-end
-targetVelocity = moveDir.Unit * (currentSpeed * speedMultiplier)
+targetVelocity = moveDir.Unit * currentSpeed
 end
 local verticalVel = math.clamp(yError * HOVER_LIFT_GAIN, -50, 30)
 force.VectorVelocity = Vector3.new(targetVelocity.X, verticalVel, targetVelocity.Z)
@@ -216,51 +190,121 @@ if moveDir.Magnitude > 0 then
 currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + moveDir)
 end
 end)
-print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,51,89,86,84,85,97,13,82,91,78,79,89,82,81,27},19))
 end
 local function stopFlight()
 flightEnabled = false
 _G.EasyTravel.Enabled = false
 if loopConnection then
-loopConnection:Disconnect();
-loopConnection = nil;
+loopConnection:Disconnect()
+loopConnection = nil
 end
 cleanupForce()
-print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,51,89,86,84,85,97,13,81,86,96,78,79,89,82,81,27},19))
 end
 _G.EasyTravel.Start = startFlight
 _G.EasyTravel.Stop = stopFlight
 _G.EasyTravel.GetSurfaceY = getSurfaceY
-if not _G.EasyTravelHelperMode then
-inputConnection = UserInputService.InputBegan:Connect(function(input, processed)
-if processed then return end
-if input.KeyCode == Enum.KeyCode.P then
-if flightEnabled then
-stopFlight()
-else
-startFlight()
-end
-elseif input.KeyCode == Enum.KeyCode.End then
-if _G.EasyTravelCleanup then
-_G.EasyTravelCleanup()
-end
-end
-end)
-end
 _G.EasyTravelCleanup = function()
 stopFlight()
-if inputConnection then
-inputConnection:Disconnect()
-inputConnection = nil
-end
 _G.EasyTravel = nil
 _G.EasyTravelCleanup = nil
-print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,48,92,90,93,89,82,97,82,89,102,13,98,91,89,92,78,81,82,81,13,78,91,81,13,80,89,82,78,91,82,81,13,98,93,13,96,80,95,86,93,97,13,96,97,78,97,82,27},19))
 end
-if _G.EasyTravelHelperMode then
-print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,57,92,78,81,82,81,13,86,91,13,85,82,89,93,82,95,13,90,92,81,82,27,13,56,82,102,79,92,78,95,81,13,86,91,93,98,97,96,13,81,86,96,78,79,89,82,81,27},19))
+local QuestHandler = {}
+function QuestHandler.AcceptQuest(npcName)
+local npcsFolder = Workspace:FindFirstChild(_d({24,26,13,61},54))
+local npc = npcsFolder and npcsFolder:FindFirstChild(npcName)
+local torso = npc and npc:FindFirstChild(_d({31,58,58,47,60,30,57,60,61,57},54))
+local prompt = torso and torso:FindFirstChild(_d({26,60,57,55,58,62},54))
+if not prompt then
+print(_d({37,27,63,47,61,62,234,18,43,56,46,54,47,60,39,234,24,57,234,58,60,57,55,58,62,234,48,57,63,56,46,234,48,57,60,234,24,26,13,4,234},54) .. tostring(npcName))
+return false
+end
+local myRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({18,63,55,43,56,57,51,46,28,57,57,62,26,43,60,62},54))
+if not myRoot then return false end
+local dist = (torso.Position - myRoot.Position).Magnitude
+if dist > 12 then
+print(_d({37,27,63,47,61,62,234,18,43,56,46,54,47,60,39,234,26,54,43,67,47,60,234,62,57,57,234,48,43,60,234,242,14,51,61,62,4,234},54) .. tostring(dist) .. ")")
+return false
+end
+local holdTime = prompt.HoldDuration or 0
+if holdTime > 0 then
+task.wait(holdTime + 0.1)
+end
+if fireproximityprompt then
+pcall(fireproximityprompt, prompt)
 else
-print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,57,92,78,81,82,81,27,13,61,95,82,96,96,13,20,61,20,13,97,92,13,97,92,84,84,89,82,13,83,89,86,84,85,97,27,13,76,52,27,50,78,96,102,65,95,78,99,82,89,13,46,61,54,13,95,82,84,86,96,97,82,95,82,81,27},19))
+print(_d({37,27,63,47,61,62,234,18,43,56,46,54,47,60,39,234,48,51,60,47,58,60,57,66,51,55,51,62,67,58,60,57,55,58,62,234,56,57,62,234,61,63,58,58,57,60,62,47,46,235},54))
+return false
 end
-return _G.EasyTravel
+task.wait(0.8)
+local playerGui = LocalPlayer:FindFirstChild(_d({26,54,43,67,47,60,17,63,51},54))
+local chatGui = playerGui and playerGui:FindFirstChild(_d({24,26,13,13,18,11,30},54))
+if chatGui and chatGui.Enabled then
+local tries = 0
+while chatGui.Enabled and tries < 6 do
+tries = tries + 1
+local frame = chatGui:FindFirstChild(_d({16,60,43,55,47},54))
+local goBtn = frame and frame:FindFirstChild(_d({49,57},54))
+local endChatBtn = frame and frame:FindFirstChild(_d({47,56,46,13,50,43,62},54))
+if goBtn and goBtn.Visible and goBtn.Text ~= "" then
+if getconnections then
+for _, conn in ipairs(getconnections(goBtn.Activated)) do
+pcall(function() conn:Fire() end)
+end
+for _, conn in ipairs(getconnections(goBtn.MouseButton1Click)) do
+pcall(function() conn:Fire() end)
+end
+end
+elseif endChatBtn and endChatBtn.Visible then
+if getconnections then
+for _, conn in ipairs(getconnections(endChatBtn.Activated)) do
+pcall(function() conn:Fire() end)
+end
+for _, conn in ipairs(getconnections(endChatBtn.MouseButton1Click)) do
+pcall(function() conn:Fire() end)
+end
+end
+end
+task.wait(0.8)
+end
+end
+return true
+end
+_G.QuestHandler = QuestHandler
+task.spawn(function()
+local npcName = _d({14,43,58,50},54)
+local npcsFolder = Workspace:FindFirstChild(_d({24,26,13,61},54))
+local npc = npcsFolder and npcsFolder:FindFirstChild(npcName)
+local torso = npc and npc:FindFirstChild(_d({31,58,58,47,60,30,57,60,61,57},54))
+if not torso then
+print(_d({37,14,47,44,63,49,234,27,63,47,61,62,39,234,15,28,28,25,28,4,234,14,43,58,50,234,24,26,13,234,56,57,62,234,48,57,63,56,46,234,51,56,234,33,57,60,53,61,58,43,45,47,248,24,26,13,61,235},54))
+return
+end
+print(_d({37,14,47,44,63,49,234,27,63,47,61,62,39,234,29,62,43,60,62,51,56,49,234,48,54,51,49,50,62,234,62,57,65,43,60,46,61,234},54) .. npcName .. _d({248,248,248},54))
+startFlight()
+local targetPos = torso.Position - Vector3.new(0, 3.0, 0) + (torso.CFrame.LookVector * 4.0)
+_G.EasyTravel.TargetPosition = targetPos
+local reached = false
+for i = 1, 100 do
+task.wait(0.2)
+local _, _, myRoot = getCharacterComponents()
+if myRoot then
+local dist = (targetPos - myRoot.Position).Magnitude
+if dist <= 3.5 then
+reached = true
+break
+end
+end
+end
+if reached then
+print(_d({37,14,47,44,63,49,234,27,63,47,61,62,39,234,28,47,43,45,50,47,46,234,46,47,61,62,51,56,43,62,51,57,56,248,234,29,62,57,58,58,51,56,49,234,48,54,51,49,50,62,234,240,234,62,43,53,51,56,49,234,59,63,47,61,62,248,248,248},54))
+_G.EasyTravel.TargetPosition = nil
+stopFlight()
+task.wait(1.0)
+local success = QuestHandler.AcceptQuest(npcName)
+print(_d({37,14,47,44,63,49,234,27,63,47,61,62,39,234,11,45,45,47,58,62,27,63,47,61,62,234,61,47,59,63,47,56,45,47,234,47,66,47,45,63,62,47,46,248,234,28,47,61,63,54,62,4,234},54) .. tostring(success))
+else
+print(_d({37,14,47,44,63,49,234,27,63,47,61,62,39,234,30,51,55,47,57,63,62,4,234,13,57,63,54,46,234,56,57,62,234,60,47,43,45,50,234,24,26,13,248},54))
+stopFlight()
+end
+end)
 end)()
