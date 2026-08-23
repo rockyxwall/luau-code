@@ -8,28 +8,28 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({62,90,79,103,83,96,97},18))
+local Players = game:GetService(_d({17,45,34,58,38,51,52},63))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local QuestHandler = {}
 function QuestHandler.AcceptQuest(npcName)
-local npcsFolder = Workspace:FindFirstChild(_d({60,62,49,97},18))
+local npcsFolder = Workspace:FindFirstChild(_d({15,17,4,52},63))
 local npc = npcsFolder and npcsFolder:FindFirstChild(npcName)
-local torso = npc and npc:FindFirstChild(_d({67,94,94,83,96,66,93,96,97,93},18))
-local prompt = torso and torso:FindFirstChild(_d({62,96,93,91,94,98},18))
+local torso = npc and npc:FindFirstChild(_d({22,49,49,38,51,21,48,51,52,48},63))
+local prompt = torso and torso:FindFirstChild(_d({17,51,48,46,49,53},63))
 if not prompt then
-warn(_d({73,63,99,83,97,98,14,54,79,92,82,90,83,96,75,14,60,93,14,94,96,93,91,94,98,14,84,93,99,92,82,14,84,93,96,14,60,62,49,40,14},18) .. tostring(npcName))
+warn(_d({28,18,54,38,52,53,225,9,34,47,37,45,38,51,30,225,15,48,225,49,51,48,46,49,53,225,39,48,54,47,37,225,39,48,51,225,15,17,4,251,225},63) .. tostring(npcName))
 return false
 end
-local myRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({54,99,91,79,92,93,87,82,64,93,93,98,62,79,96,98},18))
+local myRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({9,54,46,34,47,48,42,37,19,48,48,53,17,34,51,53},63))
 if not myRoot then return false end
 local dist = (torso.Position - myRoot.Position).Magnitude
 if dist > 12 then
-warn(_d({73,63,99,83,97,98,14,54,79,92,82,90,83,96,75,14,62,90,79,103,83,96,14,98,93,93,14,84,79,96,14,84,96,93,91,14,60,62,49,40,14},18) .. tostring(npcName) .. _d({14,22,50,87,97,98,40,14},18) .. tostring(dist) .. ")")
+warn(_d({28,18,54,38,52,53,225,9,34,47,37,45,38,51,30,225,17,45,34,58,38,51,225,53,48,48,225,39,34,51,225,39,51,48,46,225,15,17,4,251,225},63) .. tostring(npcName) .. _d({225,233,5,42,52,53,251,225},63) .. tostring(dist) .. ")")
 return false
 end
-local playerGui = LocalPlayer:FindFirstChild(_d({62,90,79,103,83,96,53,99,87},18))
-local chatGui = playerGui and playerGui:FindFirstChild(_d({60,62,49,49,54,47,66},18))
+local playerGui = LocalPlayer:FindFirstChild(_d({17,45,34,58,38,51,8,54,42},63))
+local chatGui = playerGui and playerGui:FindFirstChild(_d({15,17,4,4,9,2,21},63))
 if not (chatGui and chatGui.Enabled) then
 local holdTime = prompt.HoldDuration or 0
 if holdTime > 0 then
@@ -38,19 +38,19 @@ end
 if fireproximityprompt then
 pcall(fireproximityprompt, prompt)
 else
-warn(_d({73,63,99,83,97,98,14,54,79,92,82,90,83,96,75,14,84,87,96,83,94,96,93,102,87,91,87,98,103,94,96,93,91,94,98,14,92,93,98,14,97,99,94,94,93,96,98,83,82,14,80,103,14,83,102,83,81,99,98,93,96,15},18))
+warn(_d({28,18,54,38,52,53,225,9,34,47,37,45,38,51,30,225,39,42,51,38,49,51,48,57,42,46,42,53,58,49,51,48,46,49,53,225,47,48,53,225,52,54,49,49,48,51,53,38,37,225,35,58,225,38,57,38,36,54,53,48,51,226},63))
 return false
 end
 task.wait(0.8)
 end
-chatGui = playerGui:FindFirstChild(_d({60,62,49,49,54,47,66},18))
+chatGui = playerGui:FindFirstChild(_d({15,17,4,4,9,2,21},63))
 if chatGui and chatGui.Enabled then
 local tries = 0
 while chatGui.Enabled and tries < 15 do
 tries = tries + 1
-local frame = chatGui:FindFirstChild(_d({52,96,79,91,83},18))
-local goBtn = frame and frame:FindFirstChild(_d({85,93},18))
-local endChatBtn = frame and frame:FindFirstChild(_d({83,92,82,49,86,79,98},18))
+local frame = chatGui:FindFirstChild(_d({7,51,34,46,38},63))
+local goBtn = frame and frame:FindFirstChild(_d({40,48},63))
+local endChatBtn = frame and frame:FindFirstChild(_d({38,47,37,4,41,34,53},63))
 if goBtn and goBtn.Visible and goBtn.Text ~= "" then
 if getconnections then
 for _, conn in ipairs(getconnections(goBtn.Activated)) do
