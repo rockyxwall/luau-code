@@ -11,10 +11,10 @@ end
 if _G.EasyTravelCleanup then
 pcall(_G.EasyTravelCleanup)
 end
-local Players = game:GetService(_d({61,89,78,102,82,95,96},19))
-local ReplicatedStorage = game:GetService(_d({63,82,93,89,86,80,78,97,82,81,64,97,92,95,78,84,82},19))
-local RunService = game:GetService(_d({63,98,91,64,82,95,99,86,80,82},19))
-local UserInputService = game:GetService(_d({66,96,82,95,54,91,93,98,97,64,82,95,99,86,80,82},19))
+local Players = game:GetService(_d({58,86,75,99,79,92,93},22))
+local ReplicatedStorage = game:GetService(_d({60,79,90,86,83,77,75,94,79,78,61,94,89,92,75,81,79},22))
+local RunService = game:GetService(_d({60,95,88,61,79,92,96,83,77,79},22))
+local UserInputService = game:GetService(_d({63,93,79,92,51,88,90,95,94,61,79,92,96,83,77,79},22))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local FLIGHT_SPEED = 70.0
@@ -33,18 +33,18 @@ local inputConnection = nil
 local function getCharacterComponents()
 local char = LocalPlayer.Character
 if not char then return nil, nil, nil end
-local root = char:FindFirstChild(_d({53,98,90,78,91,92,86,81,63,92,92,97,61,78,95,97},19))
-local hum = char:FindFirstChildWhichIsA(_d({53,98,90,78,91,92,86,81},19))
+local root = char:FindFirstChild(_d({50,95,87,75,88,89,83,78,60,89,89,94,58,75,92,94},22))
+local hum = char:FindFirstChildWhichIsA(_d({50,95,87,75,88,89,83,78},22))
 return char, hum, root
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,46,97,97},19)) or Instance.new(_d({46,97,97,78,80,85,90,82,91,97},19))
-att.Name = _d({76,76,50,78,96,102,65,95,78,99,82,89,46,97,97},19)
+local att = root:FindFirstChild(_d({73,73,47,75,93,99,62,92,75,96,79,86,43,94,94},22)) or Instance.new(_d({43,94,94,75,77,82,87,79,88,94},22))
+att.Name = _d({73,73,47,75,93,99,62,92,75,96,79,86,43,94,94},22)
 att.Parent = root
-local force = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,51,92,95,80,82},19))
+local force = root:FindFirstChild(_d({73,73,47,75,93,99,62,92,75,96,79,86,48,89,92,77,79},22))
 if not force then
-force = Instance.new(_d({57,86,91,82,78,95,67,82,89,92,80,86,97,102},19))
-force.Name = _d({76,76,50,78,96,102,65,95,78,99,82,89,51,92,95,80,82},19)
+force = Instance.new(_d({54,83,88,79,75,92,64,79,86,89,77,83,94,99},22))
+force.Name = _d({73,73,47,75,93,99,62,92,75,96,79,86,48,89,92,77,79},22)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -57,8 +57,8 @@ end
 local function cleanupForce()
 local _, _, root = getCharacterComponents()
 if root then
-local force = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,51,92,95,80,82},19))
-local att = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,46,97,97},19))
+local force = root:FindFirstChild(_d({73,73,47,75,93,99,62,92,75,96,79,86,48,89,92,77,79},22))
+local att = root:FindFirstChild(_d({73,73,47,75,93,99,62,92,75,96,79,86,43,94,94},22))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -95,17 +95,33 @@ raycastParams.FilterDescendantsInstances = {char}
 raycastParams.IgnoreWater = true
 if moveDir.Magnitude > 0 then
 local moveUnit = moveDir.Unit
+local perpUnit = Vector3.new(-moveUnit.Z, 0, moveUnit.X).Unit
 local forwardHit = Workspace:Raycast(currentPos, moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
+if not forwardHit then
+forwardHit = Workspace:Raycast(currentPos - (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
+end
+if not forwardHit then
+forwardHit = Workspace:Raycast(currentPos + (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
+end
 if forwardHit then
 distanceToWall = forwardHit.Distance
 local clearanceY = nil
-for heightOffset = 4, 100, 4 do
+local currentScanDist = FORWARD_SCAN_DISTANCE
+local heightOffset = 4
+while heightOffset <= 100 do
 local scanOrigin = currentPos + Vector3.new(0, heightOffset, 0)
-local scanHit = Workspace:Raycast(scanOrigin, moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
+local scanHit = Workspace:Raycast(scanOrigin, moveUnit * currentScanDist, raycastParams)
 if not scanHit then
 clearanceY = scanOrigin.Y
+local secondaryOrigin = scanOrigin + moveUnit * 10
+local secondaryHit = Workspace:Raycast(secondaryOrigin, moveUnit * 15, raycastParams)
+if secondaryHit then
+currentScanDist = currentScanDist + 15
+else
 break
 end
+end
+heightOffset = heightOffset + 4
 end
 if clearanceY then
 isClimbing = true
@@ -173,7 +189,7 @@ if moveDir.Magnitude > 0 then
 currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + Vector3.new(look.X, 0, look.Z).Unit)
 end
 end)
-print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,51,89,86,84,85,97,13,82,91,78,79,89,82,81,27},19))
+print(_d({69,47,75,93,99,10,62,92,75,96,79,86,71,10,48,86,83,81,82,94,10,79,88,75,76,86,79,78,24},22))
 end
 local function stopFlight()
 flightEnabled = false
@@ -182,7 +198,7 @@ loopConnection:Disconnect();
 loopConnection = nil;
 end
 cleanupForce()
-print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,51,89,86,84,85,97,13,81,86,96,78,79,89,82,81,27},19))
+print(_d({69,47,75,93,99,10,62,92,75,96,79,86,71,10,48,86,83,81,82,94,10,78,83,93,75,76,86,79,78,24},22))
 end
 inputConnection = UserInputService.InputBegan:Connect(function(input, processed)
 if processed then return end
@@ -205,9 +221,9 @@ inputConnection:Disconnect()
 inputConnection = nil
 end
 _G.EasyTravelCleanup = nil
-print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,48,92,90,93,89,82,97,82,89,102,13,98,91,89,92,78,81,82,81,13,78,91,81,13,80,89,82,78,91,82,81,13,98,93,13,96,80,95,86,93,97,13,96,97,78,97,82,27},19))
+print(_d({69,47,75,93,99,10,62,92,75,96,79,86,71,10,45,89,87,90,86,79,94,79,86,99,10,95,88,86,89,75,78,79,78,10,75,88,78,10,77,86,79,75,88,79,78,10,95,90,10,93,77,92,83,90,94,10,93,94,75,94,79,24},22))
 end
-print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,57,92,78,81,82,81,27,13,61,95,82,96,96,13,20,61,20,13,97,92,13,97,92,84,84,89,82,13,83,89,86,84,85,97,27,13,61,95,82,96,96,13,20,50,91,81,20,13,97,92,13,80,92,90,93,89,82,97,82,89,102,13,98,91,89,92,78,81,27},19))
+print(_d({69,47,75,93,99,10,62,92,75,96,79,86,71,10,54,89,75,78,79,78,24,10,58,92,79,93,93,10,17,58,17,10,94,89,10,94,89,81,81,86,79,10,80,86,83,81,82,94,24,10,58,92,79,93,93,10,17,47,88,78,17,10,94,89,10,77,89,87,90,86,79,94,79,86,99,10,95,88,86,89,75,78,24},22))
 return {
 Start = startFlight,
 Stop = stopFlight,
