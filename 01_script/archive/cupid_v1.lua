@@ -8,16 +8,16 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players            = game:GetService(_d({48,76,65,89,69,82,83},32))
-local UserInputService    = game:GetService(_d({53,83,69,82,41,78,80,85,84,51,69,82,86,73,67,69},32))
-local RunService          = game:GetService(_d({50,85,78,51,69,82,86,73,67,69},32))
-local VIM                 = game:GetService(_d({54,73,82,84,85,65,76,41,78,80,85,84,45,65,78,65,71,69,82},32))
-local ReplicatedStorage    = game:GetService(_d({50,69,80,76,73,67,65,84,69,68,51,84,79,82,65,71,69},32))
+local Players            = game:GetService(_d({19,47,36,60,40,53,54},61))
+local UserInputService    = game:GetService(_d({24,54,40,53,12,49,51,56,55,22,40,53,57,44,38,40},61))
+local RunService          = game:GetService(_d({21,56,49,22,40,53,57,44,38,40},61))
+local VIM                 = game:GetService(_d({25,44,53,55,56,36,47,12,49,51,56,55,16,36,49,36,42,40,53},61))
+local ReplicatedStorage    = game:GetService(_d({21,40,51,47,44,38,36,55,40,39,22,55,50,53,36,42,40},61))
 local Workspace            = workspace
 local TARGET_PLACE_ID    = 11424731604
 local TARGET_UNIVERSE_ID = 648454481
 if game.PlaceId ~= TARGET_PLACE_ID or game.GameId ~= TARGET_UNIVERSE_ID then
-print(_d({59,34,79,83,83,34,79,84,61},32), _d({55,82,79,78,71,0,71,65,77,69,0,194,96,116,0,48,76,65,67,69,41,68,26},32), game.PlaceId, _d({53,78,73,86,69,82,83,69,41,68,26},32), game.GameId, _d({13,0,78,79,84,0,82,85,78,78,73,78,71},32))
+print(_d({30,5,50,54,54,5,50,55,32},61), _d({26,53,50,49,42,227,42,36,48,40,227,165,67,87,227,19,47,36,38,40,12,39,253},61), game.PlaceId, _d({24,49,44,57,40,53,54,40,12,39,253},61), game.GameId, _d({240,227,49,50,55,227,53,56,49,49,44,49,42},61))
 return
 end
 local HOVER_OFFSET   = 10.3
@@ -31,17 +31,17 @@ local ARROW_HOVER_OFFSET   = 10
 local ARROW_HOVER_WAIT     = 30
 local ARROW_DODGE_DISTANCE = 40
 local ARROW_DODGE_INTERVAL = 0.5
-local LEO_PILLAR_ANIM_ID   = _d({82,66,88,65,83,83,69,84,73,68,26,15,15,21,18,20,20,17,20,17,19,18,23},32)
-local LEO_ENTEI_ANIM_ID    = _d({82,66,88,65,83,83,69,84,73,68,26,15,15,21,18,20,20,17,19,24,18,23,24},32)
-local LEO_HIKEN_ANIM_ID    = _d({82,66,88,65,83,83,69,84,73,68,26,15,15,21,18,18,16,25,17,23,20,16,23},32)
-local LEO_FIREFLY_ANIM_ID  = _d({82,66,88,65,83,83,69,84,73,68,26,15,15,21,18,18,16,18,19,22,17,21,20},32)
+local LEO_PILLAR_ANIM_ID   = _d({53,37,59,36,54,54,40,55,44,39,253,242,242,248,245,247,247,244,247,244,246,245,250},61)
+local LEO_ENTEI_ANIM_ID    = _d({53,37,59,36,54,54,40,55,44,39,253,242,242,248,245,247,247,244,246,251,245,250,251},61)
+local LEO_HIKEN_ANIM_ID    = _d({53,37,59,36,54,54,40,55,44,39,253,242,242,248,245,245,243,252,244,250,247,243,250},61)
+local LEO_FIREFLY_ANIM_ID  = _d({53,37,59,36,54,54,40,55,44,39,253,242,242,248,245,245,243,245,246,249,244,248,247},61)
 local LEO_DODGE_ANIMS      = {LEO_PILLAR_ANIM_ID, LEO_ENTEI_ANIM_ID, LEO_HIKEN_ANIM_ID, LEO_FIREFLY_ANIM_ID}
 local LEO_DODGE_DISTANCE   = 100
 local LEO_QUICK_BLOCK_DURATION = 1
 local LEO_BLOCK_DELAY          = 4
 local BLOCK_KEY                = Enum.KeyCode.F
 local LOAD_WAIT             = 15
-local OBJECTIVES_GUI_NAME   = _d({47,66,74,69,67,84,73,86,69,83},32)
+local OBJECTIVES_GUI_NAME   = _d({18,37,45,40,38,55,44,57,40,54},61)
 local OBJECTIVES_WAIT_MAX   = 60
 local BUSO_CHECK_INTERVAL  = 1
 local KEN_CHECK_INTERVAL   = 1
@@ -66,45 +66,45 @@ Statue2      = Vector3.new(-1089.46533203125, 671.2554931640625, -5410.247070312
 Statue3      = Vector3.new(-1304.9073486328125, 666.7710571289062, -5306.22705078125),
 PostQueen    = Vector3.new(-1096.88134765625, 672.9217529296875, -5380.06396484375),
 }
-local REPLAY_BUTTON_VALUE   = _d({50,69,80,76,65,89},32)
+local REPLAY_BUTTON_VALUE   = _d({21,40,51,47,36,60},61)
 local REPLAY_PROMPT_TIMEOUT = 15
 local REPLAY_CLICK_SETTLE   = 1
 local enabled    = false
 local navConn    = nil
-local phase      = _d({77,79,86,69},32)
-local NavState   = {mode = _d({73,68,76,69},32)}
+local phase      = _d({48,50,57,40},61)
+local NavState   = {mode = _d({44,39,47,40},61)}
 local lastAim    = nil
 local lastFace   = nil
 local function debug(...)
-print(_d({59,34,79,83,83,34,79,84,61},32), ...)
+print(_d({30,5,50,54,54,5,50,55,32},61), ...)
 end
 local function getRoot()
 local ok, root = pcall(function()
 local char = Players.LocalPlayer.Character
-return char and char:FindFirstChild(_d({40,85,77,65,78,79,73,68,50,79,79,84,48,65,82,84},32))
+return char and char:FindFirstChild(_d({11,56,48,36,49,50,44,39,21,50,50,55,19,36,53,55},61))
 end)
 if ok then return root end
-debug(_d({71,69,84,50,79,79,84,0,69,82,82,79,82,26},32), root)
+debug(_d({42,40,55,21,50,50,55,227,40,53,53,50,53,253},61), root)
 return nil
 end
 local function getHumanoid()
 local ok, hum = pcall(function()
 local char = Players.LocalPlayer.Character
-return char and char:FindFirstChildWhichIsA(_d({40,85,77,65,78,79,73,68},32))
+return char and char:FindFirstChildWhichIsA(_d({11,56,48,36,49,50,44,39},61))
 end)
 if ok then return hum end
-debug(_d({71,69,84,40,85,77,65,78,79,73,68,0,69,82,82,79,82,26},32), hum)
+debug(_d({42,40,55,11,56,48,36,49,50,44,39,227,40,53,53,50,53,253},61), hum)
 return nil
 end
 local function getOrCreateForce(root)
 local ok, result = pcall(function()
-local att = root:FindFirstChild(_d({63,63,40,79,86,69,82,33,84,84},32)) or Instance.new(_d({33,84,84,65,67,72,77,69,78,84},32))
-att.Name = _d({63,63,40,79,86,69,82,33,84,84},32)
+local att = root:FindFirstChild(_d({34,34,11,50,57,40,53,4,55,55},61)) or Instance.new(_d({4,55,55,36,38,43,48,40,49,55},61))
+att.Name = _d({34,34,11,50,57,40,53,4,55,55},61)
 att.Parent = root
-local force = root:FindFirstChild(_d({63,63,40,79,86,69,82,38,79,82,67,69},32))
+local force = root:FindFirstChild(_d({34,34,11,50,57,40,53,9,50,53,38,40},61))
 if not force then
-force = Instance.new(_d({44,73,78,69,65,82,54,69,76,79,67,73,84,89},32))
-force.Name = _d({63,63,40,79,86,69,82,38,79,82,67,69},32)
+force = Instance.new(_d({15,44,49,40,36,53,25,40,47,50,38,44,55,60},61))
+force.Name = _d({34,34,11,50,57,40,53,9,50,53,38,40},61)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -115,66 +115,66 @@ end
 return force
 end)
 if ok then return result end
-debug(_d({71,69,84,47,82,35,82,69,65,84,69,38,79,82,67,69,0,69,82,82,79,82,26},32), result)
+debug(_d({42,40,55,18,53,6,53,40,36,55,40,9,50,53,38,40,227,40,53,53,50,53,253},61), result)
 return nil
 end
 local function cleanupForce()
 local ok, err = pcall(function()
 local char = Players.LocalPlayer.Character
 if not char then return end
-local root = char:FindFirstChild(_d({40,85,77,65,78,79,73,68,50,79,79,84,48,65,82,84},32))
+local root = char:FindFirstChild(_d({11,56,48,36,49,50,44,39,21,50,50,55,19,36,53,55},61))
 if not root then return end
-local force = root:FindFirstChild(_d({63,63,40,79,86,69,82,38,79,82,67,69},32))
-local att   = root:FindFirstChild(_d({63,63,40,79,86,69,82,33,84,84},32))
+local force = root:FindFirstChild(_d({34,34,11,50,57,40,53,9,50,53,38,40},61))
+local att   = root:FindFirstChild(_d({34,34,11,50,57,40,53,4,55,55},61))
 if force then force:Destroy() end
 if att   then att:Destroy()   end
 end)
-if not ok then debug(_d({67,76,69,65,78,85,80,38,79,82,67,69,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({38,47,40,36,49,56,51,9,50,53,38,40,227,40,53,53,50,53,253},61), err) end
 end
 local function isBusoActive()
 local ok, result = pcall(function()
 local char = Players.LocalPlayer.Character
-return char ~= nil and char:FindFirstChild(_d({34,85,83,79,45,69,76,69,69},32)) ~= nil
+return char ~= nil and char:FindFirstChild(_d({5,56,54,50,16,40,47,40,40},61)) ~= nil
 end)
 if ok then return result end
-debug(_d({73,83,34,85,83,79,33,67,84,73,86,69,0,69,82,82,79,82,26},32), result)
+debug(_d({44,54,5,56,54,50,4,38,55,44,57,40,227,40,53,53,50,53,253},61), result)
 return false
 end
 local function activateBuso()
 local ok, err = pcall(function()
-ReplicatedStorage.Events.Haki:FireServer(_d({34,85,83,79},32))
+ReplicatedStorage.Events.Haki:FireServer(_d({5,56,54,50},61))
 end)
-if not ok then debug(_d({65,67,84,73,86,65,84,69,34,85,83,79,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({36,38,55,44,57,36,55,40,5,56,54,50,227,40,53,53,50,53,253},61), err) end
 end
 local function startBusoKeeper()
 task.spawn(function()
 while enabled do
 local ok, err = pcall(function()
 if not isBusoActive() then
-debug(_d({34,85,83,79,0,78,79,84,0,65,67,84,73,86,69,12,0,65,67,84,73,86,65,84,73,78,71},32))
+debug(_d({5,56,54,50,227,49,50,55,227,36,38,55,44,57,40,239,227,36,38,55,44,57,36,55,44,49,42},61))
 activateBuso()
 end
 end)
-if not ok then debug(_d({34,85,83,79,43,69,69,80,69,82,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({5,56,54,50,14,40,40,51,40,53,227,40,53,53,50,53,253},61), err) end
 task.wait(BUSO_CHECK_INTERVAL)
 end
-debug(_d({34,85,83,79,0,75,69,69,80,69,82,0,83,84,79,80,80,69,68},32))
+debug(_d({5,56,54,50,227,46,40,40,51,40,53,227,54,55,50,51,51,40,39},61))
 end)
 end
 local function isKenActive()
 local ok, result = pcall(function()
 local char = Players.LocalPlayer.Character
-return char ~= nil and char:FindFirstChild(_d({43,69,78,40,65,75,73},32)) ~= nil
+return char ~= nil and char:FindFirstChild(_d({14,40,49,11,36,46,44},61)) ~= nil
 end)
 if ok then return result end
-debug(_d({73,83,43,69,78,33,67,84,73,86,69,0,69,82,82,79,82,26},32), result)
+debug(_d({44,54,14,40,49,4,38,55,44,57,40,227,40,53,53,50,53,253},61), result)
 return false
 end
 local function activateKen()
 local ok, err = pcall(function()
-ReplicatedStorage.Events.Haki:FireServer(_d({43,69,78},32), true)
+ReplicatedStorage.Events.Haki:FireServer(_d({14,40,49},61), true)
 end)
-if not ok then debug(_d({65,67,84,73,86,65,84,69,43,69,78,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({36,38,55,44,57,36,55,40,14,40,49,227,40,53,53,50,53,253},61), err) end
 end
 local kenKeeperStarted = false
 local function startKenKeeper()
@@ -184,21 +184,21 @@ task.spawn(function()
 while enabled do
 local ok, err = pcall(function()
 if not isKenActive() then
-debug(_d({43,69,78,0,78,79,84,0,65,67,84,73,86,69,12,0,65,67,84,73,86,65,84,73,78,71},32))
+debug(_d({14,40,49,227,49,50,55,227,36,38,55,44,57,40,239,227,36,38,55,44,57,36,55,44,49,42},61))
 activateKen()
 end
 end)
-if not ok then debug(_d({43,69,78,43,69,69,80,69,82,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({14,40,49,14,40,40,51,40,53,227,40,53,53,50,53,253},61), err) end
 task.wait(KEN_CHECK_INTERVAL)
 end
-debug(_d({43,69,78,0,75,69,69,80,69,82,0,83,84,79,80,80,69,68},32))
+debug(_d({14,40,49,227,46,40,40,51,40,53,227,54,55,50,51,51,40,39},61))
 kenKeeperStarted = false
 end)
 end
 local function getNPCsFolder()
-local ok, folder = pcall(function() return Workspace:FindFirstChild(_d({46,48,35,83},32)) end)
+local ok, folder = pcall(function() return Workspace:FindFirstChild(_d({17,19,6,54},61)) end)
 if ok then return folder end
-debug(_d({71,69,84,46,48,35,83,38,79,76,68,69,82,0,69,82,82,79,82,26},32), folder)
+debug(_d({42,40,55,17,19,6,54,9,50,47,39,40,53,227,40,53,53,50,53,253},61), folder)
 return nil
 end
 local function getNearestNPC(exclude)
@@ -210,8 +210,8 @@ local nearest, nearestDist = nil, math.huge
 local fallbackNearest, fallbackDist = nil, math.huge
 for _, model in ipairs(folder:GetChildren()) do
 local okp, info = pcall(function()
-local r = model:FindFirstChild(_d({40,85,77,65,78,79,73,68,50,79,79,84,48,65,82,84},32))
-local h = model:FindFirstChildWhichIsA(_d({40,85,77,65,78,79,73,68},32))
+local r = model:FindFirstChild(_d({11,56,48,36,49,50,44,39,21,50,50,55,19,36,53,55},61))
+local h = model:FindFirstChildWhichIsA(_d({11,56,48,36,49,50,44,39},61))
 if r and h and h.Health > 0 then return {root = r, humanoid = h, model = model} end
 return nil
 end)
@@ -226,7 +226,7 @@ end
 return nearest or fallbackNearest
 end)
 if ok then return result end
-debug(_d({71,69,84,46,69,65,82,69,83,84,46,48,35,0,69,82,82,79,82,26},32), result)
+debug(_d({42,40,55,17,40,36,53,40,54,55,17,19,6,227,40,53,53,50,53,253},61), result)
 return nil
 end
 local function getNPCByName(name)
@@ -235,15 +235,15 @@ local folder = getNPCsFolder()
 if not folder then return nil end
 local model = folder:FindFirstChild(name)
 if not model then return nil end
-local root = model:FindFirstChild(_d({40,85,77,65,78,79,73,68,50,79,79,84,48,65,82,84},32))
-local hum  = model:FindFirstChildWhichIsA(_d({40,85,77,65,78,79,73,68},32))
+local root = model:FindFirstChild(_d({11,56,48,36,49,50,44,39,21,50,50,55,19,36,53,55},61))
+local hum  = model:FindFirstChildWhichIsA(_d({11,56,48,36,49,50,44,39},61))
 if root and hum and hum.Health > 0 then
 return {root = root, humanoid = hum, model = model}
 end
 return nil
 end)
 if ok then return result end
-debug(_d({71,69,84,46,48,35,34,89,46,65,77,69,0,69,82,82,79,82,26},32), result)
+debug(_d({42,40,55,17,19,6,5,60,17,36,48,40,227,40,53,53,50,53,253},61), result)
 return nil
 end
 local function npcsRemaining()
@@ -252,27 +252,27 @@ local folder = getNPCsFolder()
 if not folder then return 0 end
 local n = 0
 for _, m in ipairs(folder:GetChildren()) do
-local hum = m:FindFirstChildWhichIsA(_d({40,85,77,65,78,79,73,68},32))
+local hum = m:FindFirstChildWhichIsA(_d({11,56,48,36,49,50,44,39},61))
 if hum and hum.Health > 0 then n += 1 end
 end
 return n
 end)
 if ok then return count end
-debug(_d({78,80,67,83,50,69,77,65,73,78,73,78,71,0,69,82,82,79,82,26},32), count)
+debug(_d({49,51,38,54,21,40,48,36,44,49,44,49,42,227,40,53,53,50,53,253},61), count)
 return 0
 end
 local function isQueenPhase2()
 local ok, result = pcall(function()
 local folder = getNPCsFolder()
-local queen = folder and folder:FindFirstChild(_d({35,85,80,73,68,0,49,85,69,69,78},32))
-return queen ~= nil and queen:FindFirstChild(_d({77,79,84,73,79,78,44,69,83,83},32)) ~= nil
+local queen = folder and folder:FindFirstChild(_d({6,56,51,44,39,227,20,56,40,40,49},61))
+return queen ~= nil and queen:FindFirstChild(_d({48,50,55,44,50,49,15,40,54,54},61)) ~= nil
 end)
 if ok then return result end
-debug(_d({73,83,49,85,69,69,78,48,72,65,83,69,18,0,69,82,82,79,82,26},32), result)
+debug(_d({44,54,20,56,40,40,49,19,43,36,54,40,245,227,40,53,53,50,53,253},61), result)
 return false
 end
-local QUEEN_EMBRACE_ANIM_ID = _d({82,66,88,65,83,83,69,84,73,68,26,15,15,17,18,17,18,25,23,25,20,18,18,25,18,23,22,25},32)
-local QUEEN_GRASP_ANIM_ID   = _d({82,66,88,65,83,83,69,84,73,68,26,15,15,17,18,25,24,16,16,16,22,17,16,16,17,23,19,20},32)
+local QUEEN_EMBRACE_ANIM_ID = _d({53,37,59,36,54,54,40,55,44,39,253,242,242,244,245,244,245,252,250,252,247,245,245,252,245,250,249,252},61)
+local QUEEN_GRASP_ANIM_ID   = _d({53,37,59,36,54,54,40,55,44,39,253,242,242,244,245,252,251,243,243,243,249,244,243,243,244,250,246,247},61)
 local QUEEN_BLOCK_ANIMS     = {QUEEN_EMBRACE_ANIM_ID, QUEEN_GRASP_ANIM_ID}
 local QUEEN_BLOCK_TIMEOUT   = 3
 local QUEEN_DODGE_DISTANCE  = 70
@@ -280,7 +280,7 @@ local QUEEN_DODGE_DURATION  = 3
 local function isPlayingAnimFromList(npcModel, animList)
 local ok, result, which = pcall(function()
 if not npcModel then return false end
-local hum = npcModel:FindFirstChildWhichIsA(_d({40,85,77,65,78,79,73,68},32))
+local hum = npcModel:FindFirstChildWhichIsA(_d({11,56,48,36,49,50,44,39},61))
 if not hum then return false end
 for _, track in ipairs(hum:GetPlayingAnimationTracks()) do
 local animId = track.Animation and track.Animation.AnimationId
@@ -293,7 +293,7 @@ end
 return false
 end)
 if ok then return result, which end
-debug(_d({73,83,48,76,65,89,73,78,71,33,78,73,77,38,82,79,77,44,73,83,84,0,69,82,82,79,82,26},32), result)
+debug(_d({44,54,19,47,36,60,44,49,42,4,49,44,48,9,53,50,48,15,44,54,55,227,40,53,53,50,53,253},61), result)
 return false
 end
 local function isCastingDodgeSkill(npcModel)
@@ -304,10 +304,10 @@ return isPlayingAnimFromList(npcModel, QUEEN_BLOCK_ANIMS)
 end
 local function isNPCBlocking(npcModel)
 local ok, result = pcall(function()
-return npcModel ~= nil and npcModel:FindFirstChild(_d({34,76,79,67,75,73,78,71},32)) ~= nil
+return npcModel ~= nil and npcModel:FindFirstChild(_d({5,47,50,38,46,44,49,42},61)) ~= nil
 end)
 if ok then return result end
-debug(_d({73,83,46,48,35,34,76,79,67,75,73,78,71,0,69,82,82,79,82,26},32), result)
+debug(_d({44,54,17,19,6,5,47,50,38,46,44,49,42,227,40,53,53,50,53,253},61), result)
 return false
 end
 local NPC_PREDICT_LOOKAHEAD = 0.15
@@ -323,7 +323,7 @@ end
 return info.root.Position + lead
 end)
 if ok then return result end
-debug(_d({80,82,69,68,73,67,84,46,48,35,48,79,83,73,84,73,79,78,0,69,82,82,79,82,26},32), result)
+debug(_d({51,53,40,39,44,38,55,17,19,6,19,50,54,44,55,44,50,49,227,40,53,53,50,53,253},61), result)
 return info.root.Position
 end
 local NPC_STUCK_TIMEOUT = 10
@@ -340,30 +340,30 @@ stuckNPCs[model] = nil
 return
 end
 if not stuckNPCs[model] and tick() - tracked.since > NPC_STUCK_TIMEOUT then
-debug(_d({46,79,0,68,65,77,65,71,69,0,79,78},32), model.Name, _d({70,79,82},32), NPC_STUCK_TIMEOUT, _d({83,0,13,0,83,87,73,84,67,72,73,78,71,0,84,65,82,71,69,84},32))
+debug(_d({17,50,227,39,36,48,36,42,40,227,50,49},61), model.Name, _d({41,50,53},61), NPC_STUCK_TIMEOUT, _d({54,227,240,227,54,58,44,55,38,43,44,49,42,227,55,36,53,42,40,55},61))
 stuckNPCs[model] = true
 end
 end)
-if not ok then debug(_d({84,82,65,67,75,46,48,35,36,65,77,65,71,69,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({55,53,36,38,46,17,19,6,7,36,48,36,42,40,227,40,53,53,50,53,253},61), err) end
 end
 local function getModelFacePos(model)
 local ok, pos = pcall(function()
-if model:IsA(_d({45,79,68,69,76},32)) then
+if model:IsA(_d({16,50,39,40,47},61)) then
 if model.PrimaryPart then return model.PrimaryPart.Position end
 return model:GetPivot().Position
-elseif model:IsA(_d({34,65,83,69,48,65,82,84},32)) then
+elseif model:IsA(_d({5,36,54,40,19,36,53,55},61)) then
 return model.Position
 end
 return nil
 end)
 if ok then return pos end
-debug(_d({71,69,84,45,79,68,69,76,38,65,67,69,48,79,83,0,69,82,82,79,82,26},32), pos)
+debug(_d({42,40,55,16,50,39,40,47,9,36,38,40,19,50,54,227,40,53,53,50,53,253},61), pos)
 return nil
 end
 local function getStatueModelNear(coordPos)
 local ok, result = pcall(function()
-local env = Workspace:FindFirstChild(_d({37,78,86},32))
-local folder = env and env:FindFirstChild(_d({51,84,65,84,85,69,83},32))
+local env = Workspace:FindFirstChild(_d({8,49,57},61))
+local folder = env and env:FindFirstChild(_d({22,55,36,55,56,40,54},61))
 if not folder then return nil end
 local nearest, nearestDist = nil, math.huge
 for _, m in ipairs(folder:GetChildren()) do
@@ -376,26 +376,26 @@ end
 return nearest
 end)
 if ok then return result end
-debug(_d({71,69,84,51,84,65,84,85,69,45,79,68,69,76,46,69,65,82,0,69,82,82,79,82,26},32), result)
+debug(_d({42,40,55,22,55,36,55,56,40,16,50,39,40,47,17,40,36,53,227,40,53,53,50,53,253},61), result)
 return nil
 end
 local function getStatueHP(statueModel)
 local ok, hp = pcall(function()
-local v = statueModel:FindFirstChild(_d({66,65,82,82,69,76,40,48},32))
+local v = statueModel:FindFirstChild(_d({37,36,53,53,40,47,11,19},61))
 return v and v.Value or 0
 end)
 if ok then return hp end
-debug(_d({71,69,84,51,84,65,84,85,69,40,48,0,69,82,82,79,82,26},32), hp)
+debug(_d({42,40,55,22,55,36,55,56,40,11,19,227,40,53,53,50,53,253},61), hp)
 return 0
 end
 local function findToolByAttribute(attrName)
 local ok, tool = pcall(function()
 local char = Players.LocalPlayer.Character
-local bp   = Players.LocalPlayer:FindFirstChild(_d({34,65,67,75,80,65,67,75},32))
+local bp   = Players.LocalPlayer:FindFirstChild(_d({5,36,38,46,51,36,38,46},61))
 for _, pool in ipairs({char, bp}) do
 if pool then
 for _, item in ipairs(pool:GetChildren()) do
-if item:IsA(_d({52,79,79,76},32)) then
+if item:IsA(_d({23,50,50,47},61)) then
 local ok2, val = pcall(function() return item:GetAttribute(attrName) end)
 if ok2 and val == true then return item end
 end
@@ -405,23 +405,23 @@ end
 return nil
 end)
 if ok then return tool end
-debug(_d({70,73,78,68,52,79,79,76,34,89,33,84,84,82,73,66,85,84,69,0,69,82,82,79,82,26},32), tool)
+debug(_d({41,44,49,39,23,50,50,47,5,60,4,55,55,53,44,37,56,55,40,227,40,53,53,50,53,253},61), tool)
 return nil
 end
 local function findToolByName(toolName)
 local ok, tool = pcall(function()
 local char = Players.LocalPlayer.Character
-local bp   = Players.LocalPlayer:FindFirstChild(_d({34,65,67,75,80,65,67,75},32))
+local bp   = Players.LocalPlayer:FindFirstChild(_d({5,36,38,46,51,36,38,46},61))
 for _, pool in ipairs({char, bp}) do
 if pool then
 local t = pool:FindFirstChild(toolName)
-if t and t:IsA(_d({52,79,79,76},32)) then return t end
+if t and t:IsA(_d({23,50,50,47},61)) then return t end
 end
 end
 return nil
 end)
 if ok then return tool end
-debug(_d({70,73,78,68,52,79,79,76,34,89,46,65,77,69,0,69,82,82,79,82,26},32), tool)
+debug(_d({41,44,49,39,23,50,50,47,5,60,17,36,48,40,227,40,53,53,50,53,253},61), tool)
 return nil
 end
 local function equipTool(tool)
@@ -433,17 +433,17 @@ local hum = getHumanoid()
 if not hum then return end
 hum:EquipTool(tool)
 end)
-if not ok then debug(_d({69,81,85,73,80,52,79,79,76,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({40,52,56,44,51,23,50,50,47,227,40,53,53,50,53,253},61), err) end
 return ok
 end
 local function findToolByChildName(childName)
 local ok, tool = pcall(function()
 local char = Players.LocalPlayer.Character
-local bp   = Players.LocalPlayer:FindFirstChild(_d({34,65,67,75,80,65,67,75},32))
+local bp   = Players.LocalPlayer:FindFirstChild(_d({5,36,38,46,51,36,38,46},61))
 for _, pool in ipairs({char, bp}) do
 if pool then
 for _, item in ipairs(pool:GetChildren()) do
-if item:IsA(_d({52,79,79,76},32)) and item:FindFirstChild(childName) then
+if item:IsA(_d({23,50,50,47},61)) and item:FindFirstChild(childName) then
 return item
 end
 end
@@ -452,21 +452,21 @@ end
 return nil
 end)
 if ok then return tool end
-debug(_d({70,73,78,68,52,79,79,76,34,89,35,72,73,76,68,46,65,77,69,0,69,82,82,79,82,26},32), tool)
+debug(_d({41,44,49,39,23,50,50,47,5,60,6,43,44,47,39,17,36,48,40,227,40,53,53,50,53,253},61), tool)
 return nil
 end
 local function equipSwordOrMelee()
-local sword = findToolByChildName(_d({51,87,79,82,68,37,81,85,73,80},32))
+local sword = findToolByChildName(_d({22,58,50,53,39,8,52,56,44,51},61))
 if sword then
 equipTool(sword)
-return _d({83,87,79,82,68},32)
+return _d({54,58,50,53,39},61)
 end
-local melee = findToolByAttribute(_d({45,69,76,69,69,52,79,79,76},32))
+local melee = findToolByAttribute(_d({16,40,47,40,40,23,50,50,47},61))
 if melee then
 equipTool(melee)
-return _d({77,69,76,69,69},32)
+return _d({48,40,47,40,40},61)
 end
-debug(_d({46,79,0,83,87,79,82,68,0,79,82,0,77,69,76,69,69,0,84,79,79,76,0,70,79,85,78,68},32))
+debug(_d({17,50,227,54,58,50,53,39,227,50,53,227,48,40,47,40,40,227,55,50,50,47,227,41,50,56,49,39},61))
 return nil
 end
 local function clickM1(holdTime)
@@ -478,29 +478,29 @@ VIM:SendMouseButtonEvent(x, y, 0, true, game, 0)
 task.wait(holdTime or 0.05)
 VIM:SendMouseButtonEvent(x, y, 0, false, game, 0)
 end)
-if not ok then debug(_d({67,76,73,67,75,45,17,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({38,47,44,38,46,16,244,227,40,53,53,50,53,253},61), err) end
 end
 local function invokeGeppo()
 local ok, err = pcall(function()
 local char = Players.LocalPlayer.Character
-local root = char and char:FindFirstChild(_d({40,85,77,65,78,79,73,68,50,79,79,84,48,65,82,84},32))
+local root = char and char:FindFirstChild(_d({11,56,48,36,49,50,44,39,21,50,50,55,19,36,53,55},61))
 if not root then return end
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({51,84,65,84,83},32) .. Players.LocalPlayer.Name)
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({22,55,36,55,54},61) .. Players.LocalPlayer.Name)
 if not statsFolder then return end
 local style = statsFolder.Stats.FightingStyle.Value
 local cf = CFrame.lookAt(root.Position, root.Position + root.CFrame.LookVector)
 local args = {char = char, cf = cf}
-if style == _d({50,79,75,85,83,72,73,75,73},32) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({39,69,80,80,79},32), args)
-elseif style == _d({34,76,65,67,75,44,69,71},32) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({51,75,89,0,55,65,76,75},32), args)
-elseif style == _d({43,65,77,73,83,72,73,75,73},32) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({43,65,77,73,83,72,73,75,73,39,69,80,80,79},32), args)
+if style == _d({21,50,46,56,54,43,44,46,44},61) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({10,40,51,51,50},61), args)
+elseif style == _d({5,47,36,38,46,15,40,42},61) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({22,46,60,227,26,36,47,46},61), args)
+elseif style == _d({14,36,48,44,54,43,44,46,44},61) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({14,36,48,44,54,43,44,46,44,10,40,51,51,50},61), args)
 else
-ReplicatedStorage.Events.Skill:InvokeServer(_d({51,75,89,0,55,65,76,75,18},32), args)
+ReplicatedStorage.Events.Skill:InvokeServer(_d({22,46,60,227,26,36,47,46,245},61), args)
 end
 end)
-if not ok then debug(_d({73,78,86,79,75,69,39,69,80,80,79,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({44,49,57,50,46,40,10,40,51,51,50,227,40,53,53,50,53,253},61), err) end
 end
 local function pressSkillR()
 local ok, err = pcall(function()
@@ -508,7 +508,7 @@ VIM:SendKeyEvent(true, Enum.KeyCode.R, false, game)
 task.wait(0.05)
 VIM:SendKeyEvent(false, Enum.KeyCode.R, false, game)
 end)
-if not ok then debug(_d({80,82,69,83,83,51,75,73,76,76,50,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({51,53,40,54,54,22,46,44,47,47,21,227,40,53,53,50,53,253},61), err) end
 end
 local function holdBlock(duration)
 local ok, err = pcall(function()
@@ -516,7 +516,7 @@ VIM:SendKeyEvent(true, BLOCK_KEY, false, game)
 task.wait(duration)
 VIM:SendKeyEvent(false, BLOCK_KEY, false, game)
 end)
-if not ok then debug(_d({72,79,76,68,34,76,79,67,75,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({43,50,47,39,5,47,50,38,46,227,40,53,53,50,53,253},61), err) end
 end
 local function holdBlockWhile(conditionFn, timeout)
 local ok, err = pcall(function()
@@ -528,7 +528,7 @@ t += 0.1
 end
 VIM:SendKeyEvent(false, BLOCK_KEY, false, game)
 end)
-if not ok then debug(_d({72,79,76,68,34,76,79,67,75,55,72,73,76,69,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({43,50,47,39,5,47,50,38,46,26,43,44,47,40,227,40,53,53,50,53,253},61), err) end
 end
 local function getGameG()
 local ok, result = pcall(function()
@@ -539,7 +539,7 @@ end
 return nil
 end)
 if ok then return result end
-debug(_d({71,69,84,39,65,77,69,39,0,69,82,82,79,82,26},32), result)
+debug(_d({42,40,55,10,36,48,40,10,227,40,53,53,50,53,253},61), result)
 return nil
 end
 local function isRealM1Busy()
@@ -548,7 +548,7 @@ local g = getGameG()
 return g ~= nil and g.midM1 == true
 end)
 if ok then return result end
-debug(_d({73,83,50,69,65,76,45,17,34,85,83,89,0,69,82,82,79,82,26},32), result)
+debug(_d({44,54,21,40,36,47,16,244,5,56,54,60,227,40,53,53,50,53,253},61), result)
 return false
 end
 local prevM1Busy = false
@@ -571,10 +571,10 @@ end
 local function isStunned()
 local ok, result = pcall(function()
 local char = Players.LocalPlayer.Character
-return char ~= nil and char:FindFirstChild(_d({83,84,85,78},32)) ~= nil
+return char ~= nil and char:FindFirstChild(_d({54,55,56,49},61)) ~= nil
 end)
 if ok then return result end
-debug(_d({73,83,51,84,85,78,78,69,68,0,69,82,82,79,82,26},32), result)
+debug(_d({44,54,22,55,56,49,49,40,39,227,40,53,53,50,53,253},61), result)
 return false
 end
 local function pressStunBreak()
@@ -583,7 +583,7 @@ VIM:SendKeyEvent(true, Enum.KeyCode.LeftControl, false, game)
 task.wait(0.05)
 VIM:SendKeyEvent(false, Enum.KeyCode.LeftControl, false, game)
 end)
-if not ok then debug(_d({80,82,69,83,83,51,84,85,78,34,82,69,65,75,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({51,53,40,54,54,22,55,56,49,5,53,40,36,46,227,40,53,53,50,53,253},61), err) end
 end
 local function dodgeHold(duration)
 local t = 0
@@ -609,7 +609,7 @@ while enabled do
 if isStunned() then pressStunBreak() end
 info = getInfoFn()
 if not info then
-debug(_d({81,85,69,69,78,36,79,68,71,69,53,78,84,73,76,51,65,70,69,26,0,49,85,69,69,78,0,71,79,78,69,0,13,0,69,78,68,73,78,71,0,68,79,68,71,69,0,69,65,82,76,89},32))
+debug(_d({52,56,40,40,49,7,50,39,42,40,24,49,55,44,47,22,36,41,40,253,227,20,56,40,40,49,227,42,50,49,40,227,240,227,40,49,39,44,49,42,227,39,50,39,42,40,227,40,36,53,47,60},61))
 break
 end
 local stillCasting = isQueenCastingBlockableSkill(info.model)
@@ -624,7 +624,7 @@ invokeGeppo()
 sinceGeppo = 0
 end
 if t > 15 then
-debug(_d({81,85,69,69,78,36,79,68,71,69,53,78,84,73,76,51,65,70,69,0,83,65,70,69,84,89,0,84,73,77,69,79,85,84},32))
+debug(_d({52,56,40,40,49,7,50,39,42,40,24,49,55,44,47,22,36,41,40,227,54,36,41,40,55,60,227,55,44,48,40,50,56,55},61))
 break
 end
 end
@@ -637,19 +637,19 @@ queenWatcherStarted = true
 task.spawn(function()
 while enabled do
 local ok, err = pcall(function()
-local info = getNPCByName(_d({35,85,80,73,68,0,49,85,69,69,78},32))
+local info = getNPCByName(_d({6,56,51,44,39,227,20,56,40,40,49},61))
 if not info then return end
 if not queenDodging and isQueenCastingBlockableSkill(info.model) then
 queenDodging = true
-debug(_d({49,85,69,69,78,0,67,65,83,84,73,78,71,0,68,69,84,69,67,84,69,68,0,13,0,68,79,68,71,73,78,71,0,8,87,65,84,67,72,69,82,9},32))
-queenDodgeUntilSafe(function() return getNPCByName(_d({35,85,80,73,68,0,49,85,69,69,78},32)) end)
-if enabled and getNPCByName(_d({35,85,80,73,68,0,49,85,69,69,78},32)) then
-setNavNamed(_d({35,85,80,73,68,0,49,85,69,69,78},32))
+debug(_d({20,56,40,40,49,227,38,36,54,55,44,49,42,227,39,40,55,40,38,55,40,39,227,240,227,39,50,39,42,44,49,42,227,235,58,36,55,38,43,40,53,236},61))
+queenDodgeUntilSafe(function() return getNPCByName(_d({6,56,51,44,39,227,20,56,40,40,49},61)) end)
+if enabled and getNPCByName(_d({6,56,51,44,39,227,20,56,40,40,49},61)) then
+setNavNamed(_d({6,56,51,44,39,227,20,56,40,40,49},61))
 end
 queenDodging = false
 end
 end)
-if not ok then debug(_d({81,85,69,69,78,36,79,68,71,69,55,65,84,67,72,69,82,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({52,56,40,40,49,7,50,39,42,40,26,36,55,38,43,40,53,227,40,53,53,50,53,253},61), err) end
 task.wait(0.03)
 end
 queenWatcherStarted = false
@@ -657,16 +657,16 @@ end)
 end
 local function getNavTargets()
 local ok, aimR, faceR = pcall(function()
-if NavState.mode == _d({80,79,73,78,84},32) and NavState.point then
+if NavState.mode == _d({51,50,44,49,55},61) and NavState.point then
 return NavState.point, NavState.point
-elseif NavState.mode == _d({78,80,67},32) then
+elseif NavState.mode == _d({49,51,38},61) then
 local info = getNearestNPC(stuckNPCs)
 if info then
 trackNPCDamage(info)
 local predicted = predictNPCPosition(info)
 return predicted + Vector3.new(0, HOVER_OFFSET, 0), info.root.Position
 end
-elseif NavState.mode == _d({78,65,77,69,68},32) and NavState.name then
+elseif NavState.mode == _d({49,36,48,40,39},61) and NavState.name then
 local info = getNPCByName(NavState.name)
 if info then
 local predicted = predictNPCPosition(info)
@@ -676,7 +676,7 @@ end
 return nil, nil
 end)
 if ok then return aimR, faceR end
-debug(_d({71,69,84,46,65,86,52,65,82,71,69,84,83,0,69,82,82,79,82,26},32), aimR)
+debug(_d({42,40,55,17,36,57,23,36,53,42,40,55,54,227,40,53,53,50,53,253},61), aimR)
 return nil, nil
 end
 local function computeLookDownCFrame(root, targetPos)
@@ -696,12 +696,12 @@ local ok, result = pcall(function()
 return computeLookDownCFrame(root, facePos) + (aimPos - root.Position)
 end)
 if ok then return result end
-debug(_d({67,79,77,80,85,84,69,44,79,67,75,69,68,35,38,82,65,77,69,0,69,82,82,79,82,26},32), result)
+debug(_d({38,50,48,51,56,55,40,15,50,38,46,40,39,6,9,53,36,48,40,227,40,53,53,50,53,253},61), result)
 return nil
 end
 local function setNavPoint(pos)
-NavState = {mode = _d({80,79,73,78,84},32), point = pos}
-phase = _d({77,79,86,69},32)
+NavState = {mode = _d({51,50,44,49,55},61), point = pos}
+phase = _d({48,50,57,40},61)
 end
 function navToPoint(pos, skipExtraGeppo)
 local ok, err = pcall(function()
@@ -718,27 +718,27 @@ end)
 end
 end
 end)
-if not ok then debug(_d({78,65,86,52,79,48,79,73,78,84,0,71,69,80,80,79,0,67,72,69,67,75,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({49,36,57,23,50,19,50,44,49,55,227,42,40,51,51,50,227,38,43,40,38,46,227,40,53,53,50,53,253},61), err) end
 setNavPoint(pos)
 end
 local function setNavNPCNearest()
-NavState = {mode = _d({78,80,67},32)}
-phase = _d({77,79,86,69},32)
+NavState = {mode = _d({49,51,38},61)}
+phase = _d({48,50,57,40},61)
 end
 function setNavNamed(name)
-NavState = {mode = _d({78,65,77,69,68},32), name = name}
-phase = _d({77,79,86,69},32)
+NavState = {mode = _d({49,36,48,40,39},61), name = name}
+phase = _d({48,50,57,40},61)
 end
 local function setNavIdle()
-NavState = {mode = _d({73,68,76,69},32)}
-phase = _d({77,79,86,69},32)
+NavState = {mode = _d({44,39,47,40},61)}
+phase = _d({48,50,57,40},61)
 end
 local function hasArrived()
-return phase == _d({72,79,86,69,82},32)
+return phase == _d({43,50,57,40,53},61)
 end
 local function startNav()
-phase = _d({77,79,86,69},32)
-debug(_d({46,65,86,0,76,79,79,80,0,47,46},32))
+phase = _d({48,50,57,40},61)
+debug(_d({17,36,57,227,47,50,50,51,227,18,17},61))
 navConn = RunService.Heartbeat:Connect(function(dt)
 local ok, err = pcall(function()
 local root = getRoot()
@@ -760,26 +760,26 @@ and (xzDir.Unit * math.min(xzDir.Magnitude * XZ_SPEED, 60))
 or Vector3.zero
 local force = getOrCreateForce(root)
 if not force then return end
-local prevPos = force:GetAttribute(_d({63,63,80,82,69,86,48,79,83},32))
+local prevPos = force:GetAttribute(_d({34,34,51,53,40,57,19,50,54},61))
 if prevPos then
 local delta = (pos - prevPos).Magnitude
 if delta > 100 then
-debug(_d({44,65,82,71,69,0,80,79,83,73,84,73,79,78,0,74,85,77,80,0,68,69,84,69,67,84,69,68,26},32), delta, _d({83,84,85,68,83,14,0,80,82,69,86,48,79,83,29},32), prevPos, _d({78,69,87,48,79,83,29},32), pos)
+debug(_d({15,36,53,42,40,227,51,50,54,44,55,44,50,49,227,45,56,48,51,227,39,40,55,40,38,55,40,39,253},61), delta, _d({54,55,56,39,54,241,227,51,53,40,57,19,50,54,0},61), prevPos, _d({49,40,58,19,50,54,0},61), pos)
 end
 end
-force:SetAttribute(_d({63,63,80,82,69,86,48,79,83},32), pos)
+force:SetAttribute(_d({34,34,51,53,40,57,19,50,54},61), pos)
 local yVel = math.clamp(yErr * 20, -HOVER_YVEL, HOVER_YVEL)
-if phase == _d({77,79,86,69},32) and xzDist < XZ_THRESHOLD and math.abs(yErr) < Y_THRESHOLD then
-phase = _d({72,79,86,69,82},32)
-debug(_d({48,72,65,83,69,26,0,72,79,86,69,82},32))
+if phase == _d({48,50,57,40},61) and xzDist < XZ_THRESHOLD and math.abs(yErr) < Y_THRESHOLD then
+phase = _d({43,50,57,40,53},61)
+debug(_d({19,43,36,54,40,253,227,43,50,57,40,53},61))
 end
 local finalVel = Vector3.new(xzVel.X, yVel, xzVel.Z)
 if finalVel.Magnitude > 200 then
-debug(_d({1,1,1,0,50,37,38,53,51,41,46,39,0,52,47,0,33,48,48,44,57,0,33,34,46,47,50,45,33,44,0,54,37,44,47,35,41,52,57,26},32), finalVel, _d({65,73,77,29},32), aim, _d({80,79,83,29},32), pos)
+debug(_d({228,228,228,227,21,8,9,24,22,12,17,10,227,23,18,227,4,19,19,15,28,227,4,5,17,18,21,16,4,15,227,25,8,15,18,6,12,23,28,253},61), finalVel, _d({36,44,48,0},61), aim, _d({51,50,54,0},61), pos)
 finalVel = Vector3.zero
 end
 force.VectorVelocity = finalVel
-if phase == _d({72,79,86,69,82},32) then
+if phase == _d({43,50,57,40,53},61) then
 pcall(function()
 if COMBAT_LOCK_MODES[NavState.mode] then
 local snapDist = (aim - root.Position).Magnitude
@@ -791,8 +791,8 @@ else
 root.CFrame = computeLookDownCFrame(root, face)
 end
 else
-debug(_d({35,79,77,66,65,84,0,76,79,67,75,0,83,75,73,80,80,69,68,12},32), snapDist, _d({83,84,85,68,83,0,70,82,79,77,0,84,65,82,71,69,84,0,194,96,116,0,70,65,76,76,73,78,71,0,66,65,67,75,0,84,79,0,77,79,86,69},32))
-phase = _d({77,79,86,69},32)
+debug(_d({6,50,48,37,36,55,227,47,50,38,46,227,54,46,44,51,51,40,39,239},61), snapDist, _d({54,55,56,39,54,227,41,53,50,48,227,55,36,53,42,40,55,227,165,67,87,227,41,36,47,47,44,49,42,227,37,36,38,46,227,55,50,227,48,50,57,40},61))
+phase = _d({48,50,57,40},61)
 root.CFrame = computeLookDownCFrame(root, face)
 end
 else
@@ -801,33 +801,33 @@ end
 end)
 end
 end)
-if not ok then debug(_d({40,69,65,82,84,66,69,65,84,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({11,40,36,53,55,37,40,36,55,227,40,53,53,50,53,253},61), err) end
 end)
 end
 local function stopNav()
-debug(_d({46,65,86,0,76,79,79,80,0,47,38,38},32))
+debug(_d({17,36,57,227,47,50,50,51,227,18,9,9},61))
 if navConn then navConn:Disconnect() navConn = nil end
 cleanupForce()
-phase = _d({77,79,86,69},32)
+phase = _d({48,50,57,40},61)
 end
 local function sendChatMessage(message)
 local ok, err = pcall(function()
-local TextChatService = game:GetService(_d({52,69,88,84,35,72,65,84,51,69,82,86,73,67,69},32))
-local channels = TextChatService:FindFirstChild(_d({52,69,88,84,35,72,65,78,78,69,76,83},32))
-local channel = channels and channels:FindFirstChild(_d({50,34,56,39,69,78,69,82,65,76},32))
+local TextChatService = game:GetService(_d({23,40,59,55,6,43,36,55,22,40,53,57,44,38,40},61))
+local channels = TextChatService:FindFirstChild(_d({23,40,59,55,6,43,36,49,49,40,47,54},61))
+local channel = channels and channels:FindFirstChild(_d({21,5,27,10,40,49,40,53,36,47},61))
 if channel then
 channel:SendAsync(message)
 return
 end
-local chatEvents = ReplicatedStorage:FindFirstChild(_d({36,69,70,65,85,76,84,35,72,65,84,51,89,83,84,69,77,35,72,65,84,37,86,69,78,84,83},32))
-local sayEvent = chatEvents and chatEvents:FindFirstChild(_d({51,65,89,45,69,83,83,65,71,69,50,69,81,85,69,83,84},32))
+local chatEvents = ReplicatedStorage:FindFirstChild(_d({7,40,41,36,56,47,55,6,43,36,55,22,60,54,55,40,48,6,43,36,55,8,57,40,49,55,54},61))
+local sayEvent = chatEvents and chatEvents:FindFirstChild(_d({22,36,60,16,40,54,54,36,42,40,21,40,52,56,40,54,55},61))
 if sayEvent then
-sayEvent:FireServer(message, _d({33,76,76},32))
+sayEvent:FireServer(message, _d({4,47,47},61))
 return
 end
-debug(_d({83,69,78,68,35,72,65,84,45,69,83,83,65,71,69,26,0,78,79,0,52,69,88,84,35,72,65,84,51,69,82,86,73,67,69,14,50,34,56,39,69,78,69,82,65,76,0,79,82,0,76,69,71,65,67,89,0,51,65,89,45,69,83,83,65,71,69,50,69,81,85,69,83,84,0,70,79,85,78,68,0,70,79,82},32), message)
+debug(_d({54,40,49,39,6,43,36,55,16,40,54,54,36,42,40,253,227,49,50,227,23,40,59,55,6,43,36,55,22,40,53,57,44,38,40,241,21,5,27,10,40,49,40,53,36,47,227,50,53,227,47,40,42,36,38,60,227,22,36,60,16,40,54,54,36,42,40,21,40,52,56,40,54,55,227,41,50,56,49,39,227,41,50,53},61), message)
 end)
-if not ok then debug(_d({83,69,78,68,35,72,65,84,45,69,83,83,65,71,69,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({54,40,49,39,6,43,36,55,16,40,54,54,36,42,40,227,40,53,53,50,53,253},61), err) end
 end
 local function waitUntilArrived(timeout)
 local t = 0
@@ -854,15 +854,15 @@ end
 end
 lastPos = pos
 if stuckTicks >= UNSTUCK_STUCK_TICKS and (tick() - lastUnstuckSent) > UNSTUCK_COOLDOWN then
-debug(_d({46,79,84,0,77,65,75,73,78,71,0,80,82,79,71,82,69,83,83,0,84,79,87,65,82,68,0,78,65,86,0,84,65,82,71,69,84,0,70,79,82},32), stuckTicks * UNSTUCK_CHECK_INTERVAL, _d({83,0,13,0,83,69,78,68,73,78,71,0,15,85,78,83,84,85,67,75},32))
-sendChatMessage(_d({15,85,78,83,84,85,67,75},32))
+debug(_d({17,50,55,227,48,36,46,44,49,42,227,51,53,50,42,53,40,54,54,227,55,50,58,36,53,39,227,49,36,57,227,55,36,53,42,40,55,227,41,50,53},61), stuckTicks * UNSTUCK_CHECK_INTERVAL, _d({54,227,240,227,54,40,49,39,44,49,42,227,242,56,49,54,55,56,38,46},61))
+sendChatMessage(_d({242,56,49,54,55,56,38,46},61))
 lastUnstuckSent = tick()
 stuckTicks = 0
 end
 end
 end
 if timeout and t > timeout then
-debug(_d({87,65,73,84,53,78,84,73,76,33,82,82,73,86,69,68,0,84,73,77,69,79,85,84},32))
+debug(_d({58,36,44,55,24,49,55,44,47,4,53,53,44,57,40,39,227,55,44,48,40,50,56,55},61))
 break
 end
 end
@@ -871,11 +871,11 @@ local function navToPointConfirmed(pos, timeout, label)
 navToPoint(pos)
 waitUntilArrived(timeout)
 if not hasArrived() then
-debug(_d({78,65,86,52,79,48,79,73,78,84,35,79,78,70,73,82,77,69,68,26},32), label or _d({84,65,82,71,69,84},32), _d({13,0,68,73,68,0,78,79,84,0,65,82,82,73,86,69,0,87,73,84,72,73,78},32), timeout, _d({83,12,0,82,69,84,82,89,73,78,71,0,79,78,67,69},32))
+debug(_d({49,36,57,23,50,19,50,44,49,55,6,50,49,41,44,53,48,40,39,253},61), label or _d({55,36,53,42,40,55},61), _d({240,227,39,44,39,227,49,50,55,227,36,53,53,44,57,40,227,58,44,55,43,44,49},61), timeout, _d({54,239,227,53,40,55,53,60,44,49,42,227,50,49,38,40},61))
 navToPoint(pos)
 waitUntilArrived(timeout)
 if not hasArrived() then
-debug(_d({78,65,86,52,79,48,79,73,78,84,35,79,78,70,73,82,77,69,68,26},32), label or _d({84,65,82,71,69,84},32), _d({13,0,83,84,73,76,76,0,78,79,84,0,65,82,82,73,86,69,68,0,65,70,84,69,82,0,82,69,84,82,89,12,0,80,82,79,67,69,69,68,73,78,71,0,65,78,89,87,65,89},32))
+debug(_d({49,36,57,23,50,19,50,44,49,55,6,50,49,41,44,53,48,40,39,253},61), label or _d({55,36,53,42,40,55},61), _d({240,227,54,55,44,47,47,227,49,50,55,227,36,53,53,44,57,40,39,227,36,41,55,40,53,227,53,40,55,53,60,239,227,51,53,50,38,40,40,39,44,49,42,227,36,49,60,58,36,60},61))
 end
 end
 end
@@ -887,32 +887,32 @@ end
 local ok, err = pcall(function()
 VIM:SendKeyEvent(true, BLOCK_KEY, false, game)
 end)
-if not ok then debug(_d({78,65,86,52,79,48,79,73,78,84,40,79,76,68,73,78,71,34,76,79,67,75,0,75,69,89,13,68,79,87,78,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({49,36,57,23,50,19,50,44,49,55,11,50,47,39,44,49,42,5,47,50,38,46,227,46,40,60,240,39,50,58,49,227,40,53,53,50,53,253},61), err) end
 waitUntilArrived(timeout)
 local ok2, err2 = pcall(function()
 VIM:SendKeyEvent(false, BLOCK_KEY, false, game)
 end)
-if not ok2 then debug(_d({78,65,86,52,79,48,79,73,78,84,40,79,76,68,73,78,71,34,76,79,67,75,0,75,69,89,13,85,80,0,69,82,82,79,82,26},32), err2) end
+if not ok2 then debug(_d({49,36,57,23,50,19,50,44,49,55,11,50,47,39,44,49,42,5,47,50,38,46,227,46,40,60,240,56,51,227,40,53,53,50,53,253},61), err2) end
 end
 local function clearStage(stageName)
-debug(_d({45,79,86,73,78,71,0,84,79},32), stageName)
+debug(_d({16,50,57,44,49,42,227,55,50},61), stageName)
 navToPoint(COORDS[stageName])
 waitUntilArrived(30)
-debug(_d({55,65,73,84,73,78,71,0,70,79,82,0,46,48,35,83,0,84,79,0,83,80,65,87,78,0,65,84},32), stageName)
+debug(_d({26,36,44,55,44,49,42,227,41,50,53,227,17,19,6,54,227,55,50,227,54,51,36,58,49,227,36,55},61), stageName)
 local waited = 0
 while enabled and npcsRemaining() == 0 do
 local folder = getNPCsFolder()
-debug(_d({0,0,83,80,65,87,78,0,67,72,69,67,75,26,0,70,79,76,68,69,82,0,69,88,73,83,84,83,0,29},32), folder ~= nil,
-_d({12,0,67,72,73,76,68,82,69,78,0,29},32), folder and #folder:GetChildren() or 0,
-_d({12,0,65,76,73,86,69,0,29},32), npcsRemaining())
+debug(_d({227,227,54,51,36,58,49,227,38,43,40,38,46,253,227,41,50,47,39,40,53,227,40,59,44,54,55,54,227,0},61), folder ~= nil,
+_d({239,227,38,43,44,47,39,53,40,49,227,0},61), folder and #folder:GetChildren() or 0,
+_d({239,227,36,47,44,57,40,227,0},61), npcsRemaining())
 task.wait(1)
 waited += 1
 if waited > 15 then
-debug(_d({46,79,0,46,48,35,83,0,65,80,80,69,65,82,69,68,0,65,84},32), stageName, _d({65,70,84,69,82,0,17,21,83,12,0,77,79,86,73,78,71,0,79,78,0,65,78,89,87,65,89},32))
+debug(_d({17,50,227,17,19,6,54,227,36,51,51,40,36,53,40,39,227,36,55},61), stageName, _d({36,41,55,40,53,227,244,248,54,239,227,48,50,57,44,49,42,227,50,49,227,36,49,60,58,36,60},61))
 break
 end
 end
-debug(_d({43,73,76,76,73,78,71,0,46,48,35,83,0,65,84},32), stageName)
+debug(_d({14,44,47,47,44,49,42,227,17,19,6,54,227,36,55},61), stageName)
 equipSwordOrMelee()
 setNavNPCNearest()
 while enabled and npcsRemaining() > 0 do
@@ -920,15 +920,15 @@ equipSwordOrMelee()
 clickM1(0.05)
 task.wait(MELEE_CLICK_INTERVAL)
 end
-debug(_d({50,69,84,85,82,78,73,78,71,0,84,79},32), stageName, _d({80,79,83,73,84,73,79,78,0,66,69,70,79,82,69,0,77,79,86,73,78,71,0,79,78},32))
+debug(_d({21,40,55,56,53,49,44,49,42,227,55,50},61), stageName, _d({51,50,54,44,55,44,50,49,227,37,40,41,50,53,40,227,48,50,57,44,49,42,227,50,49},61))
 navToPoint(COORDS[stageName])
 waitUntilArrived(30)
-debug(_d({55,65,73,84,73,78,71,0,21,83,0,65,84},32), stageName, _d({80,79,83,73,84,73,79,78},32))
+debug(_d({26,36,44,55,44,49,42,227,248,54,227,36,55},61), stageName, _d({51,50,54,44,55,44,50,49},61))
 task.wait(5)
-debug(stageName, _d({67,76,69,65,82,69,68},32))
+debug(stageName, _d({38,47,40,36,53,40,39},61))
 end
 local function killNamedNPC(name, targetPos)
-debug(_d({45,79,86,73,78,71,0,84,79},32), name)
+debug(_d({16,50,57,44,49,42,227,55,50},61), name)
 navToPoint(targetPos)
 waitUntilArrived(30)
 equipSwordOrMelee()
@@ -938,22 +938,22 @@ equipSwordOrMelee()
 clickM1(0.05)
 task.wait(MELEE_CLICK_INTERVAL)
 end
-debug(name, _d({68,69,70,69,65,84,69,68},32))
+debug(name, _d({39,40,41,40,36,55,40,39},61))
 end
 local leoAnimLoggerConn = nil
 local function startLeoAnimLogger(model)
 local ok, err = pcall(function()
-local hum = model:FindFirstChildWhichIsA(_d({40,85,77,65,78,79,73,68},32))
+local hum = model:FindFirstChildWhichIsA(_d({11,56,48,36,49,50,44,39},61))
 if not hum then return end
 if leoAnimLoggerConn then leoAnimLoggerConn:Disconnect() end
 leoAnimLoggerConn = hum.AnimationPlayed:Connect(function(track)
 local ok2, err2 = pcall(function()
-debug(_d({44,69,79,0,80,76,65,89,69,68,0,65,78,73,77,65,84,73,79,78,26},32), track.Animation and track.Animation.Name, "-", track.Animation and track.Animation.AnimationId)
+debug(_d({15,40,50,227,51,47,36,60,40,39,227,36,49,44,48,36,55,44,50,49,253},61), track.Animation and track.Animation.Name, "-", track.Animation and track.Animation.AnimationId)
 end)
-if not ok2 then debug(_d({76,69,79,33,78,73,77,44,79,71,71,69,82,0,80,82,73,78,84,0,69,82,82,79,82,26},32), err2) end
+if not ok2 then debug(_d({47,40,50,4,49,44,48,15,50,42,42,40,53,227,51,53,44,49,55,227,40,53,53,50,53,253},61), err2) end
 end)
 end)
-if not ok then debug(_d({83,84,65,82,84,44,69,79,33,78,73,77,44,79,71,71,69,82,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({54,55,36,53,55,15,40,50,4,49,44,48,15,50,42,42,40,53,227,40,53,53,50,53,253},61), err) end
 end
 local function stopLeoAnimLogger()
 if leoAnimLoggerConn then
@@ -962,18 +962,18 @@ leoAnimLoggerConn = nil
 end
 end
 local function fightLeo()
-debug(_d({45,79,86,73,78,71,0,84,79,0,44,69,79,0,8,66,76,79,67,75,73,78,71,0,65,70,84,69,82},32), LEO_BLOCK_DELAY, _d({83,9},32))
+debug(_d({16,50,57,44,49,42,227,55,50,227,15,40,50,227,235,37,47,50,38,46,44,49,42,227,36,41,55,40,53},61), LEO_BLOCK_DELAY, _d({54,236},61))
 navToPointHoldingBlock(COORDS.Leo, 30, LEO_BLOCK_DELAY)
-local leoModel = getNPCByName(_d({44,69,79},32))
+local leoModel = getNPCByName(_d({15,40,50},61))
 if leoModel then startLeoAnimLogger(leoModel.model) end
 equipSwordOrMelee()
-setNavNamed(_d({44,69,79},32))
+setNavNamed(_d({15,40,50},61))
 while enabled do
-local info = getNPCByName(_d({44,69,79},32))
+local info = getNPCByName(_d({15,40,50},61))
 if not info then break end
 local casting, which = isCastingDodgeSkill(info.model)
 if casting then
-debug(_d({44,69,79,0,67,65,83,84,73,78,71},32), which, _d({13,0,68,79,68,71,73,78,71},32))
+debug(_d({15,40,50,227,38,36,54,55,44,49,42},61), which, _d({240,227,39,50,39,42,44,49,42},61))
 if which == LEO_HIKEN_ANIM_ID or which == LEO_FIREFLY_ANIM_ID then
 holdBlock(LEO_QUICK_BLOCK_DURATION)
 else
@@ -986,24 +986,24 @@ local held = 0
 while enabled and held < 6 do
 task.wait(GEPPO_HOLD_INTERVAL)
 held += GEPPO_HOLD_INTERVAL
-if not getNPCByName(_d({44,69,79},32)) then
-debug(_d({44,69,79,0,71,79,78,69,0,77,73,68,13,68,79,68,71,69,0,13,0,69,78,68,73,78,71,0,37,78,84,69,73,0,72,79,76,68,0,69,65,82,76,89},32))
+if not getNPCByName(_d({15,40,50},61)) then
+debug(_d({15,40,50,227,42,50,49,40,227,48,44,39,240,39,50,39,42,40,227,240,227,40,49,39,44,49,42,227,8,49,55,40,44,227,43,50,47,39,227,40,36,53,47,60},61))
 break
 end
 invokeGeppo()
 end
 else
 task.wait(GEPPO_HOLD_INTERVAL)
-if getNPCByName(_d({44,69,79},32)) then
+if getNPCByName(_d({15,40,50},61)) then
 invokeGeppo()
 task.wait(GEPPO_HOLD_INTERVAL)
 else
-debug(_d({44,69,79,0,71,79,78,69,0,77,73,68,13,68,79,68,71,69,0,13,0,69,78,68,73,78,71,0,38,76,65,77,69,0,48,73,76,76,65,82,0,72,79,76,68,0,69,65,82,76,89},32))
+debug(_d({15,40,50,227,42,50,49,40,227,48,44,39,240,39,50,39,42,40,227,240,227,40,49,39,44,49,42,227,9,47,36,48,40,227,19,44,47,47,36,53,227,43,50,47,39,227,40,36,53,47,60},61))
 end
 end
 end
-if enabled and getNPCByName(_d({44,69,79},32)) then
-setNavNamed(_d({44,69,79},32))
+if enabled and getNPCByName(_d({15,40,50},61)) then
+setNavNamed(_d({15,40,50},61))
 end
 else
 equipSwordOrMelee()
@@ -1017,25 +1017,25 @@ return isCastingDodgeSkill(info.model) or isNPCBlocking(info.model)
 end)
 end
 end
-debug(_d({44,69,79,0,68,69,70,69,65,84,69,68},32))
+debug(_d({15,40,50,227,39,40,41,40,36,55,40,39},61))
 stopLeoAnimLogger()
-debug(_d({50,69,84,85,82,78,73,78,71,0,84,79,0,44,69,79,0,80,79,83,73,84,73,79,78,0,66,69,70,79,82,69,0,77,79,86,73,78,71,0,79,78},32))
-navToPointConfirmed(COORDS.Leo, 30, _d({44,69,79,0,80,79,83,73,84,73,79,78},32))
-debug(_d({55,65,73,84,73,78,71,0,21,83,0,65,84,0,44,69,79,0,80,79,83,73,84,73,79,78},32))
+debug(_d({21,40,55,56,53,49,44,49,42,227,55,50,227,15,40,50,227,51,50,54,44,55,44,50,49,227,37,40,41,50,53,40,227,48,50,57,44,49,42,227,50,49},61))
+navToPointConfirmed(COORDS.Leo, 30, _d({15,40,50,227,51,50,54,44,55,44,50,49},61))
+debug(_d({26,36,44,55,44,49,42,227,248,54,227,36,55,227,15,40,50,227,51,50,54,44,55,44,50,49},61))
 task.wait(5)
 end
 local function destroyStatue(coordKey)
 local coordPos = COORDS[coordKey]
-debug(_d({45,79,86,73,78,71,0,84,79},32), coordKey)
+debug(_d({16,50,57,44,49,42,227,55,50},61), coordKey)
 navToPoint(coordPos)
 waitUntilArrived(30)
 local statueModel = getStatueModelNear(coordPos)
 if not statueModel then
-debug(_d({35,79,85,76,68,0,78,79,84,0,70,73,78,68,0,83,84,65,84,85,69,0,77,79,68,69,76,0,78,69,65,82},32), coordKey)
+debug(_d({6,50,56,47,39,227,49,50,55,227,41,44,49,39,227,54,55,36,55,56,40,227,48,50,39,40,47,227,49,40,36,53},61), coordKey)
 return
 end
 local weapon = equipSwordOrMelee()
-debug(_d({33,84,84,65,67,75,73,78,71},32), coordKey, _d({87,73,84,72},32), weapon or _d({78,79,84,72,73,78,71,0,70,79,85,78,68},32))
+debug(_d({4,55,55,36,38,46,44,49,42},61), coordKey, _d({58,44,55,43},61), weapon or _d({49,50,55,43,44,49,42,227,41,50,56,49,39},61))
 setNavIdle()
 while enabled and getStatueHP(statueModel) > 0 do
 local root = getRoot()
@@ -1048,38 +1048,38 @@ end
 clickM1(0.05)
 task.wait(MELEE_CLICK_INTERVAL)
 end
-debug(coordKey, _d({66,65,82,82,69,76,0,68,69,83,84,82,79,89,69,68},32))
+debug(coordKey, _d({37,36,53,53,40,47,227,39,40,54,55,53,50,60,40,39},61))
 end
 local function recheckStatue(coordKey)
 local ok, err = pcall(function()
 local coordPos = COORDS[coordKey]
 local statueModel = getStatueModelNear(coordPos)
 if not statueModel then
-debug(_d({82,69,67,72,69,67,75,51,84,65,84,85,69,26},32), coordKey, _d({13,0,67,79,85,76,68,0,78,79,84,0,70,73,78,68,0,83,84,65,84,85,69,0,77,79,68,69,76,12,0,83,75,73,80,80,73,78,71},32))
+debug(_d({53,40,38,43,40,38,46,22,55,36,55,56,40,253},61), coordKey, _d({240,227,38,50,56,47,39,227,49,50,55,227,41,44,49,39,227,54,55,36,55,56,40,227,48,50,39,40,47,239,227,54,46,44,51,51,44,49,42},61))
 return
 end
 local hp = getStatueHP(statueModel)
 if hp > 0 then
-debug(_d({82,69,67,72,69,67,75,51,84,65,84,85,69,26},32), coordKey, _d({83,84,73,76,76,0,65,76,73,86,69,0,8,40,48},32), hp, _d({9,0,13,0,82,69,13,68,69,83,84,82,79,89,73,78,71},32))
+debug(_d({53,40,38,43,40,38,46,22,55,36,55,56,40,253},61), coordKey, _d({54,55,44,47,47,227,36,47,44,57,40,227,235,11,19},61), hp, _d({236,227,240,227,53,40,240,39,40,54,55,53,50,60,44,49,42},61))
 destroyStatue(coordKey)
 else
-debug(_d({82,69,67,72,69,67,75,51,84,65,84,85,69,26},32), coordKey, _d({67,79,78,70,73,82,77,69,68,0,68,69,83,84,82,79,89,69,68},32))
+debug(_d({53,40,38,43,40,38,46,22,55,36,55,56,40,253},61), coordKey, _d({38,50,49,41,44,53,48,40,39,227,39,40,54,55,53,50,60,40,39},61))
 end
 end)
-if not ok then debug(_d({82,69,67,72,69,67,75,51,84,65,84,85,69,0,69,82,82,79,82,26},32), coordKey, err) end
+if not ok then debug(_d({53,40,38,43,40,38,46,22,55,36,55,56,40,227,40,53,53,50,53,253},61), coordKey, err) end
 end
 local function fightQueenUntilPhase2()
-debug(_d({45,79,86,73,78,71,0,84,79,0,49,85,69,69,78},32))
+debug(_d({16,50,57,44,49,42,227,55,50,227,20,56,40,40,49},61))
 navToPoint(COORDS.Queen)
 waitUntilArrived(30)
 equipSwordOrMelee()
-setNavNamed(_d({35,85,80,73,68,0,49,85,69,69,78},32))
+setNavNamed(_d({6,56,51,44,39,227,20,56,40,40,49},61))
 startQueenDodgeWatcher()
 while enabled and not isQueenPhase2() do
 if queenDodging then
 task.wait(0.05)
 else
-local info = getNPCByName(_d({35,85,80,73,68,0,49,85,69,69,78},32))
+local info = getNPCByName(_d({6,56,51,44,39,227,20,56,40,40,49},61))
 equipSwordOrMelee()
 if info and isNPCBlocking(info.model) then
 pressSkillR()
@@ -1089,18 +1089,18 @@ end
 task.wait(MELEE_CLICK_INTERVAL)
 end
 end
-debug(_d({49,85,69,69,78,0,69,78,84,69,82,69,68,0,80,72,65,83,69,0,18},32))
+debug(_d({20,56,40,40,49,227,40,49,55,40,53,40,39,227,51,43,36,54,40,227,245},61))
 end
 local function finishQueen()
-debug(_d({38,73,78,73,83,72,73,78,71,0,49,85,69,69,78},32))
+debug(_d({9,44,49,44,54,43,44,49,42,227,20,56,40,40,49},61))
 equipSwordOrMelee()
-setNavNamed(_d({35,85,80,73,68,0,49,85,69,69,78},32))
+setNavNamed(_d({6,56,51,44,39,227,20,56,40,40,49},61))
 startQueenDodgeWatcher()
-while enabled and getNPCByName(_d({35,85,80,73,68,0,49,85,69,69,78},32)) do
+while enabled and getNPCByName(_d({6,56,51,44,39,227,20,56,40,40,49},61)) do
 if queenDodging then
 task.wait(0.05)
 else
-local info = getNPCByName(_d({35,85,80,73,68,0,49,85,69,69,78},32))
+local info = getNPCByName(_d({6,56,51,44,39,227,20,56,40,40,49},61))
 equipSwordOrMelee()
 if info and isNPCBlocking(info.model) then
 pressSkillR()
@@ -1110,27 +1110,27 @@ end
 task.wait(MELEE_CLICK_INTERVAL)
 end
 end
-debug(_d({49,85,69,69,78,0,68,69,70,69,65,84,69,68,14,0,48,76,65,78,0,67,79,77,80,76,69,84,69,14},32))
+debug(_d({20,56,40,40,49,227,39,40,41,40,36,55,40,39,241,227,19,47,36,49,227,38,50,48,51,47,40,55,40,241},61))
 end
-local CONFIRMATION_PROMPT_NAME = _d({35,79,78,70,73,82,77,65,84,73,79,78,48,82,79,77,80,84},32)
+local CONFIRMATION_PROMPT_NAME = _d({6,50,49,41,44,53,48,36,55,44,50,49,19,53,50,48,51,55},61)
 local function getReplayRemote()
 local ok, result = pcall(function()
-local playerGui = Players.LocalPlayer:WaitForChild(_d({48,76,65,89,69,82,39,85,73},32))
+local playerGui = Players.LocalPlayer:WaitForChild(_d({19,47,36,60,40,53,10,56,44},61))
 local prompt = playerGui:WaitForChild(CONFIRMATION_PROMPT_NAME, REPLAY_PROMPT_TIMEOUT)
 if not prompt then return nil end
-return prompt:WaitForChild(_d({50,69,77,79,84,69,37,86,69,78,84},32), 5)
+return prompt:WaitForChild(_d({21,40,48,50,55,40,8,57,40,49,55},61), 5)
 end)
 if ok then return result end
-debug(_d({71,69,84,50,69,80,76,65,89,50,69,77,79,84,69,0,69,82,82,79,82,26},32), result)
+debug(_d({42,40,55,21,40,51,47,36,60,21,40,48,50,55,40,227,40,53,53,50,53,253},61), result)
 return nil
 end
 local function findButtonByValue(value)
 local ok, result = pcall(function()
-local playerGui = Players.LocalPlayer:FindFirstChild(_d({48,76,65,89,69,82,39,85,73},32))
+local playerGui = Players.LocalPlayer:FindFirstChild(_d({19,47,36,60,40,53,10,56,44},61))
 if not playerGui then return nil end
 for _, obj in ipairs(playerGui:GetDescendants()) do
-if obj:IsA(_d({41,77,65,71,69,34,85,84,84,79,78},32)) then
-local ok2, val = pcall(function() return obj:GetAttribute(_d({66,85,84,84,79,78,54,65,76,85,69},32)) end)
+if obj:IsA(_d({12,48,36,42,40,5,56,55,55,50,49},61)) then
+local ok2, val = pcall(function() return obj:GetAttribute(_d({37,56,55,55,50,49,25,36,47,56,40},61)) end)
 if ok2 and val == value then
 return obj
 end
@@ -1139,7 +1139,7 @@ end
 return nil
 end)
 if ok then return result end
-debug(_d({70,73,78,68,34,85,84,84,79,78,34,89,54,65,76,85,69,0,69,82,82,79,82,26},32), result)
+debug(_d({41,44,49,39,5,56,55,55,50,49,5,60,25,36,47,56,40,227,40,53,53,50,53,253},61), result)
 return nil
 end
 local function clickGuiButton(button)
@@ -1151,7 +1151,7 @@ VIM:SendMouseButtonEvent(x, y, 0, true, game, 0)
 task.wait(0.05)
 VIM:SendMouseButtonEvent(x, y, 0, false, game, 0)
 end)
-if not ok then debug(_d({67,76,73,67,75,39,85,73,34,85,84,84,79,78,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({38,47,44,38,46,10,56,44,5,56,55,55,50,49,227,40,53,53,50,53,253},61), err) end
 end
 local function findAnswerConnector(button)
 local ok, connector, isServer = pcall(function()
@@ -1159,11 +1159,11 @@ local inst = button
 for _ = 1, 8 do
 inst = inst.Parent
 if not inst then return nil, nil end
-local isServerAttr = inst:GetAttribute(_d({73,83,51,69,82,86,69,82},32))
+local isServerAttr = inst:GetAttribute(_d({44,54,22,40,53,57,40,53},61))
 if isServerAttr ~= nil then
 local child = isServerAttr
-and inst:FindFirstChild(_d({50,69,77,79,84,69,37,86,69,78,84},32))
-or inst:FindFirstChild(_d({67,76,73,69,78,84,37,86,69,78,84},32))
+and inst:FindFirstChild(_d({21,40,48,50,55,40,8,57,40,49,55},61))
+or inst:FindFirstChild(_d({38,47,44,40,49,55,8,57,40,49,55},61))
 if child then
 return child, isServerAttr
 end
@@ -1172,13 +1172,13 @@ end
 return nil, nil
 end)
 if ok then return connector, isServer end
-debug(_d({70,73,78,68,33,78,83,87,69,82,35,79,78,78,69,67,84,79,82,0,69,82,82,79,82,26},32), connector)
+debug(_d({41,44,49,39,4,49,54,58,40,53,6,50,49,49,40,38,55,50,53,227,40,53,53,50,53,253},61), connector)
 return nil, nil
 end
 local function fireReplayValue(button)
 local connector, isServer = findAnswerConnector(button)
 if not connector then
-debug(_d({35,79,85,76,68,0,78,79,84,0,76,79,67,65,84,69,0,50,69,77,79,84,69,37,86,69,78,84,15,67,76,73,69,78,84,37,86,69,78,84,0,78,69,65,82,0,50,69,80,76,65,89,0,66,85,84,84,79,78,12,0,70,65,76,76,73,78,71,0,66,65,67,75,0,84,79,0,67,76,73,67,75},32))
+debug(_d({6,50,56,47,39,227,49,50,55,227,47,50,38,36,55,40,227,21,40,48,50,55,40,8,57,40,49,55,242,38,47,44,40,49,55,8,57,40,49,55,227,49,40,36,53,227,21,40,51,47,36,60,227,37,56,55,55,50,49,239,227,41,36,47,47,44,49,42,227,37,36,38,46,227,55,50,227,38,47,44,38,46},61))
 clickGuiButton(button)
 return
 end
@@ -1190,12 +1190,12 @@ connector:Fire(REPLAY_BUTTON_VALUE)
 end
 end)
 if not ok then
-debug(_d({70,73,82,69,50,69,80,76,65,89,54,65,76,85,69,0,69,82,82,79,82,26},32), err, _d({13,0,70,65,76,76,73,78,71,0,66,65,67,75,0,84,79,0,67,76,73,67,75},32))
+debug(_d({41,44,53,40,21,40,51,47,36,60,25,36,47,56,40,227,40,53,53,50,53,253},61), err, _d({240,227,41,36,47,47,44,49,42,227,37,36,38,46,227,55,50,227,38,47,44,38,46},61))
 clickGuiButton(button)
 end
 end
 local function fallbackButtonSearch()
-debug(_d({38,65,76,76,73,78,71,0,66,65,67,75,0,84,79,0,66,85,84,84,79,78,54,65,76,85,69,0,83,69,65,82,67,72,0,70,79,82,0,50,69,80,76,65,89},32))
+debug(_d({9,36,47,47,44,49,42,227,37,36,38,46,227,55,50,227,37,56,55,55,50,49,25,36,47,56,40,227,54,40,36,53,38,43,227,41,50,53,227,21,40,51,47,36,60},61))
 local waited = 0
 local button = nil
 while enabled and waited < REPLAY_PROMPT_TIMEOUT do
@@ -1205,79 +1205,79 @@ task.wait(0.5)
 waited += 0.5
 end
 if not button then
-debug(_d({50,69,80,76,65,89,0,66,85,84,84,79,78,0,78,79,84,0,70,79,85,78,68,0,69,73,84,72,69,82,12,0,71,73,86,73,78,71,0,85,80},32))
+debug(_d({21,40,51,47,36,60,227,37,56,55,55,50,49,227,49,50,55,227,41,50,56,49,39,227,40,44,55,43,40,53,239,227,42,44,57,44,49,42,227,56,51},61))
 return
 end
 task.wait(REPLAY_CLICK_SETTLE)
 fireReplayValue(button)
 end
 local function handleReplayPrompt()
-debug(_d({55,65,73,84,73,78,71,0,70,79,82,0,35,79,78,70,73,82,77,65,84,73,79,78,48,82,79,77,80,84,14,50,69,77,79,84,69,37,86,69,78,84},32))
+debug(_d({26,36,44,55,44,49,42,227,41,50,53,227,6,50,49,41,44,53,48,36,55,44,50,49,19,53,50,48,51,55,241,21,40,48,50,55,40,8,57,40,49,55},61))
 local remote = getReplayRemote()
 if not remote then
-debug(_d({35,79,78,70,73,82,77,65,84,73,79,78,48,82,79,77,80,84,15,50,69,77,79,84,69,37,86,69,78,84,0,78,79,84,0,70,79,85,78,68,0,87,73,84,72,73,78,0,84,73,77,69,79,85,84},32))
+debug(_d({6,50,49,41,44,53,48,36,55,44,50,49,19,53,50,48,51,55,242,21,40,48,50,55,40,8,57,40,49,55,227,49,50,55,227,41,50,56,49,39,227,58,44,55,43,44,49,227,55,44,48,40,50,56,55},61))
 fallbackButtonSearch()
 return
 end
 task.wait(REPLAY_CLICK_SETTLE)
-debug(_d({38,73,82,73,78,71,0,50,69,80,76,65,89,0,86,73,65,0,35,79,78,70,73,82,77,65,84,73,79,78,48,82,79,77,80,84,14,50,69,77,79,84,69,37,86,69,78,84},32))
+debug(_d({9,44,53,44,49,42,227,21,40,51,47,36,60,227,57,44,36,227,6,50,49,41,44,53,48,36,55,44,50,49,19,53,50,48,51,55,241,21,40,48,50,55,40,8,57,40,49,55},61))
 local ok, err = pcall(function()
 remote:FireServer(REPLAY_BUTTON_VALUE)
 end)
 if not ok then
-debug(_d({38,73,82,69,51,69,82,86,69,82,0,69,82,82,79,82,26},32), err)
+debug(_d({9,44,53,40,22,40,53,57,40,53,227,40,53,53,50,53,253},61), err)
 fallbackButtonSearch()
 end
 end
 local function waitForObjectivesGui()
 local ok, err = pcall(function()
 local player = Players.LocalPlayer
-local playerGui = player:WaitForChild(_d({48,76,65,89,69,82,39,85,73},32), 10)
+local playerGui = player:WaitForChild(_d({19,47,36,60,40,53,10,56,44},61), 10)
 if not playerGui then
-debug(_d({87,65,73,84,38,79,82,47,66,74,69,67,84,73,86,69,83,39,85,73,26,0,78,79,0,48,76,65,89,69,82,39,85,73,0,87,73,84,72,73,78,0,84,73,77,69,79,85,84,12,0,80,82,79,67,69,69,68,73,78,71,0,65,78,89,87,65,89},32))
+debug(_d({58,36,44,55,9,50,53,18,37,45,40,38,55,44,57,40,54,10,56,44,253,227,49,50,227,19,47,36,60,40,53,10,56,44,227,58,44,55,43,44,49,227,55,44,48,40,50,56,55,239,227,51,53,50,38,40,40,39,44,49,42,227,36,49,60,58,36,60},61))
 return
 end
 local waited = 0
 while enabled do
 if playerGui:FindFirstChild(OBJECTIVES_GUI_NAME) then
-debug(_d({47,66,74,69,67,84,73,86,69,83,0,39,53,41,0,70,79,85,78,68,0,13,0,83,84,65,71,69,0,76,79,65,68,69,68},32))
+debug(_d({18,37,45,40,38,55,44,57,40,54,227,10,24,12,227,41,50,56,49,39,227,240,227,54,55,36,42,40,227,47,50,36,39,40,39},61))
 return
 end
 task.wait(0.2)
 waited += 0.2
 if waited > OBJECTIVES_WAIT_MAX then
-debug(_d({47,66,74,69,67,84,73,86,69,83,0,39,53,41,0,78,79,84,0,70,79,85,78,68,0,87,73,84,72,73,78,0,84,73,77,69,79,85,84,12,0,80,82,79,67,69,69,68,73,78,71,0,65,78,89,87,65,89},32))
+debug(_d({18,37,45,40,38,55,44,57,40,54,227,10,24,12,227,49,50,55,227,41,50,56,49,39,227,58,44,55,43,44,49,227,55,44,48,40,50,56,55,239,227,51,53,50,38,40,40,39,44,49,42,227,36,49,60,58,36,60},61))
 return
 end
 end
 end)
-if not ok then debug(_d({87,65,73,84,38,79,82,47,66,74,69,67,84,73,86,69,83,39,85,73,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({58,36,44,55,9,50,53,18,37,45,40,38,55,44,57,40,54,10,56,44,227,40,53,53,50,53,253},61), err) end
 end
 local function runPlan()
-debug(_d({48,76,65,78,0,83,84,65,82,84,69,68},32))
+debug(_d({19,47,36,49,227,54,55,36,53,55,40,39},61))
 task.wait(LOAD_WAIT)
 waitForObjectivesGui()
-debug(_d({51,84,65,82,84,73,78,71,0,78,65,86,0,76,79,79,80},32))
+debug(_d({22,55,36,53,55,44,49,42,227,49,36,57,227,47,50,50,51},61))
 startNav()
 task.spawn(function()
 task.wait(0.2)
 local rootAfter = getRoot()
-debug(_d({80,79,83,0,16,14,18,83,0,33,38,52,37,50,0,83,84,65,82,84,46,65,86,26},32), rootAfter and rootAfter.Position)
+debug(_d({51,50,54,227,243,241,245,54,227,4,9,23,8,21,227,54,55,36,53,55,17,36,57,253},61), rootAfter and rootAfter.Position)
 end)
-debug(_d({55,65,73,84,73,78,71,0,21,83,0,66,69,70,79,82,69,0,77,79,86,73,78,71,0,84,79,0,51,84,65,71,69,17},32))
+debug(_d({26,36,44,55,44,49,42,227,248,54,227,37,40,41,50,53,40,227,48,50,57,44,49,42,227,55,50,227,22,55,36,42,40,244},61))
 task.wait(5)
-for _, stage in ipairs({_d({51,84,65,71,69,17},32), _d({51,84,65,71,69,18},32), _d({51,84,65,71,69,19},32), _d({51,84,65,71,69,19,34},32)}) do
+for _, stage in ipairs({_d({22,55,36,42,40,244},61), _d({22,55,36,42,40,245},61), _d({22,55,36,42,40,246},61), _d({22,55,36,42,40,246,5},61)}) do
 if not enabled then return end
 clearStage(stage)
 end
 if not enabled then return end
-debug(_d({45,79,86,73,78,71,0,84,79,0,65,82,82,79,87,0,70,76,89,13,68,79,87,78,0,65,82,69,65},32))
+debug(_d({16,50,57,44,49,42,227,55,50,227,36,53,53,50,58,227,41,47,60,240,39,50,58,49,227,36,53,40,36},61))
 local arrowBase   = COORDS.ArrowFlyDown + Vector3.new(0, ARROW_HOVER_OFFSET, 0)
 local arrowAhead  = arrowBase + Vector3.new(0, 0, ARROW_DODGE_DISTANCE)
 local arrowBehind = arrowBase - Vector3.new(0, 0, ARROW_DODGE_DISTANCE)
 navToPoint(arrowBase)
 waitUntilArrived(30)
-debug(_d({36,79,68,71,73,78,71,0,65,82,82,79,87,0,82,65,73,78},32))
+debug(_d({7,50,39,42,44,49,42,227,36,53,53,50,58,227,53,36,44,49},61))
 local elapsed = 0
 local aheadNext = true
 while enabled and elapsed < ARROW_HOVER_WAIT do
@@ -1287,47 +1287,47 @@ task.wait(ARROW_DODGE_INTERVAL)
 elapsed += ARROW_DODGE_INTERVAL
 end
 if not enabled then return end
-clearStage(_d({51,84,65,71,69,20},32))
+clearStage(_d({22,55,36,42,40,247},61))
 if not enabled then return end
 fightLeo()
 if not enabled then return end
 fightQueenUntilPhase2()
-debug(_d({49,85,69,69,78,0,73,78,0,80,72,65,83,69,0,18,0,13,0,75,69,69,80,73,78,71,0,43,69,78,0,40,65,75,73,0,65,67,84,73,86,69,0,70,82,79,77,0,72,69,82,69,0,79,78},32))
+debug(_d({20,56,40,40,49,227,44,49,227,51,43,36,54,40,227,245,227,240,227,46,40,40,51,44,49,42,227,14,40,49,227,11,36,46,44,227,36,38,55,44,57,40,227,41,53,50,48,227,43,40,53,40,227,50,49},61))
 startKenKeeper()
 if not enabled then return end
-destroyStatue(_d({51,84,65,84,85,69,17},32))
+destroyStatue(_d({22,55,36,55,56,40,244},61))
 if not enabled then return end
-recheckStatue(_d({51,84,65,84,85,69,17},32))
-destroyStatue(_d({51,84,65,84,85,69,18},32))
+recheckStatue(_d({22,55,36,55,56,40,244},61))
+destroyStatue(_d({22,55,36,55,56,40,245},61))
 if not enabled then return end
-recheckStatue(_d({51,84,65,84,85,69,17},32))
-recheckStatue(_d({51,84,65,84,85,69,18},32))
-destroyStatue(_d({51,84,65,84,85,69,19},32))
+recheckStatue(_d({22,55,36,55,56,40,244},61))
+recheckStatue(_d({22,55,36,55,56,40,245},61))
+destroyStatue(_d({22,55,36,55,56,40,246},61))
 if not enabled then return end
-recheckStatue(_d({51,84,65,84,85,69,19},32))
-recheckStatue(_d({51,84,65,84,85,69,18},32))
-recheckStatue(_d({51,84,65,84,85,69,17},32))
+recheckStatue(_d({22,55,36,55,56,40,246},61))
+recheckStatue(_d({22,55,36,55,56,40,245},61))
+recheckStatue(_d({22,55,36,55,56,40,244},61))
 if not enabled then return end
-debug(_d({55,65,73,84,73,78,71,0,70,79,82,0,80,72,65,83,69,0,18,0,84,79,0,69,78,68},32))
+debug(_d({26,36,44,55,44,49,42,227,41,50,53,227,51,43,36,54,40,227,245,227,55,50,227,40,49,39},61))
 local t2 = 0
 while enabled and isQueenPhase2() do
 task.wait(0.3)
 t2 += 0.3
 if t2 > 120 then
-debug(_d({48,72,65,83,69,0,18,0,69,78,68,0,87,65,73,84,0,84,73,77,69,79,85,84,12,0,80,82,79,67,69,69,68,73,78,71,0,65,78,89,87,65,89},32))
+debug(_d({19,43,36,54,40,227,245,227,40,49,39,227,58,36,44,55,227,55,44,48,40,50,56,55,239,227,51,53,50,38,40,40,39,44,49,42,227,36,49,60,58,36,60},61))
 break
 end
 end
 if not enabled then return end
 finishQueen()
 if not enabled then return end
-debug(_d({45,79,86,73,78,71,0,66,65,67,75,0,84,79,0,49,85,69,69,78,0,83,84,65,71,69,0,80,79,83,73,84,73,79,78},32))
-navToPointConfirmed(COORDS.Queen, 30, _d({49,85,69,69,78,0,83,84,65,71,69,0,80,79,83,73,84,73,79,78},32))
-debug(_d({55,65,73,84,73,78,71,0,21,83,0,65,84,0,49,85,69,69,78,0,83,84,65,71,69,0,80,79,83,73,84,73,79,78},32))
+debug(_d({16,50,57,44,49,42,227,37,36,38,46,227,55,50,227,20,56,40,40,49,227,54,55,36,42,40,227,51,50,54,44,55,44,50,49},61))
+navToPointConfirmed(COORDS.Queen, 30, _d({20,56,40,40,49,227,54,55,36,42,40,227,51,50,54,44,55,44,50,49},61))
+debug(_d({26,36,44,55,44,49,42,227,248,54,227,36,55,227,20,56,40,40,49,227,54,55,36,42,40,227,51,50,54,44,55,44,50,49},61))
 task.wait(5)
 if not enabled then return end
-debug(_d({45,79,86,73,78,71,0,84,79,0,80,79,83,84,13,49,85,69,69,78,0,80,79,83,73,84,73,79,78},32))
-navToPointConfirmed(COORDS.PostQueen, 30, _d({80,79,83,84,13,49,85,69,69,78,0,80,79,83,73,84,73,79,78},32))
+debug(_d({16,50,57,44,49,42,227,55,50,227,51,50,54,55,240,20,56,40,40,49,227,51,50,54,44,55,44,50,49},61))
+navToPointConfirmed(COORDS.PostQueen, 30, _d({51,50,54,55,240,20,56,40,40,49,227,51,50,54,44,55,44,50,49},61))
 if not enabled then return end
 handleReplayPrompt()
 enabled = false
@@ -1337,19 +1337,19 @@ local function enableBot()
 if enabled then return end
 enabled = true
 local rootBefore = getRoot()
-debug(_d({37,78,65,66,76,73,78,71,12,0,80,79,83,0,34,37,38,47,50,37,0,80,76,65,78,26},32), rootBefore and rootBefore.Position)
+debug(_d({8,49,36,37,47,44,49,42,239,227,51,50,54,227,5,8,9,18,21,8,227,51,47,36,49,253},61), rootBefore and rootBefore.Position)
 startBusoKeeper()
 task.spawn(function()
 local ok2, err2 = pcall(runPlan)
-if not ok2 then debug(_d({48,76,65,78,0,69,82,82,79,82,26},32), err2) end
+if not ok2 then debug(_d({19,47,36,49,227,40,53,53,50,53,253},61), err2) end
 end)
-debug(_d({37,78,65,66,76,69,68,26},32), enabled)
+debug(_d({8,49,36,37,47,40,39,253},61), enabled)
 end
 local function disableBot()
 if not enabled then return end
 enabled = false
 stopNav()
-debug(_d({37,78,65,66,76,69,68,26},32), enabled)
+debug(_d({8,49,36,37,47,40,39,253},61), enabled)
 end
 UserInputService.InputBegan:Connect(function(input, gpe)
 if gpe then return end
@@ -1361,17 +1361,17 @@ else
 enableBot()
 end
 end)
-if not ok then debug(_d({41,78,80,85,84,34,69,71,65,78,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({12,49,51,56,55,5,40,42,36,49,227,40,53,53,50,53,253},61), err) end
 end)
 task.spawn(function()
 local ok, err = pcall(function()
 if not game:IsLoaded() then
 game.Loaded:Wait()
 end
-debug(_d({39,65,77,69,0,76,79,65,68,69,68,12,0,65,85,84,79,13,83,84,65,82,84,73,78,71,0,84,72,69,0,80,76,65,78},32))
+debug(_d({10,36,48,40,227,47,50,36,39,40,39,239,227,36,56,55,50,240,54,55,36,53,55,44,49,42,227,55,43,40,227,51,47,36,49},61))
 enableBot()
 end)
-if not ok then debug(_d({33,85,84,79,83,84,65,82,84,0,69,82,82,79,82,26},32), err) end
+if not ok then debug(_d({4,56,55,50,54,55,36,53,55,227,40,53,53,50,53,253},61), err) end
 end)
-debug(_d({44,79,65,68,69,68,0,194,96,116,0,65,85,84,79,13,83,84,65,82,84,73,78,71,0,79,78,67,69,0,84,72,69,0,71,65,77,69,0,70,73,78,73,83,72,69,83,0,76,79,65,68,73,78,71,0,8,80,82,69,83,83,0,48,0,84,79,0,84,79,71,71,76,69,0,77,65,78,85,65,76,76,89,9},32))
+debug(_d({15,50,36,39,40,39,227,165,67,87,227,36,56,55,50,240,54,55,36,53,55,44,49,42,227,50,49,38,40,227,55,43,40,227,42,36,48,40,227,41,44,49,44,54,43,40,54,227,47,50,36,39,44,49,42,227,235,51,53,40,54,54,227,19,227,55,50,227,55,50,42,42,47,40,227,48,36,49,56,36,47,47,60,236},61))
 end)()
