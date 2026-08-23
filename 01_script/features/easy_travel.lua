@@ -11,10 +11,10 @@ end
 if _G.EasyTravelCleanup then
 pcall(_G.EasyTravelCleanup)
 end
-local Players = game:GetService(_d({42,70,59,83,63,76,77},38))
-local ReplicatedStorage = game:GetService(_d({44,63,74,70,67,61,59,78,63,62,45,78,73,76,59,65,63},38))
-local RunService = game:GetService(_d({44,79,72,45,63,76,80,67,61,63},38))
-local UserInputService = game:GetService(_d({47,77,63,76,35,72,74,79,78,45,63,76,80,67,61,63},38))
+local Players = game:GetService(_d({53,81,70,94,74,87,88},27))
+local ReplicatedStorage = game:GetService(_d({55,74,85,81,78,72,70,89,74,73,56,89,84,87,70,76,74},27))
+local RunService = game:GetService(_d({55,90,83,56,74,87,91,78,72,74},27))
+local UserInputService = game:GetService(_d({58,88,74,87,46,83,85,90,89,56,74,87,91,78,72,74},27))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local FLIGHT_SPEED = 70.0
@@ -30,21 +30,27 @@ local isClimbing = false
 local climbTargetY = 0
 local distanceToWall = 999
 local inputConnection = nil
+_G.EasyTravel = {
+TargetPosition = nil,
+DisableKeyboard = false,
+Speed = FLIGHT_SPEED,
+Enabled = false
+}
 local function getCharacterComponents()
 local char = LocalPlayer.Character
 if not char then return nil, nil, nil end
-local root = char:FindFirstChild(_d({34,79,71,59,72,73,67,62,44,73,73,78,42,59,76,78},38))
-local hum = char:FindFirstChildWhichIsA(_d({34,79,71,59,72,73,67,62},38))
+local root = char:FindFirstChild(_d({45,90,82,70,83,84,78,73,55,84,84,89,53,70,87,89},27))
+local hum = char:FindFirstChildWhichIsA(_d({45,90,82,70,83,84,78,73},27))
 return char, hum, root
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({57,57,31,59,77,83,46,76,59,80,63,70,27,78,78},38)) or Instance.new(_d({27,78,78,59,61,66,71,63,72,78},38))
-att.Name = _d({57,57,31,59,77,83,46,76,59,80,63,70,27,78,78},38)
+local att = root:FindFirstChild(_d({68,68,42,70,88,94,57,87,70,91,74,81,38,89,89},27)) or Instance.new(_d({38,89,89,70,72,77,82,74,83,89},27))
+att.Name = _d({68,68,42,70,88,94,57,87,70,91,74,81,38,89,89},27)
 att.Parent = root
-local force = root:FindFirstChild(_d({57,57,31,59,77,83,46,76,59,80,63,70,32,73,76,61,63},38))
+local force = root:FindFirstChild(_d({68,68,42,70,88,94,57,87,70,91,74,81,43,84,87,72,74},27))
 if not force then
-force = Instance.new(_d({38,67,72,63,59,76,48,63,70,73,61,67,78,83},38))
-force.Name = _d({57,57,31,59,77,83,46,76,59,80,63,70,32,73,76,61,63},38)
+force = Instance.new(_d({49,78,83,74,70,87,59,74,81,84,72,78,89,94},27))
+force.Name = _d({68,68,42,70,88,94,57,87,70,91,74,81,43,84,87,72,74},27)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -57,8 +63,8 @@ end
 local function cleanupForce()
 local _, _, root = getCharacterComponents()
 if root then
-local force = root:FindFirstChild(_d({57,57,31,59,77,83,46,76,59,80,63,70,32,73,76,61,63},38))
-local att = root:FindFirstChild(_d({57,57,31,59,77,83,46,76,59,80,63,70,27,78,78},38))
+local force = root:FindFirstChild(_d({68,68,42,70,88,94,57,87,70,91,74,81,43,84,87,72,74},27))
+local att = root:FindFirstChild(_d({68,68,42,70,88,94,57,87,70,91,74,81,38,89,89},27))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -80,14 +86,21 @@ while flightEnabled do
 task.wait(RAYCAST_COOLDOWN)
 local char, _, root = getCharacterComponents()
 if not char or not root then continue end
+if _G.EasyTravel.TargetPosition then
+isClimbing = false
+currentTargetY = _G.EasyTravel.TargetPosition.Y
+continue
+end
 local camera = Workspace.CurrentCamera
 local look = camera.CFrame.LookVector
 local right = camera.CFrame.RightVector
 local moveDir = Vector3.zero
+if not _G.EasyTravel.DisableKeyboard then
 if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit end
 if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit end
 if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit end
 if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit end
+end
 local currentPos = root.Position
 local raycastParams = RaycastParams.new()
 raycastParams.FilterType = Enum.RaycastFilterType.Exclude
@@ -150,6 +163,7 @@ cleanupForce()
 local char, hum, root = getCharacterComponents()
 if not root or not hum then return end
 flightEnabled = true
+_G.EasyTravel.Enabled = true
 currentTargetY = getSurfaceY(root.Position, char) + HEIGHT_OFFSET
 isClimbing = false
 task.spawn(runRaycastLoop)
@@ -165,13 +179,26 @@ local camera = Workspace.CurrentCamera
 local look = camera.CFrame.LookVector
 local right = camera.CFrame.RightVector
 local moveDir = Vector3.zero
+local finalTargetY = currentTargetY
+if _G.EasyTravel.TargetPosition then
+local diff = _G.EasyTravel.TargetPosition - currentRoot.Position
+local flatDiff = Vector3.new(diff.X, 0, diff.Z)
+if flatDiff.Magnitude > 2 then
+moveDir = flatDiff.Unit
+end
+finalTargetY = _G.EasyTravel.TargetPosition.Y
+else
+if not _G.EasyTravel.DisableKeyboard then
 if UserInputService:IsKeyDown(Enum.KeyCode.W) then moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit end
 if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit end
 if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit end
 if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit end
-local finalTargetY = isClimbing and climbTargetY or currentTargetY
+end
+finalTargetY = isClimbing and climbTargetY or currentTargetY
+end
 local yError = finalTargetY - currentRoot.Position.Y
 local targetVelocity = Vector3.zero
+local currentSpeed = _G.EasyTravel.Speed or FLIGHT_SPEED
 if moveDir.Magnitude > 0 then
 local speedMultiplier = 1
 if isClimbing and yError > 3 then
@@ -181,25 +208,28 @@ else
 speedMultiplier = 1
 end
 end
-targetVelocity = moveDir.Unit * (FLIGHT_SPEED * speedMultiplier)
+targetVelocity = moveDir.Unit * (currentSpeed * speedMultiplier)
 end
 local verticalVel = math.clamp(yError * HOVER_LIFT_GAIN, -50, 30)
 force.VectorVelocity = Vector3.new(targetVelocity.X, verticalVel, targetVelocity.Z)
 if moveDir.Magnitude > 0 then
-currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + Vector3.new(look.X, 0, look.Z).Unit)
+currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + moveDir)
 end
 end)
-print(_d({53,31,59,77,83,250,46,76,59,80,63,70,55,250,32,70,67,65,66,78,250,63,72,59,60,70,63,62,8},38))
+print(_d({64,42,70,88,94,5,57,87,70,91,74,81,66,5,43,81,78,76,77,89,5,74,83,70,71,81,74,73,19},27))
 end
 local function stopFlight()
 flightEnabled = false
+_G.EasyTravel.Enabled = false
 if loopConnection then
 loopConnection:Disconnect();
 loopConnection = nil;
 end
 cleanupForce()
-print(_d({53,31,59,77,83,250,46,76,59,80,63,70,55,250,32,70,67,65,66,78,250,62,67,77,59,60,70,63,62,8},38))
+print(_d({64,42,70,88,94,5,57,87,70,91,74,81,66,5,43,81,78,76,77,89,5,73,78,88,70,71,81,74,73,19},27))
 end
+_G.EasyTravel.Start = startFlight
+_G.EasyTravel.Stop = stopFlight
 inputConnection = UserInputService.InputBegan:Connect(function(input, processed)
 if processed then return end
 if input.KeyCode == Enum.KeyCode.P then
@@ -220,12 +250,10 @@ if inputConnection then
 inputConnection:Disconnect()
 inputConnection = nil
 end
+_G.EasyTravel = nil
 _G.EasyTravelCleanup = nil
-print(_d({53,31,59,77,83,250,46,76,59,80,63,70,55,250,29,73,71,74,70,63,78,63,70,83,250,79,72,70,73,59,62,63,62,250,59,72,62,250,61,70,63,59,72,63,62,250,79,74,250,77,61,76,67,74,78,250,77,78,59,78,63,8},38))
+print(_d({64,42,70,88,94,5,57,87,70,91,74,81,66,5,40,84,82,85,81,74,89,74,81,94,5,90,83,81,84,70,73,74,73,5,70,83,73,5,72,81,74,70,83,74,73,5,90,85,5,88,72,87,78,85,89,5,88,89,70,89,74,19},27))
 end
-print(_d({53,31,59,77,83,250,46,76,59,80,63,70,55,250,38,73,59,62,63,62,8,250,42,76,63,77,77,250,1,42,1,250,78,73,250,78,73,65,65,70,63,250,64,70,67,65,66,78,8,250,42,76,63,77,77,250,1,31,72,62,1,250,78,73,250,61,73,71,74,70,63,78,63,70,83,250,79,72,70,73,59,62,8},38))
-return {
-Start = startFlight,
-Stop = stopFlight,
-}
+print(_d({64,42,70,88,94,5,57,87,70,91,74,81,66,5,49,84,70,73,74,73,19,5,53,87,74,88,88,5,12,53,12,5,89,84,5,89,84,76,76,81,74,5,75,81,78,76,77,89,19,5,68,44,19,42,70,88,94,57,87,70,91,74,81,5,38,53,46,5,87,74,76,78,88,89,74,87,74,73,19},27))
+return _G.EasyTravel
 end)()
