@@ -8,15 +8,15 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local ReplicatedStorage = game:GetService(_d({33,52,63,59,56,50,48,67,52,51,34,67,62,65,48,54,52},49))
-local CoreGui = game:GetService(_d({18,62,65,52,22,68,56},49))
-local Players = game:GetService(_d({31,59,48,72,52,65,66},49))
+local ReplicatedStorage = game:GetService(_d({49,68,79,75,72,66,64,83,68,67,50,83,78,81,64,70,68},33))
+local CoreGui = game:GetService(_d({34,78,81,68,38,84,72},33))
+local Players = game:GetService(_d({47,75,64,88,68,81,82},33))
 local LocalPlayer = Players.LocalPlayer
 local Rayfield = nil
 local rayfieldSources = {
-_d({55,67,67,63,66,9,254,254,65,48,70,253,54,56,67,55,68,49,68,66,52,65,50,62,61,67,52,61,67,253,50,62,60,254,34,56,65,56,68,66,34,62,53,67,70,48,65,52,27,67,51,254,33,48,72,53,56,52,59,51,254,60,48,56,61,254,66,62,68,65,50,52,253,59,68,48},49),
-_d({55,67,67,63,66,9,254,254,66,56,65,56,68,66,253,60,52,61,68,254,65,48,72,53,56,52,59,51},49),
-_d({55,67,67,63,66,9,254,254,65,48,70,253,54,56,67,55,68,49,68,66,52,65,50,62,61,67,52,61,67,253,50,62,60,254,66,55,59,52,71,70,48,65,52,254,33,48,72,53,56,52,59,51,254,60,48,56,61,254,66,62,68,65,50,52},49)
+_d({71,83,83,79,82,25,14,14,81,64,86,13,70,72,83,71,84,65,84,82,68,81,66,78,77,83,68,77,83,13,66,78,76,14,50,72,81,72,84,82,50,78,69,83,86,64,81,68,43,83,67,14,49,64,88,69,72,68,75,67,14,76,64,72,77,14,82,78,84,81,66,68,13,75,84,64},33),
+_d({71,83,83,79,82,25,14,14,82,72,81,72,84,82,13,76,68,77,84,14,81,64,88,69,72,68,75,67},33),
+_d({71,83,83,79,82,25,14,14,81,64,86,13,70,72,83,71,84,65,84,82,68,81,66,78,77,83,68,77,83,13,66,78,76,14,82,71,75,68,87,86,64,81,68,14,49,64,88,69,72,68,75,67,14,76,64,72,77,14,82,78,84,81,66,68},33)
 }
 for _, url in ipairs(rayfieldSources) do
 local success, result = pcall(function()
@@ -28,41 +28,41 @@ break
 end
 end
 if not Rayfield then
-error(_d({42,18,62,60,63,48,50,67,239,23,68,49,44,239,21,48,56,59,52,51,239,67,62,239,59,62,48,51,239,33,48,72,53,56,52,59,51,239,36,24,239,27,56,49,65,48,65,72,253},49))
+error(_d({58,34,78,76,79,64,66,83,255,39,84,65,60,255,37,64,72,75,68,67,255,83,78,255,75,78,64,67,255,49,64,88,69,72,68,75,67,255,52,40,255,43,72,65,81,64,81,88,13},33))
 end
 local Window = Rayfield:CreateWindow({
-Name = _d({18,62,60,63,48,50,67,239,23,68,49},49),
-LoadingTitle = _d({27,62,48,51,56,61,54,239,16,68,67,62,252,18,59,56,50,58,52,65,253,253,253},49),
-LoadingSubtitle = _d({30,63,67,56,60,56,73,52,51,239,37,52,65,66,56,62,61},49),
+Name = _d({34,78,76,79,64,66,83,255,39,84,65},33),
+LoadingTitle = _d({43,78,64,67,72,77,70,255,32,84,83,78,12,34,75,72,66,74,68,81,13,13,13},33),
+LoadingSubtitle = _d({46,79,83,72,76,72,89,68,67,255,53,68,81,82,72,78,77},33),
 ConfigurationSaving = { Enabled = false },
 KeySystem = false
 })
 task.spawn(function()
 task.wait(1.2)
 pcall(function()
-local parentGui = (gethui and gethui()) or CoreGui or LocalPlayer:WaitForChild(_d({31,59,48,72,52,65,22,68,56},49))
-local gui = parentGui:FindFirstChild(_d({33,48,72,53,56,52,59,51},49)) or LocalPlayer:WaitForChild(_d({31,59,48,72,52,65,22,68,56},49)):FindFirstChild(_d({33,48,72,53,56,52,59,51},49))
-if gui and gui:FindFirstChild(_d({28,48,56,61},49)) then
-local scale = Instance.new(_d({36,24,34,50,48,59,52},49))
+local parentGui = (gethui and gethui()) or CoreGui or LocalPlayer:WaitForChild(_d({47,75,64,88,68,81,38,84,72},33))
+local gui = parentGui:FindFirstChild(_d({49,64,88,69,72,68,75,67},33)) or LocalPlayer:WaitForChild(_d({47,75,64,88,68,81,38,84,72},33)):FindFirstChild(_d({49,64,88,69,72,68,75,67},33))
+if gui and gui:FindFirstChild(_d({44,64,72,77},33)) then
+local scale = Instance.new(_d({52,40,50,66,64,75,68},33))
 scale.Scale = 0.82
 scale.Parent = gui.Main
 end
 end)
 end)
-local MainTab = Window:CreateTab(_d({18,62,61,67,65,62,59,66},49), 4483362458)
+local MainTab = Window:CreateTab(_d({34,78,77,83,81,78,75,82},33), 4483362458)
 local autoFiring = false
 local fireDelay = 0.1
 local AutoToggle = MainTab:CreateToggle({
-Name = _d({16,68,67,62,252,21,56,65,52,239,28,62,68,66,52,18,59,56,50,58,52,51},49),
+Name = _d({32,84,83,78,12,37,72,81,68,255,44,78,84,82,68,34,75,72,66,74,68,67},33),
 CurrentValue = false,
-Flag = _d({16,68,67,62,21,56,65,52},49),
+Flag = _d({32,84,83,78,37,72,81,68},33),
 Callback = function(Value)
 autoFiring = Value
 if autoFiring then
 task.spawn(function()
 while autoFiring do
-local remote = ReplicatedStorage:FindFirstChild(_d({28,62,68,66,52,18,59,56,50,58,52,51},49))
-if remote and remote:IsA(_d({33,52,60,62,67,52,20,69,52,61,67},49)) then
+local remote = ReplicatedStorage:FindFirstChild(_d({44,78,84,82,68,34,75,72,66,74,68,67},33))
+if remote and remote:IsA(_d({49,68,76,78,83,68,36,85,68,77,83},33)) then
 pcall(function() remote:FireServer() end)
 end
 task.wait(fireDelay)
@@ -72,18 +72,18 @@ end
 end,
 })
 MainTab:CreateSlider({
-Name = _d({18,59,56,50,58,239,19,52,59,48,72},49),
+Name = _d({34,75,72,66,74,255,35,68,75,64,88},33),
 Range = {0, 1},
 Increment = 0.05,
 Suffix = "s",
 CurrentValue = 0.1,
-Flag = _d({19,52,59,48,72,34,59,56,51,52,65},49),
+Flag = _d({35,68,75,64,88,50,75,72,67,68,81},33),
 Callback = function(Value)
 fireDelay = Value
 end,
 })
 MainTab:CreateButton({
-Name = _d({19,52,66,67,65,62,72,239,34,50,65,56,63,67},49),
+Name = _d({35,68,82,83,81,78,88,255,50,66,81,72,79,83},33),
 Callback = function()
 autoFiring = false
 Rayfield:Destroy()
