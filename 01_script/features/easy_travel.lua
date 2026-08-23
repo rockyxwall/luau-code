@@ -11,10 +11,10 @@ end
 if _G.EasyTravelCleanup then
 pcall(_G.EasyTravelCleanup)
 end
-local Players = game:GetService(_d({62,90,79,103,83,96,97},18))
-local ReplicatedStorage = game:GetService(_d({64,83,94,90,87,81,79,98,83,82,65,98,93,96,79,85,83},18))
-local RunService = game:GetService(_d({64,99,92,65,83,96,100,87,81,83},18))
-local UserInputService = game:GetService(_d({67,97,83,96,55,92,94,99,98,65,83,96,100,87,81,83},18))
+local Players = game:GetService(_d({64,92,81,105,85,98,99},16))
+local ReplicatedStorage = game:GetService(_d({66,85,96,92,89,83,81,100,85,84,67,100,95,98,81,87,85},16))
+local RunService = game:GetService(_d({66,101,94,67,85,98,102,89,83,85},16))
+local UserInputService = game:GetService(_d({69,99,85,98,57,94,96,101,100,67,85,98,102,89,83,85},16))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local FLIGHT_SPEED = 70.0
@@ -28,24 +28,27 @@ local currentTargetY = 0
 local lastGeppoTime = 0
 local currentGeppoCooldown = 2.0
 local loopConnection = nil
+local manualHeightOffset = 0
+local originalFreefallEnabled = true
+local originalFallingDownEnabled = true
 local isClimbing = false
 local climbTargetY = 0
 local inputConnection = nil
 local function getCharacterComponents()
 local char = LocalPlayer.Character
 if not char then return nil, nil, nil end
-local root = char:FindFirstChild(_d({54,99,91,79,92,93,87,82,64,93,93,98,62,79,96,98},18))
-local hum = char:FindFirstChildWhichIsA(_d({54,99,91,79,92,93,87,82},18))
+local root = char:FindFirstChild(_d({56,101,93,81,94,95,89,84,66,95,95,100,64,81,98,100},16))
+local hum = char:FindFirstChildWhichIsA(_d({56,101,93,81,94,95,89,84},16))
 return char, hum, root
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({77,77,51,79,97,103,66,96,79,100,83,90,47,98,98},18)) or Instance.new(_d({47,98,98,79,81,86,91,83,92,98},18))
-att.Name = _d({77,77,51,79,97,103,66,96,79,100,83,90,47,98,98},18)
+local att = root:FindFirstChild(_d({79,79,53,81,99,105,68,98,81,102,85,92,49,100,100},16)) or Instance.new(_d({49,100,100,81,83,88,93,85,94,100},16))
+att.Name = _d({79,79,53,81,99,105,68,98,81,102,85,92,49,100,100},16)
 att.Parent = root
-local force = root:FindFirstChild(_d({77,77,51,79,97,103,66,96,79,100,83,90,52,93,96,81,83},18))
+local force = root:FindFirstChild(_d({79,79,53,81,99,105,68,98,81,102,85,92,54,95,98,83,85},16))
 if not force then
-force = Instance.new(_d({58,87,92,83,79,96,68,83,90,93,81,87,98,103},18))
-force.Name = _d({77,77,51,79,97,103,66,96,79,100,83,90,52,93,96,81,83},18)
+force = Instance.new(_d({60,89,94,85,81,98,70,85,92,95,83,89,100,105},16))
+force.Name = _d({79,79,53,81,99,105,68,98,81,102,85,92,54,95,98,83,85},16)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -58,8 +61,8 @@ end
 local function cleanupForce()
 local _, _, root = getCharacterComponents()
 if root then
-local force = root:FindFirstChild(_d({77,77,51,79,97,103,66,96,79,100,83,90,52,93,96,81,83},18))
-local att = root:FindFirstChild(_d({77,77,51,79,97,103,66,96,79,100,83,90,47,98,98},18))
+local force = root:FindFirstChild(_d({79,79,53,81,99,105,68,98,81,102,85,92,54,95,98,83,85},16))
+local att = root:FindFirstChild(_d({79,79,53,81,99,105,68,98,81,102,85,92,49,100,100},16))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -72,18 +75,18 @@ currentGeppoCooldown = math.random(GEPPO_COOLDOWN_MIN * 100, GEPPO_COOLDOWN_MAX 
 pcall(function()
 local char, _, root = getCharacterComponents()
 if not char or not root then return end
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({65,98,79,98,97},18) .. LocalPlayer.Name)
-local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({60,93,92,83},18)
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({67,100,81,100,99},16) .. LocalPlayer.Name)
+local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({62,95,94,85},16)
 local cf = CFrame.lookAt(root.Position, root.Position + root.CFrame.LookVector)
 local args = {char = char, cf = cf}
-if style == _d({64,93,89,99,97,86,87,89,87},18) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({53,83,94,94,93},18), args)
-elseif style == _d({48,90,79,81,89,58,83,85},18) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({65,89,103,14,69,79,90,89},18), args)
-elseif style == _d({57,79,91,87,97,86,87,89,87},18) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({57,79,91,87,97,86,87,89,87,53,83,94,94,93},18), args)
+if style == _d({66,95,91,101,99,88,89,91,89},16) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({55,85,96,96,95},16), args)
+elseif style == _d({50,92,81,83,91,60,85,87},16) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({67,91,105,16,71,81,92,91},16), args)
+elseif style == _d({59,81,93,89,99,88,89,91,89},16) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({59,81,93,89,99,88,89,91,89,55,85,96,96,95},16), args)
 else
-ReplicatedStorage.Events.Skill:InvokeServer(_d({65,89,103,14,69,79,90,89,32},18), args)
+ReplicatedStorage.Events.Skill:InvokeServer(_d({67,91,105,16,71,81,92,91,34},16), args)
 end
 end)
 end
@@ -156,6 +159,9 @@ if not root or not hum then return end
 flightEnabled = true
 currentTargetY = root.Position.Y
 isClimbing = false
+manualHeightOffset = 0
+originalFreefallEnabled = hum:GetStateEnabled(Enum.HumanoidStateType.Freefall)
+originalFallingDownEnabled = hum:GetStateEnabled(Enum.HumanoidStateType.FallingDown)
 task.spawn(runRaycastLoop)
 loopConnection = RunService.Heartbeat:Connect(function(dt)
 local char, currentHum, currentRoot = getCharacterComponents()
@@ -167,7 +173,7 @@ end
 pcall(function()
 currentHum:SetStateEnabled(Enum.HumanoidStateType.Freefall, false)
 currentHum:SetStateEnabled(Enum.HumanoidStateType.FallingDown, false)
-currentHum:ChangeState(Enum.HumanoidStateType.Running)
+currentHum:ChangeState(Enum.HumanoidStateType.Physics)
 end)
 local force = getOrCreateForce(currentRoot)
 local camera = Workspace.CurrentCamera
@@ -179,13 +185,13 @@ if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Vector3.n
 if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit end
 if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit end
 if UserInputService:IsKeyDown(Enum.KeyCode.Space) then
-currentTargetY = currentTargetY + (dt * 50)
+manualHeightOffset = manualHeightOffset + (dt * 50)
 isClimbing = false
 elseif UserInputService:IsKeyDown(Enum.KeyCode.LeftShift) then
-currentTargetY = currentTargetY - (dt * 50)
+manualHeightOffset = manualHeightOffset - (dt * 50)
 isClimbing = false
 end
-local finalTargetY = isClimbing and climbTargetY or currentTargetY
+local finalTargetY = (isClimbing and climbTargetY or currentTargetY) + manualHeightOffset
 local yError = finalTargetY - currentRoot.Position.Y
 local targetVelocity = Vector3.zero
 if moveDir.Magnitude > 0 then
@@ -199,12 +205,12 @@ local verticalVel = math.clamp(yError * 6, -150, 150)
 force.VectorVelocity = Vector3.new(targetVelocity.X, verticalVel, targetVelocity.Z)
 if moveDir.Magnitude > 0 then
 currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + Vector3.new(look.X, 0, look.Z).Unit)
+end
 if (currentRoot.Position.Y - getSurfaceY(currentRoot.Position, char)) > 5 then
 invokeGeppo()
 end
-end
 end)
-print(_d({73,51,79,97,103,14,66,96,79,100,83,90,75,14,52,90,87,85,86,98,14,83,92,79,80,90,83,82,28},18))
+print(_d({75,53,81,99,105,16,68,98,81,102,85,92,77,16,54,92,89,87,88,100,16,85,94,81,82,92,85,84,30},16))
 end
 local function stopFlight()
 flightEnabled = false
@@ -212,8 +218,16 @@ if loopConnection then
 loopConnection:Disconnect();
 loopConnection = nil;
 end
+pcall(function()
+local _, hum, _ = getCharacterComponents()
+if hum then
+hum:SetStateEnabled(Enum.HumanoidStateType.Freefall, originalFreefallEnabled)
+hum:SetStateEnabled(Enum.HumanoidStateType.FallingDown, originalFallingDownEnabled)
+hum:ChangeState(Enum.HumanoidStateType.Running)
+end
+end)
 cleanupForce()
-print(_d({73,51,79,97,103,14,66,96,79,100,83,90,75,14,52,90,87,85,86,98,14,82,87,97,79,80,90,83,82,28},18))
+print(_d({75,53,81,99,105,16,68,98,81,102,85,92,77,16,54,92,89,87,88,100,16,84,89,99,81,82,92,85,84,30},16))
 end
 inputConnection = UserInputService.InputBegan:Connect(function(input, processed)
 if processed then return end
@@ -236,9 +250,9 @@ inputConnection:Disconnect()
 inputConnection = nil
 end
 _G.EasyTravelCleanup = nil
-print(_d({73,51,79,97,103,14,66,96,79,100,83,90,75,14,49,93,91,94,90,83,98,83,90,103,14,99,92,90,93,79,82,83,82,14,79,92,82,14,81,90,83,79,92,83,82,14,99,94,14,97,81,96,87,94,98,14,97,98,79,98,83,28},18))
+print(_d({75,53,81,99,105,16,68,98,81,102,85,92,77,16,51,95,93,96,92,85,100,85,92,105,16,101,94,92,95,81,84,85,84,16,81,94,84,16,83,92,85,81,94,85,84,16,101,96,16,99,83,98,89,96,100,16,99,100,81,100,85,30},16))
 end
-print(_d({73,51,79,97,103,14,66,96,79,100,83,90,75,14,58,93,79,82,83,82,28,14,62,96,83,97,97,14,21,62,21,14,98,93,14,98,93,85,85,90,83,14,84,90,87,85,86,98,28,14,62,96,83,97,97,14,21,51,92,82,21,14,98,93,14,81,93,91,94,90,83,98,83,90,103,14,99,92,90,93,79,82,28},18))
+print(_d({75,53,81,99,105,16,68,98,81,102,85,92,77,16,60,95,81,84,85,84,30,16,64,98,85,99,99,16,23,64,23,16,100,95,16,100,95,87,87,92,85,16,86,92,89,87,88,100,30,16,64,98,85,99,99,16,23,53,94,84,23,16,100,95,16,83,95,93,96,92,85,100,85,92,105,16,101,94,92,95,81,84,30},16))
 return {
 Start = startFlight,
 Stop = stopFlight,
