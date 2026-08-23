@@ -8,10 +8,10 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({64,92,81,105,85,98,99},16))
-local ReplicatedStorage = game:GetService(_d({66,85,96,92,89,83,81,100,85,84,67,100,95,98,81,87,85},16))
-local RunService = game:GetService(_d({66,101,94,67,85,98,102,89,83,85},16))
-local UserInputService = game:GetService(_d({69,99,85,98,57,94,96,101,100,67,85,98,102,89,83,85},16))
+local Players = game:GetService(_d({42,70,59,83,63,76,77},38))
+local ReplicatedStorage = game:GetService(_d({44,63,74,70,67,61,59,78,63,62,45,78,73,76,59,65,63},38))
+local RunService = game:GetService(_d({44,79,72,45,63,76,80,67,61,63},38))
+local UserInputService = game:GetService(_d({47,77,63,76,35,72,74,79,78,45,63,76,80,67,61,63},38))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local FLIGHT_SPEED = 70.0
@@ -28,18 +28,18 @@ local raycastConnection = nil
 local function getCharacterComponents()
 local char = LocalPlayer.Character
 if not char then return nil, nil, nil end
-local root = char:FindFirstChild(_d({56,101,93,81,94,95,89,84,66,95,95,100,64,81,98,100},16))
-local hum = char:FindFirstChildWhichIsA(_d({56,101,93,81,94,95,89,84},16))
+local root = char:FindFirstChild(_d({34,79,71,59,72,73,67,62,44,73,73,78,42,59,76,78},38))
+local hum = char:FindFirstChildWhichIsA(_d({34,79,71,59,72,73,67,62},38))
 return char, hum, root
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({79,79,53,81,99,105,68,98,81,102,85,92,49,100,100},16)) or Instance.new(_d({49,100,100,81,83,88,93,85,94,100},16))
-att.Name = _d({79,79,53,81,99,105,68,98,81,102,85,92,49,100,100},16)
+local att = root:FindFirstChild(_d({57,57,31,59,77,83,46,76,59,80,63,70,27,78,78},38)) or Instance.new(_d({27,78,78,59,61,66,71,63,72,78},38))
+att.Name = _d({57,57,31,59,77,83,46,76,59,80,63,70,27,78,78},38)
 att.Parent = root
-local force = root:FindFirstChild(_d({79,79,53,81,99,105,68,98,81,102,85,92,54,95,98,83,85},16))
+local force = root:FindFirstChild(_d({57,57,31,59,77,83,46,76,59,80,63,70,32,73,76,61,63},38))
 if not force then
-force = Instance.new(_d({60,89,94,85,81,98,70,85,92,95,83,89,100,105},16))
-force.Name = _d({79,79,53,81,99,105,68,98,81,102,85,92,54,95,98,83,85},16)
+force = Instance.new(_d({38,67,72,63,59,76,48,63,70,73,61,67,78,83},38))
+force.Name = _d({57,57,31,59,77,83,46,76,59,80,63,70,32,73,76,61,63},38)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -52,8 +52,8 @@ end
 local function cleanupForce()
 local _, _, root = getCharacterComponents()
 if root then
-local force = root:FindFirstChild(_d({79,79,53,81,99,105,68,98,81,102,85,92,54,95,98,83,85},16))
-local att = root:FindFirstChild(_d({79,79,53,81,99,105,68,98,81,102,85,92,49,100,100},16))
+local force = root:FindFirstChild(_d({57,57,31,59,77,83,46,76,59,80,63,70,32,73,76,61,63},38))
+local att = root:FindFirstChild(_d({57,57,31,59,77,83,46,76,59,80,63,70,27,78,78},38))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -66,18 +66,18 @@ currentGeppoCooldown = math.random(GEPPO_COOLDOWN_MIN * 100, GEPPO_COOLDOWN_MAX 
 pcall(function()
 local char, _, root = getCharacterComponents()
 if not char or not root then return end
-local statsFolder = ReplicatedStorage:FindFirstChild(_d({67,100,81,100,99},16) .. LocalPlayer.Name)
-local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({62,95,94,85},16)
+local statsFolder = ReplicatedStorage:FindFirstChild(_d({45,78,59,78,77},38) .. LocalPlayer.Name)
+local style = statsFolder and statsFolder.Stats.FightingStyle.Value or _d({40,73,72,63},38)
 local cf = CFrame.lookAt(root.Position, root.Position + root.CFrame.LookVector)
 local args = {char = char, cf = cf}
-if style == _d({66,95,91,101,99,88,89,91,89},16) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({55,85,96,96,95},16), args)
-elseif style == _d({50,92,81,83,91,60,85,87},16) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({67,91,105,16,71,81,92,91},16), args)
-elseif style == _d({59,81,93,89,99,88,89,91,89},16) then
-ReplicatedStorage.Events.Skill:InvokeServer(_d({59,81,93,89,99,88,89,91,89,55,85,96,96,95},16), args)
+if style == _d({44,73,69,79,77,66,67,69,67},38) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({33,63,74,74,73},38), args)
+elseif style == _d({28,70,59,61,69,38,63,65},38) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({45,69,83,250,49,59,70,69},38), args)
+elseif style == _d({37,59,71,67,77,66,67,69,67},38) then
+ReplicatedStorage.Events.Skill:InvokeServer(_d({37,59,71,67,77,66,67,69,67,33,63,74,74,73},38), args)
 else
-ReplicatedStorage.Events.Skill:InvokeServer(_d({67,91,105,16,71,81,92,91,34},16), args)
+ReplicatedStorage.Events.Skill:InvokeServer(_d({45,69,83,250,49,59,70,69,12},38), args)
 end
 end)
 end
@@ -129,7 +129,7 @@ task.spawn(runRaycastLoop)
 loopConnection = RunService.Heartbeat:Connect(function(dt)
 local char, currentHum, currentRoot = getCharacterComponents()
 if not currentRoot or not flightEnabled then
-if loopConnection then loopConnection:Disconnect() loopConnection = nil end
+if loopConnection then loopConnection:Disconnect(); loopConnection = nil; end
 cleanupForce()
 return
 end
@@ -163,7 +163,7 @@ invokeGeppo()
 end
 end
 end)
-print(_d({75,53,81,99,105,16,68,98,81,102,85,92,77,16,54,92,89,87,88,100,16,85,94,81,82,92,85,84,30},16))
+print(_d({53,31,59,77,83,250,46,76,59,80,63,70,55,250,32,70,67,65,66,78,250,63,72,59,60,70,63,62,8},38))
 end
 local function stopFlight()
 flightEnabled = false
@@ -172,7 +172,7 @@ loopConnection:Disconnect()
 loopConnection = nil
 end
 cleanupForce()
-print(_d({75,53,81,99,105,16,68,98,81,102,85,92,77,16,54,92,89,87,88,100,16,84,89,99,81,82,92,85,84,30},16))
+print(_d({53,31,59,77,83,250,46,76,59,80,63,70,55,250,32,70,67,65,66,78,250,62,67,77,59,60,70,63,62,8},38))
 end
 UserInputService.InputBegan:Connect(function(input, processed)
 if processed then return end
@@ -184,7 +184,7 @@ startFlight()
 end
 end
 end)
-print(_d({75,53,81,99,105,16,68,98,81,102,85,92,77,16,60,95,81,84,85,84,30,16,64,98,85,99,99,16,23,64,23,16,100,95,16,100,95,87,87,92,85,16,87,98,95,101,94,84,29,86,95,92,92,95,103,89,94,87,16,71,49,67,52,16,86,92,89,87,88,100,30},16))
+print(_d({53,31,59,77,83,250,46,76,59,80,63,70,55,250,38,73,59,62,63,62,8,250,42,76,63,77,77,250,1,42,1,250,78,73,250,78,73,65,65,70,63,250,65,76,73,79,72,62,7,64,73,70,70,73,81,67,72,65,250,49,27,45,30,250,64,70,67,65,66,78,8},38))
 return {
 Start = startFlight,
 Stop = stopFlight,
