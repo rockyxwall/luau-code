@@ -11,10 +11,10 @@ end
 if _G.EasyTravelCleanup then
 pcall(_G.EasyTravelCleanup)
 end
-local Players = game:GetService(_d({41,69,58,82,62,75,76},39))
-local ReplicatedStorage = game:GetService(_d({43,62,73,69,66,60,58,77,62,61,44,77,72,75,58,64,62},39))
-local RunService = game:GetService(_d({43,78,71,44,62,75,79,66,60,62},39))
-local UserInputService = game:GetService(_d({46,76,62,75,34,71,73,78,77,44,62,75,79,66,60,62},39))
+local Players = game:GetService(_d({61,89,78,102,82,95,96},19))
+local ReplicatedStorage = game:GetService(_d({63,82,93,89,86,80,78,97,82,81,64,97,92,95,78,84,82},19))
+local RunService = game:GetService(_d({63,98,91,64,82,95,99,86,80,82},19))
+local UserInputService = game:GetService(_d({66,96,82,95,54,91,93,98,97,64,82,95,99,86,80,82},19))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local FLIGHT_SPEED = 70.0
@@ -23,7 +23,6 @@ local SEA_LEVEL_Y = -2.63
 local RAYCAST_COOLDOWN = 0.05
 local HOVER_LIFT_GAIN = 20.0
 local FORWARD_SCAN_DISTANCE = 30.0
-local MAX_CLIMB_HEIGHT = 15.0
 local flightEnabled = false
 local currentTargetY = 0
 local loopConnection = nil
@@ -34,18 +33,18 @@ local inputConnection = nil
 local function getCharacterComponents()
 local char = LocalPlayer.Character
 if not char then return nil, nil, nil end
-local root = char:FindFirstChild(_d({33,78,70,58,71,72,66,61,43,72,72,77,41,58,75,77},39))
-local hum = char:FindFirstChildWhichIsA(_d({33,78,70,58,71,72,66,61},39))
+local root = char:FindFirstChild(_d({53,98,90,78,91,92,86,81,63,92,92,97,61,78,95,97},19))
+local hum = char:FindFirstChildWhichIsA(_d({53,98,90,78,91,92,86,81},19))
 return char, hum, root
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({56,56,30,58,76,82,45,75,58,79,62,69,26,77,77},39)) or Instance.new(_d({26,77,77,58,60,65,70,62,71,77},39))
-att.Name = _d({56,56,30,58,76,82,45,75,58,79,62,69,26,77,77},39)
+local att = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,46,97,97},19)) or Instance.new(_d({46,97,97,78,80,85,90,82,91,97},19))
+att.Name = _d({76,76,50,78,96,102,65,95,78,99,82,89,46,97,97},19)
 att.Parent = root
-local force = root:FindFirstChild(_d({56,56,30,58,76,82,45,75,58,79,62,69,31,72,75,60,62},39))
+local force = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,51,92,95,80,82},19))
 if not force then
-force = Instance.new(_d({37,66,71,62,58,75,47,62,69,72,60,66,77,82},39))
-force.Name = _d({56,56,30,58,76,82,45,75,58,79,62,69,31,72,75,60,62},39)
+force = Instance.new(_d({57,86,91,82,78,95,67,82,89,92,80,86,97,102},19))
+force.Name = _d({76,76,50,78,96,102,65,95,78,99,82,89,51,92,95,80,82},19)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -58,8 +57,8 @@ end
 local function cleanupForce()
 local _, _, root = getCharacterComponents()
 if root then
-local force = root:FindFirstChild(_d({56,56,30,58,76,82,45,75,58,79,62,69,31,72,75,60,62},39))
-local att = root:FindFirstChild(_d({56,56,30,58,76,82,45,75,58,79,62,69,26,77,77},39))
+local force = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,51,92,95,80,82},19))
+local att = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,46,97,97},19))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -108,7 +107,7 @@ clearanceY = scanOrigin.Y
 break
 end
 end
-if clearanceY and (clearanceY - currentPos.Y) <= MAX_CLIMB_HEIGHT then
+if clearanceY then
 isClimbing = true
 climbTargetY = clearanceY + HEIGHT_OFFSET
 else
@@ -168,13 +167,13 @@ end
 end
 targetVelocity = moveDir.Unit * (FLIGHT_SPEED * speedMultiplier)
 end
-local verticalVel = math.clamp(yError * HOVER_LIFT_GAIN, -50, 25)
+local verticalVel = math.clamp(yError * HOVER_LIFT_GAIN, -50, 30)
 force.VectorVelocity = Vector3.new(targetVelocity.X, verticalVel, targetVelocity.Z)
 if moveDir.Magnitude > 0 then
 currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + Vector3.new(look.X, 0, look.Z).Unit)
 end
 end)
-print(_d({52,30,58,76,82,249,45,75,58,79,62,69,54,249,31,69,66,64,65,77,249,62,71,58,59,69,62,61,7},39))
+print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,51,89,86,84,85,97,13,82,91,78,79,89,82,81,27},19))
 end
 local function stopFlight()
 flightEnabled = false
@@ -183,7 +182,7 @@ loopConnection:Disconnect();
 loopConnection = nil;
 end
 cleanupForce()
-print(_d({52,30,58,76,82,249,45,75,58,79,62,69,54,249,31,69,66,64,65,77,249,61,66,76,58,59,69,62,61,7},39))
+print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,51,89,86,84,85,97,13,81,86,96,78,79,89,82,81,27},19))
 end
 inputConnection = UserInputService.InputBegan:Connect(function(input, processed)
 if processed then return end
@@ -206,9 +205,9 @@ inputConnection:Disconnect()
 inputConnection = nil
 end
 _G.EasyTravelCleanup = nil
-print(_d({52,30,58,76,82,249,45,75,58,79,62,69,54,249,28,72,70,73,69,62,77,62,69,82,249,78,71,69,72,58,61,62,61,249,58,71,61,249,60,69,62,58,71,62,61,249,78,73,249,76,60,75,66,73,77,249,76,77,58,77,62,7},39))
+print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,48,92,90,93,89,82,97,82,89,102,13,98,91,89,92,78,81,82,81,13,78,91,81,13,80,89,82,78,91,82,81,13,98,93,13,96,80,95,86,93,97,13,96,97,78,97,82,27},19))
 end
-print(_d({52,30,58,76,82,249,45,75,58,79,62,69,54,249,37,72,58,61,62,61,7,249,41,75,62,76,76,249,0,41,0,249,77,72,249,77,72,64,64,69,62,249,63,69,66,64,65,77,7,249,41,75,62,76,76,249,0,30,71,61,0,249,77,72,249,60,72,70,73,69,62,77,62,69,82,249,78,71,69,72,58,61,7},39))
+print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,57,92,78,81,82,81,27,13,61,95,82,96,96,13,20,61,20,13,97,92,13,97,92,84,84,89,82,13,83,89,86,84,85,97,27,13,61,95,82,96,96,13,20,50,91,81,20,13,97,92,13,80,92,90,93,89,82,97,82,89,102,13,98,91,89,92,78,81,27},19))
 return {
 Start = startFlight,
 Stop = stopFlight,
