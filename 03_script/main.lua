@@ -8,16 +8,16 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local ReplicatedStorage = game:GetService(_d({18,37,48,44,41,35,33,52,37,36,19,52,47,50,33,39,37},64))
-local CoreGui = game:GetService(_d({3,47,50,37,7,53,41},64))
-local Players = game:GetService(_d({16,44,33,57,37,50,51},64))
+local ReplicatedStorage = game:GetService(_d({34,53,64,60,57,51,49,68,53,52,35,68,63,66,49,55,53},48))
+local CoreGui = game:GetService(_d({19,63,66,53,23,69,57},48))
+local Players = game:GetService(_d({32,60,49,73,53,66,67},48))
 local LocalPlayer = Players.LocalPlayer or Players.PlayerAdded:Wait()
-local parentGui = (gethui and gethui()) or CoreGui or LocalPlayer:WaitForChild(_d({16,44,33,57,37,50,7,53,41},64))
-if parentGui:FindFirstChild(_d({2,33,46,33,46,33,13,47,46,43,37,57,8,53,34,7,53,41},64)) then
+local parentGui = (gethui and gethui()) or CoreGui or LocalPlayer:WaitForChild(_d({32,60,49,73,53,66,23,69,57},48))
+if parentGui:FindFirstChild(_d({18,49,62,49,62,49,29,63,62,59,53,73,24,69,50,23,69,57},48)) then
 parentGui.BananaMonkeyHubGui:Destroy()
 end
-local ScreenGui = Instance.new(_d({19,35,50,37,37,46,7,53,41},64))
-ScreenGui.Name = _d({2,33,46,33,46,33,13,47,46,43,37,57,8,53,34,7,53,41},64)
+local ScreenGui = Instance.new(_d({35,51,66,53,53,62,23,69,57},48))
+ScreenGui.Name = _d({18,49,62,49,62,49,29,63,62,59,53,73,24,69,50,23,69,57},48)
 ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = parentGui
 local autoDestroying = false
@@ -26,27 +26,27 @@ local autoMoving = false
 local destroyDelay = 0.1
 local punchPower = 2
 local radiusSize = 3.5
-local ToggleBtn = Instance.new(_d({20,37,56,52,2,53,52,52,47,46},64))
-ToggleBtn.Name = _d({6,44,47,33,52,41,46,39,20,47,39,39,44,37},64)
+local ToggleBtn = Instance.new(_d({36,53,72,68,18,69,68,68,63,62},48))
+ToggleBtn.Name = _d({22,60,63,49,68,57,62,55,36,63,55,55,60,53},48)
 ToggleBtn.Size = UDim2.new(0, 50, 0, 50)
 ToggleBtn.Position = UDim2.new(0.03, 0, 0.25, 0)
 ToggleBtn.BackgroundColor3 = Color3.fromRGB(255, 165, 0)
-ToggleBtn.Text = _d({176,95,77,76},64)
+ToggleBtn.Text = _d({192,111,93,92},48)
 ToggleBtn.TextSize = 28
 ToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
 ToggleBtn.Font = Enum.Font.SourceSansBold
 ToggleBtn.Active = true
 ToggleBtn.Draggable = true
 ToggleBtn.Parent = ScreenGui
-local toggleCorner = Instance.new(_d({21,9,3,47,50,46,37,50},64))
+local toggleCorner = Instance.new(_d({37,25,19,63,66,62,53,66},48))
 toggleCorner.CornerRadius = UDim.new(0.5, 0)
 toggleCorner.Parent = ToggleBtn
-local toggleStroke = Instance.new(_d({21,9,19,52,50,47,43,37},64))
+local toggleStroke = Instance.new(_d({37,25,35,68,66,63,59,53},48))
 toggleStroke.Color = Color3.fromRGB(255, 255, 255)
 toggleStroke.Thickness = 2
 toggleStroke.Parent = ToggleBtn
-local MainFrame = Instance.new(_d({6,50,33,45,37},64))
-MainFrame.Name = _d({13,33,41,46,6,50,33,45,37},64)
+local MainFrame = Instance.new(_d({22,66,49,61,53},48))
+MainFrame.Name = _d({29,49,57,62,22,66,49,61,53},48)
 MainFrame.Size = UDim2.new(0, 280, 0, 310)
 MainFrame.Position = UDim2.new(0.5, -140, 0.4, -155)
 MainFrame.BackgroundColor3 = Color3.fromRGB(25, 25, 32)
@@ -54,34 +54,34 @@ MainFrame.BorderSizePixel = 0
 MainFrame.Active = true
 MainFrame.Draggable = true
 MainFrame.Parent = ScreenGui
-local mainCorner = Instance.new(_d({21,9,3,47,50,46,37,50},64))
+local mainCorner = Instance.new(_d({37,25,19,63,66,62,53,66},48))
 mainCorner.CornerRadius = UDim.new(0, 12)
 mainCorner.Parent = MainFrame
-local mainStroke = Instance.new(_d({21,9,19,52,50,47,43,37},64))
+local mainStroke = Instance.new(_d({37,25,35,68,66,63,59,53},48))
 mainStroke.Color = Color3.fromRGB(255, 165, 0)
 mainStroke.Thickness = 1.5
 mainStroke.Parent = MainFrame
-local Header = Instance.new(_d({20,37,56,52,12,33,34,37,44},64))
+local Header = Instance.new(_d({36,53,72,68,28,49,50,53,60},48))
 Header.Size = UDim2.new(1, -40, 0, 36)
 Header.Position = UDim2.new(0, 12, 0, 4)
 Header.BackgroundTransparency = 1
-Header.Text = _d({2,33,46,33,46,33,224,13,47,46,43,37,57,224,8,53,34,224,176,95,77,76},64)
+Header.Text = _d({18,49,62,49,62,49,240,29,63,62,59,53,73,240,24,69,50,240,192,111,93,92},48)
 Header.TextColor3 = Color3.fromRGB(255, 255, 255)
 Header.TextSize = 18
 Header.Font = Enum.Font.SourceSansBold
 Header.TextXAlignment = Enum.TextXAlignment.Left
 Header.Parent = MainFrame
-local Subtitle = Instance.new(_d({20,37,56,52,12,33,34,37,44},64))
+local Subtitle = Instance.new(_d({36,53,72,68,28,49,50,53,60},48))
 Subtitle.Size = UDim2.new(1, -40, 0, 16)
 Subtitle.Position = UDim2.new(0, 12, 0, 32)
 Subtitle.BackgroundTransparency = 1
-Subtitle.Text = _d({1,53,52,47,237,4,37,51,52,50,47,57,236,224,10,53,45,48,224,230,224,23,33,44,43,224,1,50,47,53,46,36},64)
+Subtitle.Text = _d({17,69,68,63,253,20,53,67,68,66,63,73,252,240,26,69,61,64,240,246,240,39,49,60,59,240,17,66,63,69,62,52},48)
 Subtitle.TextColor3 = Color3.fromRGB(160, 160, 180)
 Subtitle.TextSize = 12
 Subtitle.Font = Enum.Font.SourceSans
 Subtitle.TextXAlignment = Enum.TextXAlignment.Left
 Subtitle.Parent = MainFrame
-local CloseBtn = Instance.new(_d({20,37,56,52,2,53,52,52,47,46},64))
+local CloseBtn = Instance.new(_d({36,53,72,68,18,69,68,68,63,62},48))
 CloseBtn.Size = UDim2.new(0, 28, 0, 28)
 CloseBtn.Position = UDim2.new(1, -34, 0, 8)
 CloseBtn.BackgroundColor3 = Color3.fromRGB(45, 45, 55)
@@ -90,7 +90,7 @@ CloseBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
 CloseBtn.TextSize = 14
 CloseBtn.Font = Enum.Font.SourceSansBold
 CloseBtn.Parent = MainFrame
-local closeCorner = Instance.new(_d({21,9,3,47,50,46,37,50},64))
+local closeCorner = Instance.new(_d({37,25,19,63,66,62,53,66},48))
 closeCorner.CornerRadius = UDim.new(0, 6)
 closeCorner.Parent = CloseBtn
 CloseBtn.MouseButton1Click:Connect(function()
@@ -99,25 +99,25 @@ end)
 ToggleBtn.MouseButton1Click:Connect(function()
 MainFrame.Visible = not MainFrame.Visible
 end)
-local Divider = Instance.new(_d({6,50,33,45,37},64))
+local Divider = Instance.new(_d({22,66,49,61,53},48))
 Divider.Size = UDim2.new(1, -24, 0, 1)
 Divider.Position = UDim2.new(0, 12, 0, 52)
 Divider.BackgroundColor3 = Color3.fromRGB(45, 45, 60)
 Divider.BorderSizePixel = 0
 Divider.Parent = MainFrame
-local AutoBtn = Instance.new(_d({20,37,56,52,2,53,52,52,47,46},64))
+local AutoBtn = Instance.new(_d({36,53,72,68,18,69,68,68,63,62},48))
 AutoBtn.Size = UDim2.new(1, -24, 0, 38)
 AutoBtn.Position = UDim2.new(0, 12, 0, 60)
 AutoBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 52)
-AutoBtn.Text = _d({1,53,52,47,237,4,37,51,52,50,47,57,224,7,50,47,53,46,36,250,224,15,6,6},64)
+AutoBtn.Text = _d({17,69,68,63,253,20,53,67,68,66,63,73,240,23,66,63,69,62,52,10,240,31,22,22},48)
 AutoBtn.TextColor3 = Color3.fromRGB(255, 90, 90)
 AutoBtn.TextSize = 14
 AutoBtn.Font = Enum.Font.SourceSansBold
 AutoBtn.Parent = MainFrame
-local autoCorner = Instance.new(_d({21,9,3,47,50,46,37,50},64))
+local autoCorner = Instance.new(_d({37,25,19,63,66,62,53,66},48))
 autoCorner.CornerRadius = UDim.new(0, 8)
 autoCorner.Parent = AutoBtn
-local autoStroke = Instance.new(_d({21,9,19,52,50,47,43,37},64))
+local autoStroke = Instance.new(_d({37,25,35,68,66,63,59,53},48))
 autoStroke.Color = Color3.fromRGB(60, 60, 80)
 autoStroke.Thickness = 1
 autoStroke.Parent = AutoBtn
@@ -138,7 +138,7 @@ end
 AutoBtn.MouseButton1Click:Connect(function()
 autoDestroying = not autoDestroying
 if autoDestroying then
-AutoBtn.Text = _d({1,53,52,47,237,4,37,51,52,50,47,57,224,7,50,47,53,46,36,250,224,15,14,224,162,90,97},64)
+AutoBtn.Text = _d({17,69,68,63,253,20,53,67,68,66,63,73,240,23,66,63,69,62,52,10,240,31,30,240,178,106,113},48)
 AutoBtn.TextColor3 = Color3.fromRGB(90, 255, 140)
 AutoBtn.BackgroundColor3 = Color3.fromRGB(20, 60, 35)
 autoStroke.Color = Color3.fromRGB(90, 255, 140)
@@ -146,10 +146,10 @@ task.spawn(function()
 while autoDestroying do
 local character = LocalPlayer.Character
 if character then
-local root = character:FindFirstChild(_d({8,53,45,33,46,47,41,36,18,47,47,52,16,33,50,52},64))
+local root = character:FindFirstChild(_d({24,69,61,49,62,63,57,52,34,63,63,68,32,49,66,68},48))
 if root then
-local punchEvent = ReplicatedStorage:FindFirstChild(_d({4,37,51,52,50,53,35,52,41,47,46,31,16,53,46,35,40},64), true)
-if punchEvent and punchEvent:IsA(_d({18,37,45,47,52,37,5,54,37,46,52},64)) then
+local punchEvent = ReplicatedStorage:FindFirstChild(_d({20,53,67,68,66,69,51,68,57,63,62,47,32,69,62,51,56},48), true)
+if punchEvent and punchEvent:IsA(_d({34,53,61,63,68,53,21,70,53,62,68},48)) then
 local basePos = root.Position
 local offsets = getOffsets(radiusSize)
 for _, offset in ipairs(offsets) do
@@ -165,32 +165,32 @@ task.wait(destroyDelay)
 end
 end)
 else
-AutoBtn.Text = _d({1,53,52,47,237,4,37,51,52,50,47,57,224,7,50,47,53,46,36,250,224,15,6,6},64)
+AutoBtn.Text = _d({17,69,68,63,253,20,53,67,68,66,63,73,240,23,66,63,69,62,52,10,240,31,22,22},48)
 AutoBtn.TextColor3 = Color3.fromRGB(255, 90, 90)
 AutoBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 52)
 autoStroke.Color = Color3.fromRGB(60, 60, 80)
 end
 end)
-local JumpBtn = Instance.new(_d({20,37,56,52,2,53,52,52,47,46},64))
+local JumpBtn = Instance.new(_d({36,53,72,68,18,69,68,68,63,62},48))
 JumpBtn.Size = UDim2.new(1, -24, 0, 32)
 JumpBtn.Position = UDim2.new(0, 12, 0, 104)
 JumpBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 52)
-JumpBtn.Text = _d({1,53,52,47,224,10,53,45,48,250,224,15,6,6},64)
+JumpBtn.Text = _d({17,69,68,63,240,26,69,61,64,10,240,31,22,22},48)
 JumpBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
 JumpBtn.TextSize = 13
 JumpBtn.Font = Enum.Font.SourceSansBold
 JumpBtn.Parent = MainFrame
-local jumpCorner = Instance.new(_d({21,9,3,47,50,46,37,50},64))
+local jumpCorner = Instance.new(_d({37,25,19,63,66,62,53,66},48))
 jumpCorner.CornerRadius = UDim.new(0, 8)
 jumpCorner.Parent = JumpBtn
-local jumpStroke = Instance.new(_d({21,9,19,52,50,47,43,37},64))
+local jumpStroke = Instance.new(_d({37,25,35,68,66,63,59,53},48))
 jumpStroke.Color = Color3.fromRGB(60, 60, 80)
 jumpStroke.Thickness = 1
 jumpStroke.Parent = JumpBtn
 JumpBtn.MouseButton1Click:Connect(function()
 autoJumping = not autoJumping
 if autoJumping then
-JumpBtn.Text = _d({1,53,52,47,224,10,53,45,48,250,224,15,14,224,176,95,102,88},64)
+JumpBtn.Text = _d({17,69,68,63,240,26,69,61,64,10,240,31,30,240,192,111,118,104},48)
 JumpBtn.TextColor3 = Color3.fromRGB(255, 200, 90)
 JumpBtn.BackgroundColor3 = Color3.fromRGB(60, 50, 20)
 jumpStroke.Color = Color3.fromRGB(255, 200, 90)
@@ -198,7 +198,7 @@ task.spawn(function()
 while autoJumping do
 local character = LocalPlayer.Character
 if character then
-local humanoid = character:FindFirstChildOfClass(_d({8,53,45,33,46,47,41,36},64))
+local humanoid = character:FindFirstChildOfClass(_d({24,69,61,49,62,63,57,52},48))
 if humanoid then
 pcall(function()
 humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
@@ -210,32 +210,32 @@ task.wait(0.25)
 end
 end)
 else
-JumpBtn.Text = _d({1,53,52,47,224,10,53,45,48,250,224,15,6,6},64)
+JumpBtn.Text = _d({17,69,68,63,240,26,69,61,64,10,240,31,22,22},48)
 JumpBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
 JumpBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 52)
 jumpStroke.Color = Color3.fromRGB(60, 60, 80)
 end
 end)
-local MoveBtn = Instance.new(_d({20,37,56,52,2,53,52,52,47,46},64))
+local MoveBtn = Instance.new(_d({36,53,72,68,18,69,68,68,63,62},48))
 MoveBtn.Size = UDim2.new(1, -24, 0, 32)
 MoveBtn.Position = UDim2.new(0, 12, 0, 142)
 MoveBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 52)
-MoveBtn.Text = _d({1,53,52,47,237,13,47,54,37,224,232,23,33,44,43,224,1,50,47,53,46,36,233,250,224,15,6,6},64)
+MoveBtn.Text = _d({17,69,68,63,253,29,63,70,53,240,248,39,49,60,59,240,17,66,63,69,62,52,249,10,240,31,22,22},48)
 MoveBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
 MoveBtn.TextSize = 13
 MoveBtn.Font = Enum.Font.SourceSansBold
 MoveBtn.Parent = MainFrame
-local moveCorner = Instance.new(_d({21,9,3,47,50,46,37,50},64))
+local moveCorner = Instance.new(_d({37,25,19,63,66,62,53,66},48))
 moveCorner.CornerRadius = UDim.new(0, 8)
 moveCorner.Parent = MoveBtn
-local moveStroke = Instance.new(_d({21,9,19,52,50,47,43,37},64))
+local moveStroke = Instance.new(_d({37,25,35,68,66,63,59,53},48))
 moveStroke.Color = Color3.fromRGB(60, 60, 80)
 moveStroke.Thickness = 1
 moveStroke.Parent = MoveBtn
 MoveBtn.MouseButton1Click:Connect(function()
 autoMoving = not autoMoving
 if autoMoving then
-MoveBtn.Text = _d({1,53,52,47,237,13,47,54,37,224,232,23,33,44,43,224,1,50,47,53,46,36,233,250,224,15,14,224,176,95,90,118},64)
+MoveBtn.Text = _d({17,69,68,63,253,29,63,70,53,240,248,39,49,60,59,240,17,66,63,69,62,52,249,10,240,31,30,240,192,111,106,134},48)
 MoveBtn.TextColor3 = Color3.fromRGB(90, 200, 255)
 MoveBtn.BackgroundColor3 = Color3.fromRGB(20, 50, 60)
 moveStroke.Color = Color3.fromRGB(90, 200, 255)
@@ -244,7 +244,7 @@ local angle = 0
 while autoMoving do
 local character = LocalPlayer.Character
 if character then
-local humanoid = character:FindFirstChildOfClass(_d({8,53,45,33,46,47,41,36},64))
+local humanoid = character:FindFirstChildOfClass(_d({24,69,61,49,62,63,57,52},48))
 if humanoid then
 angle = angle + 0.8
 local moveDir = Vector3.new(math.cos(angle), 0, math.sin(angle))
@@ -255,35 +255,35 @@ task.wait(0.1)
 end
 end)
 else
-MoveBtn.Text = _d({1,53,52,47,237,13,47,54,37,224,232,23,33,44,43,224,1,50,47,53,46,36,233,250,224,15,6,6},64)
+MoveBtn.Text = _d({17,69,68,63,253,29,63,70,53,240,248,39,49,60,59,240,17,66,63,69,62,52,249,10,240,31,22,22},48)
 MoveBtn.TextColor3 = Color3.fromRGB(200, 200, 200)
 MoveBtn.BackgroundColor3 = Color3.fromRGB(40, 40, 52)
 moveStroke.Color = Color3.fromRGB(60, 60, 80)
 end
 end)
-local SpeedLabel = Instance.new(_d({20,37,56,52,12,33,34,37,44},64))
+local SpeedLabel = Instance.new(_d({36,53,72,68,28,49,50,53,60},48))
 SpeedLabel.Size = UDim2.new(1, -24, 0, 18)
 SpeedLabel.Position = UDim2.new(0, 12, 0, 180)
 SpeedLabel.BackgroundTransparency = 1
-SpeedLabel.Text = _d({16,53,46,35,40,224,4,37,44,33,57,250,224,240,238,241,240,51,224,232,6,33,51,52,233},64)
+SpeedLabel.Text = _d({32,69,62,51,56,240,20,53,60,49,73,10,240,0,254,1,0,67,240,248,22,49,67,68,249},48)
 SpeedLabel.TextColor3 = Color3.fromRGB(200, 200, 220)
 SpeedLabel.TextSize = 12
 SpeedLabel.Font = Enum.Font.SourceSans
 SpeedLabel.TextXAlignment = Enum.TextXAlignment.Left
 SpeedLabel.Parent = MainFrame
-local speedContainer = Instance.new(_d({6,50,33,45,37},64))
+local speedContainer = Instance.new(_d({22,66,49,61,53},48))
 speedContainer.Size = UDim2.new(1, -24, 0, 28)
 speedContainer.Position = UDim2.new(0, 12, 0, 200)
 speedContainer.BackgroundTransparency = 1
 speedContainer.Parent = MainFrame
 local speeds = {
-{ label = _d({240,238,240,245,51},64), delay = 0.05 },
-{ label = _d({240,238,241,240,51},64), delay = 0.10 },
-{ label = _d({240,238,242,245,51},64), delay = 0.25 },
-{ label = _d({240,238,245,240,51},64), delay = 0.50 }
+{ label = _d({0,254,0,5,67},48), delay = 0.05 },
+{ label = _d({0,254,1,0,67},48), delay = 0.10 },
+{ label = _d({0,254,2,5,67},48), delay = 0.25 },
+{ label = _d({0,254,5,0,67},48), delay = 0.50 }
 }
 for i, opt in ipairs(speeds) do
-local btn = Instance.new(_d({20,37,56,52,2,53,52,52,47,46},64))
+local btn = Instance.new(_d({36,53,72,68,18,69,68,68,63,62},48))
 btn.Size = UDim2.new(0.23, -2, 1, 0)
 btn.Position = UDim2.new((i - 1) * 0.25, 0, 0, 0)
 btn.BackgroundColor3 = (opt.delay == destroyDelay) and Color3.fromRGB(255, 165, 0) or Color3.fromRGB(40, 40, 55)
@@ -292,14 +292,14 @@ btn.TextColor3 = (opt.delay == destroyDelay) and Color3.fromRGB(25, 25, 32) or C
 btn.TextSize = 12
 btn.Font = Enum.Font.SourceSansBold
 btn.Parent = speedContainer
-local btnCorner = Instance.new(_d({21,9,3,47,50,46,37,50},64))
+local btnCorner = Instance.new(_d({37,25,19,63,66,62,53,66},48))
 btnCorner.CornerRadius = UDim.new(0, 6)
 btnCorner.Parent = btn
 btn.MouseButton1Click:Connect(function()
 destroyDelay = opt.delay
-SpeedLabel.Text = _d({16,53,46,35,40,224,4,37,44,33,57,250,224},64) .. string.format(_d({229,238,242,38,51},64), destroyDelay)
+SpeedLabel.Text = _d({32,69,62,51,56,240,20,53,60,49,73,10,240},48) .. string.format(_d({245,254,2,54,67},48), destroyDelay)
 for _, child in ipairs(speedContainer:GetChildren()) do
-if child:IsA(_d({20,37,56,52,2,53,52,52,47,46},64)) then
+if child:IsA(_d({36,53,72,68,18,69,68,68,63,62},48)) then
 child.BackgroundColor3 = Color3.fromRGB(40, 40, 55)
 child.TextColor3 = Color3.fromRGB(200, 200, 200)
 end
@@ -308,16 +308,16 @@ btn.BackgroundColor3 = Color3.fromRGB(255, 165, 0)
 btn.TextColor3 = Color3.fromRGB(25, 25, 32)
 end)
 end
-local DestroyBtn = Instance.new(_d({20,37,56,52,2,53,52,52,47,46},64))
+local DestroyBtn = Instance.new(_d({36,53,72,68,18,69,68,68,63,62},48))
 DestroyBtn.Size = UDim2.new(1, -24, 0, 28)
 DestroyBtn.Position = UDim2.new(0, 12, 0, 268)
 DestroyBtn.BackgroundColor3 = Color3.fromRGB(60, 25, 25)
-DestroyBtn.Text = _d({21,46,44,47,33,36,224,8,53,34,224,19,35,50,41,48,52},64)
+DestroyBtn.Text = _d({37,62,60,63,49,52,240,24,69,50,240,35,51,66,57,64,68},48)
 DestroyBtn.TextColor3 = Color3.fromRGB(255, 120, 120)
 DestroyBtn.TextSize = 12
 DestroyBtn.Font = Enum.Font.SourceSans
 DestroyBtn.Parent = MainFrame
-local destroyCorner = Instance.new(_d({21,9,3,47,50,46,37,50},64))
+local destroyCorner = Instance.new(_d({37,25,19,63,66,62,53,66},48))
 destroyCorner.CornerRadius = UDim.new(0, 6)
 destroyCorner.Parent = DestroyBtn
 DestroyBtn.MouseButton1Click:Connect(function()
@@ -326,5 +326,5 @@ autoJumping = false
 autoMoving = false
 ScreenGui:Destroy()
 end)
-print(_d({27,2,33,46,33,46,33,224,13,47,46,43,37,57,224,8,53,34,29,224,12,47,33,36,37,36,224,51,53,35,35,37,51,51,38,53,44,44,57,225},64))
+print(_d({43,18,49,62,49,62,49,240,29,63,62,59,53,73,240,24,69,50,45,240,28,63,49,52,53,52,240,67,69,51,51,53,67,67,54,69,60,60,73,241},48))
 end)()
