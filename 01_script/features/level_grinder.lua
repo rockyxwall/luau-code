@@ -299,17 +299,24 @@ local rifleBtn = list and list:FindFirstChild(_d({37,60,57,63,56},45)) and list.
 local equipBtn = inv and inv.Main:FindFirstChild(_d({28,71,56,64,32,56,65,72},45)) and inv.Main.ItemMenu:FindFirstChild(_d({24,68,72,60,67},45))
 if rifleBtn and equipBtn and getconnections then
 pcall(function()
+inv.Main.Visible = true
+end)
+task.wait(0.5)
+pcall(function()
 for _, c in ipairs(getconnections(rifleBtn.Activated)) do
 c.Function()
 end
 end)
-task.wait(0.2)
+task.wait(0.5)
 pcall(function()
 for _, c in ipairs(getconnections(equipBtn.Activated)) do
 c.Function()
 end
 end)
 task.wait(1)
+pcall(function()
+inv.Main.Visible = false
+end)
 else
 warn(_d({46,26,56,67,66,243,26,69,60,65,55,56,69,48,243,22,66,72,63,55,243,65,66,71,243,57,60,65,55,243,37,60,57,63,56,2,24,68,72,60,67,243,53,72,71,71,66,65,70,243,60,65,243,28,65,73,56,65,71,66,69,76,243,40,28,1},45))
 end
