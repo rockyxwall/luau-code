@@ -8,18 +8,18 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({29,57,46,70,50,63,64},51))
-local ReplicatedStorage = game:GetService(_d({31,50,61,57,54,48,46,65,50,49,32,65,60,63,46,52,50},51))
-local RunService = game:GetService(_d({31,66,59,32,50,63,67,54,48,50},51))
-local VIM = game:GetService(_d({35,54,63,65,66,46,57,22,59,61,66,65,26,46,59,46,52,50,63},51))
-local UserInputService = game:GetService(_d({34,64,50,63,22,59,61,66,65,32,50,63,67,54,48,50},51))
+local Players = game:GetService(_d({28,56,45,69,49,62,63},52))
+local ReplicatedStorage = game:GetService(_d({30,49,60,56,53,47,45,64,49,48,31,64,59,62,45,51,49},52))
+local RunService = game:GetService(_d({30,65,58,31,49,62,66,53,47,49},52))
+local VIM = game:GetService(_d({34,53,62,64,65,45,56,21,58,60,65,64,25,45,58,45,51,49,62},52))
+local UserInputService = game:GetService(_d({33,63,49,62,21,58,60,65,64,31,49,62,66,53,47,49},52))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local HoroFarm = {
 Running = false,
 Connections = {},
 Config = {
-SelectedBoss = _d({23,66,71,60,237,65,53,50,237,17,54,46,58,60,59,49,47,46,48,56},51),
+SelectedBoss = _d({22,65,70,59,236,64,52,49,236,16,53,45,57,59,58,48,46,45,47,55},52),
 UseE = true,
 UseZ = true,
 UseC = true,
@@ -28,34 +28,34 @@ UseR = true
 }
 local Core = nil
 pcall(function()
-if isfile and readfile and isfile(_d({253,254,250,52,61,60,252,57,54,47,252,48,60,63,50,251,57,66,46},51)) then
-Core = loadstring(readfile(_d({253,254,250,52,61,60,252,57,54,47,252,48,60,63,50,251,57,66,46},51)))()
+if isfile and readfile and isfile(_d({252,253,249,51,60,59,251,56,53,46,251,47,59,62,49,250,56,65,45},52)) then
+Core = loadstring(readfile(_d({252,253,249,51,60,59,251,56,53,46,251,47,59,62,49,250,56,65,45},52)))()
 else
-Core = loadstring(game:HttpGet(_d({53,65,65,61,64,7,252,252,63,46,68,251,52,54,65,53,66,47,66,64,50,63,48,60,59,65,50,59,65,251,48,60,58,252,63,60,48,56,70,69,68,46,57,57,252,57,66,46,66,250,48,60,49,50,252,58,46,54,59,252,253,254,44,64,48,63,54,61,65,252,57,54,47,252,48,60,63,50,251,57,66,46},51)))()
+Core = loadstring(game:HttpGet(_d({52,64,64,60,63,6,251,251,62,45,67,250,51,53,64,52,65,46,65,63,49,62,47,59,58,64,49,58,64,250,47,59,57,251,62,59,47,55,69,68,67,45,56,56,251,56,65,45,65,249,47,59,48,49,251,57,45,53,58,251,252,253,43,63,47,62,53,60,64,251,56,53,46,251,47,59,62,49,250,56,65,45},52)))()
 end
 end)
-if not Core then warn(_d({40,16,60,63,50,42,237,19,46,54,57,50,49,237,65,60,237,57,60,46,49,238},51)); return end
+if not Core then warn(_d({39,15,59,62,49,41,236,18,45,53,56,49,48,236,64,59,236,56,59,45,48,237},52)); return end
 local Safeguard = Core.GetSafeguard()
 local lastE, lastZ, lastC, lastR = 0, 0, 0, 0
 local function equipHoroTool()
-local bp = LocalPlayer:FindFirstChild(_d({15,46,48,56,61,46,48,56},51))
+local bp = LocalPlayer:FindFirstChild(_d({14,45,47,55,60,45,47,55},52))
 local char = LocalPlayer.Character
 if not char then return nil end
-local tool = char:FindFirstChild(_d({21,60,63,60,250,21,60,63,60},51)) or (bp and bp:FindFirstChild(_d({21,60,63,60,250,21,60,63,60},51)))
+local tool = char:FindFirstChild(_d({20,59,62,59,249,20,59,62,59},52)) or (bp and bp:FindFirstChild(_d({20,59,62,59,249,20,59,62,59},52)))
 if tool and tool.Parent ~= char then
-local hum = char:FindFirstChildWhichIsA(_d({21,66,58,46,59,60,54,49},51))
+local hum = char:FindFirstChildWhichIsA(_d({20,65,57,45,58,59,53,48},52))
 if hum then hum:EquipTool(tool) end
 end
 return tool
 end
 local function getBossPart(name)
 if not name or name == "" then return nil end
-local npts = Workspace:FindFirstChild(_d({27,29,16,64},51))
+local npts = Workspace:FindFirstChild(_d({26,28,15,63},52))
 if not npts then return nil end
 local boss = npts:FindFirstChild(name)
 if boss then
-local root = boss:FindFirstChild(_d({21,66,58,46,59,60,54,49,31,60,60,65,29,46,63,65},51))
-local hum = boss:FindFirstChildWhichIsA(_d({21,66,58,46,59,60,54,49},51))
+local root = boss:FindFirstChild(_d({20,65,57,45,58,59,53,48,30,59,59,64,28,45,62,64},52))
+local hum = boss:FindFirstChildWhichIsA(_d({20,65,57,45,58,59,53,48},52))
 if root and hum and hum.Health > 0 then
 return root
 end
@@ -74,8 +74,8 @@ mt.__index = newcclosure(function(self, key)
 if not checkcaller() and self == Mouse and HoroFarm.Running and HoroFarm.Config.SelectedBoss then
 local target = getBossPart(HoroFarm.Config.SelectedBoss)
 if target then
-if key == _d({21,54,65},51) then return target.CFrame
-elseif key == _d({33,46,63,52,50,65},51) then return target
+if key == _d({20,53,64},52) then return target.CFrame
+elseif key == _d({32,45,62,51,49,64},52) then return target
 end
 end
 end
@@ -83,21 +83,21 @@ return oldIndex(self, key)
 end)
 if setreadonly then setreadonly(mt, true) elseif make_readonly then make_readonly(mt) end
 end)
-if not successHook then warn(_d({40,21,60,63,60,19,46,63,58,42,237,26,50,65,46,65,46,47,57,50,237,53,60,60,56,237,51,46,54,57,50,49,7,237},51) .. tostring(err)) end
+if not successHook then warn(_d({39,20,59,62,59,18,45,62,57,41,236,25,49,64,45,64,45,46,56,49,236,52,59,59,55,236,50,45,53,56,49,48,6,236},52) .. tostring(err)) end
 end
 function HoroFarm.Stop()
 HoroFarm.Running = false
 for _, conn in ipairs(HoroFarm.Connections) do conn:Disconnect() end
 HoroFarm.Connections = {}
-print(_d({40,21,60,63,60,19,46,63,58,42,237,32,65,60,61,61,50,49,251},51))
+print(_d({39,20,59,62,59,18,45,62,57,41,236,31,64,59,60,60,49,48,250},52))
 end
 function HoroFarm.Start()
-if HoroFarm.Running then warn(_d({40,21,60,63,60,19,46,63,58,42,237,14,57,63,50,46,49,70,237,63,66,59,59,54,59,52,238},51)); return end
-if not Safeguard then warn(_d({40,32,46,51,50,52,66,46,63,49,42,237,19,46,54,57,50,49,237,65,60,237,57,60,46,49,238},51)); return end
+if HoroFarm.Running then warn(_d({39,20,59,62,59,18,45,62,57,41,236,13,56,62,49,45,48,69,236,62,65,58,58,53,58,51,237},52)); return end
+if not Safeguard then warn(_d({39,31,45,50,49,51,65,45,62,48,41,236,18,45,53,56,49,48,236,64,59,236,56,59,45,48,237},52)); return end
 if not Safeguard.IsSafe() then return end
 HoroFarm.Running = true
 setupHook()
-print(_d({40,21,60,63,60,19,46,63,58,42,237,32,65,46,63,65,50,49,237,65,46,63,52,50,65,54,59,52,7,237},51) .. HoroFarm.Config.SelectedBoss)
+print(_d({39,20,59,62,59,18,45,62,57,41,236,31,64,45,62,64,49,48,236,64,45,62,51,49,64,53,58,51,6,236},52) .. HoroFarm.Config.SelectedBoss)
 task.spawn(function()
 while HoroFarm.Running do
 local targetRoot = getBossPart(HoroFarm.Config.SelectedBoss)
@@ -153,7 +153,7 @@ end)
 end
 Core.SetupStandalone(
 HoroFarm,
-_d({21,60,63,60,19,46,63,58},51),
+_d({20,59,62,59,18,45,62,57},52),
 HoroFarm.Start,
 HoroFarm.Stop,
 function() return HoroFarm.Running end
