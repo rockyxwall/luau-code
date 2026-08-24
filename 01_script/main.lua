@@ -1533,26 +1533,13 @@ function CupidDungeon.Stop()
 if not enabled then return end
 disableBot()
 end
-if not _G.DisableStandalone then
-table.insert(CupidDungeon.Connections, UserInputService.InputBegan:Connect(function(input, gpe)
-if gpe then return end
-if input.KeyCode == Enum.KeyCode.P then
-if enabled then
-CupidDungeon.Stop()
-else
-CupidDungeon.Start()
-end
-end
-end))
-task.spawn(function()
-if not game:IsLoaded() then
-game.Loaded:Wait()
-end
-debug(_d({51,77,89,81,12,88,91,77,80,81,80,24,12,77,97,96,91,25,95,96,77,94,96,85,90,83,12,96,84,81,12,92,88,77,90},20))
-CupidDungeon.Start()
-end)
-debug(_d({63,96,77,90,80,77,88,91,90,81,12,57,91,80,81,38,12,77,97,96,91,25,95,96,77,94,96,85,90,83,12,20,92,94,81,95,95,12,60,12,96,91,12,96,91,83,83,88,81,21},20))
-end
+Core.SetupStandalone(
+CupidDungeon,
+_d({47,97,92,85,80,12,48,97,90,83,81,91,90},20),
+CupidDungeon.Start,
+CupidDungeon.Stop,
+function() return enabled end
+)
 return CupidDungeon
 end)();
 end
@@ -1701,20 +1688,13 @@ end
 end
 end)
 end
-if not _G.DisableStandalone then
-table.insert(HoroFarm.Connections, UserInputService.InputBegan:Connect(function(input, processed)
-if processed then return end
-if input.KeyCode == Enum.KeyCode.P then
-if HoroFarm.Running then
-HoroFarm.Stop()
-else
-HoroFarm.Start()
-end
-end
-end))
-HoroFarm.Start()
-print(_d({71,52,91,94,91,50,77,94,89,73,12,63,96,77,90,80,77,88,91,90,81,12,57,91,80,81,38,12,60,94,81,95,95,12,19,60,19,12,96,91,12,96,91,83,83,88,81,26},20))
-end
+Core.SetupStandalone(
+HoroFarm,
+_d({52,91,94,91,50,77,94,89},20),
+HoroFarm.Start,
+HoroFarm.Stop,
+function() return HoroFarm.Running end
+)
 return HoroFarm
 end)();
 end
@@ -1856,19 +1836,13 @@ end
 LevelGrinder.Stop()
 end)
 end
-if not _G.DisableStandalone then
-table.insert(LevelGrinder.Connections, UserInputService.InputBegan:Connect(function(input, processed)
-if not processed and input.KeyCode == Enum.KeyCode.P then
-if LevelGrinder.Running then
-LevelGrinder.Stop()
-else
-LevelGrinder.Start()
-end
-end
-end))
-LevelGrinder.Start()
-print(_d({71,56,81,98,81,88,12,51,94,85,90,80,81,94,73,12,63,96,77,90,80,77,88,91,90,81,12,57,91,80,81,38,12,60,94,81,95,95,12,19,60,19,12,96,91,12,96,91,83,83,88,81,26},20))
-end
+Core.SetupStandalone(
+LevelGrinder,
+_d({56,81,98,81,88,12,51,94,85,90,80,81,94},20),
+LevelGrinder.Start,
+LevelGrinder.Stop,
+function() return LevelGrinder.Running end
+)
 return LevelGrinder
 end)();
 end
@@ -2097,19 +2071,15 @@ EasyTravel.Stop()
 for _, conn in ipairs(EasyTravel.Connections) do conn:Disconnect() end
 EasyTravel.Connections = {}
 end
-if not _G.DisableStandalone then
-table.insert(EasyTravel.Connections, UserInputService.InputBegan:Connect(function(input, processed)
-if processed then return end
-if input.KeyCode == Enum.KeyCode.P then
-if EasyTravel.Enabled then
-EasyTravel.Stop()
-else
-EasyTravel.Start()
-end
-end
-end))
-print(_d({71,49,77,95,101,12,64,94,77,98,81,88,73,12,63,96,77,90,80,77,88,91,90,81,12,57,91,80,81,38,12,60,94,81,95,95,12,19,60,19,12,96,91,12,96,91,83,83,88,81,12,82,88,85,83,84,96,26},20))
-end
+Core.SetupStandalone(
+EasyTravel,
+_d({49,77,95,101,12,64,94,77,98,81,88},20),
+EasyTravel.Start,
+EasyTravel.Stop,
+function() return EasyTravel.Enabled end,
+Enum.KeyCode.P,
+true
+)
 return EasyTravel
 end)();
 end

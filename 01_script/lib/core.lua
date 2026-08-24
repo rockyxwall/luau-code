@@ -29,8 +29,8 @@ end
 _G.DisableStandalone = oldState
 return result
 end
-local Players = game:GetService(_d({43,71,60,84,64,77,78},37))
-local ReplicatedStorage = game:GetService(_d({45,64,75,71,68,62,60,79,64,63,46,79,74,77,60,66,64},37))
+local Players = game:GetService(_d({61,89,78,102,82,95,96},19))
+local ReplicatedStorage = game:GetService(_d({63,82,93,89,86,80,78,97,82,81,64,97,92,95,78,84,82},19))
 local LocalPlayer = Players.LocalPlayer
 local statsFolder = nil
 local peliValueObj = nil
@@ -40,19 +40,19 @@ local function getStats()
 if statsFolder and statsFolder.Parent then
 return statsFolder
 end
-statsFolder = ReplicatedStorage:FindFirstChild(_d({46,79,60,79,78},37) .. LocalPlayer.Name)
+statsFolder = ReplicatedStorage:FindFirstChild(_d({64,97,78,97,96},19) .. LocalPlayer.Name)
 if statsFolder then
-peliValueObj = statsFolder:FindFirstChild(_d({43,64,71,68},37))
-if not (peliValueObj and peliValueObj:IsA(_d({49,60,71,80,64,29,60,78,64},37))) then
-local nested = statsFolder:FindFirstChild(_d({46,79,60,79,78},37))
-peliValueObj = nested and nested:FindFirstChild(_d({43,64,71,68},37))
+peliValueObj = statsFolder:FindFirstChild(_d({61,82,89,86},19))
+if not (peliValueObj and peliValueObj:IsA(_d({67,78,89,98,82,47,78,96,82},19))) then
+local nested = statsFolder:FindFirstChild(_d({64,97,78,97,96},19))
+peliValueObj = nested and nested:FindFirstChild(_d({61,82,89,86},19))
 end
-levelValueObj = statsFolder:FindFirstChild(_d({39,64,81,64,71},37))
-if not (levelValueObj and levelValueObj:IsA(_d({49,60,71,80,64,29,60,78,64},37))) then
-local nested = statsFolder:FindFirstChild(_d({46,79,60,79,78},37))
-levelValueObj = nested and nested:FindFirstChild(_d({39,64,81,64,71},37))
+levelValueObj = statsFolder:FindFirstChild(_d({57,82,99,82,89},19))
+if not (levelValueObj and levelValueObj:IsA(_d({67,78,89,98,82,47,78,96,82},19))) then
+local nested = statsFolder:FindFirstChild(_d({64,97,78,97,96},19))
+levelValueObj = nested and nested:FindFirstChild(_d({57,82,99,82,89},19))
 end
-staminaValueObj = statsFolder:FindFirstChild(_d({46,79,60,72,68,73,60},37))
+staminaValueObj = statsFolder:FindFirstChild(_d({64,97,78,90,86,91,78},19))
 else
 peliValueObj = nil
 levelValueObj = nil
@@ -77,18 +77,43 @@ return 0, 0
 end
 function Core.GetHealth()
 local char = LocalPlayer.Character
-local hum = char and char:FindFirstChild(_d({35,80,72,60,73,74,68,63},37))
+local hum = char and char:FindFirstChild(_d({53,98,90,78,91,92,86,81},19))
 if hum then
 return hum.Health, hum.MaxHealth
 end
 return 0, 0
 end
+function Core.SetupStandalone(module, name, startCallback, stopCallback, checkCallback, toggleKey, noAutoStart)
+if _G.DisableStandalone then return end
+toggleKey = toggleKey or Enum.KeyCode.P
+local UserInputService = game:GetService(_d({66,96,82,95,54,91,93,98,97,64,82,95,99,86,80,82},19))
+local connection = UserInputService.InputBegan:Connect(function(input, processed)
+if processed then return end
+if input.KeyCode == toggleKey then
+if checkCallback() then
+stopCallback()
+else
+startCallback()
+end
+end
+end)
+if module and module.Connections then
+table.insert(module.Connections, connection)
+end
+if not noAutoStart then
+task.spawn(function()
+if not game:IsLoaded() then game.Loaded:Wait() end
+startCallback()
+end)
+end
+print("[" .. tostring(name) .. _d({74,13,64,97,78,91,81,78,89,92,91,82,13,58,92,81,82,39,13,61,95,82,96,96,13,20},19) .. toggleKey.Name .. _d({20,13,97,92,13,97,92,84,84,89,82,27},19))
+end
 function Core.GetRoot(player)
 local char = player and player.Character
-return char and char:FindFirstChild(_d({35,80,72,60,73,74,68,63,45,74,74,79,43,60,77,79},37))
+return char and char:FindFirstChild(_d({53,98,90,78,91,92,86,81,63,92,92,97,61,78,95,97},19))
 end
 function Core.GetSafeguard()
-return Core.Import(_d({11,12,8,66,75,74,10,71,68,61,10,78,60,65,64,66,80,60,77,63,9,71,80,60},37), _d({67,79,79,75,78,21,10,10,77,60,82,9,66,68,79,67,80,61,80,78,64,77,62,74,73,79,64,73,79,9,62,74,72,10,77,74,62,70,84,83,82,60,71,71,10,71,80,60,80,8,62,74,63,64,10,72,60,68,73,10,11,12,58,78,62,77,68,75,79,10,71,68,61,10,78,60,65,64,66,80,60,77,63,9,71,80,60},37))
+return Core.Import(_d({29,30,26,84,93,92,28,89,86,79,28,96,78,83,82,84,98,78,95,81,27,89,98,78},19), _d({85,97,97,93,96,39,28,28,95,78,100,27,84,86,97,85,98,79,98,96,82,95,80,92,91,97,82,91,97,27,80,92,90,28,95,92,80,88,102,101,100,78,89,89,28,89,98,78,98,26,80,92,81,82,28,90,78,86,91,28,29,30,76,96,80,95,86,93,97,28,89,86,79,28,96,78,83,82,84,98,78,95,81,27,89,98,78},19))
 end
 return Core
 end)()
