@@ -8,10 +8,10 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({45,73,62,86,66,79,80},35))
-local ReplicatedStorage = game:GetService(_d({47,66,77,73,70,64,62,81,66,65,48,81,76,79,62,68,66},35))
-local RunService = game:GetService(_d({47,82,75,48,66,79,83,70,64,66},35))
-local UserInputService = game:GetService(_d({50,80,66,79,38,75,77,82,81,48,66,79,83,70,64,66},35))
+local Players = game:GetService(_d({55,83,72,96,76,89,90},25))
+local ReplicatedStorage = game:GetService(_d({57,76,87,83,80,74,72,91,76,75,58,91,86,89,72,78,76},25))
+local RunService = game:GetService(_d({57,92,85,58,76,89,93,80,74,76},25))
+local UserInputService = game:GetService(_d({60,90,76,89,48,85,87,92,91,58,76,89,93,80,74,76},25))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local EasyTravel = {
@@ -34,16 +34,16 @@ local loopConnection = nil
 local function getCharacterComponents()
 local char = LocalPlayer.Character
 if not char then return nil, nil, nil end
-return char, char:FindFirstChildWhichIsA(_d({37,82,74,62,75,76,70,65},35)), char:FindFirstChild(_d({37,82,74,62,75,76,70,65,47,76,76,81,45,62,79,81},35))
+return char, char:FindFirstChildWhichIsA(_d({47,92,84,72,85,86,80,75},25)), char:FindFirstChild(_d({47,92,84,72,85,86,80,75,57,86,86,91,55,72,89,91},25))
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({60,60,34,62,80,86,49,79,62,83,66,73,30,81,81},35)) or Instance.new(_d({30,81,81,62,64,69,74,66,75,81},35))
-att.Name = _d({60,60,34,62,80,86,49,79,62,83,66,73,30,81,81},35)
+local att = root:FindFirstChild(_d({70,70,44,72,90,96,59,89,72,93,76,83,40,91,91},25)) or Instance.new(_d({40,91,91,72,74,79,84,76,85,91},25))
+att.Name = _d({70,70,44,72,90,96,59,89,72,93,76,83,40,91,91},25)
 att.Parent = root
-local force = root:FindFirstChild(_d({60,60,34,62,80,86,49,79,62,83,66,73,35,76,79,64,66},35))
+local force = root:FindFirstChild(_d({70,70,44,72,90,96,59,89,72,93,76,83,45,86,89,74,76},25))
 if not force then
-force = Instance.new(_d({41,70,75,66,62,79,51,66,73,76,64,70,81,86},35))
-force.Name = _d({60,60,34,62,80,86,49,79,62,83,66,73,35,76,79,64,66},35)
+force = Instance.new(_d({51,80,85,76,72,89,61,76,83,86,74,80,91,96},25))
+force.Name = _d({70,70,44,72,90,96,59,89,72,93,76,83,45,86,89,74,76},25)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -56,8 +56,8 @@ end
 local function cleanupForce()
 local _, _, root = getCharacterComponents()
 if root then
-local force = root:FindFirstChild(_d({60,60,34,62,80,86,49,79,62,83,66,73,35,76,79,64,66},35))
-local att = root:FindFirstChild(_d({60,60,34,62,80,86,49,79,62,83,66,73,30,81,81},35))
+local force = root:FindFirstChild(_d({70,70,44,72,90,96,59,89,72,93,76,83,45,86,89,74,76},25))
+local att = root:FindFirstChild(_d({70,70,44,72,90,96,59,89,72,93,76,83,40,91,91},25))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -205,13 +205,13 @@ if moveDir.Magnitude > 0 then
 currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + moveDir)
 end
 end)
-print(_d({56,34,62,80,86,253,49,79,62,83,66,73,58,253,35,73,70,68,69,81,253,66,75,62,63,73,66,65,11},35))
+print(_d({66,44,72,90,96,7,59,89,72,93,76,83,68,7,45,83,80,78,79,91,7,76,85,72,73,83,76,75,21},25))
 end
 function EasyTravel.Stop()
 EasyTravel.Enabled = false
 if loopConnection then loopConnection:Disconnect(); loopConnection = nil end
 cleanupForce()
-print(_d({56,34,62,80,86,253,49,79,62,83,66,73,58,253,35,73,70,68,69,81,253,65,70,80,62,63,73,66,65,11},35))
+print(_d({66,44,72,90,96,7,59,89,72,93,76,83,68,7,45,83,80,78,79,91,7,75,80,90,72,73,83,76,75,21},25))
 end
 function EasyTravel.Cleanup()
 EasyTravel.Stop()
@@ -229,7 +229,7 @@ EasyTravel.Start()
 end
 end
 end))
-print(_d({56,34,62,80,86,253,49,79,62,83,66,73,58,253,48,81,62,75,65,62,73,76,75,66,253,42,76,65,66,23,253,45,79,66,80,80,253,4,58,4,253,81,76,253,81,76,68,68,73,66,253,67,73,70,68,69,81,11},35))
+print(_d({66,44,72,90,96,7,59,89,72,93,76,83,68,7,58,91,72,85,75,72,83,86,85,76,7,52,86,75,76,33,7,55,89,76,90,90,7,14,68,14,7,91,86,7,91,86,78,78,83,76,7,77,83,80,78,79,91,21},25))
 end
 return EasyTravel
 end)()
