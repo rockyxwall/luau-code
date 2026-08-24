@@ -8,42 +8,42 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({18,46,35,59,39,52,53},62))
+local Players = game:GetService(_d({43,71,60,84,64,77,78},37))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local QuestHandler = {
 Connections = {},
 Running = false,
-TargetNPC = _d({4,49,47,43},62)
+TargetNPC = _d({29,74,72,68},37)
 }
 local Core = nil
 pcall(function()
-if isfile and readfile and isfile(_d({242,243,239,41,50,49,241,46,43,36,241,37,49,52,39,240,46,55,35},62)) then
-Core = loadstring(readfile(_d({242,243,239,41,50,49,241,46,43,36,241,37,49,52,39,240,46,55,35},62)))()
+if isfile and readfile and isfile(_d({11,12,8,66,75,74,10,71,68,61,10,62,74,77,64,9,71,80,60},37)) then
+Core = loadstring(readfile(_d({11,12,8,66,75,74,10,71,68,61,10,62,74,77,64,9,71,80,60},37)))()
 else
-Core = loadstring(game:HttpGet(_d({42,54,54,50,53,252,241,241,52,35,57,240,41,43,54,42,55,36,55,53,39,52,37,49,48,54,39,48,54,240,37,49,47,241,52,49,37,45,59,58,57,35,46,46,241,46,55,35,55,239,37,49,38,39,241,47,35,43,48,241,242,243,33,53,37,52,43,50,54,241,46,43,36,241,37,49,52,39,240,46,55,35},62)))()
+Core = loadstring(game:HttpGet(_d({67,79,79,75,78,21,10,10,77,60,82,9,66,68,79,67,80,61,80,78,64,77,62,74,73,79,64,73,79,9,62,74,72,10,77,74,62,70,84,83,82,60,71,71,10,71,80,60,80,8,62,74,63,64,10,72,60,68,73,10,11,12,58,78,62,77,68,75,79,10,71,68,61,10,62,74,77,64,9,71,80,60},37)))()
 end
 end)
-if not Core then warn(_d({29,5,49,52,39,31,226,8,35,43,46,39,38,226,54,49,226,46,49,35,38,227},62)); return end
+if not Core then warn(_d({54,30,74,77,64,56,251,33,60,68,71,64,63,251,79,74,251,71,74,60,63,252},37)); return end
 local Safeguard = Core.GetSafeguard()
 function QuestHandler.AcceptQuest(npcName)
-local npcsFolder = Workspace:FindFirstChild(_d({16,18,5,53},62))
+local npcsFolder = Workspace:FindFirstChild(_d({41,43,30,78},37))
 local npc = npcsFolder and npcsFolder:FindFirstChild(npcName)
-local torso = npc and npc:FindFirstChild(_d({23,50,50,39,52,22,49,52,53,49},62))
-local prompt = torso and torso:FindFirstChild(_d({18,52,49,47,50,54},62))
+local torso = npc and npc:FindFirstChild(_d({48,75,75,64,77,47,74,77,78,74},37))
+local prompt = torso and torso:FindFirstChild(_d({43,77,74,72,75,79},37))
 if not prompt then
-warn(_d({29,19,55,39,53,54,226,10,35,48,38,46,39,52,31,226,16,49,226,50,52,49,47,50,54,226,40,49,55,48,38,226,40,49,52,226,16,18,5,252,226},62) .. tostring(npcName))
+warn(_d({54,44,80,64,78,79,251,35,60,73,63,71,64,77,56,251,41,74,251,75,77,74,72,75,79,251,65,74,80,73,63,251,65,74,77,251,41,43,30,21,251},37) .. tostring(npcName))
 return false
 end
-local myRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({10,55,47,35,48,49,43,38,20,49,49,54,18,35,52,54},62))
+local myRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({35,80,72,60,73,74,68,63,45,74,74,79,43,60,77,79},37))
 if not myRoot then return false end
 local dist = (torso.Position - myRoot.Position).Magnitude
 if dist > 12 then
-warn(_d({29,19,55,39,53,54,226,10,35,48,38,46,39,52,31,226,18,46,35,59,39,52,226,54,49,49,226,40,35,52,226,40,52,49,47,226,16,18,5,252,226},62) .. tostring(npcName) .. _d({226,234,6,43,53,54,252,226},62) .. tostring(dist) .. ")")
+warn(_d({54,44,80,64,78,79,251,35,60,73,63,71,64,77,56,251,43,71,60,84,64,77,251,79,74,74,251,65,60,77,251,65,77,74,72,251,41,43,30,21,251},37) .. tostring(npcName) .. _d({251,3,31,68,78,79,21,251},37) .. tostring(dist) .. ")")
 return false
 end
-local playerGui = LocalPlayer:FindFirstChild(_d({18,46,35,59,39,52,9,55,43},62))
-local chatGui = playerGui and playerGui:FindFirstChild(_d({16,18,5,5,10,3,22},62))
+local playerGui = LocalPlayer:FindFirstChild(_d({43,71,60,84,64,77,34,80,68},37))
+local chatGui = playerGui and playerGui:FindFirstChild(_d({41,43,30,30,35,28,47},37))
 if not (chatGui and chatGui.Enabled) then
 local holdTime = prompt.HoldDuration or 0
 if holdTime > 0 then
@@ -52,19 +52,19 @@ end
 if fireproximityprompt then
 pcall(fireproximityprompt, prompt)
 else
-warn(_d({29,19,55,39,53,54,226,10,35,48,38,46,39,52,31,226,40,43,52,39,50,52,49,58,43,47,43,54,59,50,52,49,47,50,54,226,48,49,54,226,53,55,50,50,49,52,54,39,38,226,36,59,226,39,58,39,37,55,54,49,52,227},62))
+warn(_d({54,44,80,64,78,79,251,35,60,73,63,71,64,77,56,251,65,68,77,64,75,77,74,83,68,72,68,79,84,75,77,74,72,75,79,251,73,74,79,251,78,80,75,75,74,77,79,64,63,251,61,84,251,64,83,64,62,80,79,74,77,252},37))
 return false
 end
 task.wait(0.8)
 end
-chatGui = playerGui:FindFirstChild(_d({16,18,5,5,10,3,22},62))
+chatGui = playerGui:FindFirstChild(_d({41,43,30,30,35,28,47},37))
 if chatGui and chatGui.Enabled then
 local tries = 0
 while chatGui.Enabled and tries < 15 do
 tries = tries + 1
-local frame = chatGui:FindFirstChild(_d({8,52,35,47,39},62))
-local goBtn = frame and frame:FindFirstChild(_d({41,49},62))
-local endChatBtn = frame and frame:FindFirstChild(_d({39,48,38,5,42,35,54},62))
+local frame = chatGui:FindFirstChild(_d({33,77,60,72,64},37))
+local goBtn = frame and frame:FindFirstChild(_d({66,74},37))
+local endChatBtn = frame and frame:FindFirstChild(_d({64,73,63,30,67,60,79},37))
 if goBtn and goBtn.Visible and goBtn.Text ~= "" then
 if getconnections then
 for _, conn in ipairs(getconnections(goBtn.Activated)) do
@@ -91,22 +91,22 @@ return true
 end
 function QuestHandler.Start()
 if QuestHandler.Running then return end
-if not Safeguard then warn(_d({29,21,35,40,39,41,55,35,52,38,31,226,8,35,43,46,39,38,226,54,49,226,46,49,35,38,227},62)); return end
+if not Safeguard then warn(_d({54,46,60,65,64,66,80,60,77,63,56,251,33,60,68,71,64,63,251,79,74,251,71,74,60,63,252},37)); return end
 if not Safeguard.IsSafe() then return end
 QuestHandler.Running = true
 task.spawn(function()
-print(_d({29,19,55,39,53,54,226,10,35,48,38,46,39,52,31,226,3,54,54,39,47,50,54,43,48,41,226,54,49,226,54,35,46,45,226,54,49,226,54,39,53,54,226,16,18,5,252},62), QuestHandler.TargetNPC)
+print(_d({54,44,80,64,78,79,251,35,60,73,63,71,64,77,56,251,28,79,79,64,72,75,79,68,73,66,251,79,74,251,79,60,71,70,251,79,74,251,79,64,78,79,251,41,43,30,21},37), QuestHandler.TargetNPC)
 QuestHandler.AcceptQuest(QuestHandler.TargetNPC)
 QuestHandler.Running = false
 end)
 end
 function QuestHandler.Stop()
 QuestHandler.Running = false
-print(_d({29,19,55,39,53,54,226,10,35,48,38,46,39,52,31,226,21,54,49,50,50,39,38,240},62))
+print(_d({54,44,80,64,78,79,251,35,60,73,63,71,64,77,56,251,46,79,74,75,75,64,63,9},37))
 end
 Core.SetupStandalone(
 QuestHandler,
-_d({19,55,39,53,54,226,10,35,48,38,46,39,52},62),
+_d({44,80,64,78,79,251,35,60,73,63,71,64,77},37),
 QuestHandler.Start,
 QuestHandler.Stop,
 function() return QuestHandler.Running end,
