@@ -8,15 +8,15 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local WindUI = loadstring(game:HttpGet(_d({40,52,52,48,51,250,239,239,39,41,52,40,53,34,238,35,47,45,239,6,47,47,52,33,39,37,51,53,51,239,23,41,46,36,21,9,239,50,37,44,37,33,51,37,51,239,44,33,52,37,51,52,239,36,47,55,46,44,47,33,36,239,45,33,41,46,238,44,53,33},64)))()
-local Players = game:GetService(_d({16,44,33,57,37,50,51},64))
-local ReplicatedStorage = game:GetService(_d({18,37,48,44,41,35,33,52,37,36,19,52,47,50,33,39,37},64))
-local HttpService = game:GetService(_d({8,52,52,48,19,37,50,54,41,35,37},64))
+local WindUI = loadstring(game:HttpGet(_d({60,72,72,68,71,14,3,3,59,61,72,60,73,54,2,55,67,65,3,26,67,67,72,53,59,57,71,73,71,3,43,61,66,56,41,29,3,70,57,64,57,53,71,57,71,3,64,53,72,57,71,72,3,56,67,75,66,64,67,53,56,3,65,53,61,66,2,64,73,53},44)))()
+local Players = game:GetService(_d({36,64,53,77,57,70,71},44))
+local ReplicatedStorage = game:GetService(_d({38,57,68,64,61,55,53,72,57,56,39,72,67,70,53,59,57},44))
+local HttpService = game:GetService(_d({28,72,72,68,39,57,70,74,61,55,57},44))
 local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild(_d({16,44,33,57,37,50,7,53,41},64))
-local takeStamRemote = ReplicatedStorage:WaitForChild(_d({5,54,37,46,52,51},64), 10) and ReplicatedStorage.Events:WaitForChild(_d({52,33,43,37,51,52,33,45},64), 10)
-local reservedRemote = ReplicatedStorage:WaitForChild(_d({5,54,37,46,52,51},64), 10) and ReplicatedStorage.Events:WaitForChild(_d({50,37,51,37,50,54,37,36},64), 10)
-local CONFIG_FILE = _d({22,37,51,48,37,50,31,22,41,48,3,47,46,38,41,39,238,42,51,47,46},64)
+local PlayerGui = LocalPlayer:WaitForChild(_d({36,64,53,77,57,70,27,73,61},44))
+local takeStamRemote = ReplicatedStorage:WaitForChild(_d({25,74,57,66,72,71},44), 10) and ReplicatedStorage.Events:WaitForChild(_d({72,53,63,57,71,72,53,65},44), 10)
+local reservedRemote = ReplicatedStorage:WaitForChild(_d({25,74,57,66,72,71},44), 10) and ReplicatedStorage.Events:WaitForChild(_d({70,57,71,57,70,74,57,56},44), 10)
+local CONFIG_FILE = _d({42,57,71,68,57,70,51,42,61,68,23,67,66,58,61,59,2,62,71,67,66},44)
 local config = {
 VipCode = "",
 AutoJoin = false,
@@ -27,7 +27,7 @@ if isfile and isfile(CONFIG_FILE) then
 local success, result = pcall(function()
 return HttpService:JSONDecode(readfile(CONFIG_FILE))
 end)
-if success and type(result) == _d({52,33,34,44,37},64) then
+if success and type(result) == _d({72,53,54,64,57},44) then
 for k, v in pairs(result) do
 config[k] = v
 end
@@ -43,33 +43,33 @@ end
 end
 loadConfig()
 local Window = WindUI:CreateWindow({
-Title = _d({22,9,16,224,19,37,50,54,37,50,224,13,33,46,33,39,37,50},64),
-Icon = _d({51,37,50,54,37,50},64),
-Author = _d({34,57,224,22,37,51,48,37,50},64),
-Folder = _d({22,37,51,48,37,50,22,41,48,3,47,46,38,41,39},64),
+Title = _d({42,29,36,244,39,57,70,74,57,70,244,33,53,66,53,59,57,70},44),
+Icon = _d({71,57,70,74,57,70},44),
+Author = _d({54,77,244,42,57,71,68,57,70},44),
+Folder = _d({42,57,71,68,57,70,42,61,68,23,67,66,58,61,59},44),
 Size = UDim2.fromOffset(480, 360),
 Transparent = true,
-Theme = _d({4,33,50,43},64),
+Theme = _d({24,53,70,63},44),
 SideBarWidth = 140,
 HasOutline = true,
 })
 local Tab = Window:Tab({
-Title = _d({22,9,16,224,3,47,46,52,50,47,44},64),
-Icon = _d({51,40,41,37,44,36},64),
+Title = _d({42,29,36,244,23,67,66,72,70,67,64},44),
+Icon = _d({71,60,61,57,64,56},44),
 })
 Tab:Input({
-Title = _d({22,9,16,224,19,37,50,54,37,50,224,3,47,36,37},64),
-Desc = _d({3,53,51,52,47,45,224,22,9,16,224,35,47,36,37},64),
+Title = _d({42,29,36,244,39,57,70,74,57,70,244,23,67,56,57},44),
+Desc = _d({23,73,71,72,67,65,244,42,29,36,244,55,67,56,57},44),
 Value = config.VipCode or "",
-Placeholder = _d({5,46,52,37,50,224,22,9,16,224,35,47,36,37,224,40,37,50,37,238,238,238},64),
+Placeholder = _d({25,66,72,57,70,244,42,29,36,244,55,67,56,57,244,60,57,70,57,2,2,2},44),
 Callback = function(val)
-config.VipCode = tostring(val or ""):gsub(_d({229,51,235},64), "")
+config.VipCode = tostring(val or ""):gsub(_d({249,71,255},44), "")
 saveConfig()
 end,
 })
 local function clickGuiButton(btn)
 if not btn then return false end
-if typeof(firesignal) == _d({38,53,46,35,52,41,47,46},64) then
+if typeof(firesignal) == _d({58,73,66,55,72,61,67,66},44) then
 if btn.MouseButton1Click then firesignal(btn.MouseButton1Click) end
 if btn.Activated then firesignal(btn.Activated) end
 if btn.MouseButton1Down then firesignal(btn.MouseButton1Down) end
@@ -80,65 +80,65 @@ return false
 end
 local function triggerFullVipJoin()
 local char = LocalPlayer.Character
-local hrp = char and char:FindFirstChild(_d({8,53,45,33,46,47,41,36,18,47,47,52,16,33,50,52},64))
+local hrp = char and char:FindFirstChild(_d({28,73,65,53,66,67,61,56,38,67,67,72,36,53,70,72},44))
 local cframe = hrp and hrp.CFrame or CFrame.new(307.57550048828125, 8.017972946166992, -11449.29296875, 0.05065685138106346, -4.452865098869552e-08, -0.9987161159515381, 1.0139391548591448e-08, 1, -4.407160503205887e-08, 0.9987161159515381, -7.893845577200409e-09, 0.05065685138106346)
 if takeStamRemote then
 pcall(function()
-takeStamRemote:FireServer(1, _d({36,33,51,40},64), cframe)
+takeStamRemote:FireServer(1, _d({56,53,71,60},44), cframe)
 end)
 end
 task.wait(0.1)
 local code = config.VipCode
 if code and code ~= "" then
 pcall(function()
-if reservedRemote and reservedRemote:IsA(_d({18,37,45,47,52,37,6,53,46,35,52,41,47,46},64)) then
+if reservedRemote and reservedRemote:IsA(_d({38,57,65,67,72,57,26,73,66,55,72,61,67,66},44)) then
 reservedRemote:InvokeServer(code)
 end
 end)
-local privPanel = PlayerGui:FindFirstChild(_d({16,50,41,54,33,52,37,19,37,50,54,37,50,51},64)) and PlayerGui.PrivateServers:FindFirstChild(_d({16,50,41,54,33,52,37,19,37,50,54,37,50,51,16,33,46,37,44},64))
-if privPanel and privPanel:FindFirstChild(_d({19,37,50,54,37,50,3,47,36,37,2,47,56},64)) and privPanel.ServerCodeBox:FindFirstChild(_d({20,37,56,52,2,47,56},64)) then
+local privPanel = PlayerGui:FindFirstChild(_d({36,70,61,74,53,72,57,39,57,70,74,57,70,71},44)) and PlayerGui.PrivateServers:FindFirstChild(_d({36,70,61,74,53,72,57,39,57,70,74,57,70,71,36,53,66,57,64},44))
+if privPanel and privPanel:FindFirstChild(_d({39,57,70,74,57,70,23,67,56,57,22,67,76},44)) and privPanel.ServerCodeBox:FindFirstChild(_d({40,57,76,72,22,67,76},44)) then
 privPanel.ServerCodeBox.TextBox.Text = code
-if typeof(firesignal) == _d({38,53,46,35,52,41,47,46},64) and privPanel.ServerCodeBox.TextBox.FocusLost then
+if typeof(firesignal) == _d({58,73,66,55,72,61,67,66},44) and privPanel.ServerCodeBox.TextBox.FocusLost then
 firesignal(privPanel.ServerCodeBox.TextBox.FocusLost, true)
 end
 end
 end
-local startMenu = PlayerGui:FindFirstChild(_d({19,52,33,50,52},64))
-local privateBtn = startMenu and startMenu:FindFirstChild(_d({13,37,46,53},64)) and startMenu.Menu:FindFirstChild(_d({13,33,41,46},64)) and startMenu.Menu.Main:FindFirstChild(_d({12,41,51,52},64)) and startMenu.Menu.Main.List:FindFirstChild(_d({16,50,41,54,33,52,37,19,37,50,54,37,50,51,2,53,52,52,47,46},64))
+local startMenu = PlayerGui:FindFirstChild(_d({39,72,53,70,72},44))
+local privateBtn = startMenu and startMenu:FindFirstChild(_d({33,57,66,73},44)) and startMenu.Menu:FindFirstChild(_d({33,53,61,66},44)) and startMenu.Menu.Main:FindFirstChild(_d({32,61,71,72},44)) and startMenu.Menu.Main.List:FindFirstChild(_d({36,70,61,74,53,72,57,39,57,70,74,57,70,71,22,73,72,72,67,66},44))
 if privateBtn then
 clickGuiButton(privateBtn)
 end
 task.wait(0.15)
-local chooseType = PlayerGui:FindFirstChild(_d({35,40,47,47,51,37,20,57,48,37},64))
+local chooseType = PlayerGui:FindFirstChild(_d({55,60,67,67,71,57,40,77,68,57},44))
 if chooseType then
-local chooseRemote = chooseType:FindFirstChild(_d({6,50,33,45,37},64)) and chooseType.Frame:FindFirstChild(_d({18,37,45,47,52,37,5,54,37,46,52},64))
+local chooseRemote = chooseType:FindFirstChild(_d({26,70,53,65,57},44)) and chooseType.Frame:FindFirstChild(_d({38,57,65,67,72,57,25,74,57,66,72},44))
 if chooseRemote then
 pcall(function()
 chooseRemote:FireServer(true)
 end)
 end
-local regBtn = chooseType:FindFirstChild(_d({6,50,33,45,37},64)) and chooseType.Frame:FindFirstChild(_d({15,48,52,41,47,46,51},64)) and chooseType.Frame.Options:FindFirstChild(_d({18,37,39,53,44,33,50},64))
+local regBtn = chooseType:FindFirstChild(_d({26,70,53,65,57},44)) and chooseType.Frame:FindFirstChild(_d({35,68,72,61,67,66,71},44)) and chooseType.Frame.Options:FindFirstChild(_d({38,57,59,73,64,53,70},44))
 if regBtn then
 clickGuiButton(regBtn)
 end
 end
 end
 Tab:Button({
-Title = _d({10,47,41,46,224,22,9,16,224,19,37,50,54,37,50},64),
-Desc = _d({5,56,37,35,53,52,37,51,224,4,33,51,40,224,237,254,224,16,50,41,54,33,52,37,224,237,254,224,19,37,44,37,35,52,51,224,18,37,39,53,44,33,50,224,237,254,224,10,47,41,46,51},64),
+Title = _d({30,67,61,66,244,42,29,36,244,39,57,70,74,57,70},44),
+Desc = _d({25,76,57,55,73,72,57,71,244,24,53,71,60,244,1,18,244,36,70,61,74,53,72,57,244,1,18,244,39,57,64,57,55,72,71,244,38,57,59,73,64,53,70,244,1,18,244,30,67,61,66,71},44),
 Callback = function()
 WindUI:Notify({
-Title = _d({3,47,46,46,37,35,52,41,46,39},64),
-Content = _d({19,37,44,37,35,52,41,46,39,224,18,37,39,53,44,33,50,224,22,9,16,224,19,37,50,54,37,50,238,238,238},64),
+Title = _d({23,67,66,66,57,55,72,61,66,59},44),
+Content = _d({39,57,64,57,55,72,61,66,59,244,38,57,59,73,64,53,70,244,42,29,36,244,39,57,70,74,57,70,2,2,2},44),
 Duration = 2,
-Icon = _d({33,50,50,47,55,237,50,41,39,40,52},64),
+Icon = _d({53,70,70,67,75,1,70,61,59,60,72},44),
 })
 task.spawn(triggerFullVipJoin)
 end,
 })
 Tab:Toggle({
-Title = _d({1,53,52,47,224,18,37,237,10,47,41,46,224,12,47,47,48},64),
-Desc = _d({3,47,46,52,41,46,53,47,53,51,44,57,224,51,37,44,37,35,52,51,224,18,37,39,53,44,33,50,224,22,9,16,224,19,37,50,54,37,50},64),
+Title = _d({21,73,72,67,244,38,57,1,30,67,61,66,244,32,67,67,68},44),
+Desc = _d({23,67,66,72,61,66,73,67,73,71,64,77,244,71,57,64,57,55,72,71,244,38,57,59,73,64,53,70,244,42,29,36,244,39,57,70,74,57,70},44),
 Value = config.AutoJoin,
 Callback = function(state)
 config.AutoJoin = state
@@ -146,8 +146,8 @@ saveConfig()
 end,
 })
 Tab:Slider({
-Title = _d({10,47,41,46,224,4,37,44,33,57,224,232,19,37,35,47,46,36,51,233},64),
-Desc = _d({4,37,44,33,57,224,41,46,52,37,50,54,33,44,224,38,47,50,224,33,53,52,47,224,50,37,42,47,41,46,224,44,47,47,48},64),
+Title = _d({30,67,61,66,244,24,57,64,53,77,244,252,39,57,55,67,66,56,71,253},44),
+Desc = _d({24,57,64,53,77,244,61,66,72,57,70,74,53,64,244,58,67,70,244,53,73,72,67,244,70,57,62,67,61,66,244,64,67,67,68},44),
 Value = {
 Min = 2,
 Max = 20,
@@ -159,29 +159,29 @@ saveConfig()
 end,
 })
 Tab:Button({
-Title = _d({19,33,54,37,224,3,47,46,38,41,39},64),
-Desc = _d({19,33,54,37,224,51,37,52,52,41,46,39,51,224,52,47,224,22,37,51,48,37,50,31,22,41,48,3,47,46,38,41,39,238,42,51,47,46},64),
+Title = _d({39,53,74,57,244,23,67,66,58,61,59},44),
+Desc = _d({39,53,74,57,244,71,57,72,72,61,66,59,71,244,72,67,244,42,57,71,68,57,70,51,42,61,68,23,67,66,58,61,59,2,62,71,67,66},44),
 Callback = function()
 saveConfig()
 WindUI:Notify({
-Title = _d({3,47,46,38,41,39},64),
-Content = _d({3,47,46,38,41,39,53,50,33,52,41,47,46,224,51,33,54,37,36,238},64),
+Title = _d({23,67,66,58,61,59},44),
+Content = _d({23,67,66,58,61,59,73,70,53,72,61,67,66,244,71,53,74,57,56,2},44),
 Duration = 2,
-Icon = _d({35,40,37,35,43},64),
+Icon = _d({55,60,57,55,63},44),
 })
 end,
 })
 task.spawn(function()
 while true do
-local chooseType = PlayerGui:FindFirstChild(_d({35,40,47,47,51,37,20,57,48,37},64))
+local chooseType = PlayerGui:FindFirstChild(_d({55,60,67,67,71,57,40,77,68,57},44))
 if chooseType and chooseType.Enabled then
-local chooseRemote = chooseType:FindFirstChild(_d({6,50,33,45,37},64)) and chooseType.Frame:FindFirstChild(_d({18,37,45,47,52,37,5,54,37,46,52},64))
+local chooseRemote = chooseType:FindFirstChild(_d({26,70,53,65,57},44)) and chooseType.Frame:FindFirstChild(_d({38,57,65,67,72,57,25,74,57,66,72},44))
 if chooseRemote then
 pcall(function()
 chooseRemote:FireServer(true)
 end)
 end
-local regBtn = chooseType:FindFirstChild(_d({6,50,33,45,37},64)) and chooseType.Frame:FindFirstChild(_d({15,48,52,41,47,46,51},64)) and chooseType.Frame.Options:FindFirstChild(_d({18,37,39,53,44,33,50},64))
+local regBtn = chooseType:FindFirstChild(_d({26,70,53,65,57},44)) and chooseType.Frame:FindFirstChild(_d({35,68,72,61,67,66,71},44)) and chooseType.Frame.Options:FindFirstChild(_d({38,57,59,73,64,53,70},44))
 if regBtn then
 clickGuiButton(regBtn)
 end

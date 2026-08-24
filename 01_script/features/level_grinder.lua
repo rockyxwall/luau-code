@@ -8,9 +8,9 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({43,71,60,84,64,77,78},37))
-local ReplicatedStorage = game:GetService(_d({45,64,75,71,68,62,60,79,64,63,46,79,74,77,60,66,64},37))
-local UserInputService = game:GetService(_d({48,78,64,77,36,73,75,80,79,46,64,77,81,68,62,64},37))
+local Players = game:GetService(_d({35,63,52,76,56,69,70},45))
+local ReplicatedStorage = game:GetService(_d({37,56,67,63,60,54,52,71,56,55,38,71,66,69,52,58,56},45))
+local UserInputService = game:GetService(_d({40,70,56,69,28,65,67,72,71,38,56,69,73,60,54,56},45))
 local LocalPlayer = Players.LocalPlayer
 local LevelGrinder = {
 Running = false,
@@ -18,86 +18,86 @@ Connections = {}
 }
 local Core = nil
 pcall(function()
-if isfile and readfile and isfile(_d({11,12,8,66,75,74,10,71,68,61,10,62,74,77,64,9,71,80,60},37)) then
-Core = loadstring(readfile(_d({11,12,8,66,75,74,10,71,68,61,10,62,74,77,64,9,71,80,60},37)))()
+if isfile and readfile and isfile(_d({3,4,0,58,67,66,2,63,60,53,2,54,66,69,56,1,63,72,52},45)) then
+Core = loadstring(readfile(_d({3,4,0,58,67,66,2,63,60,53,2,54,66,69,56,1,63,72,52},45)))()
 else
-Core = loadstring(game:HttpGet(_d({67,79,79,75,78,21,10,10,77,60,82,9,66,68,79,67,80,61,80,78,64,77,62,74,73,79,64,73,79,9,62,74,72,10,77,74,62,70,84,83,82,60,71,71,10,71,80,60,80,8,62,74,63,64,10,72,60,68,73,10,11,12,58,78,62,77,68,75,79,10,71,68,61,10,62,74,77,64,9,71,80,60},37)))()
+Core = loadstring(game:HttpGet(_d({59,71,71,67,70,13,2,2,69,52,74,1,58,60,71,59,72,53,72,70,56,69,54,66,65,71,56,65,71,1,54,66,64,2,69,66,54,62,76,75,74,52,63,63,2,63,72,52,72,0,54,66,55,56,2,64,52,60,65,2,3,4,50,70,54,69,60,67,71,2,63,60,53,2,54,66,69,56,1,63,72,52},45)))()
 end
 end)
-if not Core then warn(_d({54,30,74,77,64,56,251,33,60,68,71,64,63,251,79,74,251,71,74,60,63,252},37)); return end
+if not Core then warn(_d({46,22,66,69,56,48,243,25,52,60,63,56,55,243,71,66,243,63,66,52,55,244},45)); return end
 local Safeguard = Core.GetSafeguard()
 function LevelGrinder.Stop()
 LevelGrinder.Running = false
 for _, conn in ipairs(LevelGrinder.Connections) do conn:Disconnect() end
 LevelGrinder.Connections = {}
-print(_d({54,39,64,81,64,71,251,34,77,68,73,63,64,77,56,251,46,79,74,75,75,64,63,9},37))
+print(_d({46,31,56,73,56,63,243,26,69,60,65,55,56,69,48,243,38,71,66,67,67,56,55,1},45))
 end
 function LevelGrinder.Start()
-if LevelGrinder.Running then warn(_d({54,39,64,81,64,71,251,34,77,68,73,63,64,77,56,251,28,71,77,64,60,63,84,251,77,80,73,73,68,73,66,252},37)); return end
-if not Safeguard then warn(_d({54,46,60,65,64,66,80,60,77,63,56,251,33,60,68,71,64,63,251,79,74,251,71,74,60,63,252},37)); return end
-if not Safeguard.RequirePlace(3978370137, _d({33,68,77,78,79,251,46,64,60},37)) then return end
+if LevelGrinder.Running then warn(_d({46,31,56,73,56,63,243,26,69,60,65,55,56,69,48,243,20,63,69,56,52,55,76,243,69,72,65,65,60,65,58,244},45)); return end
+if not Safeguard then warn(_d({46,38,52,57,56,58,72,52,69,55,48,243,25,52,60,63,56,55,243,71,66,243,63,66,52,55,244},45)); return end
+if not Safeguard.RequirePlace(3978370137, _d({25,60,69,70,71,243,38,56,52},45)) then return end
 LevelGrinder.Running = true
 task.spawn(function()
 if not game:IsLoaded() then game.Loaded:Wait() end
 local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-local hrp = char:WaitForChild(_d({35,80,72,60,73,74,68,63,45,74,74,79,43,60,77,79},37), 10)
-local hum = char:WaitForChild(_d({35,80,72,60,73,74,68,63},37), 10)
-local stats = ReplicatedStorage:WaitForChild(_d({46,79,60,79,78},37) .. LocalPlayer.Name, 30)
+local hrp = char:WaitForChild(_d({27,72,64,52,65,66,60,55,37,66,66,71,35,52,69,71},45), 10)
+local hum = char:WaitForChild(_d({27,72,64,52,65,66,60,55},45), 10)
+local stats = ReplicatedStorage:WaitForChild(_d({38,71,52,71,70},45) .. LocalPlayer.Name, 30)
 if stats then
-stats:WaitForChild(_d({43,64,71,68},37), 10)
+stats:WaitForChild(_d({35,56,63,60},45), 10)
 end
 local ChestFarmer = nil
 local EasyTravel = nil
 while LevelGrinder.Running do
 local char = LocalPlayer.Character
-local hrp = char and char:FindFirstChild(_d({35,80,72,60,73,74,68,63,45,74,74,79,43,60,77,79},37))
-local hasRifle = LocalPlayer.Backpack:FindFirstChild(_d({45,68,65,71,64},37)) or (char and char:FindFirstChild(_d({45,68,65,71,64},37)))
+local hrp = char and char:FindFirstChild(_d({27,72,64,52,65,66,60,55,37,66,66,71,35,52,69,71},45))
+local hasRifle = LocalPlayer.Backpack:FindFirstChild(_d({37,60,57,63,56},45)) or (char and char:FindFirstChild(_d({37,60,57,63,56},45)))
 if hasRifle then break end
 local peli = Core.GetPeli()
-print(_d({54,39,64,81,64,71,251,34,77,68,73,63,64,77,56,251,30,80,77,77,64,73,79,251,43,64,71,68,251,62,67,64,62,70,21},37), peli)
+print(_d({46,31,56,73,56,63,243,26,69,60,65,55,56,69,48,243,22,72,69,69,56,65,71,243,35,56,63,60,243,54,59,56,54,62,13},45), peli)
 local inTown = hrp and hrp.Position.X >= -889 and hrp.Position.X <= -156 and hrp.Position.Z >= -3706 and hrp.Position.Z <= -3087
 if not inTown then
-warn(_d({54,39,64,81,64,71,251,34,77,68,73,63,64,77,56,251,41,74,79,251,60,79,251,47,74,82,73,251,74,65,251,29,64,66,68,73,73,68,73,66,78,9,251,43,71,64,60,78,64,251,79,77,60,81,64,71,251,79,67,64,77,64,251,79,74,251,65,60,77,72,251,62,67,64,78,79,78,251,82,67,68,71,64,251,82,60,68,79,68,73,66,251,65,74,77,251,45,68,65,71,64,9},37))
+warn(_d({46,31,56,73,56,63,243,26,69,60,65,55,56,69,48,243,33,66,71,243,52,71,243,39,66,74,65,243,66,57,243,21,56,58,60,65,65,60,65,58,70,1,243,35,63,56,52,70,56,243,71,69,52,73,56,63,243,71,59,56,69,56,243,71,66,243,57,52,69,64,243,54,59,56,70,71,70,243,74,59,60,63,56,243,74,52,60,71,60,65,58,243,57,66,69,243,37,60,57,63,56,1},45))
 task.wait(2)
 continue
 end
 if not ChestFarmer then
 local old = _G.DisableStandalone
 _G.DisableStandalone = true
-ChestFarmer = Core.Import(_d({11,12,8,66,75,74,10,71,68,61,10,62,67,64,78,79,58,65,60,77,72,64,77,9,71,80,60},37), _d({67,79,79,75,78,21,10,10,77,60,82,9,66,68,79,67,80,61,80,78,64,77,62,74,73,79,64,73,79,9,62,74,72,10,77,74,62,70,84,83,82,60,71,71,10,71,80,60,80,8,62,74,63,64,10,72,60,68,73,10,11,12,58,78,62,77,68,75,79,10,71,68,61,10,62,67,64,78,79,58,65,60,77,72,64,77,9,71,80,60},37))
+ChestFarmer = Core.Import(_d({3,4,0,58,67,66,2,63,60,53,2,54,59,56,70,71,50,57,52,69,64,56,69,1,63,72,52},45), _d({59,71,71,67,70,13,2,2,69,52,74,1,58,60,71,59,72,53,72,70,56,69,54,66,65,71,56,65,71,1,54,66,64,2,69,66,54,62,76,75,74,52,63,63,2,63,72,52,72,0,54,66,55,56,2,64,52,60,65,2,3,4,50,70,54,69,60,67,71,2,63,60,53,2,54,59,56,70,71,50,57,52,69,64,56,69,1,63,72,52},45))
 _G.DisableStandalone = old
 end
 if ChestFarmer then
 if peli < 300 then
-print(_d({54,39,64,81,64,71,251,34,77,68,73,63,64,77,56,251,33,60,77,72,68,73,66,251,62,67,64,78,79,78,251,80,73,79,68,71,251,14,11,11,251,43,64,71,68,9,9,9,251,3,30,80,77,77,64,73,79,21,251},37) .. tostring(peli) .. ")")
+print(_d({46,31,56,73,56,63,243,26,69,60,65,55,56,69,48,243,25,52,69,64,60,65,58,243,54,59,56,70,71,70,243,72,65,71,60,63,243,6,3,3,243,35,56,63,60,1,1,1,243,251,22,72,69,69,56,65,71,13,243},45) .. tostring(peli) .. ")")
 ChestFarmer.FarmUntilPeli(300, function()
-local s = ReplicatedStorage:FindFirstChild(_d({46,79,60,79,78},37) .. LocalPlayer.Name)
-local pObj = s and s:FindFirstChild(_d({43,64,71,68},37))
+local s = ReplicatedStorage:FindFirstChild(_d({38,71,52,71,70},45) .. LocalPlayer.Name)
+local pObj = s and s:FindFirstChild(_d({35,56,63,60},45))
 return pObj and (tonumber(pObj.Value) or 0) or 0
 end, function()
 local c = LocalPlayer.Character
-return LevelGrinder.Running and not (LocalPlayer.Backpack:FindFirstChild(_d({45,68,65,71,64},37)) or (c and c:FindFirstChild(_d({45,68,65,71,64},37))))
+return LevelGrinder.Running and not (LocalPlayer.Backpack:FindFirstChild(_d({37,60,57,63,56},45)) or (c and c:FindFirstChild(_d({37,60,57,63,56},45))))
 end)
 else
 if not EasyTravel then
 local old = _G.DisableStandalone
 _G.DisableStandalone = true
-EasyTravel = Core.Import(_d({11,12,8,66,75,74,10,71,68,61,10,64,60,78,84,58,79,77,60,81,64,71,9,71,80,60},37), _d({67,79,79,75,78,21,10,10,77,60,82,9,66,68,79,67,80,61,80,78,64,77,62,74,73,79,64,73,79,9,62,74,72,10,77,74,62,70,84,83,82,60,71,71,10,71,80,60,80,8,62,74,63,64,10,72,60,68,73,10,11,12,58,78,62,77,68,75,79,10,71,68,61,10,64,60,78,84,58,79,77,60,81,64,71,9,71,80,60},37))
+EasyTravel = Core.Import(_d({3,4,0,58,67,66,2,63,60,53,2,56,52,70,76,50,71,69,52,73,56,63,1,63,72,52},45), _d({59,71,71,67,70,13,2,2,69,52,74,1,58,60,71,59,72,53,72,70,56,69,54,66,65,71,56,65,71,1,54,66,64,2,69,66,54,62,76,75,74,52,63,63,2,63,72,52,72,0,54,66,55,56,2,64,52,60,65,2,3,4,50,70,54,69,60,67,71,2,63,60,53,2,56,52,70,76,50,71,69,52,73,56,63,1,63,72,52},45))
 _G.DisableStandalone = old
 if EasyTravel and EasyTravel.Cleanup then
 pcall(EasyTravel.Cleanup)
 end
 end
-local buyables = workspace:FindFirstChild(_d({29,80,84,60,61,71,64,36,79,64,72,78},37))
-local shopItem = buyables and buyables:FindFirstChild(_d({45,68,65,71,64},37))
-local shopPart = shopItem and shopItem:FindFirstChild(_d({46,67,74,75,43,60,77,79},37))
+local buyables = workspace:FindFirstChild(_d({21,72,76,52,53,63,56,28,71,56,64,70},45))
+local shopItem = buyables and buyables:FindFirstChild(_d({37,60,57,63,56},45))
+local shopPart = shopItem and shopItem:FindFirstChild(_d({38,59,66,67,35,52,69,71},45))
 if EasyTravel and shopPart and hrp then
-print(_d({54,39,64,81,64,71,251,34,77,68,73,63,64,77,56,251,47,77,60,81,64,71,68,73,66,251,79,74,251,45,68,65,71,64,251,78,67,74,75,251,81,68,60,251,32,60,78,84,47,77,60,81,64,71,9,9,9},37))
-local nocollide = game:GetService(_d({45,80,73,46,64,77,81,68,62,64},37)).Stepped:Connect(function()
+print(_d({46,31,56,73,56,63,243,26,69,60,65,55,56,69,48,243,39,69,52,73,56,63,60,65,58,243,71,66,243,37,60,57,63,56,243,70,59,66,67,243,73,60,52,243,24,52,70,76,39,69,52,73,56,63,1,1,1},45))
+local nocollide = game:GetService(_d({37,72,65,38,56,69,73,60,54,56},45)).Stepped:Connect(function()
 local c = LocalPlayer.Character
 if c then
 for _, part in ipairs(c:GetDescendants()) do
-if part:IsA(_d({29,60,78,64,43,60,77,79},37)) then
+if part:IsA(_d({21,52,70,56,35,52,69,71},45)) then
 part.CanCollide = false
 end
 end
@@ -112,20 +112,20 @@ end
 pcall(EasyTravel.Stop)
 nocollide:Disconnect()
 task.wait(0.5)
-local shopEvent = ReplicatedStorage:FindFirstChild(_d({32,81,64,73,79,78},37)) and ReplicatedStorage.Events:FindFirstChild(_d({46,67,74,75},37))
-if shopEvent and shopEvent:IsA(_d({45,64,72,74,79,64,33,80,73,62,79,68,74,73},37)) then
+local shopEvent = ReplicatedStorage:FindFirstChild(_d({24,73,56,65,71,70},45)) and ReplicatedStorage.Events:FindFirstChild(_d({38,59,66,67},45))
+if shopEvent and shopEvent:IsA(_d({37,56,64,66,71,56,25,72,65,54,71,60,66,65},45)) then
 pcall(function()
 shopEvent:InvokeServer(shopItem, 1)
 end)
 end
 task.wait(1)
-print(_d({54,39,64,81,64,71,251,34,77,68,73,63,64,77,56,251,32,76,80,68,75,75,68,73,66,251,45,68,65,71,64,9,9,9},37))
+print(_d({46,31,56,73,56,63,243,26,69,60,65,55,56,69,48,243,24,68,72,60,67,67,60,65,58,243,37,60,57,63,56,1,1,1},45))
 local args = {
-[1] = _d({64,76,80,68,75},37),
-[2] = _d({45,68,65,71,64},37)
+[1] = _d({56,68,72,60,67},45),
+[2] = _d({37,60,57,63,56},45)
 }
-local toolsEvent = ReplicatedStorage:FindFirstChild(_d({32,81,64,73,79,78},37)) and ReplicatedStorage.Events:FindFirstChild(_d({47,74,74,71,78},37))
-if toolsEvent and toolsEvent:IsA(_d({45,64,72,74,79,64,33,80,73,62,79,68,74,73},37)) then
+local toolsEvent = ReplicatedStorage:FindFirstChild(_d({24,73,56,65,71,70},45)) and ReplicatedStorage.Events:FindFirstChild(_d({39,66,66,63,70},45))
+if toolsEvent and toolsEvent:IsA(_d({37,56,64,66,71,56,25,72,65,54,71,60,66,65},45)) then
 pcall(function()
 toolsEvent:InvokeServer(unpack(args))
 end)
@@ -138,15 +138,15 @@ task.wait(1)
 end
 if not LevelGrinder.Running then return end
 local char = LocalPlayer.Character
-local hum = char and char:FindFirstChild(_d({35,80,72,60,73,74,68,63},37))
-local hrp = char and char:FindFirstChild(_d({35,80,72,60,73,74,68,63,45,74,74,79,43,60,77,79},37))
-local rifle = LocalPlayer.Backpack:FindFirstChild(_d({45,68,65,71,64},37))
+local hum = char and char:FindFirstChild(_d({27,72,64,52,65,66,60,55},45))
+local hrp = char and char:FindFirstChild(_d({27,72,64,52,65,66,60,55,37,66,66,71,35,52,69,71},45))
+local rifle = LocalPlayer.Backpack:FindFirstChild(_d({37,60,57,63,56},45))
 if rifle and hum then hum:EquipTool(rifle) end
-print(_d({54,39,64,81,64,71,251,34,77,68,73,63,64,77,56,251,33,71,84,68,73,66,251,79,74,251,33,68,78,67,72,60,73,251,30,60,81,64,9,9,9},37))
+print(_d({46,31,56,73,56,63,243,26,69,60,65,55,56,69,48,243,25,63,76,60,65,58,243,71,66,243,25,60,70,59,64,52,65,243,22,52,73,56,1,1,1},45))
 if not EasyTravel then
 local old = _G.DisableStandalone
 _G.DisableStandalone = true
-EasyTravel = Core.Import(_d({11,12,8,66,75,74,10,71,68,61,10,64,60,78,84,58,79,77,60,81,64,71,9,71,80,60},37), _d({67,79,79,75,78,21,10,10,77,60,82,9,66,68,79,67,80,61,80,78,64,77,62,74,73,79,64,73,79,9,62,74,72,10,77,74,62,70,84,83,82,60,71,71,10,71,80,60,80,8,62,74,63,64,10,72,60,68,73,10,11,12,58,78,62,77,68,75,79,10,71,68,61,10,64,60,78,84,58,79,77,60,81,64,71,9,71,80,60},37))
+EasyTravel = Core.Import(_d({3,4,0,58,67,66,2,63,60,53,2,56,52,70,76,50,71,69,52,73,56,63,1,63,72,52},45), _d({59,71,71,67,70,13,2,2,69,52,74,1,58,60,71,59,72,53,72,70,56,69,54,66,65,71,56,65,71,1,54,66,64,2,69,66,54,62,76,75,74,52,63,63,2,63,72,52,72,0,54,66,55,56,2,64,52,60,65,2,3,4,50,70,54,69,60,67,71,2,63,60,53,2,56,52,70,76,50,71,69,52,73,56,63,1,63,72,52},45))
 _G.DisableStandalone = old
 if EasyTravel and EasyTravel.Cleanup then
 pcall(EasyTravel.Cleanup)
@@ -155,12 +155,12 @@ end
 if EasyTravel and hrp then
 local wasAtShop = hrp.Position.X >= -889 and hrp.Position.X <= -156 and hrp.Position.Z >= -3706 and hrp.Position.Z <= -3087
 if wasAtShop then
-print(_d({54,39,64,81,64,71,251,34,77,68,73,63,64,77,56,251,32,78,62,60,75,68,73,66,251,78,67,74,75,251,68,73,79,64,77,68,74,77,251,61,84,251,65,71,84,68,73,66,251,78,79,77,60,68,66,67,79,251,80,75,9,9,9},37))
-local nocollide = game:GetService(_d({45,80,73,46,64,77,81,68,62,64},37)).Stepped:Connect(function()
+print(_d({46,31,56,73,56,63,243,26,69,60,65,55,56,69,48,243,24,70,54,52,67,60,65,58,243,70,59,66,67,243,60,65,71,56,69,60,66,69,243,53,76,243,57,63,76,60,65,58,243,70,71,69,52,60,58,59,71,243,72,67,1,1,1},45))
+local nocollide = game:GetService(_d({37,72,65,38,56,69,73,60,54,56},45)).Stepped:Connect(function()
 local c = LocalPlayer.Character
 if c then
 for _, part in ipairs(c:GetDescendants()) do
-if part:IsA(_d({29,60,78,64,43,60,77,79},37)) then
+if part:IsA(_d({21,52,70,56,35,52,69,71},45)) then
 part.CanCollide = false
 end
 end
@@ -175,7 +175,7 @@ task.wait(0.5)
 end
 nocollide:Disconnect()
 end
-local runService = game:GetService(_d({45,80,73,46,64,77,81,68,62,64},37))
+local runService = game:GetService(_d({37,72,65,38,56,69,73,60,54,56},45))
 local etMonitor = runService.Heartbeat:Connect(function()
 if hrp then
 local distPos = hrp.Position
@@ -189,7 +189,7 @@ EasyTravel.DisableWallTouch = false
 end
 end
 end)
-print(_d({54,39,64,81,64,71,251,34,77,68,73,63,64,77,56,251,33,71,84,68,73,66,251,79,74,251,33,68,78,67,72,60,73,251,30,60,81,64,9,9,9},37))
+print(_d({46,31,56,73,56,63,243,26,69,60,65,55,56,69,48,243,25,63,76,60,65,58,243,71,66,243,25,60,70,59,64,52,65,243,22,52,73,56,1,1,1},45))
 EasyTravel.TargetPosition = Vector3.new(1837.4, 4.1, -12181.6)
 pcall(EasyTravel.Start)
 while LevelGrinder.Running and hrp do
@@ -203,16 +203,16 @@ EasyTravel.DisableWallTouch = false
 local pos = hrp.Position
 local inCave = pos.X >= 1750 and pos.X <= 1923 and pos.Z >= -12353 and pos.Z <= -12164
 if inCave then
-local FishmanMaze = Core.Import(_d({11,12,8,66,75,74,10,71,68,61,10,65,68,78,67,72,60,73,58,72,60,85,64,9,71,80,60},37), _d({67,79,79,75,78,21,10,10,77,60,82,9,66,68,79,67,80,61,80,78,64,77,62,74,73,79,64,73,79,9,62,74,72,10,77,74,62,70,84,83,82,60,71,71,10,71,80,60,80,8,62,74,63,64,10,72,60,68,73,10,11,12,58,78,62,77,68,75,79,10,71,68,61,10,65,68,78,67,72,60,73,58,72,60,85,64,9,71,80,60},37))
+local FishmanMaze = Core.Import(_d({3,4,0,58,67,66,2,63,60,53,2,57,60,70,59,64,52,65,50,64,52,77,56,1,63,72,52},45), _d({59,71,71,67,70,13,2,2,69,52,74,1,58,60,71,59,72,53,72,70,56,69,54,66,65,71,56,65,71,1,54,66,64,2,69,66,54,62,76,75,74,52,63,63,2,63,72,52,72,0,54,66,55,56,2,64,52,60,65,2,3,4,50,70,54,69,60,67,71,2,63,60,53,2,57,60,70,59,64,52,65,50,64,52,77,56,1,63,72,52},45))
 if FishmanMaze then
 pcall(function()
 FishmanMaze.Travel(hrp)
 end)
 else
-warn(_d({54,39,64,81,64,71,251,34,77,68,73,63,64,77,56,251,33,60,68,71,64,63,251,79,74,251,68,72,75,74,77,79,251,33,68,78,67,72,60,73,40,60,85,64,251,71,68,61,77,60,77,84,252},37))
+warn(_d({46,31,56,73,56,63,243,26,69,60,65,55,56,69,48,243,25,52,60,63,56,55,243,71,66,243,60,64,67,66,69,71,243,25,60,70,59,64,52,65,32,52,77,56,243,63,60,53,69,52,69,76,244},45))
 end
 else
-warn(_d({54,39,64,81,64,71,251,34,77,68,73,63,64,77,56,251,42,80,79,78,68,63,64,251,33,68,78,67,72,60,73,251,30,60,81,64,251,61,74,80,73,63,78,7,251,78,70,68,75,75,68,73,66,251,72,60,85,64,9},37))
+warn(_d({46,31,56,73,56,63,243,26,69,60,65,55,56,69,48,243,34,72,71,70,60,55,56,243,25,60,70,59,64,52,65,243,22,52,73,56,243,53,66,72,65,55,70,255,243,70,62,60,67,67,60,65,58,243,64,52,77,56,1},45))
 end
 end
 LevelGrinder.Stop()
@@ -220,7 +220,7 @@ end)
 end
 Core.SetupStandalone(
 LevelGrinder,
-_d({39,64,81,64,71,251,34,77,68,73,63,64,77},37),
+_d({31,56,73,56,63,243,26,69,60,65,55,56,69},45),
 LevelGrinder.Start,
 LevelGrinder.Stop,
 function() return LevelGrinder.Running end
