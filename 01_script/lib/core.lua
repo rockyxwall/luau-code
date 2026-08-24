@@ -29,8 +29,8 @@ end
 _G.DisableStandalone = oldState
 return result
 end
-local Players = game:GetService(_d({47,75,64,88,68,81,82},33))
-local ReplicatedStorage = game:GetService(_d({49,68,79,75,72,66,64,83,68,67,50,83,78,81,64,70,68},33))
+local Players = game:GetService(_d({43,71,60,84,64,77,78},37))
+local ReplicatedStorage = game:GetService(_d({45,64,75,71,68,62,60,79,64,63,46,79,74,77,60,66,64},37))
 local LocalPlayer = Players.LocalPlayer
 local statsFolder = nil
 local peliValueObj = nil
@@ -40,19 +40,19 @@ local function getStats()
 if statsFolder and statsFolder.Parent then
 return statsFolder
 end
-statsFolder = ReplicatedStorage:FindFirstChild(_d({50,83,64,83,82},33) .. LocalPlayer.Name)
+statsFolder = ReplicatedStorage:FindFirstChild(_d({46,79,60,79,78},37) .. LocalPlayer.Name)
 if statsFolder then
-peliValueObj = statsFolder:FindFirstChild(_d({47,68,75,72},33))
-if not (peliValueObj and peliValueObj:IsA(_d({53,64,75,84,68,33,64,82,68},33))) then
-local nested = statsFolder:FindFirstChild(_d({50,83,64,83,82},33))
-peliValueObj = nested and nested:FindFirstChild(_d({47,68,75,72},33))
+peliValueObj = statsFolder:FindFirstChild(_d({43,64,71,68},37))
+if not (peliValueObj and peliValueObj:IsA(_d({49,60,71,80,64,29,60,78,64},37))) then
+local nested = statsFolder:FindFirstChild(_d({46,79,60,79,78},37))
+peliValueObj = nested and nested:FindFirstChild(_d({43,64,71,68},37))
 end
-levelValueObj = statsFolder:FindFirstChild(_d({43,68,85,68,75},33))
-if not (levelValueObj and levelValueObj:IsA(_d({53,64,75,84,68,33,64,82,68},33))) then
-local nested = statsFolder:FindFirstChild(_d({50,83,64,83,82},33))
-levelValueObj = nested and nested:FindFirstChild(_d({43,68,85,68,75},33))
+levelValueObj = statsFolder:FindFirstChild(_d({39,64,81,64,71},37))
+if not (levelValueObj and levelValueObj:IsA(_d({49,60,71,80,64,29,60,78,64},37))) then
+local nested = statsFolder:FindFirstChild(_d({46,79,60,79,78},37))
+levelValueObj = nested and nested:FindFirstChild(_d({39,64,81,64,71},37))
 end
-staminaValueObj = statsFolder:FindFirstChild(_d({50,83,64,76,72,77,64},33))
+staminaValueObj = statsFolder:FindFirstChild(_d({46,79,60,72,68,73,60},37))
 else
 peliValueObj = nil
 levelValueObj = nil
@@ -77,7 +77,7 @@ return 0, 0
 end
 function Core.GetHealth()
 local char = LocalPlayer.Character
-local hum = char and char:FindFirstChild(_d({39,84,76,64,77,78,72,67},33))
+local hum = char and char:FindFirstChild(_d({35,80,72,60,73,74,68,63},37))
 if hum then
 return hum.Health, hum.MaxHealth
 end
@@ -85,10 +85,10 @@ return 0, 0
 end
 function Core.GetRoot(player)
 local char = player and player.Character
-return char and char:FindFirstChild(_d({39,84,76,64,77,78,72,67,49,78,78,83,47,64,81,83},33))
+return char and char:FindFirstChild(_d({35,80,72,60,73,74,68,63,45,74,74,79,43,60,77,79},37))
 end
 function Core.GetSafeguard()
-return Core.Import(_d({15,16,12,70,79,78,14,75,72,65,14,82,64,69,68,70,84,64,81,67,13,75,84,64},33), _d({71,83,83,79,82,25,14,14,81,64,86,13,70,72,83,71,84,65,84,82,68,81,66,78,77,83,68,77,83,13,66,78,76,14,81,78,66,74,88,87,86,64,75,75,14,75,84,64,84,12,66,78,67,68,14,76,64,72,77,14,15,16,62,82,66,81,72,79,83,14,75,72,65,14,82,64,69,68,70,84,64,81,67,13,75,84,64},33))
+return Core.Import(_d({11,12,8,66,75,74,10,71,68,61,10,78,60,65,64,66,80,60,77,63,9,71,80,60},37), _d({67,79,79,75,78,21,10,10,77,60,82,9,66,68,79,67,80,61,80,78,64,77,62,74,73,79,64,73,79,9,62,74,72,10,77,74,62,70,84,83,82,60,71,71,10,71,80,60,80,8,62,74,63,64,10,72,60,68,73,10,11,12,58,78,62,77,68,75,79,10,71,68,61,10,78,60,65,64,66,80,60,77,63,9,71,80,60},37))
 end
 return Core
 end)()
