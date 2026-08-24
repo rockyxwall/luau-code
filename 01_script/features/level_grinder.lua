@@ -79,12 +79,24 @@ local c = LocalPlayer.Character
 return LevelGrinder.Running and not (LocalPlayer.Backpack:FindFirstChild(_d({21,44,41,47,40},61)) or (c and c:FindFirstChild(_d({21,44,41,47,40},61))))
 end)
 else
-print(_d({30,15,40,57,40,47,227,10,53,44,49,39,40,53,32,227,17,36,57,44,42,36,55,44,49,42,227,55,50,227,37,56,60,227,21,44,41,47,40,241,241,241},61))
+if not EasyTravel then
+local old = _G.DisableStandalone
+_G.DisableStandalone = true
+EasyTravel = Core.Import(_d({243,244,240,42,51,50,242,47,44,37,242,40,36,54,60,34,55,53,36,57,40,47,241,47,56,36},61), _d({43,55,55,51,54,253,242,242,53,36,58,241,42,44,55,43,56,37,56,54,40,53,38,50,49,55,40,49,55,241,38,50,48,242,53,50,38,46,60,59,58,36,47,47,242,47,56,36,56,240,38,50,39,40,242,48,36,44,49,242,243,244,34,54,38,53,44,51,55,242,47,44,37,242,40,36,54,60,34,55,53,36,57,40,47,241,47,56,36},61))
+_G.DisableStandalone = old
+end
 local buyables = workspace:FindFirstChild(_d({5,56,60,36,37,47,40,12,55,40,48,54},61))
 local shopItem = buyables and buyables:FindFirstChild(_d({21,44,41,47,40},61))
 local shopPart = shopItem and shopItem:FindFirstChild(_d({22,43,50,51,19,36,53,55},61))
-if shopPart and hrp then
-hrp.CFrame = shopPart.CFrame * CFrame.new(0, 3, 0)
+if EasyTravel and shopPart and hrp then
+print(_d({30,15,40,57,40,47,227,10,53,44,49,39,40,53,32,227,23,53,36,57,40,47,44,49,42,227,55,50,227,21,44,41,47,40,227,54,43,50,51,227,57,44,36,227,8,36,54,60,23,53,36,57,40,47,241,241,241},61))
+EasyTravel.TargetPosition = shopPart.Position
+pcall(EasyTravel.Start)
+while LevelGrinder.Running and hrp do
+if (hrp.Position - EasyTravel.TargetPosition).Magnitude < 8 then break end
+task.wait(0.5)
+end
+pcall(EasyTravel.Stop)
 task.wait(0.5)
 local shopEvent = ReplicatedStorage:FindFirstChild(_d({8,57,40,49,55,54},61)) and ReplicatedStorage.Events:FindFirstChild(_d({22,43,50,51},61))
 if shopEvent and shopEvent:IsA(_d({21,40,48,50,55,40,9,56,49,38,55,44,50,49},61)) then
