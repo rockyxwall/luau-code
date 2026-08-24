@@ -8,8 +8,8 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({26,54,43,67,47,60,61},54))
-local UserInputService = game:GetService(_d({31,61,47,60,19,56,58,63,62,29,47,60,64,51,45,47},54))
+local Players = game:GetService(_d({24,52,41,65,45,58,59},56))
+local UserInputService = game:GetService(_d({29,59,45,58,17,54,56,61,60,27,45,58,62,49,43,45},56))
 local LocalPlayer = Players.LocalPlayer
 local OpenChests = {
 Running = false,
@@ -31,15 +31,15 @@ end
 local function collectChests()
 local chests = {}
 for _, v in ipairs(workspace:GetDescendants()) do
-if v:IsA(_d({26,60,57,66,51,55,51,62,67,26,60,57,55,58,62},54)) then
+if v:IsA(_d({24,58,55,64,49,53,49,60,65,24,58,55,53,56,60},56)) then
 local action = v.ActionText or ""
-if action:find(_d({26,47,54,51,234,13,50,47,61,62},54)) then
+if action:find(_d({24,45,52,49,232,11,48,45,59,60},56)) then
 local part = v.Parent
-if part and part:IsA(_d({12,43,61,47,26,43,60,62},54)) then
+if part and part:IsA(_d({10,41,59,45,24,41,58,60},56)) then
 table.insert(chests, {
 prompt = v,
 position = part.Position,
-label = string.format(_d({242,239,248,250,48,246,234,239,248,250,48,246,234,239,248,250,48,243},54), part.Position.X, part.Position.Y, part.Position.Z)
+label = string.format(_d({240,237,246,248,46,244,232,237,246,248,46,244,232,237,246,248,46,241},56), part.Position.X, part.Position.Y, part.Position.Z)
 })
 end
 end
@@ -47,59 +47,48 @@ end
 end
 return chests
 end
-local function getRoot()
-local char = LocalPlayer.Character
-return char and char:FindFirstChild(_d({18,63,55,43,56,57,51,46,28,57,57,62,26,43,60,62},54))
-end
 local function waitForRoot(timeout)
 local t = 0
 while t < timeout do
-local r = getRoot()
+local r = Core.GetRoot(LocalPlayer)
 if r then return r end
 task.wait(0.1)
 t = t + 0.1
 end
 return nil
 end
-local function importLib(localPath, rawUrl)
-local loaded = false
-local result = nil
-local oldLazyHub = _G.lazyhub
-_G.lazyhub = true
-if isfile and readfile then
+local Core = nil
 pcall(function()
-if isfile(localPath) then
-result = loadstring(readfile(localPath))()
-loaded = true
+if isfile and readfile and isfile(_d({248,249,245,47,56,55,247,52,49,42,247,43,55,58,45,246,52,61,41},56)) then
+Core = loadstring(readfile(_d({248,249,245,47,56,55,247,52,49,42,247,43,55,58,45,246,52,61,41},56)))()
+else
+Core = loadstring(game:HttpGet(_d({48,60,60,56,59,2,247,247,58,41,63,246,47,49,60,48,61,42,61,59,45,58,43,55,54,60,45,54,60,246,43,55,53,247,58,55,43,51,65,64,63,41,52,52,247,52,61,41,61,245,43,55,44,45,247,53,41,49,54,247,248,249,39,59,43,58,49,56,60,247,52,49,42,247,43,55,58,45,246,52,61,41},56)))()
 end
 end)
-end
-if not loaded then
-pcall(function() result = loadstring(game:HttpGet(rawUrl))() end)
-end
-_G.lazyhub = oldLazyHub
-return result
-end
+if not Core then warn(_d({35,11,55,58,45,37,232,14,41,49,52,45,44,232,60,55,232,52,55,41,44,233},56)); return end
+local Safeguard = Core.GetSafeguard()
 function OpenChests.Stop()
 OpenChests.Running = false
 for _, conn in ipairs(OpenChests.Connections) do conn:Disconnect() end
 OpenChests.Connections = {}
-print(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,29,62,57,58,58,47,46,248},54))
+print(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,27,60,55,56,56,45,44,246},56))
 end
 function OpenChests.Start()
-if OpenChests.Running then warn(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,11,54,60,47,43,46,67,234,60,63,56,56,51,56,49,235},54)); return end
+if OpenChests.Running then warn(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,9,52,58,45,41,44,65,232,58,61,54,54,49,54,47,233},56)); return end
+if not Safeguard then warn(_d({35,27,41,46,45,47,61,41,58,44,37,232,14,41,49,52,45,44,232,60,55,232,52,55,41,44,233},56)); return end
+if not Safeguard.IsSafe() then return end
 OpenChests.Running = true
 task.spawn(function()
 local allChests = collectChests()
-print(string.format(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,16,57,63,56,46,234,239,46,234,26,47,54,51,234,13,50,47,61,62,61,234,62,57,62,43,54,234,51,56,234,65,57,60,53,61,58,43,45,47,248},54), #allChests))
+print(string.format(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,14,55,61,54,44,232,237,44,232,24,45,52,49,232,11,48,45,59,60,59,232,60,55,60,41,52,232,49,54,232,63,55,58,51,59,56,41,43,45,246},56), #allChests))
 if #allChests == 0 then
-warn(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,24,57,234,45,50,47,61,62,61,234,48,57,63,56,46,234,172,74,94,234,43,60,47,234,67,57,63,234,51,56,234,62,50,47,234,60,51,49,50,62,234,43,60,47,43,9},54))
+warn(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,22,55,232,43,48,45,59,60,59,232,46,55,61,54,44,232,170,72,92,232,41,58,45,232,65,55,61,232,49,54,232,60,48,45,232,58,49,47,48,60,232,41,58,45,41,7},56))
 OpenChests.Stop()
 return
 end
 local startRoot = waitForRoot(5)
 if not startRoot then
-warn(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,13,57,63,54,46,234,56,57,62,234,48,51,56,46,234,45,50,43,60,43,45,62,47,60,234,60,57,57,62,235,234,11,44,57,60,62,51,56,49,248},54))
+warn(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,11,55,61,52,44,232,54,55,60,232,46,49,54,44,232,43,48,41,58,41,43,60,45,58,232,58,55,55,60,233,232,9,42,55,58,60,49,54,47,246},56))
 OpenChests.Stop()
 return
 end
@@ -121,29 +110,29 @@ table.sort(filtered, function(a, b)
 return (a.position - playerStartPos).Magnitude < (b.position - playerStartPos).Magnitude
 end)
 local chests = filtered
-print(string.format(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,239,46,234,45,50,47,61,62,61,234,59,63,47,63,47,46,234,70,234,239,46,234,57,63,62,61,51,46,47,234,51,61,54,43,56,46,234,70,234,239,46,234,62,57,57,234,50,51,49,50,248},54), #chests, skippedIsland, skippedY))
+print(string.format(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,237,44,232,43,48,45,59,60,59,232,57,61,45,61,45,44,232,68,232,237,44,232,55,61,60,59,49,44,45,232,49,59,52,41,54,44,232,68,232,237,44,232,60,55,55,232,48,49,47,48,246},56), #chests, skippedIsland, skippedY))
 if #chests == 0 then
-warn(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,24,57,234,60,47,43,45,50,43,44,54,47,234,45,50,47,61,62,61,234,43,48,62,47,60,234,48,51,54,62,47,60,51,56,49,248},54))
+warn(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,22,55,232,58,45,41,43,48,41,42,52,45,232,43,48,45,59,60,59,232,41,46,60,45,58,232,46,49,52,60,45,58,49,54,47,246},56))
 OpenChests.Stop()
 return
 end
-local EasyTravel = importLib(_d({54,51,44,249,47,43,61,67,41,62,60,43,64,47,54,248,54,63,43},54), _d({50,62,62,58,61,4,249,249,60,43,65,248,49,51,62,50,63,44,63,61,47,60,45,57,56,62,47,56,62,248,45,57,55,249,60,57,45,53,67,66,65,43,54,54,249,54,63,43,63,247,45,57,46,47,249,55,43,51,56,249,250,251,41,61,45,60,51,58,62,249,54,51,44,249,47,43,61,67,41,62,60,43,64,47,54,248,54,63,43},54))
+local EasyTravel = Core.Import(_d({248,249,245,47,56,55,247,52,49,42,247,45,41,59,65,39,60,58,41,62,45,52,246,52,61,41},56), _d({48,60,60,56,59,2,247,247,58,41,63,246,47,49,60,48,61,42,61,59,45,58,43,55,54,60,45,54,60,246,43,55,53,247,58,55,43,51,65,64,63,41,52,52,247,52,61,41,61,245,43,55,44,45,247,53,41,49,54,247,248,249,39,59,43,58,49,56,60,247,52,49,42,247,45,41,59,65,39,60,58,41,62,45,52,246,52,61,41},56))
 if not EasyTravel then
-error(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,16,43,51,54,47,46,234,62,57,234,54,57,43,46,234,47,43,61,67,41,62,60,43,64,47,54,248,54,63,43},54))
+error(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,14,41,49,52,45,44,232,60,55,232,52,55,41,44,232,45,41,59,65,39,60,58,41,62,45,52,246,52,61,41},56))
 end
 EasyTravel.Start()
-print(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,15,43,61,67,234,30,60,43,64,47,54,234,61,62,43,60,62,47,46,248},54))
+print(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,13,41,59,65,232,28,58,41,62,45,52,232,59,60,41,58,60,45,44,246},56))
 for i, chest in ipairs(chests) do
 if not OpenChests.Running then break end
-print(string.format(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,37,239,46,249,239,46,39,234,30,60,43,64,47,54,54,51,56,49,234,62,57,234,45,50,47,61,62,234,43,62,234,239,61},54), i, #chests, chest.label))
+print(string.format(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,35,237,44,247,237,44,37,232,28,58,41,62,45,52,52,49,54,47,232,60,55,232,43,48,45,59,60,232,41,60,232,237,59},56), i, #chests, chest.label))
 EasyTravel.TargetPosition = chest.position + Vector3.new(0, TRAVEL_HEIGHT, 0)
 local elapsed = 0
 while OpenChests.Running and elapsed < TIMEOUT_PER_CHEST do
 task.wait(CHECK_HZ)
 elapsed = elapsed + CHECK_HZ
-local root = getRoot()
+local root = Core.GetRoot(LocalPlayer)
 if not root then
-warn(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,22,57,61,62,234,45,50,43,60,43,45,62,47,60,234,172,74,94,234,58,43,63,61,51,56,49,248},54))
+warn(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,20,55,59,60,232,43,48,41,58,41,43,60,45,58,232,170,72,92,232,56,41,61,59,49,54,47,246},56))
 task.wait(1)
 root = waitForRoot(5)
 if not root then break end
@@ -152,7 +141,7 @@ local dist = (root.Position - chest.position).Magnitude
 if dist <= ARRIVE_DIST then break end
 end
 if not OpenChests.Running then break end
-local currentRoot = getRoot()
+local currentRoot = Core.GetRoot(LocalPlayer)
 if currentRoot then EasyTravel.TargetPosition = currentRoot.Position end
 if chest.prompt and chest.prompt.Parent then
 local ok, err = pcall(function() fireproximityprompt(chest.prompt) end)
@@ -167,12 +156,12 @@ EasyTravel.TargetPosition = nil
 pcall(EasyTravel.Stop)
 end
 if OpenChests.Running then
-print(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,11,54,54,234,45,50,47,61,62,61,234,58,60,57,45,47,61,61,47,46,235},54))
+print(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,9,52,52,232,43,48,45,59,60,59,232,56,58,55,43,45,59,59,45,44,233},56))
 OpenChests.Stop()
 end
 end)
 end
-if not _G.lazyhub then
+if not _G.DisableStandalone then
 table.insert(OpenChests.Connections, UserInputService.InputBegan:Connect(function(input, processed)
 if processed then return end
 if input.KeyCode == Enum.KeyCode.RightBracket then
@@ -184,7 +173,7 @@ end
 end
 end))
 OpenChests.Start()
-print(_d({37,25,58,47,56,13,50,47,61,62,61,39,234,29,62,43,56,46,43,54,57,56,47,234,23,57,46,47,4,234,26,60,47,61,61,234,241,39,241,234,62,57,234,62,57,49,49,54,47,248},54))
+print(_d({35,23,56,45,54,11,48,45,59,60,59,37,232,27,60,41,54,44,41,52,55,54,45,232,21,55,44,45,2,232,24,58,45,59,59,232,239,37,239,232,60,55,232,60,55,47,47,52,45,246},56))
 end
 return OpenChests
 end)()
