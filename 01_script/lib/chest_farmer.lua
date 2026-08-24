@@ -8,8 +8,8 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({36,64,53,77,57,70,71},44))
-local UserInputService = game:GetService(_d({41,71,57,70,29,66,68,73,72,39,57,70,74,61,55,57},44))
+local Players = game:GetService(_d({18,46,35,59,39,52,53},62))
+local UserInputService = game:GetService(_d({23,53,39,52,11,48,50,55,54,21,39,52,56,43,37,39},62))
 local LocalPlayer = Players.LocalPlayer
 local ChestFarmer = {
 Running = false,
@@ -27,27 +27,27 @@ and pos.Z >= ISLAND_MIN_Z and pos.Z <= ISLAND_MAX_Z
 end
 local Core = nil
 pcall(function()
-if isfile and readfile and isfile(_d({4,5,1,59,68,67,3,64,61,54,3,55,67,70,57,2,64,73,53},44)) then
-Core = loadstring(readfile(_d({4,5,1,59,68,67,3,64,61,54,3,55,67,70,57,2,64,73,53},44)))()
+if isfile and readfile and isfile(_d({242,243,239,41,50,49,241,46,43,36,241,37,49,52,39,240,46,55,35},62)) then
+Core = loadstring(readfile(_d({242,243,239,41,50,49,241,46,43,36,241,37,49,52,39,240,46,55,35},62)))()
 else
-Core = loadstring(game:HttpGet(_d({60,72,72,68,71,14,3,3,70,53,75,2,59,61,72,60,73,54,73,71,57,70,55,67,66,72,57,66,72,2,55,67,65,3,70,67,55,63,77,76,75,53,64,64,3,64,73,53,73,1,55,67,56,57,3,65,53,61,66,3,4,5,51,71,55,70,61,68,72,3,64,61,54,3,55,67,70,57,2,64,73,53},44)))()
+Core = loadstring(game:HttpGet(_d({42,54,54,50,53,252,241,241,52,35,57,240,41,43,54,42,55,36,55,53,39,52,37,49,48,54,39,48,54,240,37,49,47,241,52,49,37,45,59,58,57,35,46,46,241,46,55,35,55,239,37,49,38,39,241,47,35,43,48,241,242,243,33,53,37,52,43,50,54,241,46,43,36,241,37,49,52,39,240,46,55,35},62)))()
 end
 end)
-if not Core then warn(_d({47,23,67,70,57,49,244,26,53,61,64,57,56,244,72,67,244,64,67,53,56,245},44)); return end
+if not Core then warn(_d({29,5,49,52,39,31,226,8,35,43,46,39,38,226,54,49,226,46,49,35,38,227},62)); return end
 local Safeguard = Core.GetSafeguard()
 function ChestFarmer.CollectChests()
 local chests = {}
-local env = workspace:FindFirstChild(_d({25,66,74},44)) or workspace
+local env = workspace:FindFirstChild(_d({7,48,56},62)) or workspace
 for _, v in ipairs(env:GetDescendants()) do
-if v:IsA(_d({36,70,67,76,61,65,61,72,77,36,70,67,65,68,72},44)) then
+if v:IsA(_d({18,52,49,58,43,47,43,54,59,18,52,49,47,50,54},62)) then
 local action = v.ActionText or ""
-if action:find(_d({36,57,64,61,244,23,60,57,71,72},44)) then
+if action:find(_d({18,39,46,43,226,5,42,39,53,54},62)) then
 local part = v.Parent
-if part and part:IsA(_d({22,53,71,57,36,53,70,72},44)) and isInsideTownOfBeginnings(part.Position) then
+if part and part:IsA(_d({4,35,53,39,18,35,52,54},62)) and isInsideTownOfBeginnings(part.Position) then
 table.insert(chests, {
 prompt = v,
 position = part.Position,
-label = string.format(_d({252,249,2,4,58,0,244,249,2,4,58,0,244,249,2,4,58,253},44), part.Position.X, part.Position.Y, part.Position.Z)
+label = string.format(_d({234,231,240,242,40,238,226,231,240,242,40,238,226,231,240,242,40,235},62), part.Position.X, part.Position.Y, part.Position.Z)
 })
 end
 end
@@ -59,15 +59,15 @@ function ChestFarmer.Stop()
 ChestFarmer.Running = false
 for _, conn in ipairs(ChestFarmer.Connections) do conn:Disconnect() end
 ChestFarmer.Connections = {}
-print(_d({47,23,60,57,71,72,26,53,70,65,57,70,49,244,39,72,67,68,68,57,56,2},44))
+print(_d({29,5,42,39,53,54,8,35,52,47,39,52,31,226,21,54,49,50,50,39,38,240},62))
 end
 function ChestFarmer.FarmUntilPeli(targetPeli, getPeliCallback, isRunningCallback)
-print(_d({47,23,60,57,71,72,26,53,70,65,57,70,49,244,39,72,53,70,72,57,56,244,55,60,57,71,72,244,58,53,70,65,2,244,40,53,70,59,57,72,244,36,57,64,61,14,244},44) .. tostring(targetPeli))
-local EasyTravel = Core.Import(_d({4,5,1,59,68,67,3,64,61,54,3,57,53,71,77,51,72,70,53,74,57,64,2,64,73,53},44), _d({60,72,72,68,71,14,3,3,70,53,75,2,59,61,72,60,73,54,73,71,57,70,55,67,66,72,57,66,72,2,55,67,65,3,70,67,55,63,77,76,75,53,64,64,3,64,73,53,73,1,55,67,56,57,3,65,53,61,66,3,4,5,51,71,55,70,61,68,72,3,64,61,54,3,57,53,71,77,51,72,70,53,74,57,64,2,64,73,53},44))
+print(_d({29,5,42,39,53,54,8,35,52,47,39,52,31,226,21,54,35,52,54,39,38,226,37,42,39,53,54,226,40,35,52,47,240,226,22,35,52,41,39,54,226,18,39,46,43,252,226},62) .. tostring(targetPeli))
+local EasyTravel = Core.Import(_d({242,243,239,41,50,49,241,46,43,36,241,39,35,53,59,33,54,52,35,56,39,46,240,46,55,35},62), _d({42,54,54,50,53,252,241,241,52,35,57,240,41,43,54,42,55,36,55,53,39,52,37,49,48,54,39,48,54,240,37,49,47,241,52,49,37,45,59,58,57,35,46,46,241,46,55,35,55,239,37,49,38,39,241,47,35,43,48,241,242,243,33,53,37,52,43,50,54,241,46,43,36,241,39,35,53,59,33,54,52,35,56,39,46,240,46,55,35},62))
 while isRunningCallback() and getPeliCallback() < targetPeli do
 local chests = ChestFarmer.CollectChests()
 if #chests == 0 then
-print(_d({47,23,60,57,71,72,26,53,70,65,57,70,49,244,34,67,244,55,60,57,71,72,71,244,58,67,73,66,56,2,244,43,53,61,72,61,66,59,244,6,4,244,71,57,55,67,66,56,71,244,58,67,70,244,71,68,53,75,66,2,2,2},44))
+print(_d({29,5,42,39,53,54,8,35,52,47,39,52,31,226,16,49,226,37,42,39,53,54,53,226,40,49,55,48,38,240,226,25,35,43,54,43,48,41,226,244,242,226,53,39,37,49,48,38,53,226,40,49,52,226,53,50,35,57,48,240,240,240},62))
 local waited = 0
 while isRunningCallback() and waited < 20 do
 task.wait(1)
@@ -132,7 +132,7 @@ return getPeliCallback() >= targetPeli
 end
 function ChestFarmer.Start()
 if ChestFarmer.Running then return end
-if not Safeguard then warn(_d({47,39,53,58,57,59,73,53,70,56,49,244,26,53,61,64,57,56,244,72,67,244,64,67,53,56,245},44)); return end
+if not Safeguard then warn(_d({29,21,35,40,39,41,55,35,52,38,31,226,8,35,43,46,39,38,226,54,49,226,46,49,35,38,227},62)); return end
 if not Safeguard.IsSafe() then return end
 ChestFarmer.Running = true
 task.spawn(function()
@@ -145,7 +145,7 @@ end)
 end
 Core.SetupStandalone(
 ChestFarmer,
-_d({23,60,57,71,72,26,53,70,65,57,70},44),
+_d({5,42,39,53,54,8,35,52,47,39,52},62),
 ChestFarmer.Start,
 ChestFarmer.Stop,
 function() return ChestFarmer.Running end
