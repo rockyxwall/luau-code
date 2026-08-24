@@ -8,21 +8,18 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-if _G.OpenChestsRunning then
-warn(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,5,48,54,41,37,40,61,228,54,57,50,50,45,50,43,229,228,5,38,51,54,56,45,50,43,228,40,57,52,48,45,39,37,56,41,228,48,37,57,50,39,44,242},60))
-return
-end
-_G.OpenChestsRunning = true
-local Players          = game:GetService(_d({20,48,37,61,41,54,55},60))
-local RunService       = game:GetService(_d({22,57,50,23,41,54,58,45,39,41},60))
-local UserInputService = game:GetService(_d({25,55,41,54,13,50,52,57,56,23,41,54,58,45,39,41},60))
-local LocalPlayer      = Players.LocalPlayer
-local running = true
-local ARRIVE_DIST      = 6
+local Players = game:GetService(_d({60,88,77,101,81,94,95},20))
+local UserInputService = game:GetService(_d({65,95,81,94,53,90,92,97,96,63,81,94,98,85,79,81},20))
+local LocalPlayer = Players.LocalPlayer
+local OpenChests = {
+Running = false,
+Connections = {}
+}
+local ARRIVE_DIST = 6
 local TIMEOUT_PER_CHEST = 20
-local OPEN_WAIT        = 2.5
-local TRAVEL_HEIGHT    = 4
-local CHECK_HZ         = 0.1
+local OPEN_WAIT = 2.5
+local TRAVEL_HEIGHT = 4
+local CHECK_HZ = 0.1
 local ISLAND_MIN_X = -889
 local ISLAND_MAX_X = -156
 local ISLAND_MIN_Z = -3706
@@ -34,15 +31,15 @@ end
 local function collectChests()
 local chests = {}
 for _, v in ipairs(workspace:GetDescendants()) do
-if v:IsA(_d({20,54,51,60,45,49,45,56,61,20,54,51,49,52,56},60)) then
-local action = v.ActionText
-if action:find(_d({20,41,48,45,228,7,44,41,55,56},60)) then
+if v:IsA(_d({60,94,91,100,85,89,85,96,101,60,94,91,89,92,96},20)) then
+local action = v.ActionText or ""
+if action:find(_d({60,81,88,85,12,47,84,81,95,96},20)) then
 local part = v.Parent
-if part and part:IsA(_d({6,37,55,41,20,37,54,56},60)) then
+if part and part:IsA(_d({46,77,95,81,60,77,94,96},20)) then
 table.insert(chests, {
-prompt   = v,
+prompt = v,
 position = part.Position,
-label    = string.format(_d({236,233,242,244,42,240,228,233,242,244,42,240,228,233,242,244,42,237},60), part.Position.X, part.Position.Y, part.Position.Z)
+label = string.format(_d({20,17,26,28,82,24,12,17,26,28,82,24,12,17,26,28,82,21},20), part.Position.X, part.Position.Y, part.Position.Z)
 })
 end
 end
@@ -52,8 +49,7 @@ return chests
 end
 local function getRoot()
 local char = LocalPlayer.Character
-if not char then return nil end
-return char:FindFirstChild(_d({12,57,49,37,50,51,45,40,22,51,51,56,20,37,54,56},60))
+return char and char:FindFirstChild(_d({52,97,89,77,90,91,85,80,62,91,91,96,60,77,94,96},20))
 end
 local function waitForRoot(timeout)
 local t = 0
@@ -65,138 +61,130 @@ t = t + 0.1
 end
 return nil
 end
+local function importLib(localPath, rawUrl)
+local loaded = false
+local result = nil
+local oldLazyHub = _G.lazyhub
+_G.lazyhub = true
+if isfile and readfile then
+pcall(function()
+if isfile(localPath) then
+result = loadstring(readfile(localPath))()
+loaded = true
+end
+end)
+end
+if not loaded then
+pcall(function() result = loadstring(game:HttpGet(rawUrl))() end)
+end
+_G.lazyhub = oldLazyHub
+return result
+end
+function OpenChests.Stop()
+OpenChests.Running = false
+for _, conn in ipairs(OpenChests.Connections) do conn:Disconnect() end
+OpenChests.Connections = {}
+print(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,63,96,91,92,92,81,80,26},20))
+end
+function OpenChests.Start()
+if OpenChests.Running then warn(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,45,88,94,81,77,80,101,12,94,97,90,90,85,90,83,13},20)) return end
+OpenChests.Running = true
+task.spawn(function()
 local allChests = collectChests()
-print(string.format(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,10,51,57,50,40,228,233,40,228,20,41,48,45,228,7,44,41,55,56,55,228,56,51,56,37,48,228,45,50,228,59,51,54,47,55,52,37,39,41,242},60), #allChests))
+print(string.format(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,50,91,97,90,80,12,17,80,12,60,81,88,85,12,47,84,81,95,96,95,12,96,91,96,77,88,12,85,90,12,99,91,94,87,95,92,77,79,81,26},20), #allChests))
 if #allChests == 0 then
-warn(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,18,51,228,39,44,41,55,56,55,228,42,51,57,50,40,228,166,68,88,228,37,54,41,228,61,51,57,228,45,50,228,56,44,41,228,54,45,43,44,56,228,37,54,41,37,3},60))
-_G.OpenChestsRunning = false
+warn(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,58,91,12,79,84,81,95,96,95,12,82,91,97,90,80,12,206,108,128,12,77,94,81,12,101,91,97,12,85,90,12,96,84,81,12,94,85,83,84,96,12,77,94,81,77,43},20))
+OpenChests.Stop()
 return
 end
 local startRoot = waitForRoot(5)
 if not startRoot then
-warn(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,7,51,57,48,40,228,50,51,56,228,42,45,50,40,228,39,44,37,54,37,39,56,41,54,228,54,51,51,56,229,228,5,38,51,54,56,45,50,43,242},60))
-_G.OpenChestsRunning = false
+warn(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,47,91,97,88,80,12,90,91,96,12,82,85,90,80,12,79,84,77,94,77,79,96,81,94,12,94,91,91,96,13,12,45,78,91,94,96,85,90,83,26},20))
+OpenChests.Stop()
 return
 end
 local playerStartPos = startRoot.Position
-local playerStartY   = playerStartPos.Y
+local playerStartY = playerStartPos.Y
 local filtered = {}
 local skippedIsland = 0
-local skippedY      = 0
+local skippedY = 0
 for _, c in ipairs(allChests) do
 if not isInsideTownOfBeginnings(c.position) then
 skippedIsland = skippedIsland + 1
-if skippedIsland <= 5 then
-print(string.format(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,23,47,45,52,52,45,50,43,228,51,57,56,241,51,42,241,38,51,57,50,40,55,228,39,44,41,55,56,228,37,56,228,233,55,228,236,51,57,56,55,45,40,41,228,24,51,59,50,228,51,42,228,6,41,43,45,50,50,45,50,43,55,237},60), c.label))
-end
 elseif c.position.Y > playerStartY + 20 then
 skippedY = skippedY + 1
-print(string.format(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,23,47,45,52,52,45,50,43,228,41,48,41,58,37,56,41,40,228,39,44,41,55,56,228,37,56,228,233,55,228,236,29,1,233,242,244,42,228,2,228,48,45,49,45,56,228,233,242,244,42,237},60),
-c.label, c.position.Y, playerStartY + 20))
 else
 table.insert(filtered, c)
 end
-end
-if skippedIsland > 5 then
-print(string.format(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,242,242,242,228,37,50,40,228,233,40,228,49,51,54,41,228,39,44,41,55,56,55,228,55,47,45,52,52,41,40,228,236,51,57,56,55,45,40,41,228,24,51,59,50,228,51,42,228,6,41,43,45,50,50,45,50,43,55,237,242},60), skippedIsland - 5))
 end
 table.sort(filtered, function(a, b)
 return (a.position - playerStartPos).Magnitude < (b.position - playerStartPos).Magnitude
 end)
 local chests = filtered
-print(string.format(
-_d({31,19,52,41,50,7,44,41,55,56,55,33,228,233,40,228,39,44,41,55,56,55,228,53,57,41,57,41,40,228,236,50,41,37,54,41,55,56,241,42,45,54,55,56,237,228,64,228,233,40,228,51,57,56,55,45,40,41,228,45,55,48,37,50,40,228,64,228,233,40,228,56,51,51,228,44,45,43,44,242},60),
-#chests, skippedIsland, skippedY
-))
+print(string.format(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,17,80,12,79,84,81,95,96,95,12,93,97,81,97,81,80,12,104,12,17,80,12,91,97,96,95,85,80,81,12,85,95,88,77,90,80,12,104,12,17,80,12,96,91,91,12,84,85,83,84,26},20), #chests, skippedIsland, skippedY))
 if #chests == 0 then
-warn(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,18,51,228,54,41,37,39,44,37,38,48,41,228,39,44,41,55,56,55,228,37,42,56,41,54,228,42,45,48,56,41,54,45,50,43,242,228,5,54,41,228,61,51,57,228,37,56,228,24,51,59,50,228,51,42,228,6,41,43,45,50,50,45,50,43,55,3},60))
-_G.OpenChestsRunning = false
+warn(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,58,91,12,94,81,77,79,84,77,78,88,81,12,79,84,81,95,96,95,12,77,82,96,81,94,12,82,85,88,96,81,94,85,90,83,26},20))
+OpenChests.Stop()
 return
 end
-_G.EasyTravelHelperMode = true
-if _G.EasyTravelCleanup then
-pcall(_G.EasyTravelCleanup)
-task.wait(0.3)
+local EasyTravel = importLib(_d({88,85,78,27,81,77,95,101,75,96,94,77,98,81,88,26,88,97,77},20), _d({84,96,96,92,95,38,27,27,94,77,99,26,83,85,96,84,97,78,97,95,81,94,79,91,90,96,81,90,96,26,79,91,89,27,94,91,79,87,101,100,99,77,88,88,27,88,97,77,97,25,79,91,80,81,27,89,77,85,90,27,28,29,75,95,79,94,85,92,96,27,88,85,78,27,81,77,95,101,75,96,94,77,98,81,88,26,88,97,77},20))
+if not EasyTravel then
+error(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,50,77,85,88,81,80,12,96,91,12,88,91,77,80,12,81,77,95,101,75,96,94,77,98,81,88,26,88,97,77},20))
 end
-local easyTravelSrc = readfile(_d({48,45,38,243,41,37,55,61,35,56,54,37,58,41,48,242,48,57,37},60))
-local loader = loadstring(easyTravelSrc)
-if not loader then
-error(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,10,37,45,48,41,40,228,56,51,228,48,51,37,40,228,41,37,55,61,35,56,54,37,58,41,48,242,48,57,37,228,166,68,88,228,39,44,41,39,47,228,59,51,54,47,55,52,37,39,41,228,42,45,48,41,229},60))
-end
-local ET = loader()
-if not ET or not ET.Start then
-error(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,41,37,55,61,35,56,54,37,58,41,48,228,5,20,13,228,50,51,56,228,54,41,56,57,54,50,41,40,228,39,51,54,54,41,39,56,48,61,242},60))
-end
-task.wait(0.2)
-ET.Start()
-print(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,9,37,55,61,228,24,54,37,58,41,48,228,55,56,37,54,56,41,40,228,45,50,228,44,41,48,52,41,54,228,49,51,40,41,242},60))
-local function cleanup(reason)
-running = false
-if ET then
-ET.TargetPosition = nil
-pcall(ET.Stop)
-end
-if _G.EasyTravelCleanup then
-pcall(_G.EasyTravelCleanup)
-end
-_G.EasyTravelHelperMode = nil
-_G.OpenChestsRunning = false
-print(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,23,56,51,52,52,41,40,254,228},60) .. (reason or _d({40,51,50,41},60)) .. ".")
-end
-UserInputService.InputBegan:Connect(function(input, processed)
-if not processed and input.KeyCode == Enum.KeyCode.P then
-if running then
-print(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,20,228,52,54,41,55,55,41,40,228,166,68,88,228,37,38,51,54,56,45,50,43,229},60))
-cleanup(_d({20,228,47,41,61,228,37,38,51,54,56},60))
-end
-end
-end)
+EasyTravel.Start()
+print(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,49,77,95,101,12,64,94,77,98,81,88,12,95,96,77,94,96,81,80,26},20))
 for i, chest in ipairs(chests) do
-if not running then break end
-print(string.format(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,31,233,40,243,233,40,33,228,24,54,37,58,41,48,48,45,50,43,228,56,51,228,39,44,41,55,56,228,37,56,228,233,55},60), i, #chests, chest.label))
-local target = chest.position + Vector3.new(0, TRAVEL_HEIGHT, 0)
-ET.TargetPosition = target
+if not OpenChests.Running then break end
+print(string.format(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,71,17,80,27,17,80,73,12,64,94,77,98,81,88,88,85,90,83,12,96,91,12,79,84,81,95,96,12,77,96,12,17,95},20), i, #chests, chest.label))
+EasyTravel.TargetPosition = chest.position + Vector3.new(0, TRAVEL_HEIGHT, 0)
 local elapsed = 0
-while running and elapsed < TIMEOUT_PER_CHEST do
+while OpenChests.Running and elapsed < TIMEOUT_PER_CHEST do
 task.wait(CHECK_HZ)
 elapsed = elapsed + CHECK_HZ
 local root = getRoot()
 if not root then
-warn(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,16,51,55,56,228,39,44,37,54,37,39,56,41,54,228,166,68,88,228,52,37,57,55,45,50,43,242},60))
+warn(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,56,91,95,96,12,79,84,77,94,77,79,96,81,94,12,206,108,128,12,92,77,97,95,85,90,83,26},20))
 task.wait(1)
 root = waitForRoot(5)
 if not root then break end
 end
 local dist = (root.Position - chest.position).Magnitude
-if dist <= ARRIVE_DIST then
-print(string.format(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,5,54,54,45,58,41,40,229,228,236,40,45,55,56,1,233,242,245,42,237},60), dist))
-break
+if dist <= ARRIVE_DIST then break end
 end
-end
-if not running then break end
+if not OpenChests.Running then break end
 local currentRoot = getRoot()
-if currentRoot then
-ET.TargetPosition = currentRoot.Position
-end
+if currentRoot then EasyTravel.TargetPosition = currentRoot.Position end
 if chest.prompt and chest.prompt.Parent then
-local ok, err = pcall(function()
-fireproximityprompt(chest.prompt)
-end)
-if ok then
-print(string.format(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,19,52,41,50,41,40,228,39,44,41,55,56,228,233,40,229},60), i))
-else
-warn(string.format(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,42,45,54,41,52,54,51,60,45,49,45,56,61,52,54,51,49,52,56,228,42,37,45,48,41,40,254,228,233,55},60), tostring(err)))
-pcall(function()
-chest.prompt.Triggered:Fire(LocalPlayer)
-end)
+local ok, err = pcall(function() fireproximityprompt(chest.prompt) end)
+if not ok then
+pcall(function() chest.prompt.Triggered:Fire(LocalPlayer) end)
 end
-else
-warn(string.format(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,7,44,41,55,56,228,233,40,228,52,54,51,49,52,56,228,50,51,228,48,51,50,43,41,54,228,41,60,45,55,56,55,228,236,49,37,61,228,44,37,58,41,228,40,41,55,52,37,59,50,41,40,237,242},60), i))
 end
 task.wait(OPEN_WAIT)
 end
-if running then
-print(_d({31,19,52,41,50,7,44,41,55,56,55,33,228,5,48,48,228,39,44,41,55,56,55,228,52,54,51,39,41,55,55,41,40,229},60))
-cleanup(_d({37,48,48,228,40,51,50,41},60))
+if EasyTravel then
+EasyTravel.TargetPosition = nil
+pcall(EasyTravel.Stop)
 end
+if OpenChests.Running then
+print(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,45,88,88,12,79,84,81,95,96,95,12,92,94,91,79,81,95,95,81,80,13},20))
+OpenChests.Stop()
+end
+end)
+end
+if not _G.lazyhub then
+table.insert(OpenChests.Connections, UserInputService.InputBegan:Connect(function(input, processed)
+if processed then return end
+if input.KeyCode == Enum.KeyCode.RightBracket then
+if OpenChests.Running then
+OpenChests.Stop()
+else
+OpenChests.Start()
+end
+end
+end))
+OpenChests.Start()
+print(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,63,96,77,90,80,77,88,91,90,81,12,57,91,80,81,38,12,60,94,81,95,95,12,19,73,19,12,96,91,12,96,91,83,83,88,81,26},20))
+end
+return OpenChests
 end)()
