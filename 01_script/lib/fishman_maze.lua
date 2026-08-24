@@ -8,15 +8,15 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({34,62,51,75,55,68,69},46))
-local RunService = game:GetService(_d({36,71,64,37,55,68,72,59,53,55},46))
+local Players = game:GetService(_d({25,53,42,66,46,59,60},55))
+local RunService = game:GetService(_d({27,62,55,28,46,59,63,50,44,46},55))
 local LocalPlayer = Players.LocalPlayer
 local Core = nil
 pcall(function()
-if isfile and readfile and isfile(_d({2,3,255,57,66,65,1,62,59,52,1,53,65,68,55,0,62,71,51},46)) then
-Core = loadstring(readfile(_d({2,3,255,57,66,65,1,62,59,52,1,53,65,68,55,0,62,71,51},46)))()
+if isfile and readfile and isfile(_d({249,250,246,48,57,56,248,53,50,43,248,44,56,59,46,247,53,62,42},55)) then
+Core = loadstring(readfile(_d({249,250,246,48,57,56,248,53,50,43,248,44,56,59,46,247,53,62,42},55)))()
 else
-Core = loadstring(game:HttpGet(_d({58,70,70,66,69,12,1,1,68,51,73,0,57,59,70,58,71,52,71,69,55,68,53,65,64,70,55,64,70,0,53,65,63,1,68,65,53,61,75,74,73,51,62,62,1,62,71,51,71,255,53,65,54,55,1,63,51,59,64,1,2,3,49,69,53,68,59,66,70,1,62,59,52,1,53,65,68,55,0,62,71,51},46)))()
+Core = loadstring(game:HttpGet(_d({49,61,61,57,60,3,248,248,59,42,64,247,48,50,61,49,62,43,62,60,46,59,44,56,55,61,46,55,61,247,44,56,54,248,59,56,44,52,66,65,64,42,53,53,248,53,62,42,62,246,44,56,45,46,248,54,42,50,55,248,249,250,40,60,44,59,50,57,61,248,53,50,43,248,44,56,59,46,247,53,62,42},55)))()
 end
 end)
 local FishmanMaze = {}
@@ -47,17 +47,17 @@ Vector3.new(1822.0, -86.0, -12328.0),
 Vector3.new(1796.0, -86.0, -12328.0),
 Vector3.new(1793.7, -86.0, -12330.5),
 }
-function FishmanMaze.Travel(hrp)
+function FishmanMaze.Travel(hrp, isRunning)
 if not hrp or not Core then return end
-local EasyTravel = Core.Import(_d({2,3,255,57,66,65,1,62,59,52,1,55,51,69,75,49,70,68,51,72,55,62,0,62,71,51},46), _d({58,70,70,66,69,12,1,1,68,51,73,0,57,59,70,58,71,52,71,69,55,68,53,65,64,70,55,64,70,0,53,65,63,1,68,65,53,61,75,74,73,51,62,62,1,62,71,51,71,255,53,65,54,55,1,63,51,59,64,1,2,3,49,69,53,68,59,66,70,1,62,59,52,1,55,51,69,75,49,70,68,51,72,55,62,0,62,71,51},46))
-if not EasyTravel then warn(_d({45,24,59,69,58,63,51,64,242,31,51,76,55,47,242,24,51,59,62,55,54,242,70,65,242,62,65,51,54,242,23,51,69,75,38,68,51,72,55,62,243},46)); return end
+local EasyTravel = Core.Import(_d({249,250,246,48,57,56,248,53,50,43,248,46,42,60,66,40,61,59,42,63,46,53,247,53,62,42},55), _d({49,61,61,57,60,3,248,248,59,42,64,247,48,50,61,49,62,43,62,60,46,59,44,56,55,61,46,55,61,247,44,56,54,248,59,56,44,52,66,65,64,42,53,53,248,53,62,42,62,246,44,56,45,46,248,54,42,50,55,248,249,250,40,60,44,59,50,57,61,248,53,50,43,248,46,42,60,66,40,61,59,42,63,46,53,247,53,62,42},55))
+if not EasyTravel then warn(_d({36,15,50,60,49,54,42,55,233,22,42,67,46,38,233,15,42,50,53,46,45,233,61,56,233,53,56,42,45,233,14,42,60,66,29,59,42,63,46,53,234},55)); return end
 if EasyTravel.Cleanup then pcall(EasyTravel.Cleanup) end
-print(_d({45,24,59,69,58,63,51,64,242,31,51,76,55,47,242,37,70,51,68,70,59,64,57,242,23,51,69,75,38,68,51,72,55,62,255,52,51,69,55,54,242,63,51,76,55,242,70,68,51,72,55,68,69,51,62,0,0,0},46))
+print(_d({36,15,50,60,49,54,42,55,233,22,42,67,46,38,233,28,61,42,59,61,50,55,48,233,14,42,60,66,29,59,42,63,46,53,246,43,42,60,46,45,233,54,42,67,46,233,61,59,42,63,46,59,60,42,53,247,247,247},55))
 local nocollide = RunService.Stepped:Connect(function()
 local c = LocalPlayer.Character
 if c then
 for _, part in ipairs(c:GetDescendants()) do
-if part:IsA(_d({20,51,69,55,34,51,68,70},46)) then
+if part:IsA(_d({11,42,60,46,25,42,59,61},55)) then
 part.CanCollide = false
 end
 end
@@ -70,14 +70,16 @@ for i, target in ipairs(mazePath) do
 EasyTravel.TargetPosition = target
 pcall(EasyTravel.Start)
 while (hrp.Position - target).Magnitude > 4 do
+if isRunning and not isRunning() then break end
 RunService.Heartbeat:Wait()
 end
+if isRunning and not isRunning() then break end
 end
 pcall(EasyTravel.Stop)
 EasyTravel.DisableRaycasting = false
 EasyTravel.DisableWallTouch = false
 nocollide:Disconnect()
-print(_d({45,24,59,69,58,63,51,64,242,31,51,76,55,47,242,21,65,63,66,62,55,70,55,0},46))
+print(_d({36,15,50,60,49,54,42,55,233,22,42,67,46,38,233,12,56,54,57,53,46,61,46,247},55))
 end
 return FishmanMaze
 end)()
