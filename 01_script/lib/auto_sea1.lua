@@ -57,14 +57,35 @@ function Sea1Teleport.Join(vipCode)
             return
         end
 
-        -- 1. Wait for initial Loading Screen GUI to disappear
-        local loadingGui = PlayerGui:WaitForChild("LoadingScreen", 5) or PlayerGui:FindFirstChild("Loading")
+        -- 1. Wait for actual LoadingGUI to disappear (inspected via MCP)
+        local loadingGui = PlayerGui:WaitForChild("LoadingGUI", 3)
+            or PlayerGui:FindFirstChild("LoadingScreen")
+            or PlayerGui:FindFirstChild("Loading")
         if loadingGui then
-            print("[AutoSea1] Loading screen active, waiting for it to finish...")
+            print("[AutoSea1] LoadingGUI active, waiting for it to finish...")
             while loadingGui.Parent == PlayerGui and loadingGui.Enabled do
                 task.wait(0.5)
             end
-            task.wait(1)
+            task.wait(0.5)
+        end
+
+        -- Direct Shortcut: If chooseType is ALREADY open, fire immediately!
+        local chooseType = PlayerGui:FindFirstChild("chooseType")
+        if chooseType and chooseType.Enabled then
+            local chooseRemote = chooseType:FindFirstChild("Frame") and chooseType.Frame:FindFirstChild("RemoteEvent")
+            if chooseRemote then
+                pcall(function()
+                    chooseRemote:FireServer(true)
+                end)
+            end
+            local regBtn = chooseType:FindFirstChild("Frame")
+                and chooseType.Frame:FindFirstChild("Options")
+                and chooseType.Frame.Options:FindFirstChild("Regular")
+            if regBtn then
+                clickGuiButton(regBtn)
+                print("[AutoSea1] 🚀 chooseType already open! Teleporting directly to Regular VIP...")
+                return
+            end
         end
 
         -- 2. Dismiss "Click anywhere / Press any key" overlay
