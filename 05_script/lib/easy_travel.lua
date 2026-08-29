@@ -8,33 +8,23 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({22,50,39,63,43,56,57},58))
-local ReplicatedStorage = game:GetService(_d({24,43,54,50,47,41,39,58,43,42,25,58,53,56,39,45,43},58))
-local RunService       = game:GetService(_d({24,59,52,25,43,56,60,47,41,43},58))
-local Core = nil
-pcall(function()
-if isfile and readfile and isfile(_d({246,247,243,45,54,53,245,50,47,40,245,41,53,56,43,244,50,59,39},58)) then
-Core = loadstring(readfile(_d({246,247,243,45,54,53,245,50,47,40,245,41,53,56,43,244,50,59,39},58)))()
-else
-Core = loadstring(game:HttpGet(_d({46,58,58,54,57,0,245,245,56,39,61,244,45,47,58,46,59,40,59,57,43,56,41,53,52,58,43,52,58,244,41,53,51,245,56,53,41,49,63,62,61,39,50,50,245,50,59,39,59,243,41,53,42,43,245,51,39,47,52,245,246,247,37,57,41,56,47,54,58,245,50,47,40,245,41,53,56,43,244,50,59,39},58)))()
-end
-end)
-if not Core then warn(_d({33,9,53,56,43,35,230,12,39,47,50,43,42,230,58,53,230,50,53,39,42,231},58)); return end
-local Safeguard = Core.GetSafeguard()
-local UserInputService = game:GetService(_d({27,57,43,56,15,52,54,59,58,25,43,56,60,47,41,43},58))
+local Players = game:GetService(_d({34,62,51,75,55,68,69},46))
+local ReplicatedStorage = game:GetService(_d({36,55,66,62,59,53,51,70,55,54,37,70,65,68,51,57,55},46))
+local RunService       = game:GetService(_d({36,71,64,37,55,68,72,59,53,55},46))
+local UserInputService = game:GetService(_d({39,69,55,68,27,64,66,71,70,37,55,68,72,59,53,55},46))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local EasyTravel = {
 TargetPosition = nil,
 DisableKeyboard = false,
-Speed = 70.0,
+Speed = 100.0,
 Enabled = false,
 DisableRaycasting = false,
 DisableWallTouch = false,
 Connections = {}
 }
 local HEIGHT_OFFSET = 6.0
-local SEA_LEVEL_Y = -2.63
+local SEA_LEVEL_Y = 6.0
 local RAYCAST_COOLDOWN = 0.05
 local HOVER_LIFT_GAIN = 20.0
 local FORWARD_SCAN_DISTANCE = 50.0
@@ -46,16 +36,16 @@ local loopConnection = nil
 local function getCharacterComponents()
 local char = LocalPlayer.Character
 if not char then return nil, nil, nil end
-return char, char:FindFirstChildWhichIsA(_d({14,59,51,39,52,53,47,42},58)), char:FindFirstChild(_d({14,59,51,39,52,53,47,42,24,53,53,58,22,39,56,58},58))
+return char, char:FindFirstChildWhichIsA(_d({26,71,63,51,64,65,59,54},46)), char:FindFirstChild(_d({26,71,63,51,64,65,59,54,36,65,65,70,34,51,68,70},46))
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({37,37,11,39,57,63,26,56,39,60,43,50,7,58,58},58)) or Instance.new(_d({7,58,58,39,41,46,51,43,52,58},58))
-att.Name = _d({37,37,11,39,57,63,26,56,39,60,43,50,7,58,58},58)
+local att = root:FindFirstChild(_d({49,49,23,51,69,75,38,68,51,72,55,62,19,70,70},46)) or Instance.new(_d({19,70,70,51,53,58,63,55,64,70},46))
+att.Name = _d({49,49,23,51,69,75,38,68,51,72,55,62,19,70,70},46)
 att.Parent = root
-local force = root:FindFirstChild(_d({37,37,11,39,57,63,26,56,39,60,43,50,12,53,56,41,43},58))
+local force = root:FindFirstChild(_d({49,49,23,51,69,75,38,68,51,72,55,62,24,65,68,53,55},46))
 if not force then
-force = Instance.new(_d({18,47,52,43,39,56,28,43,50,53,41,47,58,63},58))
-force.Name = _d({37,37,11,39,57,63,26,56,39,60,43,50,12,53,56,41,43},58)
+force = Instance.new(_d({30,59,64,55,51,68,40,55,62,65,53,59,70,75},46))
+force.Name = _d({49,49,23,51,69,75,38,68,51,72,55,62,24,65,68,53,55},46)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -68,8 +58,8 @@ end
 local function cleanupForce()
 local _, _, root = getCharacterComponents()
 if root then
-local force = root:FindFirstChild(_d({37,37,11,39,57,63,26,56,39,60,43,50,12,53,56,41,43},58))
-local att = root:FindFirstChild(_d({37,37,11,39,57,63,26,56,39,60,43,50,7,58,58},58))
+local force = root:FindFirstChild(_d({49,49,23,51,69,75,38,68,51,72,55,62,24,65,68,53,55},46))
+local att = root:FindFirstChild(_d({49,49,23,51,69,75,38,68,51,72,55,62,19,70,70},46))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -92,7 +82,6 @@ task.wait(RAYCAST_COOLDOWN)
 local char, _, root = getCharacterComponents()
 if not char or not root then continue end
 local currentPos = root.Position
-local inRoughWaters = currentPos.X >= 1002.01 and currentPos.X <= 3049.91 and currentPos.Z >= -11748.53 and currentPos.Z <= -9700.63
 local moveDir = Vector3.zero
 if EasyTravel.DisableRaycasting then
 isClimbing = false
@@ -121,24 +110,6 @@ if UserInputService:IsKeyDown(Enum.KeyCode.S) then moveDir = moveDir - Vector3.n
 if UserInputService:IsKeyDown(Enum.KeyCode.D) then moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit end
 if UserInputService:IsKeyDown(Enum.KeyCode.A) then moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit end
 end
-end
-local hitCave = false
-local cave = Workspace.Islands:FindFirstChild(_d({12,47,57,46,51,39,52,230,9,39,60,43},58))
-if cave and moveDir and moveDir.Magnitude > 0 then
-local caveRayParams = RaycastParams.new()
-caveRayParams.FilterType = Enum.RaycastFilterType.Include
-caveRayParams.FilterDescendantsInstances = {cave}
-local hit = Workspace:Raycast(currentPos, moveDir.Unit * FORWARD_SCAN_DISTANCE, caveRayParams)
-if hit then
-hitCave = true
-end
-end
-EasyTravel.HitCave = hitCave
-if hitCave or inRoughWaters then
-isClimbing = false
-distanceToWall = 999
-currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
-continue
 end
 local currentPos = root.Position
 local raycastParams = RaycastParams.new()
@@ -199,8 +170,6 @@ end
 end
 function EasyTravel.Start()
 if EasyTravel.Enabled then return end
-if not Safeguard then warn(_d({33,25,39,44,43,45,59,39,56,42,35,230,12,39,47,50,43,42,230,58,53,230,50,53,39,42,231},58)); return end
-if not Safeguard.IsSafe() then return end
 EasyTravel.Enabled = true
 cleanupForce()
 local char, hum, root = getCharacterComponents()
@@ -247,27 +216,28 @@ if moveDir.Magnitude > 0 then
 currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + moveDir)
 end
 end)
-print(_d({33,11,39,57,63,230,26,56,39,60,43,50,35,230,12,50,47,45,46,58,230,43,52,39,40,50,43,42,244},58))
+print(_d({45,23,51,69,75,242,38,68,51,72,55,62,47,242,24,62,59,57,58,70,242,55,64,51,52,62,55,54,0},46))
 end
 function EasyTravel.Stop()
 EasyTravel.Enabled = false
 if loopConnection then loopConnection:Disconnect(); loopConnection = nil end
 cleanupForce()
-print(_d({33,11,39,57,63,230,26,56,39,60,43,50,35,230,12,50,47,45,46,58,230,42,47,57,39,40,50,43,42,244},58))
+print(_d({45,23,51,69,75,242,38,68,51,72,55,62,47,242,24,62,59,57,58,70,242,54,59,69,51,52,62,55,54,0},46))
 end
 function EasyTravel.Cleanup()
 EasyTravel.Stop()
 for _, conn in ipairs(EasyTravel.Connections) do conn:Disconnect() end
 EasyTravel.Connections = {}
 end
-Core.SetupStandalone(
-EasyTravel,
-_d({11,39,57,63,230,26,56,39,60,43,50},58),
-EasyTravel.Start,
-EasyTravel.Stop,
-function() return EasyTravel.Enabled end,
-Enum.KeyCode.P,
-true
-)
+UserInputService.InputBegan:Connect(function(input, gameProcessed)
+if gameProcessed then return end
+if input.KeyCode == Enum.KeyCode.P then
+if EasyTravel.Enabled then
+EasyTravel.Stop()
+else
+EasyTravel.Start()
+end
+end
+end)
 return EasyTravel
 end)()
