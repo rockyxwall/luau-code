@@ -107,8 +107,13 @@ function Core.SetupStandalone(module, name, startCallback, stopCallback, checkCa
     end
     toggleKey = toggleKey or Enum.KeyCode.P
 
+    local cleanKey = "__Clean_" .. tostring(name)
+    if _G[cleanKey] then
+        pcall(_G[cleanKey])
+    end
+
     local UserInputService = game:GetService("UserInputService")
-    UserInputService.InputBegan:Connect(function(input, processed)
+    local connection = UserInputService.InputBegan:Connect(function(input, processed)
         if processed then
             return
         end
@@ -120,6 +125,13 @@ function Core.SetupStandalone(module, name, startCallback, stopCallback, checkCa
             end
         end
     end)
+
+    _G[cleanKey] = function()
+        pcall(stopCallback)
+        if connection and connection.Connected then
+            connection:Disconnect()
+        end
+    end
 
     if not noAutoStart then
         task.spawn(function()
@@ -400,8 +412,13 @@ function Core.SetupStandalone(module, name, startCallback, stopCallback, checkCa
     end
     toggleKey = toggleKey or Enum.KeyCode.P
 
+    local cleanKey = "__Clean_" .. tostring(name)
+    if _G[cleanKey] then
+        pcall(_G[cleanKey])
+    end
+
     local UserInputService = game:GetService("UserInputService")
-    UserInputService.InputBegan:Connect(function(input, processed)
+    local connection = UserInputService.InputBegan:Connect(function(input, processed)
         if processed then
             return
         end
@@ -413,6 +430,13 @@ function Core.SetupStandalone(module, name, startCallback, stopCallback, checkCa
             end
         end
     end)
+
+    _G[cleanKey] = function()
+        pcall(stopCallback)
+        if connection and connection.Connected then
+            connection:Disconnect()
+        end
+    end
 
     if not noAutoStart then
         task.spawn(function()
