@@ -1,6 +1,6 @@
 --[[
     Auto Teleport to Sea 1 / Private Server Library
-    Matches natural game flow: StartScreen -> Menu -> PrivateServersButton -> chooseType -> Regular
+    Robust physical screen position & absolute pixel visibility verification.
     Place Guard: Only executes on GPO Homescreen (PlaceId: 1730877806).
 ]]
 
@@ -15,10 +15,59 @@ local Sea1Teleport = {
     DefaultVipCode = "Jk2JKTAKCf",
 }
 
+-- Checks if GUI object is truly on screen (rendered on viewport and not hidden off-screen)
+local function isGuiRenderedOnScreen(gui)
+    if not gui or not gui:IsA("GuiObject") then
+        return false
+    end
+    if not gui.Visible then
+        return false
+    end
+
+    -- Verify ScreenGui container is enabled
+    local screenGui = gui:FindFirstAncestorOfClass("ScreenGui")
+    if screenGui and not screenGui.Enabled then
+        return false
+    end
+
+    -- Verify parent hierarchy is all visible
+    local parent = gui.Parent
+    while parent and parent:IsA("GuiObject") do
+        if not parent.Visible then
+            return false
+        end
+        parent = parent.Parent
+    end
+
+    -- Check physical pixel size and on-screen coordinates
+    local pos = gui.AbsolutePosition
+    local size = gui.AbsoluteSize
+    if size.X <= 0 or size.Y <= 0 then
+        return false
+    end
+    if pos.Y < -50 or pos.X < -50 then
+        return false
+    end
+
+    return true
+end
+
 local function clickGuiButton(btn)
     if not btn then
         return false
     end
+
+    -- Method 1: Physical screen click at center of button via VirtualInputManager
+    if btn:IsA("GuiObject") then
+        local center = btn.AbsolutePosition + (btn.AbsoluteSize / 2)
+        VIM:SendMouseMoveEvent(center.X, center.Y, game)
+        task.wait(0.05)
+        VIM:SendMouseButtonEvent(center.X, center.Y, 0, true, game, 0)
+        task.wait(0.05)
+        VIM:SendMouseButtonEvent(center.X, center.Y, 0, false, game, 0)
+    end
+
+    -- Method 2: firesignal engine fallback
     if typeof(firesignal) == "function" then
         if btn.MouseButton1Click then
             firesignal(btn.MouseButton1Click)
@@ -32,9 +81,8 @@ local function clickGuiButton(btn)
         if btn.MouseButton1Up then
             firesignal(btn.MouseButton1Up)
         end
-        return true
     end
-    return false
+    return true
 end
 
 function Sea1Teleport.IsOnHomescreen()
@@ -56,51 +104,62 @@ function Sea1Teleport.Join(vipCode)
             return
         end
 
-        -- Step 1: Wait for Start.StartScreen
-        print("[AutoSea1] 1/5 Waiting for PlayerGui.Start.StartScreen...")
+        -- Step 1: Wait for LoadingGUI to completely vanish
+        while true do
+            local loadingGui = PlayerGui:FindFirstChild("LoadingGUI")
+            if not loadingGui or not loadingGui.Enabled then
+                break
+            end
+            task.wait(0.5)
+        end
+        print("[AutoSea1] Step 1 passed: Loading screen finished.")
+
+        -- Step 2: Wait for StartScreen TextLabel ("Press any key to continue") to be physically on screen
         local startGui = PlayerGui:WaitForChild("Start", 30)
-        if not startGui then
-            warn("[AutoSea1] Start GUI not found!")
-            return
-        end
+        local startScreen = startGui and startGui:WaitForChild("StartScreen", 30)
+        local splashText = startScreen and startScreen:WaitForChild("TextLabel", 10)
 
-        local startScreen = startGui:WaitForChild("StartScreen", 30)
-        while
-            startScreen
-            and not startScreen.Visible
-            and not (startGui:FindFirstChild("Menu") and startGui.Menu.Visible)
-        do
-            task.wait(0.2)
-        end
-
-        -- Step 2: Press key (Space) until Start.Menu is visible
-        print("[AutoSea1] 2/5 Pressing key to open Start.Menu...")
-        while startGui.Parent == PlayerGui do
+        print("[AutoSea1] Step 2: Waiting for 'Press any key to continue' text on screen...")
+        while startScreen and not isGuiRenderedOnScreen(splashText) do
             local menu = startGui:FindFirstChild("Menu")
-            if menu and menu.Visible then
+            local list = menu and menu:FindFirstChild("Main") and menu.Main:FindFirstChild("List")
+            local privateBtn = list and list:FindFirstChild("PrivateServersButton")
+            if isGuiRenderedOnScreen(privateBtn) then
+                break
+            end
+            task.wait(0.3)
+        end
+
+        -- Step 3: Dismiss splash screen until Start.Menu is physically visible
+        print("[AutoSea1] Step 3: Dismissing splash screen...")
+        while true do
+            local menu = startGui:FindFirstChild("Menu")
+            local list = menu and menu:FindFirstChild("Main") and menu.Main:FindFirstChild("List")
+            local privateBtn = list and list:FindFirstChild("PrivateServersButton")
+            if isGuiRenderedOnScreen(privateBtn) then
+                print("[AutoSea1] Start menu list is physically rendered on screen!")
                 break
             end
             VIM:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
             task.wait(0.05)
             VIM:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
-            task.wait(0.25)
+            task.wait(0.3)
         end
-        print("[AutoSea1] 3/5 Start.Menu is open!")
 
-        -- Step 3: Click PrivateServersButton (This opens chooseType dialog)
-        print("[AutoSea1] 4/5 Clicking PrivateServersButton...")
+        -- Step 4: Click PrivateServersButton (Physical mouse click + firesignal)
+        print("[AutoSea1] Step 4: Clicking PrivateServersButton...")
         while true do
             local menu = startGui:FindFirstChild("Menu")
             local list = menu and menu:FindFirstChild("Main") and menu.Main:FindFirstChild("List")
             local privateBtn = list and list:FindFirstChild("PrivateServersButton")
-            if privateBtn and privateBtn.Visible then
+            if isGuiRenderedOnScreen(privateBtn) then
                 clickGuiButton(privateBtn)
                 break
             end
             task.wait(0.2)
         end
 
-        -- Step 4: Fire dash & reserved remote (VIP code backend)
+        -- Step 5: Backend Dash + Reserved VIP Code
         local events = ReplicatedStorage:WaitForChild("Events", 15)
         local takeStamRemote = events and events:FindFirstChild("takestam")
         local reservedRemote = events and events:FindFirstChild("reserved")
@@ -121,29 +180,28 @@ function Sea1Teleport.Join(vipCode)
             end)
         end
 
-        -- Step 5: Wait for chooseType dialog and click "Regular"
-        print("[AutoSea1] 5/5 Waiting for chooseType popup and clicking Regular...")
+        -- Step 6: Wait for chooseType dialog and click "Regular"
+        print("[AutoSea1] Step 6: Waiting for chooseType dialog on screen...")
         local chooseType = PlayerGui:WaitForChild("chooseType", 20)
-        if chooseType then
-            while chooseType.Parent == PlayerGui and chooseType.Enabled do
-                local chooseRemote = chooseType:FindFirstChild("Frame")
-                    and chooseType.Frame:FindFirstChild("RemoteEvent")
-                if chooseRemote then
-                    pcall(function()
-                        chooseRemote:FireServer(true)
-                    end)
-                end
-
+        while true do
+            if chooseType and chooseType.Enabled then
                 local regBtn = chooseType:FindFirstChild("Frame")
                     and chooseType.Frame:FindFirstChild("Options")
                     and chooseType.Frame.Options:FindFirstChild("Regular")
-                if regBtn then
+                if isGuiRenderedOnScreen(regBtn) then
+                    local chooseRemote = chooseType:FindFirstChild("Frame")
+                        and chooseType.Frame:FindFirstChild("RemoteEvent")
+                    if chooseRemote then
+                        pcall(function()
+                            chooseRemote:FireServer(true)
+                        end)
+                    end
                     clickGuiButton(regBtn)
-                    print("[AutoSea1] 🚀 Selected Regular VIP Server! Teleporting to Sea 1...")
+                    print("[AutoSea1] 🚀 Clicked Regular button! Joining Sea 1...")
                     break
                 end
-                task.wait(0.2)
             end
+            task.wait(0.2)
         end
     end)
 
