@@ -9,13 +9,15 @@ end
 return _concat(t)
 end
 _G.EasyTravelHelperMode = true
-local Players = game:GetService(_d({48,76,65,89,69,82,83},32))
-local ReplicatedStorage = game:GetService(_d({50,69,80,76,73,67,65,84,69,68,51,84,79,82,65,71,69},32))
-local RunService = game:GetService(_d({50,85,78,51,69,82,86,73,67,69},32))
-local UserInputService = game:GetService(_d({53,83,69,82,41,78,80,85,84,51,69,82,86,73,67,69},32))
+local Players = game:GetService(_d({40,68,57,81,61,74,75},40))
+local ReplicatedStorage = game:GetService(_d({42,61,72,68,65,59,57,76,61,60,43,76,71,74,57,63,61},40))
+local RunService = game:GetService(_d({42,77,70,43,61,74,78,65,59,61},40))
+local UserInputService = game:GetService(_d({45,75,61,74,33,70,72,77,76,43,61,74,78,65,59,61},40))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
-if _G.EasyTravelCleanup then pcall(_G.EasyTravelCleanup) end
+if _G.EasyTravelCleanup then
+pcall(_G.EasyTravelCleanup)
+end
 local FLIGHT_SPEED = 70.0
 local HEIGHT_OFFSET = 6.0
 local SEA_LEVEL_Y = -2.63
@@ -33,23 +35,25 @@ _G.EasyTravel = {
 TargetPosition = nil,
 DisableKeyboard = true,
 Speed = FLIGHT_SPEED,
-Enabled = false
+Enabled = false,
 }
 local function getCharacterComponents()
 local char = LocalPlayer.Character
-if not char then return nil, nil, nil end
-local root = char:FindFirstChild(_d({40,85,77,65,78,79,73,68,50,79,79,84,48,65,82,84},32))
-local hum = char:FindFirstChildWhichIsA(_d({40,85,77,65,78,79,73,68},32))
+if not char then
+return nil, nil, nil
+end
+local root = char:FindFirstChild(_d({32,77,69,57,70,71,65,60,42,71,71,76,40,57,74,76},40))
+local hum = char:FindFirstChildWhichIsA(_d({32,77,69,57,70,71,65,60},40))
 return char, hum, root
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({63,63,37,65,83,89,52,82,65,86,69,76,33,84,84},32)) or Instance.new(_d({33,84,84,65,67,72,77,69,78,84},32))
-att.Name = _d({63,63,37,65,83,89,52,82,65,86,69,76,33,84,84},32)
+local att = root:FindFirstChild(_d({55,55,29,57,75,81,44,74,57,78,61,68,25,76,76},40)) or Instance.new(_d({25,76,76,57,59,64,69,61,70,76},40))
+att.Name = _d({55,55,29,57,75,81,44,74,57,78,61,68,25,76,76},40)
 att.Parent = root
-local force = root:FindFirstChild(_d({63,63,37,65,83,89,52,82,65,86,69,76,38,79,82,67,69},32))
+local force = root:FindFirstChild(_d({55,55,29,57,75,81,44,74,57,78,61,68,30,71,74,59,61},40))
 if not force then
-force = Instance.new(_d({44,73,78,69,65,82,54,69,76,79,67,73,84,89},32))
-force.Name = _d({63,63,37,65,83,89,52,82,65,86,69,76,38,79,82,67,69},32)
+force = Instance.new(_d({36,65,70,61,57,74,46,61,68,71,59,65,76,81},40))
+force.Name = _d({55,55,29,57,75,81,44,74,57,78,61,68,30,71,74,59,61},40)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -62,16 +66,20 @@ end
 local function cleanupForce()
 local _, _, root = getCharacterComponents()
 if root then
-local force = root:FindFirstChild(_d({63,63,37,65,83,89,52,82,65,86,69,76,38,79,82,67,69},32))
-local att = root:FindFirstChild(_d({63,63,37,65,83,89,52,82,65,86,69,76,33,84,84},32))
-if force then force:Destroy() end
-if att then att:Destroy() end
+local force = root:FindFirstChild(_d({55,55,29,57,75,81,44,74,57,78,61,68,30,71,74,59,61},40))
+local att = root:FindFirstChild(_d({55,55,29,57,75,81,44,74,57,78,61,68,25,76,76},40))
+if force then
+force:Destroy()
+end
+if att then
+att:Destroy()
+end
 end
 end
 local function getSurfaceY(position, character)
 local raycastParams = RaycastParams.new()
 raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-raycastParams.FilterDescendantsInstances = {character}
+raycastParams.FilterDescendantsInstances = { character }
 raycastParams.IgnoreWater = true
 local startPos = Vector3.new(position.X, position.Y + 2, position.Z)
 local checkDepth = math.max((position.Y + 2) - SEA_LEVEL_Y, 30)
@@ -84,7 +92,9 @@ local function runRaycastLoop()
 while flightEnabled do
 task.wait(RAYCAST_COOLDOWN)
 local char, _, root = getCharacterComponents()
-if not char or not root then continue end
+if not char or not root then
+continue
+end
 if _G.EasyTravel and _G.EasyTravel.TargetPosition then
 isClimbing = false
 currentTargetY = _G.EasyTravel.TargetPosition.Y
@@ -97,17 +107,19 @@ local moveDir = Vector3.zero
 local currentPos = root.Position
 local raycastParams = RaycastParams.new()
 raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-raycastParams.FilterDescendantsInstances = {char}
+raycastParams.FilterDescendantsInstances = { char }
 raycastParams.IgnoreWater = true
 if moveDir.Magnitude > 0 then
 local moveUnit = moveDir.Unit
 local perpUnit = Vector3.new(-moveUnit.Z, 0, moveUnit.X).Unit
 local forwardHit = Workspace:Raycast(currentPos, moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
 if not forwardHit then
-forwardHit = Workspace:Raycast(currentPos - (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
+forwardHit =
+Workspace:Raycast(currentPos - (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
 end
 if not forwardHit then
-forwardHit = Workspace:Raycast(currentPos + (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
+forwardHit =
+Workspace:Raycast(currentPos + (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
 end
 if forwardHit then
 distanceToWall = forwardHit.Distance
@@ -154,7 +166,9 @@ end
 local function startFlight()
 cleanupForce()
 local char, hum, root = getCharacterComponents()
-if not root or not hum then return end
+if not root or not hum then
+return
+end
 flightEnabled = true
 _G.EasyTravel.Enabled = true
 currentTargetY = getSurfaceY(root.Position, char) + HEIGHT_OFFSET
@@ -163,7 +177,10 @@ task.spawn(runRaycastLoop)
 loopConnection = RunService.Heartbeat:Connect(function(dt)
 local char, currentHum, currentRoot = getCharacterComponents()
 if not currentRoot or not flightEnabled then
-if loopConnection then loopConnection:Disconnect(); loopConnection = nil; end
+if loopConnection then
+loopConnection:Disconnect()
+loopConnection = nil
+end
 cleanupForce()
 return
 end
@@ -210,19 +227,21 @@ _G.EasyTravelCleanup = nil
 end
 local QuestHandler = {}
 function QuestHandler.AcceptQuest(npcName)
-local npcsFolder = Workspace:FindFirstChild(_d({46,48,35,83},32))
+local npcsFolder = Workspace:FindFirstChild(_d({38,40,27,75},40))
 local npc = npcsFolder and npcsFolder:FindFirstChild(npcName)
-local torso = npc and npc:FindFirstChild(_d({53,80,80,69,82,52,79,82,83,79},32))
-local prompt = torso and torso:FindFirstChild(_d({48,82,79,77,80,84},32))
+local torso = npc and npc:FindFirstChild(_d({45,72,72,61,74,44,71,74,75,71},40))
+local prompt = torso and torso:FindFirstChild(_d({40,74,71,69,72,76},40))
 if not prompt then
-print(_d({59,49,85,69,83,84,0,40,65,78,68,76,69,82,61,0,46,79,0,80,82,79,77,80,84,0,70,79,85,78,68,0,70,79,82,0,46,48,35,26,0},32) .. tostring(npcName))
+print(_d({51,41,77,61,75,76,248,32,57,70,60,68,61,74,53,248,38,71,248,72,74,71,69,72,76,248,62,71,77,70,60,248,62,71,74,248,38,40,27,18,248},40) .. tostring(npcName))
 return false
 end
-local myRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({40,85,77,65,78,79,73,68,50,79,79,84,48,65,82,84},32))
-if not myRoot then return false end
+local myRoot = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild(_d({32,77,69,57,70,71,65,60,42,71,71,76,40,57,74,76},40))
+if not myRoot then
+return false
+end
 local dist = (torso.Position - myRoot.Position).Magnitude
 if dist > 12 then
-print(_d({59,49,85,69,83,84,0,40,65,78,68,76,69,82,61,0,48,76,65,89,69,82,0,84,79,79,0,70,65,82,0,8,36,73,83,84,26,0},32) .. tostring(dist) .. ")")
+print(_d({51,41,77,61,75,76,248,32,57,70,60,68,61,74,53,248,40,68,57,81,61,74,248,76,71,71,248,62,57,74,248,0,28,65,75,76,18,248},40) .. tostring(dist) .. ")")
 return false
 end
 local holdTime = prompt.HoldDuration or 0
@@ -232,35 +251,43 @@ end
 if fireproximityprompt then
 pcall(fireproximityprompt, prompt)
 else
-print(_d({59,49,85,69,83,84,0,40,65,78,68,76,69,82,61,0,70,73,82,69,80,82,79,88,73,77,73,84,89,80,82,79,77,80,84,0,78,79,84,0,83,85,80,80,79,82,84,69,68,1},32))
+print(_d({51,41,77,61,75,76,248,32,57,70,60,68,61,74,53,248,62,65,74,61,72,74,71,80,65,69,65,76,81,72,74,71,69,72,76,248,70,71,76,248,75,77,72,72,71,74,76,61,60,249},40))
 return false
 end
 task.wait(0.8)
-local playerGui = LocalPlayer:FindFirstChild(_d({48,76,65,89,69,82,39,85,73},32))
-local chatGui = playerGui and playerGui:FindFirstChild(_d({46,48,35,35,40,33,52},32))
+local playerGui = LocalPlayer:FindFirstChild(_d({40,68,57,81,61,74,31,77,65},40))
+local chatGui = playerGui and playerGui:FindFirstChild(_d({38,40,27,27,32,25,44},40))
 if chatGui and chatGui.Enabled then
 local tries = 0
 while chatGui.Enabled and tries < 6 do
 tries = tries + 1
-local frame = chatGui:FindFirstChild(_d({38,82,65,77,69},32))
-local goBtn = frame and frame:FindFirstChild(_d({71,79},32))
-local endChatBtn = frame and frame:FindFirstChild(_d({69,78,68,35,72,65,84},32))
+local frame = chatGui:FindFirstChild(_d({30,74,57,69,61},40))
+local goBtn = frame and frame:FindFirstChild(_d({63,71},40))
+local endChatBtn = frame and frame:FindFirstChild(_d({61,70,60,27,64,57,76},40))
 if goBtn and goBtn.Visible and goBtn.Text ~= "" then
 if getconnections then
 for _, conn in ipairs(getconnections(goBtn.Activated)) do
-pcall(function() conn:Fire() end)
+pcall(function()
+conn:Fire()
+end)
 end
 for _, conn in ipairs(getconnections(goBtn.MouseButton1Click)) do
-pcall(function() conn:Fire() end)
+pcall(function()
+conn:Fire()
+end)
 end
 end
 elseif endChatBtn and endChatBtn.Visible then
 if getconnections then
 for _, conn in ipairs(getconnections(endChatBtn.Activated)) do
-pcall(function() conn:Fire() end)
+pcall(function()
+conn:Fire()
+end)
 end
 for _, conn in ipairs(getconnections(endChatBtn.MouseButton1Click)) do
-pcall(function() conn:Fire() end)
+pcall(function()
+conn:Fire()
+end)
 end
 end
 end
@@ -271,15 +298,15 @@ return true
 end
 _G.QuestHandler = QuestHandler
 task.spawn(function()
-local npcName = _d({36,65,80,72},32)
-local npcsFolder = Workspace:FindFirstChild(_d({46,48,35,83},32))
+local npcName = _d({28,57,72,64},40)
+local npcsFolder = Workspace:FindFirstChild(_d({38,40,27,75},40))
 local npc = npcsFolder and npcsFolder:FindFirstChild(npcName)
-local torso = npc and npc:FindFirstChild(_d({53,80,80,69,82,52,79,82,83,79},32))
+local torso = npc and npc:FindFirstChild(_d({45,72,72,61,74,44,71,74,75,71},40))
 if not torso then
-print(_d({59,36,69,66,85,71,0,49,85,69,83,84,61,0,37,50,50,47,50,26,0,36,65,80,72,0,46,48,35,0,78,79,84,0,70,79,85,78,68,0,73,78,0,55,79,82,75,83,80,65,67,69,14,46,48,35,83,1},32))
+print(_d({51,28,61,58,77,63,248,41,77,61,75,76,53,248,29,42,42,39,42,18,248,28,57,72,64,248,38,40,27,248,70,71,76,248,62,71,77,70,60,248,65,70,248,47,71,74,67,75,72,57,59,61,6,38,40,27,75,249},40))
 return
 end
-print(_d({59,36,69,66,85,71,0,49,85,69,83,84,61,0,51,84,65,82,84,73,78,71,0,70,76,73,71,72,84,0,84,79,87,65,82,68,83,0},32) .. npcName .. _d({14,14,14},32))
+print(_d({51,28,61,58,77,63,248,41,77,61,75,76,53,248,43,76,57,74,76,65,70,63,248,62,68,65,63,64,76,248,76,71,79,57,74,60,75,248},40) .. npcName .. _d({6,6,6},40))
 startFlight()
 local targetPos = torso.Position - Vector3.new(0, 3.0, 0) + (torso.CFrame.LookVector * 4.0)
 _G.EasyTravel.TargetPosition = targetPos
@@ -296,14 +323,14 @@ end
 end
 end
 if reached then
-print(_d({59,36,69,66,85,71,0,49,85,69,83,84,61,0,50,69,65,67,72,69,68,0,68,69,83,84,73,78,65,84,73,79,78,14,0,51,84,79,80,80,73,78,71,0,70,76,73,71,72,84,0,6,0,84,65,75,73,78,71,0,81,85,69,83,84,14,14,14},32))
+print(_d({51,28,61,58,77,63,248,41,77,61,75,76,53,248,42,61,57,59,64,61,60,248,60,61,75,76,65,70,57,76,65,71,70,6,248,43,76,71,72,72,65,70,63,248,62,68,65,63,64,76,248,254,248,76,57,67,65,70,63,248,73,77,61,75,76,6,6,6},40))
 _G.EasyTravel.TargetPosition = nil
 stopFlight()
 task.wait(1.0)
 local success = QuestHandler.AcceptQuest(npcName)
-print(_d({59,36,69,66,85,71,0,49,85,69,83,84,61,0,33,67,67,69,80,84,49,85,69,83,84,0,83,69,81,85,69,78,67,69,0,69,88,69,67,85,84,69,68,14,0,50,69,83,85,76,84,26,0},32) .. tostring(success))
+print(_d({51,28,61,58,77,63,248,41,77,61,75,76,53,248,25,59,59,61,72,76,41,77,61,75,76,248,75,61,73,77,61,70,59,61,248,61,80,61,59,77,76,61,60,6,248,42,61,75,77,68,76,18,248},40) .. tostring(success))
 else
-print(_d({59,36,69,66,85,71,0,49,85,69,83,84,61,0,52,73,77,69,79,85,84,26,0,35,79,85,76,68,0,78,79,84,0,82,69,65,67,72,0,46,48,35,14},32))
+print(_d({51,28,61,58,77,63,248,41,77,61,75,76,53,248,44,65,69,61,71,77,76,18,248,27,71,77,68,60,248,70,71,76,248,74,61,57,59,64,248,38,40,27,6},40))
 stopFlight()
 end
 end)

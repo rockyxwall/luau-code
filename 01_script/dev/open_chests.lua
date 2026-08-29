@@ -9,32 +9,32 @@ end
 return _concat(t)
 end
 if _G.OpenChestsRunning then
-warn(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,26,69,75,62,58,61,82,249,75,78,71,71,66,71,64,250,249,26,59,72,75,77,66,71,64,249,61,78,73,69,66,60,58,77,62,249,69,58,78,71,60,65,7},39))
+warn(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,45,88,94,81,77,80,101,12,94,97,90,90,85,90,83,13,12,45,78,91,94,96,85,90,83,12,80,97,92,88,85,79,77,96,81,12,88,77,97,90,79,84,26},20))
 return
 end
 _G.OpenChestsRunning = true
-local Players          = game:GetService(_d({41,69,58,82,62,75,76},39))
-local RunService       = game:GetService(_d({43,78,71,44,62,75,79,66,60,62},39))
-local UserInputService = game:GetService(_d({46,76,62,75,34,71,73,78,77,44,62,75,79,66,60,62},39))
-local LocalPlayer      = Players.LocalPlayer
+local Players = game:GetService(_d({60,88,77,101,81,94,95},20))
+local RunService = game:GetService(_d({62,97,90,63,81,94,98,85,79,81},20))
+local UserInputService = game:GetService(_d({65,95,81,94,53,90,92,97,96,63,81,94,98,85,79,81},20))
+local LocalPlayer = Players.LocalPlayer
 local running = true
-local ARRIVE_DIST     = 6
+local ARRIVE_DIST = 6
 local TIMEOUT_PER_CHEST = 20
-local OPEN_WAIT       = 2.5
-local TRAVEL_HEIGHT   = 4
-local CHECK_HZ        = 0.1
+local OPEN_WAIT = 2.5
+local TRAVEL_HEIGHT = 4
+local CHECK_HZ = 0.1
 local function collectChests()
 local chests = {}
 for _, v in ipairs(workspace:GetDescendants()) do
-if v:IsA(_d({41,75,72,81,66,70,66,77,82,41,75,72,70,73,77},39)) then
+if v:IsA(_d({60,94,91,100,85,89,85,96,101,60,94,91,89,92,96},20)) then
 local action = v.ActionText
-if action:find(_d({41,62,69,66,249,28,65,62,76,77},39)) then
+if action:find(_d({60,81,88,85,12,47,84,81,95,96},20)) then
 local part = v.Parent
-if part and part:IsA(_d({27,58,76,62,41,58,75,77},39)) then
+if part and part:IsA(_d({46,77,95,81,60,77,94,96},20)) then
 table.insert(chests, {
-prompt   = v,
+prompt = v,
 position = part.Position,
-label    = string.format(_d({1,254,7,9,63,5,249,254,7,9,63,5,249,254,7,9,63,2},39), part.Position.X, part.Position.Y, part.Position.Z)
+label = string.format(_d({20,17,26,28,82,24,12,17,26,28,82,24,12,17,26,28,82,21},20), part.Position.X, part.Position.Y, part.Position.Z),
 })
 end
 end
@@ -42,52 +42,62 @@ end
 end
 return chests
 end
-local function Core.GetRoot(LocalPlayer)
+local function getRoot()
 local char = LocalPlayer.Character
-if not char then return nil end
-return char:FindFirstChild(_d({33,78,70,58,71,72,66,61,43,72,72,77,41,58,75,77},39))
+if not char then
+return nil
+end
+return char:FindFirstChild(_d({52,97,89,77,90,91,85,80,62,91,91,96,60,77,94,96},20))
 end
 local function waitForRoot(timeout)
 local t = 0
 while t < timeout do
-local r = Core.GetRoot(LocalPlayer)
-if r then return r end
+local r = getRoot()
+if r then
+return r
+end
 task.wait(0.1)
 t = t + 0.1
 end
 return nil
 end
 local chests = collectChests()
-print(string.format(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,31,72,78,71,61,249,254,61,249,41,62,69,66,249,28,65,62,76,77,76,7},39), #chests))
+print(string.format(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,50,91,97,90,80,12,17,80,12,60,81,88,85,12,47,84,81,95,96,95,26},20), #chests))
 if #chests == 0 then
-warn(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,39,72,249,60,65,62,76,77,76,249,63,72,78,71,61,249,187,89,109,249,58,75,62,249,82,72,78,249,66,71,249,77,65,62,249,75,66,64,65,77,249,58,75,62,58,24},39))
+warn(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,58,91,12,79,84,81,95,96,95,12,82,91,97,90,80,12,206,108,128,12,77,94,81,12,101,91,97,12,85,90,12,96,84,81,12,94,85,83,84,96,12,77,94,81,77,43},20))
 _G.OpenChestsRunning = false
 return
 end
 local startRoot = waitForRoot(5)
 if not startRoot then
-warn(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,28,72,78,69,61,249,71,72,77,249,63,66,71,61,249,60,65,58,75,58,60,77,62,75,249,75,72,72,77,250,249,26,59,72,75,77,66,71,64,7},39))
+warn(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,47,91,97,88,80,12,90,91,96,12,82,85,90,80,12,79,84,77,94,77,79,96,81,94,12,94,91,91,96,13,12,45,78,91,94,96,85,90,83,26},20))
 _G.OpenChestsRunning = false
 return
 end
 local playerStartPos = startRoot.Position
-local playerStartY   = playerStartPos.Y
+local playerStartY = playerStartPos.Y
 local filtered = {}
 for _, c in ipairs(chests) do
 if c.position.Y <= playerStartY + 20 then
 table.insert(filtered, c)
 else
-print(string.format(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,44,68,66,73,73,66,71,64,249,62,69,62,79,58,77,62,61,249,60,65,62,76,77,249,58,77,249,254,76,249,1,50,22,254,7,9,63,249,23,249,69,66,70,66,77,249,254,7,9,63,2},39),
-c.label, c.position.Y, playerStartY + 20))
+print(
+string.format(
+_d({71,59,92,81,90,47,84,81,95,96,95,73,12,63,87,85,92,92,85,90,83,12,81,88,81,98,77,96,81,80,12,79,84,81,95,96,12,77,96,12,17,95,12,20,69,41,17,26,28,82,12,42,12,88,85,89,85,96,12,17,26,28,82,21},20),
+c.label,
+c.position.Y,
+playerStartY + 20
+)
+)
 end
 end
 table.sort(filtered, function(a, b)
 return (a.position - playerStartPos).Magnitude < (b.position - playerStartPos).Magnitude
 end)
 chests = filtered
-print(string.format(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,254,61,249,60,65,62,76,77,76,249,74,78,62,78,62,61,249,1,71,62,58,75,62,76,77,6,63,66,75,76,77,5,249,58,63,77,62,75,249,50,249,63,66,69,77,62,75,2,7},39), #chests))
+print(string.format(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,17,80,12,79,84,81,95,96,95,12,93,97,81,97,81,80,12,20,90,81,77,94,81,95,96,25,82,85,94,95,96,24,12,77,82,96,81,94,12,69,12,82,85,88,96,81,94,21,26},20), #chests))
 if #chests == 0 then
-warn(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,39,72,249,75,62,58,60,65,58,59,69,62,249,60,65,62,76,77,76,249,58,63,77,62,75,249,63,66,69,77,62,75,66,71,64,7},39))
+warn(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,58,91,12,94,81,77,79,84,77,78,88,81,12,79,84,81,95,96,95,12,77,82,96,81,94,12,82,85,88,96,81,94,85,90,83,26},20))
 _G.OpenChestsRunning = false
 return
 end
@@ -96,18 +106,18 @@ if _G.EasyTravelCleanup then
 pcall(_G.EasyTravelCleanup)
 task.wait(0.3)
 end
-local easyTravelSrc = readfile(_d({69,66,59,8,62,58,76,82,56,77,75,58,79,62,69,7,69,78,58},39))
+local easyTravelSrc = readfile(_d({88,85,78,27,81,77,95,101,75,96,94,77,98,81,88,26,88,97,77},20))
 local loader = loadstring(easyTravelSrc)
 if not loader then
-error(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,31,58,66,69,62,61,249,77,72,249,69,72,58,61,249,62,58,76,82,56,77,75,58,79,62,69,7,69,78,58,249,187,89,109,249,60,65,62,60,68,249,80,72,75,68,76,73,58,60,62,249,63,66,69,62,250},39))
+error(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,50,77,85,88,81,80,12,96,91,12,88,91,77,80,12,81,77,95,101,75,96,94,77,98,81,88,26,88,97,77,12,206,108,128,12,79,84,81,79,87,12,99,91,94,87,95,92,77,79,81,12,82,85,88,81,13},20))
 end
 local ET = loader()
 if not ET or not ET.Start then
-error(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,62,58,76,82,56,77,75,58,79,62,69,249,26,41,34,249,71,72,77,249,75,62,77,78,75,71,62,61,249,60,72,75,75,62,60,77,69,82,7},39))
+error(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,81,77,95,101,75,96,94,77,98,81,88,12,45,60,53,12,90,91,96,12,94,81,96,97,94,90,81,80,12,79,91,94,94,81,79,96,88,101,26},20))
 end
 task.wait(0.2)
 ET.Start()
-print(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,30,58,76,82,249,45,75,58,79,62,69,249,76,77,58,75,77,62,61,249,66,71,249,65,62,69,73,62,75,249,70,72,61,62,7},39))
+print(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,49,77,95,101,12,64,94,77,98,81,88,12,95,96,77,94,96,81,80,12,85,90,12,84,81,88,92,81,94,12,89,91,80,81,26},20))
 local function cleanup(reason)
 running = false
 if ET then
@@ -119,18 +129,18 @@ pcall(_G.EasyTravelCleanup)
 end
 _G.EasyTravelHelperMode = nil
 _G.OpenChestsRunning = false
-print(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,44,77,72,73,73,62,61,19,249},39) .. (reason or _d({61,72,71,62},39)) .. ".")
+print(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,63,96,91,92,92,81,80,38,12},20) .. (reason or _d({80,91,90,81},20)) .. ".")
 end
 UserInputService.InputBegan:Connect(function(input, processed)
 if not processed and input.KeyCode == Enum.KeyCode.P then
 if running then
-print(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,41,249,73,75,62,76,76,62,61,249,187,89,109,249,58,59,72,75,77,66,71,64,250},39))
-cleanup(_d({41,249,68,62,82,249,58,59,72,75,77},39))
+print(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,60,12,92,94,81,95,95,81,80,12,206,108,128,12,77,78,91,94,96,85,90,83,13},20))
+cleanup(_d({60,12,87,81,101,12,77,78,91,94,96},20))
 end
 end
 end)
 for i, chest in ipairs(chests) do
-print(string.format(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,52,254,61,8,254,61,54,249,45,75,58,79,62,69,69,66,71,64,249,77,72,249,60,65,62,76,77,249,58,77,249,254,76},39), i, #chests, chest.label))
+print(string.format(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,71,17,80,27,17,80,73,12,64,94,77,98,81,88,88,85,90,83,12,96,91,12,79,84,81,95,96,12,77,96,12,17,95},20), i, #chests, chest.label))
 local target = chest.position + Vector3.new(0, TRAVEL_HEIGHT, 0)
 ET.TargetPosition = target
 local elapsed = 0
@@ -139,18 +149,22 @@ task.wait(CHECK_HZ)
 elapsed = elapsed + CHECK_HZ
 local root = Core.GetRoot(LocalPlayer)
 if not root then
-warn(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,37,72,76,77,249,60,65,58,75,58,60,77,62,75,249,187,89,109,249,73,58,78,76,66,71,64,7},39))
+warn(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,56,91,95,96,12,79,84,77,94,77,79,96,81,94,12,206,108,128,12,92,77,97,95,85,90,83,26},20))
 task.wait(1)
 root = waitForRoot(5)
-if not root then break end
-end
-local dist = (root.Position - chest.position).Magnitude
-if dist <= ARRIVE_DIST then
-print(string.format(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,26,75,75,66,79,62,61,250,249,1,61,66,76,77,22,254,7,10,63,2},39), dist))
+if not root then
 break
 end
 end
-if not running then break end
+local dist = (root.Position - chest.position).Magnitude
+if dist <= ARRIVE_DIST then
+print(string.format(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,45,94,94,85,98,81,80,13,12,20,80,85,95,96,41,17,26,29,82,21},20), dist))
+break
+end
+end
+if not running then
+break
+end
 local currentRoot = Core.GetRoot(LocalPlayer)
 if currentRoot then
 ET.TargetPosition = currentRoot.Position
@@ -160,20 +174,20 @@ local ok, err = pcall(function()
 fireproximityprompt(chest.prompt)
 end)
 if ok then
-print(string.format(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,40,73,62,71,62,61,249,60,65,62,76,77,249,254,61,250},39), i))
+print(string.format(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,59,92,81,90,81,80,12,79,84,81,95,96,12,17,80,13},20), i))
 else
-warn(string.format(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,63,66,75,62,73,75,72,81,66,70,66,77,82,73,75,72,70,73,77,249,63,58,66,69,62,61,19,249,254,76},39), tostring(err)))
+warn(string.format(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,82,85,94,81,92,94,91,100,85,89,85,96,101,92,94,91,89,92,96,12,82,77,85,88,81,80,38,12,17,95},20), tostring(err)))
 pcall(function()
 chest.prompt.Triggered:Fire(LocalPlayer)
 end)
 end
 else
-warn(string.format(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,28,65,62,76,77,249,254,61,249,73,75,72,70,73,77,249,71,72,249,69,72,71,64,62,75,249,62,81,66,76,77,76,249,1,70,58,82,249,65,58,79,62,249,61,62,76,73,58,80,71,62,61,2,7},39), i))
+warn(string.format(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,47,84,81,95,96,12,17,80,12,92,94,91,89,92,96,12,90,91,12,88,91,90,83,81,94,12,81,100,85,95,96,95,12,20,89,77,101,12,84,77,98,81,12,80,81,95,92,77,99,90,81,80,21,26},20), i))
 end
 task.wait(OPEN_WAIT)
 end
 if running then
-print(_d({52,40,73,62,71,28,65,62,76,77,76,54,249,26,69,69,249,60,65,62,76,77,76,249,73,75,72,60,62,76,76,62,61,250},39))
-cleanup(_d({58,69,69,249,61,72,71,62},39))
+print(_d({71,59,92,81,90,47,84,81,95,96,95,73,12,45,88,88,12,79,84,81,95,96,95,12,92,94,91,79,81,95,95,81,80,13},20))
+cleanup(_d({77,88,88,12,80,91,90,81},20))
 end
 end)()
