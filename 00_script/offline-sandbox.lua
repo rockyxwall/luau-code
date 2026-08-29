@@ -1,20 +1,28 @@
 --[[
     Offline Sandbox & Network Severing Tool
-    Single-file utility for safe, offline script testing.
+    Single-file utility for safe, offline script testing with anti-disconnect keep-alive.
     
     Controls:
-    - Press 'P' to toggle Offline Network Severing ON / OFF.
+    - Press '\' (Backslash) to toggle Offline Network Severing ON / OFF.
     - _G.Sandbox.Start() / _G.Sandbox.Stop() via console.
     - _G.Sandbox.DumpHistory() to inspect blocked remotes.
 ]]
 
+local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
+local VirtualUser = game:GetService("VirtualUser")
+local LocalPlayer = Players.LocalPlayer
 
 local Sandbox = {
     Enabled = false,
     BlockAll = true,
     BlockedRemotes = {},
     IgnoredRemotes = {},
+    WhitelistedRemotes = {
+        -- Keep essential ping/heartbeat packets alive if needed
+        ["Ping"] = true,
+        ["Heartbeat"] = true,
+    },
     History = {},
     MaxHistory = 100,
     OriginalNamecall = nil,
@@ -42,6 +50,16 @@ local function logIntercept(method, remote, args)
     print(string.format("[Offline Sandbox BLOCKED] %s on %s", method, entry.RemotePath))
 end
 
+-- Anti-Disconnect / Anti-AFK Keep-Alive
+if LocalPlayer then
+    LocalPlayer.Idled:Connect(function()
+        if Sandbox.Enabled then
+            VirtualUser:CaptureController()
+            VirtualUser:ClickButton2(Vector2.new())
+        end
+    end)
+end
+
 function Sandbox.Start()
     if Sandbox.Enabled then
         print("[Offline Sandbox] Already active.")
@@ -54,7 +72,7 @@ function Sandbox.Start()
     end
 
     Sandbox.Enabled = true
-    print("[Offline Sandbox] 🛡️ Network severing active! All outbound remotes blocked.")
+    print("[Offline Sandbox] 🛡️ Network severing active! Outbound remotes blocked.")
 
     if not Sandbox.OriginalNamecall then
         Sandbox.OriginalNamecall = hook_metamethod(
@@ -70,6 +88,12 @@ function Sandbox.Start()
                             or self:IsA("UnreliableRemoteEvent")
                         then
                             local remoteName = self.Name
+
+                            -- Keep whitelisted heartbeat packets alive to prevent connection drops
+                            if Sandbox.WhitelistedRemotes[remoteName] then
+                                return Sandbox.OriginalNamecall(self, ...)
+                            end
+
                             local isBlocked = Sandbox.BlockAll or Sandbox.BlockedRemotes[remoteName]
 
                             if isBlocked and not Sandbox.IgnoredRemotes[remoteName] then
@@ -114,9 +138,9 @@ end
 Sandbox.Start()
 _G.Sandbox = Sandbox
 
--- Bind 'P' hotkey for instant toggling
+-- Bind '\' (BackSlash) hotkey for instant toggling
 UserInputService.InputBegan:Connect(function(input, processed)
-    if not processed and input.KeyCode == Enum.KeyCode.P then
+    if not processed and input.KeyCode == Enum.KeyCode.BackSlash then
         if Sandbox.Enabled then
             Sandbox.Stop()
         else
@@ -125,5 +149,5 @@ UserInputService.InputBegan:Connect(function(input, processed)
     end
 end)
 
-print("[Offline Sandbox] Active! Press 'P' to toggle network severing.")
+print("[Offline Sandbox] Active! Press '\\' to toggle network severing.")
 return Sandbox
