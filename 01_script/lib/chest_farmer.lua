@@ -8,8 +8,8 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({28,56,45,69,49,62,63},52))
-local UserInputService = game:GetService(_d({33,63,49,62,21,58,60,65,64,31,49,62,66,53,47,49},52))
+local Players = game:GetService(_d({61,89,78,102,82,95,96},19))
+local UserInputService = game:GetService(_d({66,96,82,95,54,91,93,98,97,64,82,95,99,86,80,82},19))
 local LocalPlayer = Players.LocalPlayer
 local ChestFarmer = {
 Running = false,
@@ -26,30 +26,8 @@ return pos.X >= ISLAND_MIN_X and pos.X <= ISLAND_MAX_X and pos.Z >= ISLAND_MIN_Z
 end
 local Core = (function()
 local Core = {}
-function Core.Import(localPath, publicUrl)
-local loaded = false
-local result = nil
-local oldState = _G.DisableStandalone
-_G.DisableStandalone = true
-if isfile and readfile then
-pcall(function()
-local content = readfile(localPath)
-if content and content ~= "" then
-result = loadstring(content)()
-loaded = true
-end
-end)
-end
-if not loaded then
-pcall(function()
-result = loadstring(game:HttpGet(publicUrl))()
-end)
-end
-_G.DisableStandalone = oldState
-return result
-end
-local Players = game:GetService(_d({28,56,45,69,49,62,63},52))
-local ReplicatedStorage = game:GetService(_d({30,49,60,56,53,47,45,64,49,48,31,64,59,62,45,51,49},52))
+local Players = game:GetService(_d({61,89,78,102,82,95,96},19))
+local ReplicatedStorage = game:GetService(_d({63,82,93,89,86,80,78,97,82,81,64,97,92,95,78,84,82},19))
 local LocalPlayer = Players.LocalPlayer
 local statsFolder = nil
 local peliValueObj = nil
@@ -59,19 +37,19 @@ local function getStats()
 if statsFolder and statsFolder.Parent then
 return statsFolder
 end
-statsFolder = ReplicatedStorage:FindFirstChild(_d({31,64,45,64,63},52) .. LocalPlayer.Name)
+statsFolder = ReplicatedStorage:FindFirstChild(_d({64,97,78,97,96},19) .. LocalPlayer.Name)
 if statsFolder then
-peliValueObj = statsFolder:FindFirstChild(_d({28,49,56,53},52))
-if not (peliValueObj and peliValueObj:IsA(_d({34,45,56,65,49,14,45,63,49},52))) then
-local nested = statsFolder:FindFirstChild(_d({31,64,45,64,63},52))
-peliValueObj = nested and nested:FindFirstChild(_d({28,49,56,53},52))
+peliValueObj = statsFolder:FindFirstChild(_d({61,82,89,86},19))
+if not (peliValueObj and peliValueObj:IsA(_d({67,78,89,98,82,47,78,96,82},19))) then
+local nested = statsFolder:FindFirstChild(_d({64,97,78,97,96},19))
+peliValueObj = nested and nested:FindFirstChild(_d({61,82,89,86},19))
 end
-levelValueObj = statsFolder:FindFirstChild(_d({24,49,66,49,56},52))
-if not (levelValueObj and levelValueObj:IsA(_d({34,45,56,65,49,14,45,63,49},52))) then
-local nested = statsFolder:FindFirstChild(_d({31,64,45,64,63},52))
-levelValueObj = nested and nested:FindFirstChild(_d({24,49,66,49,56},52))
+levelValueObj = statsFolder:FindFirstChild(_d({57,82,99,82,89},19))
+if not (levelValueObj and levelValueObj:IsA(_d({67,78,89,98,82,47,78,96,82},19))) then
+local nested = statsFolder:FindFirstChild(_d({64,97,78,97,96},19))
+levelValueObj = nested and nested:FindFirstChild(_d({57,82,99,82,89},19))
 end
-staminaValueObj = statsFolder:FindFirstChild(_d({31,64,45,57,53,58,45},52))
+staminaValueObj = statsFolder:FindFirstChild(_d({64,97,78,90,86,91,78},19))
 else
 peliValueObj = nil
 levelValueObj = nil
@@ -96,7 +74,7 @@ return 0, 0
 end
 function Core.GetHealth()
 local char = LocalPlayer.Character
-local hum = char and char:FindFirstChild(_d({20,65,57,45,58,59,53,48},52))
+local hum = char and char:FindFirstChild(_d({53,98,90,78,91,92,86,81},19))
 if hum then
 return hum.Health, hum.MaxHealth
 end
@@ -107,7 +85,7 @@ if _G.DisableStandalone then
 return
 end
 toggleKey = toggleKey or Enum.KeyCode.P
-local UserInputService = game:GetService(_d({33,63,49,62,21,58,60,65,64,31,49,62,66,53,47,49},52))
+local UserInputService = game:GetService(_d({66,96,82,95,54,91,93,98,97,64,82,95,99,86,80,82},19))
 local connection = UserInputService.InputBegan:Connect(function(input, processed)
 if processed then
 return
@@ -131,30 +109,30 @@ end
 startCallback()
 end)
 end
-print("[" .. tostring(name) .. _d({41,236,31,64,45,58,48,45,56,59,58,49,236,25,59,48,49,6,236,28,62,49,63,63,236,243},52) .. toggleKey.Name .. _d({243,236,64,59,236,64,59,51,51,56,49,250},52))
+print("[" .. tostring(name) .. _d({74,13,64,97,78,91,81,78,89,92,91,82,13,58,92,81,82,39,13,61,95,82,96,96,13,20},19) .. toggleKey.Name .. _d({20,13,97,92,13,97,92,84,84,89,82,27},19))
 end
 function Core.GetRoot(player)
 local char = player and player.Character
-return char and char:FindFirstChild(_d({20,65,57,45,58,59,53,48,30,59,59,64,28,45,62,64},52))
+return char and char:FindFirstChild(_d({53,98,90,78,91,92,86,81,63,92,92,97,61,78,95,97},19))
 end
 local Safeguard = (function()
 local Safeguard = {
 Config = {
-PrivateServerCode = _d({22,55,254,22,23,32,13,23,15,50},52),
-TeleportLocation = _d({253,63,64,31,49,45},52),
+PrivateServerCode = _d({55,88,31,55,56,65,46,56,48,83},19),
+TeleportLocation = _d({30,96,97,64,82,78},19),
 },
 }
 local GPO_UNIVERSE_ID = 648454481
 local BANNED_PLACES = {
-[1730877806] = _d({18,53,62,63,64,236,31,49,45,236,20,59,57,49,63,47,62,49,49,58,236,251,236,25,45,53,58,236,25,49,58,65},52),
+[1730877806] = _d({51,86,95,96,97,13,64,82,78,13,53,92,90,82,96,80,95,82,82,91,13,28,13,58,78,86,91,13,58,82,91,98},19),
 }
 function Safeguard.JoinPrivateServer()
 local code = Safeguard.Config.PrivateServerCode
-if type(code) == _d({63,64,62,53,58,51},52) and code ~= "" then
-print(string.format(_d({39,31,45,50,49,51,65,45,62,48,41,236,22,59,53,58,53,58,51,236,28,62,53,66,45,64,49,236,31,49,62,66,49,62,236,243,241,63,243,250,250,250},52), code))
+if type(code) == _d({96,97,95,86,91,84},19) and code ~= "" then
+print(string.format(_d({72,64,78,83,82,84,98,78,95,81,74,13,55,92,86,91,86,91,84,13,61,95,86,99,78,97,82,13,64,82,95,99,82,95,13,20,18,96,20,27,27,27},19), code))
 task.spawn(function()
-local rs = game:GetService(_d({30,49,60,56,53,47,45,64,49,48,31,64,59,62,45,51,49},52))
-local reservedRemote = rs:WaitForChild(_d({17,66,49,58,64,63},52)):WaitForChild(_d({62,49,63,49,62,66,49,48},52))
+local rs = game:GetService(_d({63,82,93,89,86,80,78,97,82,81,64,97,92,95,78,84,82},19))
+local reservedRemote = rs:WaitForChild(_d({50,99,82,91,97,96},19)):WaitForChild(_d({95,82,96,82,95,99,82,81},19))
 task.spawn(function()
 pcall(function()
 reservedRemote:InvokeServer(code)
@@ -165,7 +143,7 @@ for i = 1, 20 do
 task.wait(0.5)
 for _, v in next, getnilinstances() do
 if
-v:IsA(_d({30,49,57,59,64,49,17,66,49,58,64},52)) and (v.Name == _d({30,49,57,59,64,49,17,66,49,58,64},52) or v.Name == _d({64,49,56,49},52) or v.Name == _d({32,49,56,49,60,59,62,64},52))
+v:IsA(_d({63,82,90,92,97,82,50,99,82,91,97},19)) and (v.Name == _d({63,82,90,92,97,82,50,99,82,91,97},19) or v.Name == _d({97,82,89,82},19) or v.Name == _d({65,82,89,82,93,92,95,97},19))
 then
 teleRemote = v
 break
@@ -176,13 +154,13 @@ break
 end
 end
 if teleRemote then
-print(_d({39,31,45,50,49,51,65,45,62,48,41,236,18,53,62,53,58,51,236,64,49,56,49,60,59,62,64,236,62,49,57,59,64,49,6,236},52) .. teleRemote.Name)
+print(_d({72,64,78,83,82,84,98,78,95,81,74,13,51,86,95,86,91,84,13,97,82,89,82,93,92,95,97,13,95,82,90,92,97,82,39,13},19) .. teleRemote.Name)
 teleRemote:FireServer(true)
 else
-warn(_d({39,31,45,50,49,51,65,45,62,48,41,236,15,59,65,56,48,236,58,59,64,236,50,53,58,48,236,30,49,57,59,64,49,17,66,49,58,64,236,53,58,236,58,53,56,250,236,28,62,53,58,64,53,58,51,236,45,56,56,236,30,49,57,59,64,49,17,66,49,58,64,63,236,53,58,236,58,53,56,6},52))
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,48,92,98,89,81,13,91,92,97,13,83,86,91,81,13,63,82,90,92,97,82,50,99,82,91,97,13,86,91,13,91,86,89,27,13,61,95,86,91,97,86,91,84,13,78,89,89,13,63,82,90,92,97,82,50,99,82,91,97,96,13,86,91,13,91,86,89,39},19))
 for _, v in next, getnilinstances() do
-if v:IsA(_d({30,49,57,59,64,49,17,66,49,58,64},52)) then
-print(_d({236,249,236,26,45,57,49,6},52), v.Name)
+if v:IsA(_d({63,82,90,92,97,82,50,99,82,91,97},19)) then
+print(_d({13,26,13,59,78,90,82,39},19), v.Name)
 end
 end
 end
@@ -193,15 +171,15 @@ return false
 end
 function Safeguard.IsSafe()
 if game.GameId ~= GPO_UNIVERSE_ID then
-warn(_d({39,31,45,50,49,51,65,45,62,48,41,236,35,62,59,58,51,236,51,45,57,49,236,65,58,53,66,49,62,63,49,237,236,31,47,62,53,60,64,236,53,63,236,59,58,56,69,236,50,59,62,236,19,28,27,250},52))
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,68,95,92,91,84,13,84,78,90,82,13,98,91,86,99,82,95,96,82,14,13,64,80,95,86,93,97,13,86,96,13,92,91,89,102,13,83,92,95,13,52,61,60,27},19))
 return false
 end
 if BANNED_PLACES[game.PlaceId] then
-warn(_d({39,31,45,50,49,51,65,45,62,48,41,236,31,47,62,53,60,64,236,49,68,49,47,65,64,53,59,58,236,46,56,59,47,55,49,48,236,59,58,6,236},52) .. BANNED_PLACES[game.PlaceId])
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,64,80,95,86,93,97,13,82,101,82,80,98,97,86,92,91,13,79,89,92,80,88,82,81,13,92,91,39,13},19) .. BANNED_PLACES[game.PlaceId])
 if Safeguard.JoinPrivateServer() then
-print(_d({39,31,45,50,49,51,65,45,62,48,41,236,32,49,56,49,60,59,62,64,53,58,51,236,64,59,236,28,62,53,66,45,64,49,236,31,49,62,66,49,62,250,250,250,236,28,56,49,45,63,49,236,67,45,53,64,250},52))
+print(_d({72,64,78,83,82,84,98,78,95,81,74,13,65,82,89,82,93,92,95,97,86,91,84,13,97,92,13,61,95,86,99,78,97,82,13,64,82,95,99,82,95,27,27,27,13,61,89,82,78,96,82,13,100,78,86,97,27},19))
 else
-warn(_d({39,31,45,50,49,51,65,45,62,48,41,236,28,62,53,66,45,64,49,31,49,62,66,49,62,15,59,48,49,236,53,63,236,58,59,64,236,63,49,64,250,236,15,45,58,58,59,64,236,45,65,64,59,249,54,59,53,58,250},52))
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,61,95,86,99,78,97,82,64,82,95,99,82,95,48,92,81,82,13,86,96,13,91,92,97,13,96,82,97,27,13,48,78,91,91,92,97,13,78,98,97,92,26,87,92,86,91,27},19))
 end
 return false
 end
@@ -209,25 +187,25 @@ return true
 end
 function Safeguard.RequirePlace(placeId, name)
 if game.GameId ~= GPO_UNIVERSE_ID then
-warn(_d({39,31,45,50,49,51,65,45,62,48,41,236,35,62,59,58,51,236,51,45,57,49,236,65,58,53,66,49,62,63,49,237,236,31,47,62,53,60,64,236,53,63,236,59,58,56,69,236,50,59,62,236,19,28,27,250},52))
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,68,95,92,91,84,13,84,78,90,82,13,98,91,86,99,82,95,96,82,14,13,64,80,95,86,93,97,13,86,96,13,92,91,89,102,13,83,92,95,13,52,61,60,27},19))
 return false
 end
 if game.PlaceId == placeId then
 return true
 end
 if BANNED_PLACES[game.PlaceId] then
-warn(string.format(_d({39,31,45,50,49,51,65,45,62,48,41,236,37,59,65,236,45,62,49,236,59,58,236,64,52,49,236,20,59,57,49,63,47,62,49,49,58,250,236,31,47,62,53,60,64,236,62,49,61,65,53,62,49,63,236,241,63,250},52), name or _d({45,236,63,60,49,47,53,50,53,47,236,60,56,45,47,49},52)))
+warn(string.format(_d({72,64,78,83,82,84,98,78,95,81,74,13,70,92,98,13,78,95,82,13,92,91,13,97,85,82,13,53,92,90,82,96,80,95,82,82,91,27,13,64,80,95,86,93,97,13,95,82,94,98,86,95,82,96,13,18,96,27},19), name or _d({78,13,96,93,82,80,86,83,86,80,13,93,89,78,80,82},19)))
 if Safeguard.JoinPrivateServer() then
-print(_d({39,31,45,50,49,51,65,45,62,48,41,236,32,49,56,49,60,59,62,64,53,58,51,236,64,59,236,28,62,53,66,45,64,49,236,31,49,62,66,49,62,250,250,250,236,28,56,49,45,63,49,236,67,45,53,64,250},52))
+print(_d({72,64,78,83,82,84,98,78,95,81,74,13,65,82,89,82,93,92,95,97,86,91,84,13,97,92,13,61,95,86,99,78,97,82,13,64,82,95,99,82,95,27,27,27,13,61,89,82,78,96,82,13,100,78,86,97,27},19))
 else
-warn(_d({39,31,45,50,49,51,65,45,62,48,41,236,28,62,53,66,45,64,49,31,49,62,66,49,62,15,59,48,49,236,53,63,236,58,59,64,236,63,49,64,250,236,15,45,58,58,59,64,236,45,65,64,59,249,54,59,53,58,250},52))
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,61,95,86,99,78,97,82,64,82,95,99,82,95,48,92,81,82,13,86,96,13,91,92,97,13,96,82,97,27,13,48,78,91,91,92,97,13,78,98,97,92,26,87,92,86,91,27},19))
 end
 return false
 end
 warn(
 string.format(
-_d({39,31,45,50,49,51,65,45,62,48,41,236,35,62,59,58,51,236,60,56,45,47,49,237,236,30,49,61,65,53,62,49,48,6,236,241,63,236,244,241,48,245,248,236,15,65,62,62,49,58,64,6,236,241,48},52),
-name or _d({33,58,55,58,59,67,58},52),
+_d({72,64,78,83,82,84,98,78,95,81,74,13,68,95,92,91,84,13,93,89,78,80,82,14,13,63,82,94,98,86,95,82,81,39,13,18,96,13,21,18,81,22,25,13,48,98,95,95,82,91,97,39,13,18,81},19),
+name or _d({66,91,88,91,92,100,91},19),
 placeId,
 game.PlaceId
 )
@@ -244,17 +222,17 @@ end)()
 local Safeguard = Core.GetSafeguard()
 function ChestFarmer.CollectChests()
 local chests = {}
-local env = workspace:FindFirstChild(_d({17,58,66},52)) or workspace
+local env = workspace:FindFirstChild(_d({50,91,99},19)) or workspace
 for _, v in ipairs(env:GetDescendants()) do
-if v:IsA(_d({28,62,59,68,53,57,53,64,69,28,62,59,57,60,64},52)) then
+if v:IsA(_d({61,95,92,101,86,90,86,97,102,61,95,92,90,93,97},19)) then
 local action = v.ActionText or ""
-if action:find(_d({28,49,56,53,236,15,52,49,63,64},52)) then
+if action:find(_d({61,82,89,86,13,48,85,82,96,97},19)) then
 local part = v.Parent
-if part and part:IsA(_d({14,45,63,49,28,45,62,64},52)) and isInsideTownOfBeginnings(part.Position) then
+if part and part:IsA(_d({47,78,96,82,61,78,95,97},19)) and isInsideTownOfBeginnings(part.Position) then
 table.insert(chests, {
 prompt = v,
 position = part.Position,
-label = string.format(_d({244,241,250,252,50,248,236,241,250,252,50,248,236,241,250,252,50,245},52), part.Position.X, part.Position.Y, part.Position.Z),
+label = string.format(_d({21,18,27,29,83,25,13,18,27,29,83,25,13,18,27,29,83,22},19), part.Position.X, part.Position.Y, part.Position.Z),
 })
 end
 end
@@ -268,18 +246,508 @@ for _, conn in ipairs(ChestFarmer.Connections) do
 conn:Disconnect()
 end
 ChestFarmer.Connections = {}
-print(_d({39,15,52,49,63,64,18,45,62,57,49,62,41,236,31,64,59,60,60,49,48,250},52))
+print(_d({72,48,85,82,96,97,51,78,95,90,82,95,74,13,64,97,92,93,93,82,81,27},19))
 end
 function ChestFarmer.FarmUntilPeli(targetPeli, getPeliCallback, isRunningCallback)
-print(_d({39,15,52,49,63,64,18,45,62,57,49,62,41,236,31,64,45,62,64,49,48,236,47,52,49,63,64,236,50,45,62,57,250,236,32,45,62,51,49,64,236,28,49,56,53,6,236},52) .. tostring(targetPeli))
-local EasyTravel = Core.Import(
-_d({252,253,249,51,60,59,251,56,53,46,251,49,45,63,69,43,64,62,45,66,49,56,250,56,65,45},52),
-_d({52,64,64,60,63,6,251,251,62,45,67,250,51,53,64,52,65,46,65,63,49,62,47,59,58,64,49,58,64,250,47,59,57,251,62,59,47,55,69,68,67,45,56,56,251,56,65,45,65,249,47,59,48,49,251,57,45,53,58,251,252,253,43,63,47,62,53,60,64,251,56,53,46,251,49,45,63,69,43,64,62,45,66,49,56,250,56,65,45},52)
+print(_d({72,48,85,82,96,97,51,78,95,90,82,95,74,13,64,97,78,95,97,82,81,13,80,85,82,96,97,13,83,78,95,90,27,13,65,78,95,84,82,97,13,61,82,89,86,39,13},19) .. tostring(targetPeli))
+local EasyTravel = (function()
+local Players = game:GetService(_d({61,89,78,102,82,95,96},19))
+local ReplicatedStorage = game:GetService(_d({63,82,93,89,86,80,78,97,82,81,64,97,92,95,78,84,82},19))
+local RunService = game:GetService(_d({63,98,91,64,82,95,99,86,80,82},19))
+local Core = (function()
+local Core = {}
+local Players = game:GetService(_d({61,89,78,102,82,95,96},19))
+local ReplicatedStorage = game:GetService(_d({63,82,93,89,86,80,78,97,82,81,64,97,92,95,78,84,82},19))
+local LocalPlayer = Players.LocalPlayer
+local statsFolder = nil
+local peliValueObj = nil
+local levelValueObj = nil
+local staminaValueObj = nil
+local function getStats()
+if statsFolder and statsFolder.Parent then
+return statsFolder
+end
+statsFolder = ReplicatedStorage:FindFirstChild(_d({64,97,78,97,96},19) .. LocalPlayer.Name)
+if statsFolder then
+peliValueObj = statsFolder:FindFirstChild(_d({61,82,89,86},19))
+if not (peliValueObj and peliValueObj:IsA(_d({67,78,89,98,82,47,78,96,82},19))) then
+local nested = statsFolder:FindFirstChild(_d({64,97,78,97,96},19))
+peliValueObj = nested and nested:FindFirstChild(_d({61,82,89,86},19))
+end
+levelValueObj = statsFolder:FindFirstChild(_d({57,82,99,82,89},19))
+if not (levelValueObj and levelValueObj:IsA(_d({67,78,89,98,82,47,78,96,82},19))) then
+local nested = statsFolder:FindFirstChild(_d({64,97,78,97,96},19))
+levelValueObj = nested and nested:FindFirstChild(_d({57,82,99,82,89},19))
+end
+staminaValueObj = statsFolder:FindFirstChild(_d({64,97,78,90,86,91,78},19))
+else
+peliValueObj = nil
+levelValueObj = nil
+staminaValueObj = nil
+end
+return statsFolder
+end
+function Core.GetPeli()
+getStats()
+return peliValueObj and peliValueObj.Value or 0
+end
+function Core.GetLevel()
+getStats()
+return levelValueObj and levelValueObj.Value or 1
+end
+function Core.GetStamina()
+getStats()
+if staminaValueObj then
+return staminaValueObj.Value, staminaValueObj.MaxValue
+end
+return 0, 0
+end
+function Core.GetHealth()
+local char = LocalPlayer.Character
+local hum = char and char:FindFirstChild(_d({53,98,90,78,91,92,86,81},19))
+if hum then
+return hum.Health, hum.MaxHealth
+end
+return 0, 0
+end
+function Core.SetupStandalone(module, name, startCallback, stopCallback, checkCallback, toggleKey, noAutoStart)
+if _G.DisableStandalone then
+return
+end
+toggleKey = toggleKey or Enum.KeyCode.P
+local UserInputService = game:GetService(_d({66,96,82,95,54,91,93,98,97,64,82,95,99,86,80,82},19))
+local connection = UserInputService.InputBegan:Connect(function(input, processed)
+if processed then
+return
+end
+if input.KeyCode == toggleKey then
+if checkCallback() then
+stopCallback()
+else
+startCallback()
+end
+end
+end)
+if module and module.Connections then
+table.insert(module.Connections, connection)
+end
+if not noAutoStart then
+task.spawn(function()
+if not game:IsLoaded() then
+game.Loaded:Wait()
+end
+startCallback()
+end)
+end
+print("[" .. tostring(name) .. _d({74,13,64,97,78,91,81,78,89,92,91,82,13,58,92,81,82,39,13,61,95,82,96,96,13,20},19) .. toggleKey.Name .. _d({20,13,97,92,13,97,92,84,84,89,82,27},19))
+end
+function Core.GetRoot(player)
+local char = player and player.Character
+return char and char:FindFirstChild(_d({53,98,90,78,91,92,86,81,63,92,92,97,61,78,95,97},19))
+end
+local Safeguard = (function()
+local Safeguard = {
+Config = {
+PrivateServerCode = _d({55,88,31,55,56,65,46,56,48,83},19),
+TeleportLocation = _d({30,96,97,64,82,78},19),
+},
+}
+local GPO_UNIVERSE_ID = 648454481
+local BANNED_PLACES = {
+[1730877806] = _d({51,86,95,96,97,13,64,82,78,13,53,92,90,82,96,80,95,82,82,91,13,28,13,58,78,86,91,13,58,82,91,98},19),
+}
+function Safeguard.JoinPrivateServer()
+local code = Safeguard.Config.PrivateServerCode
+if type(code) == _d({96,97,95,86,91,84},19) and code ~= "" then
+print(string.format(_d({72,64,78,83,82,84,98,78,95,81,74,13,55,92,86,91,86,91,84,13,61,95,86,99,78,97,82,13,64,82,95,99,82,95,13,20,18,96,20,27,27,27},19), code))
+task.spawn(function()
+local rs = game:GetService(_d({63,82,93,89,86,80,78,97,82,81,64,97,92,95,78,84,82},19))
+local reservedRemote = rs:WaitForChild(_d({50,99,82,91,97,96},19)):WaitForChild(_d({95,82,96,82,95,99,82,81},19))
+task.spawn(function()
+pcall(function()
+reservedRemote:InvokeServer(code)
+end)
+end)
+local teleRemote = nil
+for i = 1, 20 do
+task.wait(0.5)
+for _, v in next, getnilinstances() do
+if
+v:IsA(_d({63,82,90,92,97,82,50,99,82,91,97},19)) and (v.Name == _d({63,82,90,92,97,82,50,99,82,91,97},19) or v.Name == _d({97,82,89,82},19) or v.Name == _d({65,82,89,82,93,92,95,97},19))
+then
+teleRemote = v
+break
+end
+end
+if teleRemote then
+break
+end
+end
+if teleRemote then
+print(_d({72,64,78,83,82,84,98,78,95,81,74,13,51,86,95,86,91,84,13,97,82,89,82,93,92,95,97,13,95,82,90,92,97,82,39,13},19) .. teleRemote.Name)
+teleRemote:FireServer(true)
+else
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,48,92,98,89,81,13,91,92,97,13,83,86,91,81,13,63,82,90,92,97,82,50,99,82,91,97,13,86,91,13,91,86,89,27,13,61,95,86,91,97,86,91,84,13,78,89,89,13,63,82,90,92,97,82,50,99,82,91,97,96,13,86,91,13,91,86,89,39},19))
+for _, v in next, getnilinstances() do
+if v:IsA(_d({63,82,90,92,97,82,50,99,82,91,97},19)) then
+print(_d({13,26,13,59,78,90,82,39},19), v.Name)
+end
+end
+end
+end)
+return true
+end
+return false
+end
+function Safeguard.IsSafe()
+if game.GameId ~= GPO_UNIVERSE_ID then
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,68,95,92,91,84,13,84,78,90,82,13,98,91,86,99,82,95,96,82,14,13,64,80,95,86,93,97,13,86,96,13,92,91,89,102,13,83,92,95,13,52,61,60,27},19))
+return false
+end
+if BANNED_PLACES[game.PlaceId] then
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,64,80,95,86,93,97,13,82,101,82,80,98,97,86,92,91,13,79,89,92,80,88,82,81,13,92,91,39,13},19) .. BANNED_PLACES[game.PlaceId])
+if Safeguard.JoinPrivateServer() then
+print(_d({72,64,78,83,82,84,98,78,95,81,74,13,65,82,89,82,93,92,95,97,86,91,84,13,97,92,13,61,95,86,99,78,97,82,13,64,82,95,99,82,95,27,27,27,13,61,89,82,78,96,82,13,100,78,86,97,27},19))
+else
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,61,95,86,99,78,97,82,64,82,95,99,82,95,48,92,81,82,13,86,96,13,91,92,97,13,96,82,97,27,13,48,78,91,91,92,97,13,78,98,97,92,26,87,92,86,91,27},19))
+end
+return false
+end
+return true
+end
+function Safeguard.RequirePlace(placeId, name)
+if game.GameId ~= GPO_UNIVERSE_ID then
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,68,95,92,91,84,13,84,78,90,82,13,98,91,86,99,82,95,96,82,14,13,64,80,95,86,93,97,13,86,96,13,92,91,89,102,13,83,92,95,13,52,61,60,27},19))
+return false
+end
+if game.PlaceId == placeId then
+return true
+end
+if BANNED_PLACES[game.PlaceId] then
+warn(string.format(_d({72,64,78,83,82,84,98,78,95,81,74,13,70,92,98,13,78,95,82,13,92,91,13,97,85,82,13,53,92,90,82,96,80,95,82,82,91,27,13,64,80,95,86,93,97,13,95,82,94,98,86,95,82,96,13,18,96,27},19), name or _d({78,13,96,93,82,80,86,83,86,80,13,93,89,78,80,82},19)))
+if Safeguard.JoinPrivateServer() then
+print(_d({72,64,78,83,82,84,98,78,95,81,74,13,65,82,89,82,93,92,95,97,86,91,84,13,97,92,13,61,95,86,99,78,97,82,13,64,82,95,99,82,95,27,27,27,13,61,89,82,78,96,82,13,100,78,86,97,27},19))
+else
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,61,95,86,99,78,97,82,64,82,95,99,82,95,48,92,81,82,13,86,96,13,91,92,97,13,96,82,97,27,13,48,78,91,91,92,97,13,78,98,97,92,26,87,92,86,91,27},19))
+end
+return false
+end
+warn(
+string.format(
+_d({72,64,78,83,82,84,98,78,95,81,74,13,68,95,92,91,84,13,93,89,78,80,82,14,13,63,82,94,98,86,95,82,81,39,13,18,96,13,21,18,81,22,25,13,48,98,95,95,82,91,97,39,13,18,81},19),
+name or _d({66,91,88,91,92,100,91},19),
+placeId,
+game.PlaceId
 )
+)
+return false
+end
+return Safeguard
+end)()
+function Core.GetSafeguard()
+return Safeguard
+end
+return Core
+end)()
+local Safeguard = Core.GetSafeguard()
+local UserInputService = game:GetService(_d({66,96,82,95,54,91,93,98,97,64,82,95,99,86,80,82},19))
+local Workspace = workspace
+local LocalPlayer = Players.LocalPlayer
+local EasyTravel = {
+TargetPosition = nil,
+DisableKeyboard = false,
+Speed = 70.0,
+Enabled = false,
+DisableRaycasting = false,
+DisableWallTouch = false,
+Connections = {},
+}
+local HEIGHT_OFFSET = 6.0
+local SEA_LEVEL_Y = -2.63
+local RAYCAST_COOLDOWN = 0.05
+local HOVER_LIFT_GAIN = 20.0
+local FORWARD_SCAN_DISTANCE = 50.0
+local currentTargetY = 0
+local isClimbing = false
+local climbTargetY = 0
+local distanceToWall = 999
+local loopConnection = nil
+local function getCharacterComponents()
+local char = LocalPlayer.Character
+if not char then
+return nil, nil, nil
+end
+return char, char:FindFirstChildWhichIsA(_d({53,98,90,78,91,92,86,81},19)), char:FindFirstChild(_d({53,98,90,78,91,92,86,81,63,92,92,97,61,78,95,97},19))
+end
+local function getOrCreateForce(root)
+local att = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,46,97,97},19)) or Instance.new(_d({46,97,97,78,80,85,90,82,91,97},19))
+att.Name = _d({76,76,50,78,96,102,65,95,78,99,82,89,46,97,97},19)
+att.Parent = root
+local force = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,51,92,95,80,82},19))
+if not force then
+force = Instance.new(_d({57,86,91,82,78,95,67,82,89,92,80,86,97,102},19))
+force.Name = _d({76,76,50,78,96,102,65,95,78,99,82,89,51,92,95,80,82},19)
+force.Attachment0 = att
+force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
+force.RelativeTo = Enum.ActuatorRelativeTo.World
+force.MaxForce = 10000000
+force.VectorVelocity = Vector3.zero
+force.Parent = root
+end
+return force
+end
+local function cleanupForce()
+local _, _, root = getCharacterComponents()
+if root then
+local force = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,51,92,95,80,82},19))
+local att = root:FindFirstChild(_d({76,76,50,78,96,102,65,95,78,99,82,89,46,97,97},19))
+if force then
+force:Destroy()
+end
+if att then
+att:Destroy()
+end
+end
+end
+function EasyTravel.GetSurfaceY(position, character)
+local raycastParams = RaycastParams.new()
+raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+raycastParams.FilterDescendantsInstances = { character }
+raycastParams.IgnoreWater = true
+local startPos = Vector3.new(position.X, position.Y + 2, position.Z)
+local checkDepth = math.max((position.Y + 2) - SEA_LEVEL_Y, 30)
+local direction = Vector3.new(0, -checkDepth, 0)
+local result = Workspace:Raycast(startPos, direction, raycastParams)
+local groundY = result and result.Position.Y or -100
+return math.max(groundY, SEA_LEVEL_Y)
+end
+local function runRaycastLoop()
+while EasyTravel.Enabled do
+task.wait(RAYCAST_COOLDOWN)
+local char, _, root = getCharacterComponents()
+if not char or not root then
+continue
+end
+local currentPos = root.Position
+local inRoughWaters = currentPos.X >= 1002.01
+and currentPos.X <= 3049.91
+and currentPos.Z >= -11748.53
+and currentPos.Z <= -9700.63
+local moveDir = Vector3.zero
+if EasyTravel.DisableRaycasting then
+isClimbing = false
+distanceToWall = 999
+currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
+task.wait(RAYCAST_COOLDOWN)
+continue
+end
+if EasyTravel.TargetPosition then
+local diff = EasyTravel.TargetPosition - root.Position
+local flatDiff = Vector3.new(diff.X, 0, diff.Z)
+if flatDiff.Magnitude > 2 then
+moveDir = flatDiff.Unit
+else
+isClimbing = false
+currentTargetY = EasyTravel.TargetPosition.Y
+continue
+end
+else
+local camera = Workspace.CurrentCamera
+local look = camera.CFrame.LookVector
+local right = camera.CFrame.RightVector
+if not EasyTravel.DisableKeyboard then
+if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit
+end
+if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit
+end
+if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit
+end
+if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit
+end
+end
+end
+local hitCave = false
+local cave = Workspace.Islands:FindFirstChild(_d({51,86,96,85,90,78,91,13,48,78,99,82},19))
+if cave and moveDir and moveDir.Magnitude > 0 then
+local caveRayParams = RaycastParams.new()
+caveRayParams.FilterType = Enum.RaycastFilterType.Include
+caveRayParams.FilterDescendantsInstances = { cave }
+local hit = Workspace:Raycast(currentPos, moveDir.Unit * FORWARD_SCAN_DISTANCE, caveRayParams)
+if hit then
+hitCave = true
+end
+end
+EasyTravel.HitCave = hitCave
+if hitCave or inRoughWaters then
+isClimbing = false
+distanceToWall = 999
+currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
+continue
+end
+local currentPos = root.Position
+local raycastParams = RaycastParams.new()
+raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+raycastParams.FilterDescendantsInstances = { char }
+raycastParams.IgnoreWater = true
+if moveDir.Magnitude > 0 then
+local moveUnit = moveDir.Unit
+local perpUnit = Vector3.new(-moveUnit.Z, 0, moveUnit.X).Unit
+local forwardHit = Workspace:Raycast(currentPos, moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
+if not forwardHit then
+forwardHit =
+Workspace:Raycast(currentPos - (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
+end
+if not forwardHit then
+forwardHit =
+Workspace:Raycast(currentPos + (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
+end
+if forwardHit then
+distanceToWall = forwardHit.Distance
+local clearanceY = nil
+local currentScanDist = FORWARD_SCAN_DISTANCE
+local heightOffset = 4
+while heightOffset <= 100 do
+local scanOrigin = currentPos + Vector3.new(0, heightOffset, 0)
+local scanHit = Workspace:Raycast(scanOrigin, moveUnit * currentScanDist, raycastParams)
+if not scanHit then
+clearanceY = scanOrigin.Y
+local secondaryOrigin = scanOrigin + moveUnit * 10
+local secondaryHit = Workspace:Raycast(secondaryOrigin, moveUnit * 15, raycastParams)
+if secondaryHit then
+currentScanDist = currentScanDist + 15
+else
+break
+end
+end
+heightOffset = heightOffset + 4
+end
+if clearanceY then
+isClimbing = true
+climbTargetY = clearanceY + HEIGHT_OFFSET
+else
+isClimbing = false
+currentTargetY = EasyTravel.GetSurfaceY(currentPos, char) + HEIGHT_OFFSET
+end
+else
+distanceToWall = 999
+isClimbing = false
+local groundY = EasyTravel.GetSurfaceY(currentPos, char)
+local aheadPos = currentPos + moveUnit * 4
+local aheadY = EasyTravel.GetSurfaceY(aheadPos, char)
+currentTargetY = math.max(groundY, aheadY) + HEIGHT_OFFSET
+end
+else
+distanceToWall = 999
+isClimbing = false
+currentTargetY = EasyTravel.GetSurfaceY(currentPos, char) + HEIGHT_OFFSET
+end
+end
+end
+function EasyTravel.Start()
+if EasyTravel.Enabled then
+return
+end
+if not Safeguard then
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,51,78,86,89,82,81,13,97,92,13,89,92,78,81,14},19))
+return
+end
+if not Safeguard.IsSafe() then
+return
+end
+EasyTravel.Enabled = true
+cleanupForce()
+local char, hum, root = getCharacterComponents()
+if not root or not hum then
+return
+end
+EasyTravel.Enabled = true
+currentTargetY = EasyTravel.GetSurfaceY(root.Position, char) + HEIGHT_OFFSET
+isClimbing = false
+task.spawn(runRaycastLoop)
+loopConnection = RunService.Heartbeat:Connect(function(dt)
+local char, _, currentRoot = getCharacterComponents()
+if not currentRoot or not EasyTravel.Enabled then
+if loopConnection then
+loopConnection:Disconnect()
+loopConnection = nil
+end
+cleanupForce()
+return
+end
+local force = getOrCreateForce(currentRoot)
+local camera = Workspace.CurrentCamera
+local look = camera.CFrame.LookVector
+local right = camera.CFrame.RightVector
+local moveDir = Vector3.zero
+local finalTargetY = isClimbing and climbTargetY or currentTargetY
+if EasyTravel.TargetPosition then
+local diff = EasyTravel.TargetPosition - currentRoot.Position
+local flatDiff = Vector3.new(diff.X, 0, diff.Z)
+if flatDiff.Magnitude > 2 then
+moveDir = flatDiff.Unit
+end
+else
+if not EasyTravel.DisableKeyboard then
+if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit
+end
+if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit
+end
+if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit
+end
+if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit
+end
+end
+end
+local yError = finalTargetY - currentRoot.Position.Y
+local targetVelocity = Vector3.zero
+if moveDir.Magnitude > 0 then
+local speedMultiplier = 1
+if not EasyTravel.DisableWallTouch and isClimbing and yError > 3 and distanceToWall < 6 then
+speedMultiplier = 0
+end
+targetVelocity = moveDir.Unit * (EasyTravel.Speed * speedMultiplier)
+end
+local verticalVel = math.clamp(yError * HOVER_LIFT_GAIN, -50, 30)
+force.VectorVelocity = Vector3.new(targetVelocity.X, verticalVel, targetVelocity.Z)
+if moveDir.Magnitude > 0 then
+currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + moveDir)
+end
+end)
+print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,51,89,86,84,85,97,13,82,91,78,79,89,82,81,27},19))
+end
+function EasyTravel.Stop()
+EasyTravel.Enabled = false
+if loopConnection then
+loopConnection:Disconnect()
+loopConnection = nil
+end
+cleanupForce()
+print(_d({72,50,78,96,102,13,65,95,78,99,82,89,74,13,51,89,86,84,85,97,13,81,86,96,78,79,89,82,81,27},19))
+end
+function EasyTravel.Cleanup()
+EasyTravel.Stop()
+for _, conn in ipairs(EasyTravel.Connections) do
+conn:Disconnect()
+end
+EasyTravel.Connections = {}
+end
+Core.SetupStandalone(EasyTravel, _d({50,78,96,102,13,65,95,78,99,82,89},19), EasyTravel.Start, EasyTravel.Stop, function()
+return EasyTravel.Enabled
+end, Enum.KeyCode.P, true)
+return EasyTravel
+end)()
 while isRunningCallback() and getPeliCallback() < targetPeli do
 local chests = ChestFarmer.CollectChests()
 if #chests == 0 then
-print(_d({39,15,52,49,63,64,18,45,62,57,49,62,41,236,26,59,236,47,52,49,63,64,63,236,50,59,65,58,48,250,236,35,45,53,64,53,58,51,236,254,252,236,63,49,47,59,58,48,63,236,50,59,62,236,63,60,45,67,58,250,250,250},52))
+print(_d({72,48,85,82,96,97,51,78,95,90,82,95,74,13,59,92,13,80,85,82,96,97,96,13,83,92,98,91,81,27,13,68,78,86,97,86,91,84,13,31,29,13,96,82,80,92,91,81,96,13,83,92,95,13,96,93,78,100,91,27,27,27},19))
 local waited = 0
 while isRunningCallback() and waited < 20 do
 task.wait(1)
@@ -359,7 +827,7 @@ if ChestFarmer.Running then
 return
 end
 if not Safeguard then
-warn(_d({39,31,45,50,49,51,65,45,62,48,41,236,18,45,53,56,49,48,236,64,59,236,56,59,45,48,237},52))
+warn(_d({72,64,78,83,82,84,98,78,95,81,74,13,51,78,86,89,82,81,13,97,92,13,89,92,78,81,14},19))
 return
 end
 if not Safeguard.IsSafe() then
@@ -374,7 +842,7 @@ return ChestFarmer.Running
 end)
 end)
 end
-Core.SetupStandalone(ChestFarmer, _d({15,52,49,63,64,18,45,62,57,49,62},52), ChestFarmer.Start, ChestFarmer.Stop, function()
+Core.SetupStandalone(ChestFarmer, _d({48,85,82,96,97,51,78,95,90,82,95},19), ChestFarmer.Start, ChestFarmer.Stop, function()
 return ChestFarmer.Running
 end)
 return ChestFarmer
