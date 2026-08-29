@@ -3057,38 +3057,78 @@ local FishmanMaze = {}
 -- a wall (0 or negative clearance). Fixed points use true corridor-center math instead.
 -- ⚠ = pinch point with ≤1 stud clearance per side even after centering — move slow/exact there.
 local mazePath = {
-    Vector3.new(1836.00, 4.1, -12190.00), -- Surface descent
-    Vector3.new(1836.00, -86.0, -12190.00), -- Cave floor
-    Vector3.new(1836.00, -86.0, -12212.00), -- Turn 1  [FIX: was -12214, true center]
-    Vector3.new(1770.00, -86.0, -12212.00), -- Turn 2
-    Vector3.new(1770.00, -86.0, -12222.00), -- Elev1 approach
-    Vector3.new(1767.20, -78.0, -12224.00), -- Elev1 top      [FIX: was X=1770, clipped east wall]
-    Vector3.new(1767.20, -78.0, -12226.00), -- Elev1 top cont [FIX]
-    Vector3.new(1767.20, -86.0, -12228.00), -- Elev1 exit     [FIX]
-    Vector3.new(1790.00, -86.0, -12228.50), -- Turn 3  [FIX: was -12230, true center]
-    Vector3.new(1791.25, -86.0, -12243.50), -- Turn 4  [FIX: X true center; Z pulled off south wall]
-    Vector3.new(1777.25, -86.0, -12243.50), -- Turn 5  [MAJOR FIX: was X=1782 → only 1.2 studs to
-    --  east wall, i.e. NEGATIVE clearance for a 2-stud-
-    --  radius body. True center of the pinch is 1777.25]
-    Vector3.new(1777.25, -86.0, -12275.50), -- Turn 6  [FIX: Z = true center of the SEG7 pinch]
-    Vector3.new(1802.00, -86.0, -12275.50), -- Turn 7  ⚠ corridor is only 4 studs wide here —
-    --  ZERO clearance either side even dead-center
-    Vector3.new(1802.00, -86.0, -12280.00), -- junction (open, no wall data)
-    Vector3.new(1811.20, -86.0, -12280.00), -- Turn 8  [X snapped to true center early]
-    Vector3.new(1811.20, -86.0, -12297.05), -- Turn 9  [MAJOR FIX: was Z=-12300 → that is PAST the
-    --  south wall (-12298.5), i.e. embedded in geometry]
-    Vector3.new(1846.00, -86.0, -12297.05), -- Turn 10 ⚠ corridor here is only ~2.9 studs wide —
-    --  narrower than a standard player; no line-up avoids
-    --  clipping, only true noclip gets through clean
-    Vector3.new(1846.00, -86.0, -12305.55), -- Turn 11 [MAJOR FIX: was Z=-12308, past south wall]
-    Vector3.new(1821.20, -86.0, -12305.55), -- Turn 12 [X true center]
-    Vector3.new(1821.20, -86.0, -12320.00), -- Elev2 approach
-    Vector3.new(1819.20, -78.0, -12322.00), -- Elev2 top      [MAJOR FIX: was X=1822, only 1.2
-    Vector3.new(1819.20, -78.0, -12324.00), -- Elev2 top cont --  studs to east wall → negative clr]
-    Vector3.new(1819.20, -86.0, -12326.00), -- Elev2 exit     [FIX]
-    Vector3.new(1819.20, -86.0, -12327.75), -- Final corridor start [Z true center]
-    Vector3.new(1793.70, -86.0, -12327.75), -- Final run
-    Vector3.new(1793.70, -86.0, -12330.50), -- END ORB
+    Vector3.new(1837.32, 4.27, -12170.40),
+    Vector3.new(1837.77, 4.14, -12172.13),
+    Vector3.new(1837.32, 4.25, -12178.01),
+    Vector3.new(1836.65, 4.40, -12186.67),
+    Vector3.new(1836.38, 4.46, -12190.21),
+    Vector3.new(1836.27, 1.73, -12191.54),
+    Vector3.new(1836.26, -9.27, -12191.68),
+    Vector3.new(1836.25, -23.02, -12191.86),
+    Vector3.new(1836.23, -36.77, -12192.03),
+    Vector3.new(1836.22, -50.52, -12192.18),
+    Vector3.new(1836.21, -64.27, -12192.31),
+    Vector3.new(1836.21, -75.42, -12192.42),
+    Vector3.new(1836.20, -79.67, -12192.46),
+    Vector3.new(1836.20, -82.19, -12192.49),
+    Vector3.new(1836.20, -83.00, -12200.39),
+    Vector3.new(1836.20, -83.30, -12207.03),
+    Vector3.new(1836.20, -83.42, -12209.81),
+    Vector3.new(1830.20, -83.47, -12210.82),
+    Vector3.new(1815.20, -83.48, -12211.12),
+    Vector3.new(1805.88, -83.49, -12211.31),
+    Vector3.new(1800.69, -83.50, -12211.42),
+    Vector3.new(1798.27, -83.50, -12211.48),
+    Vector3.new(1797.56, -83.50, -12215.29),
+    Vector3.new(1797.37, -83.50, -12217.99),
+    Vector3.new(1797.25, -83.50, -12219.77),
+    Vector3.new(1782.33, -82.01, -12220.12),
+    Vector3.new(1773.28, -81.11, -12220.35),
+    Vector3.new(1769.64, -80.74, -12220.44),
+    Vector3.new(1767.85, -80.57, -12220.48),
+    Vector3.new(1767.47, -80.53, -12225.82),
+    Vector3.new(1767.29, -80.51, -12228.27),
+    Vector3.new(1775.67, -83.67, -12229.00),
+    Vector3.new(1784.96, -87.16, -12229.29),
+    Vector3.new(1788.69, -88.56, -12229.41),
+    Vector3.new(1790.37, -89.19, -12229.47),
+    Vector3.new(1790.80, -89.35, -12235.70),
+    Vector3.new(1791.04, -89.44, -12239.17),
+    Vector3.new(1789.23, -89.48, -12240.67),
+    Vector3.new(1784.29, -89.49, -12241.10),
+    Vector3.new(1781.46, -89.50, -12241.35),
+    Vector3.new(1780.42, -89.50, -12247.42),
+    Vector3.new(1780.12, -89.50, -12259.42),
+    Vector3.new(1779.87, -89.50, -12269.64),
+    Vector3.new(1779.77, -89.50, -12273.74),
+    Vector3.new(1779.72, -89.50, -12275.53),
+    Vector3.new(1791.72, -89.50, -12275.91),
+    Vector3.new(1801.45, -89.50, -12276.21),
+    Vector3.new(1806.98, -89.50, -12276.38),
+    Vector3.new(1809.47, -89.50, -12276.45),
+    Vector3.new(1810.80, -89.50, -12285.20),
+    Vector3.new(1811.64, -89.50, -12293.46),
+    Vector3.new(1811.97, -89.50, -12296.78),
+    Vector3.new(1815.11, -89.50, -12298.22),
+    Vector3.new(1830.10, -89.50, -12298.58),
+    Vector3.new(1840.33, -89.50, -12298.83),
+    Vector3.new(1843.89, -89.50, -12298.92),
+    Vector3.new(1846.25, -89.50, -12298.97),
+    Vector3.new(1846.74, -89.50, -12302.87),
+    Vector3.new(1847.05, -89.50, -12305.32),
+    Vector3.new(1838.11, -89.50, -12306.01),
+    Vector3.new(1828.00, -89.50, -12306.31),
+    Vector3.new(1823.93, -89.50, -12306.42),
+    Vector3.new(1822.13, -89.50, -12306.47),
+    Vector3.new(1821.57, -83.52, -12313.97),
+    Vector3.new(1821.38, -81.44, -12316.58),
+    Vector3.new(1821.27, -80.27, -12318.04),
+    Vector3.new(1821.23, -79.81, -12323.39),
+    Vector3.new(1821.21, -79.60, -12325.83),
+    Vector3.new(1813.09, -83.45, -12326.49),
+    Vector3.new(1803.26, -88.17, -12326.73),
+    Vector3.new(1797.24, -91.06, -12326.90),
+    Vector3.new(1794.73, -92.27, -12326.95),
 }
 
 function FishmanMaze.Travel(hrp, isRunning)
