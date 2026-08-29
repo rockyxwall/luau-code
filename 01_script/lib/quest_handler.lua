@@ -95,7 +95,7 @@ function Core.SetupStandalone(module, name, startCallback, stopCallback, checkCa
     toggleKey = toggleKey or Enum.KeyCode.P
 
     local UserInputService = game:GetService("UserInputService")
-    local connection = UserInputService.InputBegan:Connect(function(input, processed)
+    UserInputService.InputBegan:Connect(function(input, processed)
         if processed then
             return
         end
@@ -107,10 +107,6 @@ function Core.SetupStandalone(module, name, startCallback, stopCallback, checkCa
             end
         end
     end)
-
-    if module and module.Connections then
-        table.insert(module.Connections, connection)
-    end
 
     if not noAutoStart then
         task.spawn(function()
