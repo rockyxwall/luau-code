@@ -2423,6 +2423,7 @@ local HoroFarm = {
         UseR = true,
         CameraHeight = 30.0,
         LoopDelay = 10.5,
+        CameraLock = true, -- true = visual bird's eye view; false = pure virtual in-memory camera (free player camera)
     },
 }
 
@@ -2687,6 +2688,10 @@ local savedCameraCF = nil
 local savedCameraType = nil
 local BIND_NAME = "HoroCameraLock"
 
+-- In-memory virtual camera for when CameraLock = false
+local VirtualCamera = Instance.new("Camera")
+VirtualCamera.FieldOfView = Camera.FieldOfView
+
 local function equipHoroTool()
     local bp = LocalPlayer:FindFirstChild("Backpack")
     local char = LocalPlayer.Character
@@ -2735,10 +2740,48 @@ end
 
 local smoothedFloorY = nil
 local rayParams = RaycastParams.new()
-rayParams.FilterType = RaycastFilterType.Exclude
+rayParams.FilterType = Enum.RaycastFilterType.Exclude
+
+local function calculateSafeCameraCFrame(targetRoot)
+    local bossPos = targetRoot.Position
+
+    if not smoothedFloorY then
+        smoothedFloorY = bossPos.Y
+    end
+
+    if math.abs(bossPos.Y - smoothedFloorY) > 25 then
+        smoothedFloorY = bossPos.Y
+    else
+        smoothedFloorY = smoothedFloorY + (bossPos.Y - smoothedFloorY) * 0.05
+    end
+
+    local filterList = {}
+    if LocalPlayer.Character then
+        table.insert(filterList, LocalPlayer.Character)
+    end
+    if targetRoot.Parent then
+        table.insert(filterList, targetRoot.Parent)
+    end
+    rayParams.FilterDescendantsInstances = filterList
+
+    local idealCamPos = Vector3.new(bossPos.X, smoothedFloorY + HoroFarm.Config.CameraHeight, bossPos.Z)
+    local losRay = Workspace:Raycast(bossPos, idealCamPos - bossPos, rayParams)
+    local safeCamPos = idealCamPos
+
+    if losRay then
+        local hitDist = (losRay.Position - bossPos).Magnitude
+        if hitDist > 3 then
+            safeCamPos = bossPos + (idealCamPos - bossPos).Unit * (hitDist - 1.5)
+        else
+            safeCamPos = losRay.Position + (bossPos - losRay.Position).Unit * 1.5
+        end
+    end
+
+    return CFrame.lookAt(safeCamPos, bossPos)
+end
 
 local function lockCameraToBoss(targetRoot)
-    if not savedCameraCF then
+    if not savedCameraCF and HoroFarm.Config.CameraLock then
         savedCameraCF = Camera.CFrame
         savedCameraType = Camera.CameraType
     end
@@ -2755,46 +2798,22 @@ local function lockCameraToBoss(targetRoot)
                 and targetRoot.Parent:FindFirstChildWhichIsA("Humanoid").Health > 0
             then
                 local bossPos = targetRoot.Position
+                local targetCF = calculateSafeCameraCFrame(targetRoot)
 
-                -- Fix 2: Ground-Smoothed Y (anchors vertical base so jumping does not bounce the camera)
-                if math.abs(bossPos.Y - smoothedFloorY) > 25 then
-                    smoothedFloorY = bossPos.Y
+                local activeCam = Camera
+                if HoroFarm.Config.CameraLock then
+                    Camera.CameraType = Enum.CameraType.Scriptable
+                    Camera.CFrame = targetCF
+                    activeCam = Camera
                 else
-                    smoothedFloorY = smoothedFloorY + (bossPos.Y - smoothedFloorY) * 0.05
+                    VirtualCamera.ViewportSize = Camera.ViewportSize
+                    VirtualCamera.FieldOfView = Camera.FieldOfView
+                    VirtualCamera.CFrame = targetCF
+                    activeCam = VirtualCamera
                 end
-
-                -- Filter out player character and boss character from camera collision raycasts
-                local filterList = {}
-                if LocalPlayer.Character then
-                    table.insert(filterList, LocalPlayer.Character)
-                end
-                if targetRoot.Parent then
-                    table.insert(filterList, targetRoot.Parent)
-                end
-                rayParams.FilterDescendantsInstances = filterList
-
-                -- Fix 1 & Solution 1: Direct Line-of-Sight Raycasting (Ceiling + Wall Collision Solver)
-                local idealOffset = Vector3.new(0, HoroFarm.Config.CameraHeight, 0)
-                local idealCamPos = Vector3.new(bossPos.X, smoothedFloorY + HoroFarm.Config.CameraHeight, bossPos.Z)
-
-                local losRay = Workspace:Raycast(bossPos, idealCamPos - bossPos, rayParams)
-                local safeCamPos = idealCamPos
-
-                if losRay then
-                    -- Cap camera 1.5 studs below ceiling / wall impact point
-                    local hitDist = (losRay.Position - bossPos).Magnitude
-                    if hitDist > 3 then
-                        safeCamPos = bossPos + (idealCamPos - bossPos).Unit * (hitDist - 1.5)
-                    else
-                        safeCamPos = losRay.Position + (bossPos - losRay.Position).Unit * 1.5
-                    end
-                end
-
-                Camera.CameraType = Enum.CameraType.Scriptable
-                Camera.CFrame = CFrame.lookAt(safeCamPos, bossPos)
 
                 -- Continuous live mouse lock on boss screen coordinates
-                local screenPos, onScreen = Camera:WorldToViewportPoint(bossPos)
+                local screenPos, onScreen = activeCam:WorldToViewportPoint(bossPos)
                 if onScreen then
                     VIM:SendMouseMoveEvent(screenPos.X, screenPos.Y, game)
                 end
