@@ -8,10 +8,10 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({34,62,51,75,55,68,69},46))
-local ReplicatedStorage = game:GetService(_d({36,55,66,62,59,53,51,70,55,54,37,70,65,68,51,57,55},46))
-local RunService       = game:GetService(_d({36,71,64,37,55,68,72,59,53,55},46))
-local UserInputService = game:GetService(_d({39,69,55,68,27,64,66,71,70,37,55,68,72,59,53,55},46))
+local Players = game:GetService(_d({19,47,36,60,40,53,54},61))
+local ReplicatedStorage = game:GetService(_d({21,40,51,47,44,38,36,55,40,39,22,55,50,53,36,42,40},61))
+local RunService       = game:GetService(_d({21,56,49,22,40,53,57,44,38,40},61))
+local UserInputService = game:GetService(_d({24,54,40,53,12,49,51,56,55,22,40,53,57,44,38,40},61))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local EasyTravel = {
@@ -36,16 +36,16 @@ local loopConnection = nil
 local function getCharacterComponents()
 local char = LocalPlayer.Character
 if not char then return nil, nil, nil end
-return char, char:FindFirstChildWhichIsA(_d({26,71,63,51,64,65,59,54},46)), char:FindFirstChild(_d({26,71,63,51,64,65,59,54,36,65,65,70,34,51,68,70},46))
+return char, char:FindFirstChildWhichIsA(_d({11,56,48,36,49,50,44,39},61)), char:FindFirstChild(_d({11,56,48,36,49,50,44,39,21,50,50,55,19,36,53,55},61))
 end
 local function getOrCreateForce(root)
-local att = root:FindFirstChild(_d({49,49,23,51,69,75,38,68,51,72,55,62,19,70,70},46)) or Instance.new(_d({19,70,70,51,53,58,63,55,64,70},46))
-att.Name = _d({49,49,23,51,69,75,38,68,51,72,55,62,19,70,70},46)
+local att = root:FindFirstChild(_d({34,34,8,36,54,60,23,53,36,57,40,47,4,55,55},61)) or Instance.new(_d({4,55,55,36,38,43,48,40,49,55},61))
+att.Name = _d({34,34,8,36,54,60,23,53,36,57,40,47,4,55,55},61)
 att.Parent = root
-local force = root:FindFirstChild(_d({49,49,23,51,69,75,38,68,51,72,55,62,24,65,68,53,55},46))
+local force = root:FindFirstChild(_d({34,34,8,36,54,60,23,53,36,57,40,47,9,50,53,38,40},61))
 if not force then
-force = Instance.new(_d({30,59,64,55,51,68,40,55,62,65,53,59,70,75},46))
-force.Name = _d({49,49,23,51,69,75,38,68,51,72,55,62,24,65,68,53,55},46)
+force = Instance.new(_d({15,44,49,40,36,53,25,40,47,50,38,44,55,60},61))
+force.Name = _d({34,34,8,36,54,60,23,53,36,57,40,47,9,50,53,38,40},61)
 force.Attachment0 = att
 force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
 force.RelativeTo = Enum.ActuatorRelativeTo.World
@@ -58,8 +58,8 @@ end
 local function cleanupForce()
 local _, _, root = getCharacterComponents()
 if root then
-local force = root:FindFirstChild(_d({49,49,23,51,69,75,38,68,51,72,55,62,24,65,68,53,55},46))
-local att = root:FindFirstChild(_d({49,49,23,51,69,75,38,68,51,72,55,62,19,70,70},46))
+local force = root:FindFirstChild(_d({34,34,8,36,54,60,23,53,36,57,40,47,9,50,53,38,40},61))
+local att = root:FindFirstChild(_d({34,34,8,36,54,60,23,53,36,57,40,47,4,55,55},61))
 if force then force:Destroy() end
 if att then att:Destroy() end
 end
@@ -216,13 +216,13 @@ if moveDir.Magnitude > 0 then
 currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + moveDir)
 end
 end)
-print(_d({45,23,51,69,75,242,38,68,51,72,55,62,47,242,24,62,59,57,58,70,242,55,64,51,52,62,55,54,0},46))
+print(_d({30,8,36,54,60,227,23,53,36,57,40,47,32,227,9,47,44,42,43,55,227,40,49,36,37,47,40,39,241},61))
 end
 function EasyTravel.Stop()
 EasyTravel.Enabled = false
 if loopConnection then loopConnection:Disconnect(); loopConnection = nil end
 cleanupForce()
-print(_d({45,23,51,69,75,242,38,68,51,72,55,62,47,242,24,62,59,57,58,70,242,54,59,69,51,52,62,55,54,0},46))
+print(_d({30,8,36,54,60,227,23,53,36,57,40,47,32,227,9,47,44,42,43,55,227,39,44,54,36,37,47,40,39,241},61))
 end
 function EasyTravel.Cleanup()
 EasyTravel.Stop()
