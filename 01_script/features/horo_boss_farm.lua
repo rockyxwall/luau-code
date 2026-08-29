@@ -270,7 +270,7 @@ end)()
 local Safeguard = Core.GetSafeguard()
 
 -- Cooldown variables
-local lastE, lastZ, lastC, lastR = 0, 0, 0, 0
+local lastC = 0
 
 local function equipHoroTool()
     local bp = LocalPlayer:FindFirstChild("Backpack")
@@ -314,27 +314,37 @@ local function setupHook()
         return
     end
     _G.HoroMouseHooked = true
+
+    local get_raw_mt = rawget(getfenv(), "getrawmetatable")
+        or (rawget(getfenv(), "getgenv") and rawget(getfenv().getgenv(), "getrawmetatable"))
+    local set_ro = rawget(getfenv(), "setreadonly")
+        or (rawget(getfenv(), "getgenv") and rawget(getfenv().getgenv(), "setreadonly"))
+    local new_cclosure = rawget(getfenv(), "newcclosure")
+        or (rawget(getfenv(), "getgenv") and rawget(getfenv().getgenv(), "newcclosure"))
+    local check_caller = rawget(getfenv(), "checkcaller")
+        or (rawget(getfenv(), "getgenv") and rawget(getfenv().getgenv(), "checkcaller"))
+
+    if not get_raw_mt then
+        return
+    end
+
     local Mouse = LocalPlayer:GetMouse()
     local successHook, err = pcall(function()
-        local mt = getrawmetatable(game)
+        local mt = get_raw_mt(game)
         local oldIndex = mt.__index
-        local set_ro = setreadonly
-            or (
-                make_readonly
-                and function(t, ro)
-                    if ro then
-                        make_readonly(t)
-                    else
-                        make_writeable(t)
-                    end
-                end
-            )
+
         if set_ro then
             set_ro(mt, false)
         end
 
-        mt.__index = newcclosure(function(self, key)
-            if not checkcaller() and self == Mouse and HoroFarm.Running and HoroFarm.Config.SelectedBoss then
+        local hookClosure = function(self, key)
+            if
+                check_caller
+                and not check_caller()
+                and self == Mouse
+                and HoroFarm.Running
+                and HoroFarm.Config.SelectedBoss
+            then
                 local target = getBossPart(HoroFarm.Config.SelectedBoss)
                 if target then
                     if key == "Hit" then
@@ -345,7 +355,9 @@ local function setupHook()
                 end
             end
             return oldIndex(self, key)
-        end)
+        end
+
+        mt.__index = new_cclosure and new_cclosure(hookClosure) or hookClosure
 
         if set_ro then
             set_ro(mt, true)
@@ -408,7 +420,6 @@ function HoroFarm.Start()
                         VIM:SendKeyEvent(true, Enum.KeyCode.Z, false, game)
                         task.wait(0.05)
                         VIM:SendKeyEvent(false, Enum.KeyCode.Z, false, game)
-                        lastZ = tick()
                         hollowsAttached = true
                     end
                 end
@@ -419,7 +430,6 @@ function HoroFarm.Start()
                         VIM:SendKeyEvent(true, Enum.KeyCode.E, false, game)
                         task.wait(0.05)
                         VIM:SendKeyEvent(false, Enum.KeyCode.E, false, game)
-                        lastE = tick()
                     end
                 end
 
@@ -429,7 +439,6 @@ function HoroFarm.Start()
                     VIM:SendKeyEvent(true, Enum.KeyCode.R, false, game)
                     task.wait(0.05)
                     VIM:SendKeyEvent(false, Enum.KeyCode.R, false, game)
-                    lastR = tick()
                 end
 
                 local baseCD = 5
