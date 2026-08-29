@@ -1,57 +1,70 @@
 --[[
     Offline Sandbox & Network Severing Tool
-    Raw MCP remote blocking logic with '\' toggle.
+    Intercepts and blocks outbound RemoteEvents/RemoteFunctions with ']' toggle.
 ]]
 
 local UserInputService = game:GetService("UserInputService")
 
 local Sandbox = {
     Enabled = false,
-    Blocked = true,
     OriginalNamecall = nil,
 }
 
-local get_genv = rawget(getfenv(), "getgenv") or function()
-    return _G
-end
-local hook_metamethod = rawget(getfenv(), "hookmetamethod") or get_genv().hookmetamethod
-local new_cclosure = rawget(getfenv(), "newcclosure") or get_genv().newcclosure
-local get_namecall_method = rawget(getfenv(), "getnamecallmethod") or get_genv().getnamecallmethod
+-- Resolve executor environment globals safely (supports Real and all standard Luau executors)
+local env = (type(getgenv) == "function" and getgenv()) or getfenv()
+local hook_metamethod = env.hookmetamethod or hookmetamethod
+local hook_function = env.hookfunction or hookfunction
+local get_raw_mt = env.getrawmetatable or getrawmetatable
+local set_ro = env.setreadonly or setreadonly
+local new_cclosure = env.newcclosure or newcclosure
+local get_nc_method = env.getnamecallmethod or getnamecallmethod
 
 function Sandbox.Start()
     if Sandbox.Enabled then
-        return
-    end
-
-    if not hook_metamethod then
-        warn("[Offline Sandbox] hookmetamethod not supported by this executor!")
+        print("[Offline Sandbox] Already active.")
         return
     end
 
     Sandbox.Enabled = true
-    print("[Offline Sandbox] Active! All outbound remotes blocked.")
+    print("[Offline Sandbox] 🛡️ Network severing active! Outbound remotes blocked.")
 
     if not Sandbox.OriginalNamecall then
-        Sandbox.OriginalNamecall = hook_metamethod(
-            game,
-            "__namecall",
-            new_cclosure(function(self, ...)
-                if Sandbox.Enabled then
-                    local method = get_namecall_method and get_namecall_method()
-                    if method == "FireServer" or method == "InvokeServer" then
-                        print("[Offline Sandbox Blocked]", method, self:GetFullName())
-                        return nil
-                    end
+        local handler = function(self, ...)
+            if Sandbox.Enabled then
+                local method = get_nc_method and get_nc_method()
+                if method == "FireServer" or method == "InvokeServer" then
+                    print("[Offline Sandbox BLOCKED]", method, self:GetFullName())
+                    return nil
                 end
-                return Sandbox.OriginalNamecall(self, ...)
-            end)
-        )
+            end
+            return Sandbox.OriginalNamecall(self, ...)
+        end
+
+        local safeClosure = new_cclosure and new_cclosure(handler) or handler
+
+        if hook_metamethod then
+            Sandbox.OriginalNamecall = hook_metamethod(game, "__namecall", safeClosure)
+        elseif get_raw_mt then
+            local mt = get_raw_mt(game)
+            if mt then
+                if set_ro then
+                    set_ro(mt, false)
+                end
+                Sandbox.OriginalNamecall = mt.__namecall
+                mt.__namecall = safeClosure
+                if set_ro then
+                    set_ro(mt, true)
+                end
+            end
+        else
+            warn("[Offline Sandbox] Metamethod hooking not supported on this executor!")
+        end
     end
 end
 
 function Sandbox.Stop()
     Sandbox.Enabled = false
-    print("[Offline Sandbox] Inactive. Normal traffic resumed.")
+    print("[Offline Sandbox] 🔓 Inactive. Normal traffic resumed.")
 end
 
 -- Start immediately
@@ -69,4 +82,5 @@ UserInputService.InputBegan:Connect(function(input, processed)
     end
 end)
 
+print("[Offline Sandbox] Active! Press ']' to toggle offline network severing.")
 return Sandbox
