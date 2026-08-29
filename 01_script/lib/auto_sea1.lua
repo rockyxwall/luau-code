@@ -49,27 +49,39 @@ function Sea1Teleport.Join(vipCode)
     end
 
     local code = vipCode or Sea1Teleport.DefaultVipCode
-    print(string.format("[AutoSea1] Homescreen detected. Auto-teleporting to Sea 1 PS (Code: %s)...", tostring(code)))
+    print(string.format("[AutoSea1] Homescreen detected. Waiting for loading screen to complete...", tostring(code)))
 
     task.spawn(function()
-        local PlayerGui = LocalPlayer:WaitForChild("PlayerGui", 15)
+        local PlayerGui = LocalPlayer:WaitForChild("PlayerGui", 30)
         if not PlayerGui then
             return
         end
 
-        -- Step 0: Dismiss "Press Any Key / Click to Start" screen
-        for _ = 1, 5 do
+        -- 1. Wait for initial Loading Screen GUI to disappear
+        local loadingGui = PlayerGui:WaitForChild("LoadingScreen", 5) or PlayerGui:FindFirstChild("Loading")
+        if loadingGui then
+            print("[AutoSea1] Loading screen active, waiting for it to finish...")
+            while loadingGui.Parent == PlayerGui and loadingGui.Enabled do
+                task.wait(0.5)
+            end
+            task.wait(1)
+        end
+
+        -- 2. Dismiss "Click anywhere / Press any key" overlay
+        print("[AutoSea1] Dismissing splash screen...")
+        for _ = 1, 15 do
             VIM:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
             task.wait(0.05)
             VIM:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
-            task.wait(0.2)
+
             local startMenu = PlayerGui:FindFirstChild("Start")
-            if startMenu and startMenu:FindFirstChild("Menu") then
+            if startMenu and startMenu:FindFirstChild("Menu") and startMenu.Menu.Visible then
                 break
             end
+            task.wait(0.3)
         end
 
-        local events = ReplicatedStorage:WaitForChild("Events", 10)
+        local events = ReplicatedStorage:WaitForChild("Events", 15)
         local takeStamRemote = events and events:FindFirstChild("takestam")
         local reservedRemote = events and events:FindFirstChild("reserved")
 
@@ -77,7 +89,7 @@ function Sea1Teleport.Join(vipCode)
         local hrp = char and char:FindFirstChild("HumanoidRootPart")
         local cframe = hrp and hrp.CFrame or CFrame.new(307.57, 8.01, -11449.29, 0.05, 0, -0.99, 0, 1, 0, 0.99, 0, 0.05)
 
-        -- Step 1: Dash Remote
+        -- 3. Dash Remote
         if takeStamRemote then
             pcall(function()
                 takeStamRemote:FireServer(1, "dash", cframe)
@@ -86,7 +98,7 @@ function Sea1Teleport.Join(vipCode)
 
         task.wait(0.2)
 
-        -- Step 2: Submit custom VIP code if set
+        -- 4. Submit custom VIP code if set
         if code and code ~= "" and reservedRemote and reservedRemote:IsA("RemoteFunction") then
             pcall(function()
                 reservedRemote:InvokeServer(code)
@@ -106,11 +118,10 @@ function Sea1Teleport.Join(vipCode)
             end
         end
 
-        -- Step 3: Open Private Servers Menu with retry
-        local privateBtn = nil
-        for _ = 1, 20 do
+        -- 5. Open Private Servers Menu with extended retry
+        for _ = 1, 40 do
             local startMenu = PlayerGui:FindFirstChild("Start")
-            privateBtn = startMenu
+            local privateBtn = startMenu
                 and startMenu:FindFirstChild("Menu")
                 and startMenu.Menu:FindFirstChild("Main")
                 and startMenu.Menu.Main:FindFirstChild("List")
@@ -119,13 +130,13 @@ function Sea1Teleport.Join(vipCode)
                 clickGuiButton(privateBtn)
                 break
             end
-            task.wait(0.2)
+            task.wait(0.25)
         end
 
-        task.wait(0.2)
+        task.wait(0.25)
 
-        -- Step 4: Fire Regular Server Remote & click button with retry
-        for _ = 1, 20 do
+        -- 6. Fire Regular Server Remote & click button with extended retry
+        for _ = 1, 40 do
             local chooseType = PlayerGui:FindFirstChild("chooseType")
             if chooseType and chooseType.Enabled then
                 local chooseRemote = chooseType:FindFirstChild("Frame")
@@ -141,10 +152,11 @@ function Sea1Teleport.Join(vipCode)
                     and chooseType.Frame.Options:FindFirstChild("Regular")
                 if regBtn then
                     clickGuiButton(regBtn)
+                    print("[AutoSea1] 🚀 VIP Server selected! Teleporting...")
                     break
                 end
             end
-            task.wait(0.2)
+            task.wait(0.25)
         end
     end)
 
