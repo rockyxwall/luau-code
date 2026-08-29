@@ -8,17 +8,17 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({19,47,36,60,40,53,54},61))
-game:GetService(_d({21,40,51,47,44,38,36,55,40,39,22,55,50,53,36,42,40},61))
-game:GetService(_d({23,58,40,40,49,22,40,53,57,44,38,40},61))
-local UserInputService = game:GetService(_d({24,54,40,53,12,49,51,56,55,22,40,53,57,44,38,40},61))
-local HttpService = game:GetService(_d({11,55,55,51,22,40,53,57,44,38,40},61))
-local RunService = game:GetService(_d({21,56,49,22,40,53,57,44,38,40},61))
-local ReplicatedStorage = game:GetService(_d({21,40,51,47,44,38,36,55,40,39,22,55,50,53,36,42,40},61))
-local Modules = ReplicatedStorage:WaitForChild(_d({16,50,39,56,47,40,54},61))
+local Players = game:GetService(_d({52,80,69,93,73,86,87},28))
+game:GetService(_d({54,73,84,80,77,71,69,88,73,72,55,88,83,86,69,75,73},28))
+game:GetService(_d({56,91,73,73,82,55,73,86,90,77,71,73},28))
+local UserInputService = game:GetService(_d({57,87,73,86,45,82,84,89,88,55,73,86,90,77,71,73},28))
+local HttpService = game:GetService(_d({44,88,88,84,55,73,86,90,77,71,73},28))
+local RunService = game:GetService(_d({54,89,82,55,73,86,90,77,71,73},28))
+local ReplicatedStorage = game:GetService(_d({54,73,84,80,77,71,69,88,73,72,55,88,83,86,69,75,73},28))
+local Modules = ReplicatedStorage:WaitForChild(_d({49,83,72,89,80,73,87},28))
 local Shared = Modules.Shared
 local Client = Modules.Client
-local ToolDesc = Modules:WaitForChild(_d({23,50,50,47,7,40,54,38},61))
+local ToolDesc = Modules:WaitForChild(_d({56,83,83,80,40,73,87,71},28))
 require(Modules.Leveling)
 require(Shared.GameUtils)
 require(Shared.SoundUtils)
@@ -31,22 +31,22 @@ local Titles = require(Modules.Titles)
 local Trove = require(game.ReplicatedStorage.Modules.Trove)
 require(ReplicatedStorage.Modules.Shared.TailorCodec)
 local TailorPortCodeUI = require(ReplicatedStorage.Modules.Client.UIs.TailorPortCodeUI)
-local Events = ReplicatedStorage:WaitForChild(_d({8,57,40,49,55,54},61))
+local Events = ReplicatedStorage:WaitForChild(_d({41,90,73,82,88,87},28))
 local GoodSignal = require(ReplicatedStorage.Modules.Shared.Signals.GoodSignal)
 local UIUtils = require(Client.UIUtils)
-local UIs = Client:WaitForChild(_d({24,12,54},61))
-local RarityGradient = require(UIs:WaitForChild(_d({21,36,53,44,55,60,10,53,36,39,44,40,49,55},61)))
+local UIs = Client:WaitForChild(_d({57,45,87},28))
+local RarityGradient = require(UIs:WaitForChild(_d({54,69,86,77,88,93,43,86,69,72,77,73,82,88},28)))
 local LocalPlayer = Players.LocalPlayer
-local PlayerGui = LocalPlayer:WaitForChild(_d({19,47,36,60,40,53,10,56,44},61))
-local Tools = ReplicatedStorage:WaitForChild(_d({23,50,50,47,54},61))
-local Gradients = script:WaitForChild(_d({10,53,36,39,44,40,49,55,54},61))
+local PlayerGui = LocalPlayer:WaitForChild(_d({52,80,69,93,73,86,43,89,77},28))
+local Tools = ReplicatedStorage:WaitForChild(_d({56,83,83,80,87},28))
+local Gradients = script:WaitForChild(_d({43,86,69,72,77,73,82,88,87},28))
 local u128 = {
-Uncommon = Gradients:WaitForChild(_d({24,49,38,50,48,48,50,49},61)),
-Rare = Gradients:WaitForChild(_d({21,36,53,40},61)),
-Epic = Gradients:WaitForChild(_d({8,51,44,38},61)),
-Legendary = Gradients:WaitForChild(_d({15,40,42,40,49,39,36,53,60},61)),
-Mythical = Gradients:WaitForChild(_d({16,60,55,43,44,38,36,47},61)),
-Collectable = Gradients:WaitForChild(_d({6,50,47,47,40,38,55,36,37,47,40},61)),
+Uncommon = Gradients:WaitForChild(_d({57,82,71,83,81,81,83,82},28)),
+Rare = Gradients:WaitForChild(_d({54,69,86,73},28)),
+Epic = Gradients:WaitForChild(_d({41,84,77,71},28)),
+Legendary = Gradients:WaitForChild(_d({48,73,75,73,82,72,69,86,93},28)),
+Mythical = Gradients:WaitForChild(_d({49,93,88,76,77,71,69,80},28)),
+Collectable = Gradients:WaitForChild(_d({39,83,80,80,73,71,88,69,70,80,73},28)),
 }
 local v1 = {
 Common = 0,
@@ -67,17 +67,17 @@ Common = 4,
 }
 local u165 = table.freeze(v2)
 local u166 = {
-HP = {Display = _d({8,59,55,53,36,227,11,40,36,47,55,43},61), UsePercentValue = false, Color = Color3.fromRGB(170, 255, 0)},
-Regen = {Display = _d({11,40,36,47,55,43,227,21,40,42,40,49},61), UsePercentValue = false, Color = Color3.fromRGB(170, 255, 127)},
-Stam = {Display = _d({22,55,36,48,44,49,36,227,21,40,42,40,49},61), UsePercentValue = false, Color = Color3.fromRGB(85, 255, 255)},
-MaxStam = {Display = _d({8,59,55,53,36,227,22,55,36,48,44,49,36},61), UsePercentValue = false, Color = Color3.fromRGB(0, 255, 255)},
-swordMultiplier = {Display = _d({22,58,50,53,39,227,7,16,10,227,16,56,47,55},61), UsePercentValue = true, Color = Color3.fromRGB(85, 85, 255)},
-strengthMultiplier = {Display = _d({22,23,21,227,7,16,10,227,16,56,47,55},61), UsePercentValue = true, Color = Color3.fromRGB(255, 170, 127)},
-damageMultiplier = {Display = _d({7,16,10,227,16,56,47,55,44,51,47,44,40,53},61), UsePercentValue = true, Color = Color3.fromRGB(255, 85, 0)},
-ReducedDMG = {Display = _d({21,40,39,56,38,40,39,227,7,16,10},61), UsePercentValue = true, Color = Color3.fromRGB(170, 170, 255)},
-BurnResistance = {Display = _d({21,40,39,56,38,40,39,227,5,56,53,49},61), UsePercentValue = true, Color = Color3.fromRGB(255, 85, 0)},
-FreezeResistance = {Display = _d({21,40,39,56,38,40,39,227,9,53,40,40,61,40},61), UsePercentValue = true, Color = Color3.fromRGB(170, 255, 255)},
-AntiHeal = {Display = _d({10,53,40,57,44,50,56,54,227,26,50,56,49,39,54},61), UsePercentValue = true, Color = Color3.fromRGB(57, 113, 0)},
+HP = {Display = _d({41,92,88,86,69,4,44,73,69,80,88,76},28), UsePercentValue = false, Color = Color3.fromRGB(170, 255, 0)},
+Regen = {Display = _d({44,73,69,80,88,76,4,54,73,75,73,82},28), UsePercentValue = false, Color = Color3.fromRGB(170, 255, 127)},
+Stam = {Display = _d({55,88,69,81,77,82,69,4,54,73,75,73,82},28), UsePercentValue = false, Color = Color3.fromRGB(85, 255, 255)},
+MaxStam = {Display = _d({41,92,88,86,69,4,55,88,69,81,77,82,69},28), UsePercentValue = false, Color = Color3.fromRGB(0, 255, 255)},
+swordMultiplier = {Display = _d({55,91,83,86,72,4,40,49,43,4,49,89,80,88},28), UsePercentValue = true, Color = Color3.fromRGB(85, 85, 255)},
+strengthMultiplier = {Display = _d({55,56,54,4,40,49,43,4,49,89,80,88},28), UsePercentValue = true, Color = Color3.fromRGB(255, 170, 127)},
+damageMultiplier = {Display = _d({40,49,43,4,49,89,80,88,77,84,80,77,73,86},28), UsePercentValue = true, Color = Color3.fromRGB(255, 85, 0)},
+ReducedDMG = {Display = _d({54,73,72,89,71,73,72,4,40,49,43},28), UsePercentValue = true, Color = Color3.fromRGB(170, 170, 255)},
+BurnResistance = {Display = _d({54,73,72,89,71,73,72,4,38,89,86,82},28), UsePercentValue = true, Color = Color3.fromRGB(255, 85, 0)},
+FreezeResistance = {Display = _d({54,73,72,89,71,73,72,4,42,86,73,73,94,73},28), UsePercentValue = true, Color = Color3.fromRGB(170, 255, 255)},
+AntiHeal = {Display = _d({43,86,73,90,77,83,89,87,4,59,83,89,82,72,87},28), UsePercentValue = true, Color = Color3.fromRGB(57, 113, 0)},
 }
 local function roundNumber(p1, p2)
 local v1 = math.floor(p1 * 10 ^ p2)
@@ -86,7 +86,7 @@ end
 local function UpdateStatText(p1, p2, p3)
 local v1 = u166[p2]
 local Color = v1.Color
-if typeof(p3) ~= _d({49,56,48,37,40,53},61) then
+if typeof(p3) ~= _d({82,89,81,70,73,86},28) then
 local v2
 p1.Visible = true
 if v1.UsePercentValue ~= true then
@@ -121,7 +121,7 @@ else
 Attributes = v1:GetAttributes()
 end
 for i, v in ipairs(p1:GetChildren()) do
-if v:IsA(_d({23,40,59,55,15,36,37,40,47},61)) then
+if v:IsA(_d({56,73,92,88,48,69,70,73,80},28)) then
 UpdateStatText(v, v.Name, Attributes[v.Name] or 0)
 end
 end
@@ -132,55 +132,55 @@ local ItemRotation, PropertyChangedSignal, TailorableWeapons, Value, v1, v2, v3,
 if u235.Initialized then
 return
 end
-ReplicatedStorage:WaitForChild(_d({53,40,54,40,53,57,40,39,6,50,39,40},61))
+ReplicatedStorage:WaitForChild(_d({86,73,87,73,86,90,73,72,39,83,72,73},28))
 local StatsFolder = p1:GetStatsFolder()
-local v5 = StatsFolder:WaitForChild(_d({22,55,36,55,54},61))
-local v6 = StatsFolder:WaitForChild(_d({12,49,57,40,49,55,50,53,60},61))
-local Inventory = v6:WaitForChild(_d({12,49,57,40,49,55,50,53,60},61))
-local Equiped = v6:WaitForChild(_d({8,52,56,44,51,40,39},61))
-local VanitySlots = v6:WaitForChild(_d({25,36,49,44,55,60,22,47,50,55,54},61))
-local FightingStyle = v5:WaitForChild(_d({9,44,42,43,55,44,49,42,22,55,60,47,40},61))
-local KatanaOrder = v6:WaitForChild(_d({14,36,55,36,49,36,18,53,39,40,53},61))
-local EquipedShip = v6:WaitForChild(_d({8,52,56,44,51,40,39,22,43,44,51},61))
-local v7 = StatsFolder:WaitForChild(_d({23,44,55,47,40,54},61))
-local AllTitles = v7:WaitForChild(_d({4,47,47,23,44,55,47,40,54},61))
-local EquipedTitle = v7:WaitForChild(_d({8,52,56,44,51,40,39,23,44,55,47,40},61))
-local AutoEquip = StatsFolder:WaitForChild(_d({22,40,55,55,44,49,42,54},61)):WaitForChild(_d({4,56,55,50,8,52,56,44,51},61))
-local EquipedGrip = StatsFolder:WaitForChild(_d({10,53,44,51,54},61)):WaitForChild(_d({8,52,56,44,51,40,39,10,53,44,51},61))
-local Inventory_2 = PlayerGui:WaitForChild(_d({12,49,57,40,49,55,50,53,60},61), 360)
-local Main = Inventory_2:WaitForChild(_d({16,36,44,49},61))
-local v8 = Main:WaitForChild(_d({12,49,57,40,49,55,50,53,60},61))
-local List = v8:WaitForChild(_d({15,44,54,55},61))
-local v9 = Main:WaitForChild(_d({23,50,51,23,36,37,54},61))
-local UIGridLayout = List:WaitForChild(_d({24,12,10,53,44,39,15,36,60,50,56,55},61))
-local UIPadding = List:WaitForChild(_d({24,12,19,36,39,39,44,49,42},61))
-local v10 = v8:WaitForChild(_d({22,40,36,53,38,43},61))
-local Input = v10:WaitForChild(_d({12,49,51,56,55},61))
-local Clear = v10:WaitForChild(_d({6,47,40,36,53},61))
-local ItemMenu = Main:WaitForChild(_d({12,55,40,48,16,40,49,56},61))
-local Health = ItemMenu:WaitForChild(_d({11,40,36,47,55,43},61))
-local Bar = Health:WaitForChild(_d({5,36,53},61))
-local Equip = ItemMenu:WaitForChild(_d({8,52,56,44,51},61))
-local Usage = Equip:WaitForChild(_d({24,54,36,42,40},61))
-local Drop = ItemMenu:WaitForChild(_d({7,53,50,51},61))
-local v11 = ItemMenu:WaitForChild(_d({16,44,54,38,5,56,55,55,50,49,54},61))
-local Vanity = v11:WaitForChild(_d({25,36,49,44,55,60},61))
-local CustomTailoredToggle = v11:WaitForChild(_d({6,56,54,55,50,48,23,36,44,47,50,53,40,39,23,50,42,42,47,40},61))
-local SwordButtons = ItemMenu:WaitForChild(_d({22,58,50,53,39,5,56,55,55,50,49,54},61))
-local Stats = ItemMenu:WaitForChild(_d({22,55,36,55,54},61))
-local Boosts = Main:WaitForChild(_d({22,55,36,55,56,54,5,50,50,54,55,54},61)):WaitForChild(_d({5,50,50,54,55,54},61))
-local v12 = Main:WaitForChild(_d({22,40,47,40,38,55,44,50,49,54},61))
-local Frames = v12:WaitForChild(_d({9,53,36,48,40,54},61))
-local RarityFilter = Main:WaitForChild(_d({21,36,53,44,55,60,9,44,47,55,40,53},61))
-local Grips = Main:WaitForChild(_d({10,53,44,51,54},61))
-local List_2 = Grips:WaitForChild(_d({15,44,54,55},61))
-local LoadoutFrame = Main:WaitForChild(_d({15,50,36,39,50,56,55,9,53,36,48,40},61))
+local v5 = StatsFolder:WaitForChild(_d({55,88,69,88,87},28))
+local v6 = StatsFolder:WaitForChild(_d({45,82,90,73,82,88,83,86,93},28))
+local Inventory = v6:WaitForChild(_d({45,82,90,73,82,88,83,86,93},28))
+local Equiped = v6:WaitForChild(_d({41,85,89,77,84,73,72},28))
+local VanitySlots = v6:WaitForChild(_d({58,69,82,77,88,93,55,80,83,88,87},28))
+local FightingStyle = v5:WaitForChild(_d({42,77,75,76,88,77,82,75,55,88,93,80,73},28))
+local KatanaOrder = v6:WaitForChild(_d({47,69,88,69,82,69,51,86,72,73,86},28))
+local EquipedShip = v6:WaitForChild(_d({41,85,89,77,84,73,72,55,76,77,84},28))
+local v7 = StatsFolder:WaitForChild(_d({56,77,88,80,73,87},28))
+local AllTitles = v7:WaitForChild(_d({37,80,80,56,77,88,80,73,87},28))
+local EquipedTitle = v7:WaitForChild(_d({41,85,89,77,84,73,72,56,77,88,80,73},28))
+local AutoEquip = StatsFolder:WaitForChild(_d({55,73,88,88,77,82,75,87},28)):WaitForChild(_d({37,89,88,83,41,85,89,77,84},28))
+local EquipedGrip = StatsFolder:WaitForChild(_d({43,86,77,84,87},28)):WaitForChild(_d({41,85,89,77,84,73,72,43,86,77,84},28))
+local Inventory_2 = PlayerGui:WaitForChild(_d({45,82,90,73,82,88,83,86,93},28), 360)
+local Main = Inventory_2:WaitForChild(_d({49,69,77,82},28))
+local v8 = Main:WaitForChild(_d({45,82,90,73,82,88,83,86,93},28))
+local List = v8:WaitForChild(_d({48,77,87,88},28))
+local v9 = Main:WaitForChild(_d({56,83,84,56,69,70,87},28))
+local UIGridLayout = List:WaitForChild(_d({57,45,43,86,77,72,48,69,93,83,89,88},28))
+local UIPadding = List:WaitForChild(_d({57,45,52,69,72,72,77,82,75},28))
+local v10 = v8:WaitForChild(_d({55,73,69,86,71,76},28))
+local Input = v10:WaitForChild(_d({45,82,84,89,88},28))
+local Clear = v10:WaitForChild(_d({39,80,73,69,86},28))
+local ItemMenu = Main:WaitForChild(_d({45,88,73,81,49,73,82,89},28))
+local Health = ItemMenu:WaitForChild(_d({44,73,69,80,88,76},28))
+local Bar = Health:WaitForChild(_d({38,69,86},28))
+local Equip = ItemMenu:WaitForChild(_d({41,85,89,77,84},28))
+local Usage = Equip:WaitForChild(_d({57,87,69,75,73},28))
+local Drop = ItemMenu:WaitForChild(_d({40,86,83,84},28))
+local v11 = ItemMenu:WaitForChild(_d({49,77,87,71,38,89,88,88,83,82,87},28))
+local Vanity = v11:WaitForChild(_d({58,69,82,77,88,93},28))
+local CustomTailoredToggle = v11:WaitForChild(_d({39,89,87,88,83,81,56,69,77,80,83,86,73,72,56,83,75,75,80,73},28))
+local SwordButtons = ItemMenu:WaitForChild(_d({55,91,83,86,72,38,89,88,88,83,82,87},28))
+local Stats = ItemMenu:WaitForChild(_d({55,88,69,88,87},28))
+local Boosts = Main:WaitForChild(_d({55,88,69,88,89,87,38,83,83,87,88,87},28)):WaitForChild(_d({38,83,83,87,88,87},28))
+local v12 = Main:WaitForChild(_d({55,73,80,73,71,88,77,83,82,87},28))
+local Frames = v12:WaitForChild(_d({42,86,69,81,73,87},28))
+local RarityFilter = Main:WaitForChild(_d({54,69,86,77,88,93,42,77,80,88,73,86},28))
+local Grips = Main:WaitForChild(_d({43,86,77,84,87},28))
+local List_2 = Grips:WaitForChild(_d({48,77,87,88},28))
+local LoadoutFrame = Main:WaitForChild(_d({48,83,69,72,83,89,88,42,86,69,81,73},28))
 local FavButton = ItemMenu.FavButton
 Main.Visible = false
-local v13 = Inventory_2:GetPropertyChangedSignal(_d({8,49,36,37,47,40,39},61))
+local v13 = Inventory_2:GetPropertyChangedSignal(_d({41,82,69,70,80,73,72},28))
 v13:Connect(function()
 local Enabled = Inventory_2.Enabled
-print(_d({25,44,54,44,37,47,40},61), Enabled)
+print(_d({58,77,87,77,70,80,73},28), Enabled)
 RarityGradient.SetRainbowGradientsGui(Inventory_2, Enabled)
 end)
 local u199 = {}

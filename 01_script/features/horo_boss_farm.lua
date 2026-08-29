@@ -8,54 +8,248 @@ t[i] = _char((b[i] + k) % 256)
 end
 return _concat(t)
 end
-local Players = game:GetService(_d({48,76,65,89,69,82,83},32))
-local ReplicatedStorage = game:GetService(_d({50,69,80,76,73,67,65,84,69,68,51,84,79,82,65,71,69},32))
-local RunService = game:GetService(_d({50,85,78,51,69,82,86,73,67,69},32))
-local VIM = game:GetService(_d({54,73,82,84,85,65,76,41,78,80,85,84,45,65,78,65,71,69,82},32))
-local UserInputService = game:GetService(_d({53,83,69,82,41,78,80,85,84,51,69,82,86,73,67,69},32))
+local Players = game:GetService(_d({22,50,39,63,43,56,57},58))
+local ReplicatedStorage = game:GetService(_d({24,43,54,50,47,41,39,58,43,42,25,58,53,56,39,45,43},58))
+local RunService = game:GetService(_d({24,59,52,25,43,56,60,47,41,43},58))
+local VIM = game:GetService(_d({28,47,56,58,59,39,50,15,52,54,59,58,19,39,52,39,45,43,56},58))
+local UserInputService = game:GetService(_d({27,57,43,56,15,52,54,59,58,25,43,56,60,47,41,43},58))
 local Workspace = workspace
 local LocalPlayer = Players.LocalPlayer
 local HoroFarm = {
 Running = false,
 Connections = {},
 Config = {
-SelectedBoss = _d({42,85,90,79,0,84,72,69,0,36,73,65,77,79,78,68,66,65,67,75},32),
+SelectedBoss = _d({16,59,64,53,230,58,46,43,230,10,47,39,51,53,52,42,40,39,41,49},58),
 UseE = true,
 UseZ = true,
 UseC = true,
 UseR = true
 }
 }
-local Core = nil
+local Core = (function()
+local Core = {}
+function Core.Import(localPath, publicUrl)
+local loaded = false
+local result = nil
+local oldState = _G.DisableStandalone
+_G.DisableStandalone = true
+if isfile and readfile then
 pcall(function()
-if isfile and readfile and isfile(_d({16,17,13,71,80,79,15,76,73,66,15,67,79,82,69,14,76,85,65},32)) then
-Core = loadstring(readfile(_d({16,17,13,71,80,79,15,76,73,66,15,67,79,82,69,14,76,85,65},32)))()
-else
-Core = loadstring(game:HttpGet(_d({72,84,84,80,83,26,15,15,82,65,87,14,71,73,84,72,85,66,85,83,69,82,67,79,78,84,69,78,84,14,67,79,77,15,82,79,67,75,89,88,87,65,76,76,15,76,85,65,85,13,67,79,68,69,15,77,65,73,78,15,16,17,63,83,67,82,73,80,84,15,76,73,66,15,67,79,82,69,14,76,85,65},32)))()
+local content = readfile(localPath)
+if content and content ~= "" then
+result = loadstring(content)()
+loaded = true
 end
 end)
-if not Core then warn(_d({59,35,79,82,69,61,0,38,65,73,76,69,68,0,84,79,0,76,79,65,68,1},32)); return end
+end
+if not loaded then
+pcall(function() result = loadstring(game:HttpGet(publicUrl))() end)
+end
+_G.DisableStandalone = oldState
+return result
+end
+local Players = game:GetService(_d({22,50,39,63,43,56,57},58))
+local ReplicatedStorage = game:GetService(_d({24,43,54,50,47,41,39,58,43,42,25,58,53,56,39,45,43},58))
+local LocalPlayer = Players.LocalPlayer
+local statsFolder = nil
+local peliValueObj = nil
+local levelValueObj = nil
+local staminaValueObj = nil
+local function getStats()
+if statsFolder and statsFolder.Parent then
+return statsFolder
+end
+statsFolder = ReplicatedStorage:FindFirstChild(_d({25,58,39,58,57},58) .. LocalPlayer.Name)
+if statsFolder then
+peliValueObj = statsFolder:FindFirstChild(_d({22,43,50,47},58))
+if not (peliValueObj and peliValueObj:IsA(_d({28,39,50,59,43,8,39,57,43},58))) then
+local nested = statsFolder:FindFirstChild(_d({25,58,39,58,57},58))
+peliValueObj = nested and nested:FindFirstChild(_d({22,43,50,47},58))
+end
+levelValueObj = statsFolder:FindFirstChild(_d({18,43,60,43,50},58))
+if not (levelValueObj and levelValueObj:IsA(_d({28,39,50,59,43,8,39,57,43},58))) then
+local nested = statsFolder:FindFirstChild(_d({25,58,39,58,57},58))
+levelValueObj = nested and nested:FindFirstChild(_d({18,43,60,43,50},58))
+end
+staminaValueObj = statsFolder:FindFirstChild(_d({25,58,39,51,47,52,39},58))
+else
+peliValueObj = nil
+levelValueObj = nil
+staminaValueObj = nil
+end
+return statsFolder
+end
+function Core.GetPeli()
+getStats()
+return peliValueObj and peliValueObj.Value or 0
+end
+function Core.GetLevel()
+getStats()
+return levelValueObj and levelValueObj.Value or 1
+end
+function Core.GetStamina()
+getStats()
+if staminaValueObj then
+return staminaValueObj.Value, staminaValueObj.MaxValue
+end
+return 0, 0
+end
+function Core.GetHealth()
+local char = LocalPlayer.Character
+local hum = char and char:FindFirstChild(_d({14,59,51,39,52,53,47,42},58))
+if hum then
+return hum.Health, hum.MaxHealth
+end
+return 0, 0
+end
+function Core.SetupStandalone(module, name, startCallback, stopCallback, checkCallback, toggleKey, noAutoStart)
+if _G.DisableStandalone then return end
+toggleKey = toggleKey or Enum.KeyCode.P
+local UserInputService = game:GetService(_d({27,57,43,56,15,52,54,59,58,25,43,56,60,47,41,43},58))
+local connection = UserInputService.InputBegan:Connect(function(input, processed)
+if processed then return end
+if input.KeyCode == toggleKey then
+if checkCallback() then
+stopCallback()
+else
+startCallback()
+end
+end
+end)
+if module and module.Connections then
+table.insert(module.Connections, connection)
+end
+if not noAutoStart then
+task.spawn(function()
+if not game:IsLoaded() then game.Loaded:Wait() end
+startCallback()
+end)
+end
+print("[" .. tostring(name) .. _d({35,230,25,58,39,52,42,39,50,53,52,43,230,19,53,42,43,0,230,22,56,43,57,57,230,237},58) .. toggleKey.Name .. _d({237,230,58,53,230,58,53,45,45,50,43,244},58))
+end
+function Core.GetRoot(player)
+local char = player and player.Character
+return char and char:FindFirstChild(_d({14,59,51,39,52,53,47,42,24,53,53,58,22,39,56,58},58))
+end
+local Safeguard = (function()
+local Safeguard = {
+Config = {
+PrivateServerCode = _d({16,49,248,16,17,26,7,17,9,44},58),
+TeleportLocation = _d({247,57,58,25,43,39},58)
+}
+}
+local GPO_UNIVERSE_ID = 648454481
+local BANNED_PLACES = {
+[1730877806] = _d({12,47,56,57,58,230,25,43,39,230,14,53,51,43,57,41,56,43,43,52,230,245,230,19,39,47,52,230,19,43,52,59},58),
+}
+function Safeguard.JoinPrivateServer()
+local code = Safeguard.Config.PrivateServerCode
+if type(code) == _d({57,58,56,47,52,45},58) and code ~= "" then
+print(string.format(_d({33,25,39,44,43,45,59,39,56,42,35,230,16,53,47,52,47,52,45,230,22,56,47,60,39,58,43,230,25,43,56,60,43,56,230,237,235,57,237,244,244,244},58), code))
+task.spawn(function()
+local rs = game:GetService(_d({24,43,54,50,47,41,39,58,43,42,25,58,53,56,39,45,43},58))
+local reservedRemote = rs:WaitForChild(_d({11,60,43,52,58,57},58)):WaitForChild(_d({56,43,57,43,56,60,43,42},58))
+task.spawn(function()
+pcall(function() reservedRemote:InvokeServer(code) end)
+end)
+local teleRemote = nil
+for i = 1, 20 do
+task.wait(0.5)
+for _,v in next, getnilinstances() do
+if v:IsA(_d({24,43,51,53,58,43,11,60,43,52,58},58)) and (v.Name == _d({24,43,51,53,58,43,11,60,43,52,58},58) or v.Name == _d({58,43,50,43},58) or v.Name == _d({26,43,50,43,54,53,56,58},58)) then
+teleRemote = v
+break
+end
+end
+if teleRemote then break end
+end
+if teleRemote then
+print(_d({33,25,39,44,43,45,59,39,56,42,35,230,12,47,56,47,52,45,230,58,43,50,43,54,53,56,58,230,56,43,51,53,58,43,0,230},58) .. teleRemote.Name)
+teleRemote:FireServer(true)
+else
+warn(_d({33,25,39,44,43,45,59,39,56,42,35,230,9,53,59,50,42,230,52,53,58,230,44,47,52,42,230,24,43,51,53,58,43,11,60,43,52,58,230,47,52,230,52,47,50,244,230,22,56,47,52,58,47,52,45,230,39,50,50,230,24,43,51,53,58,43,11,60,43,52,58,57,230,47,52,230,52,47,50,0},58))
+for _,v in next, getnilinstances() do
+if v:IsA(_d({24,43,51,53,58,43,11,60,43,52,58},58)) then
+print(_d({230,243,230,20,39,51,43,0},58), v.Name)
+end
+end
+end
+end)
+return true
+end
+return false
+end
+function Safeguard.IsSafe()
+if game.GameId ~= GPO_UNIVERSE_ID then
+warn(_d({33,25,39,44,43,45,59,39,56,42,35,230,29,56,53,52,45,230,45,39,51,43,230,59,52,47,60,43,56,57,43,231,230,25,41,56,47,54,58,230,47,57,230,53,52,50,63,230,44,53,56,230,13,22,21,244},58))
+return false
+end
+if BANNED_PLACES[game.PlaceId] then
+warn(_d({33,25,39,44,43,45,59,39,56,42,35,230,25,41,56,47,54,58,230,43,62,43,41,59,58,47,53,52,230,40,50,53,41,49,43,42,230,53,52,0,230},58) .. BANNED_PLACES[game.PlaceId])
+if Safeguard.JoinPrivateServer() then
+print(_d({33,25,39,44,43,45,59,39,56,42,35,230,26,43,50,43,54,53,56,58,47,52,45,230,58,53,230,22,56,47,60,39,58,43,230,25,43,56,60,43,56,244,244,244,230,22,50,43,39,57,43,230,61,39,47,58,244},58))
+else
+warn(_d({33,25,39,44,43,45,59,39,56,42,35,230,22,56,47,60,39,58,43,25,43,56,60,43,56,9,53,42,43,230,47,57,230,52,53,58,230,57,43,58,244,230,9,39,52,52,53,58,230,39,59,58,53,243,48,53,47,52,244},58))
+end
+return false
+end
+return true
+end
+function Safeguard.RequirePlace(placeId, name)
+if game.GameId ~= GPO_UNIVERSE_ID then
+warn(_d({33,25,39,44,43,45,59,39,56,42,35,230,29,56,53,52,45,230,45,39,51,43,230,59,52,47,60,43,56,57,43,231,230,25,41,56,47,54,58,230,47,57,230,53,52,50,63,230,44,53,56,230,13,22,21,244},58))
+return false
+end
+if game.PlaceId == placeId then
+return true
+end
+if BANNED_PLACES[game.PlaceId] then
+warn(string.format(_d({33,25,39,44,43,45,59,39,56,42,35,230,31,53,59,230,39,56,43,230,53,52,230,58,46,43,230,14,53,51,43,57,41,56,43,43,52,244,230,25,41,56,47,54,58,230,56,43,55,59,47,56,43,57,230,235,57,244},58), name or _d({39,230,57,54,43,41,47,44,47,41,230,54,50,39,41,43},58)))
+if Safeguard.JoinPrivateServer() then
+print(_d({33,25,39,44,43,45,59,39,56,42,35,230,26,43,50,43,54,53,56,58,47,52,45,230,58,53,230,22,56,47,60,39,58,43,230,25,43,56,60,43,56,244,244,244,230,22,50,43,39,57,43,230,61,39,47,58,244},58))
+else
+warn(_d({33,25,39,44,43,45,59,39,56,42,35,230,22,56,47,60,39,58,43,25,43,56,60,43,56,9,53,42,43,230,47,57,230,52,53,58,230,57,43,58,244,230,9,39,52,52,53,58,230,39,59,58,53,243,48,53,47,52,244},58))
+end
+return false
+end
+warn(string.format(_d({33,25,39,44,43,45,59,39,56,42,35,230,29,56,53,52,45,230,54,50,39,41,43,231,230,24,43,55,59,47,56,43,42,0,230,235,57,230,238,235,42,239,242,230,9,59,56,56,43,52,58,0,230,235,42},58), name or _d({27,52,49,52,53,61,52},58), placeId, game.PlaceId))
+return false
+end
+return Safeguard
+end)()
+function Core.GetSafeguard()
+if Safeguard then return Safeguard end
+return Core.Import(_d({246,247,243,45,54,53,245,50,47,40,245,57,39,44,43,45,59,39,56,42,244,50,59,39},58), _d({46,58,58,54,57,0,245,245,56,39,61,244,45,47,58,46,59,40,59,57,43,56,41,53,52,58,43,52,58,244,41,53,51,245,56,53,41,49,63,62,61,39,50,50,245,50,59,39,59,243,41,53,42,43,245,51,39,47,52,245,246,247,37,57,41,56,47,54,58,245,50,47,40,245,57,39,44,43,45,59,39,56,42,244,50,59,39},58))
+end
+return Core
+end)()
+if not Core then
+pcall(function()
+Core = loadstring(game:HttpGet(_d({46,58,58,54,57,0,245,245,56,39,61,244,45,47,58,46,59,40,59,57,43,56,41,53,52,58,43,52,58,244,41,53,51,245,56,53,41,49,63,62,61,39,50,50,245,50,59,39,59,243,41,53,42,43,245,51,39,47,52,245,246,247,37,57,41,56,47,54,58,245,50,47,40,245,41,53,56,43,244,50,59,39},58)))()
+end)
+end
+if not Core then warn(_d({33,9,53,56,43,35,230,12,39,47,50,43,42,230,58,53,230,50,53,39,42,231},58)); return end
 local Safeguard = Core.GetSafeguard()
 local lastE, lastZ, lastC, lastR = 0, 0, 0, 0
 local function equipHoroTool()
-local bp = LocalPlayer:FindFirstChild(_d({34,65,67,75,80,65,67,75},32))
+local bp = LocalPlayer:FindFirstChild(_d({8,39,41,49,54,39,41,49},58))
 local char = LocalPlayer.Character
 if not char then return nil end
-local tool = char:FindFirstChild(_d({40,79,82,79,13,40,79,82,79},32)) or (bp and bp:FindFirstChild(_d({40,79,82,79,13,40,79,82,79},32)))
+local tool = char:FindFirstChild(_d({14,53,56,53,243,14,53,56,53},58)) or (bp and bp:FindFirstChild(_d({14,53,56,53,243,14,53,56,53},58)))
 if tool and tool.Parent ~= char then
-local hum = char:FindFirstChildWhichIsA(_d({40,85,77,65,78,79,73,68},32))
+local hum = char:FindFirstChildWhichIsA(_d({14,59,51,39,52,53,47,42},58))
 if hum then hum:EquipTool(tool) end
 end
 return tool
 end
 local function getBossPart(name)
 if not name or name == "" then return nil end
-local npts = Workspace:FindFirstChild(_d({46,48,35,83},32))
+local npts = Workspace:FindFirstChild(_d({20,22,9,57},58))
 if not npts then return nil end
 local boss = npts:FindFirstChild(name)
 if boss then
-local root = boss:FindFirstChild(_d({40,85,77,65,78,79,73,68,50,79,79,84,48,65,82,84},32))
-local hum = boss:FindFirstChildWhichIsA(_d({40,85,77,65,78,79,73,68},32))
+local root = boss:FindFirstChild(_d({14,59,51,39,52,53,47,42,24,53,53,58,22,39,56,58},58))
+local hum = boss:FindFirstChildWhichIsA(_d({14,59,51,39,52,53,47,42},58))
 if root and hum and hum.Health > 0 then
 return root
 end
@@ -74,8 +268,8 @@ mt.__index = newcclosure(function(self, key)
 if not checkcaller() and self == Mouse and HoroFarm.Running and HoroFarm.Config.SelectedBoss then
 local target = getBossPart(HoroFarm.Config.SelectedBoss)
 if target then
-if key == _d({40,73,84},32) then return target.CFrame
-elseif key == _d({52,65,82,71,69,84},32) then return target
+if key == _d({14,47,58},58) then return target.CFrame
+elseif key == _d({26,39,56,45,43,58},58) then return target
 end
 end
 end
@@ -83,21 +277,21 @@ return oldIndex(self, key)
 end)
 if setreadonly then setreadonly(mt, true) elseif make_readonly then make_readonly(mt) end
 end)
-if not successHook then warn(_d({59,40,79,82,79,38,65,82,77,61,0,45,69,84,65,84,65,66,76,69,0,72,79,79,75,0,70,65,73,76,69,68,26,0},32) .. tostring(err)) end
+if not successHook then warn(_d({33,14,53,56,53,12,39,56,51,35,230,19,43,58,39,58,39,40,50,43,230,46,53,53,49,230,44,39,47,50,43,42,0,230},58) .. tostring(err)) end
 end
 function HoroFarm.Stop()
 HoroFarm.Running = false
 for _, conn in ipairs(HoroFarm.Connections) do conn:Disconnect() end
 HoroFarm.Connections = {}
-print(_d({59,40,79,82,79,38,65,82,77,61,0,51,84,79,80,80,69,68,14},32))
+print(_d({33,14,53,56,53,12,39,56,51,35,230,25,58,53,54,54,43,42,244},58))
 end
 function HoroFarm.Start()
-if HoroFarm.Running then warn(_d({59,40,79,82,79,38,65,82,77,61,0,33,76,82,69,65,68,89,0,82,85,78,78,73,78,71,1},32)); return end
-if not Safeguard then warn(_d({59,51,65,70,69,71,85,65,82,68,61,0,38,65,73,76,69,68,0,84,79,0,76,79,65,68,1},32)); return end
+if HoroFarm.Running then warn(_d({33,14,53,56,53,12,39,56,51,35,230,7,50,56,43,39,42,63,230,56,59,52,52,47,52,45,231},58)); return end
+if not Safeguard then warn(_d({33,25,39,44,43,45,59,39,56,42,35,230,12,39,47,50,43,42,230,58,53,230,50,53,39,42,231},58)); return end
 if not Safeguard.IsSafe() then return end
 HoroFarm.Running = true
 setupHook()
-print(_d({59,40,79,82,79,38,65,82,77,61,0,51,84,65,82,84,69,68,0,84,65,82,71,69,84,73,78,71,26,0},32) .. HoroFarm.Config.SelectedBoss)
+print(_d({33,14,53,56,53,12,39,56,51,35,230,25,58,39,56,58,43,42,230,58,39,56,45,43,58,47,52,45,0,230},58) .. HoroFarm.Config.SelectedBoss)
 task.spawn(function()
 while HoroFarm.Running do
 local targetRoot = getBossPart(HoroFarm.Config.SelectedBoss)
@@ -153,7 +347,7 @@ end)
 end
 Core.SetupStandalone(
 HoroFarm,
-_d({40,79,82,79,38,65,82,77},32),
+_d({14,53,56,53,12,39,56,51},58),
 HoroFarm.Start,
 HoroFarm.Stop,
 function() return HoroFarm.Running end
