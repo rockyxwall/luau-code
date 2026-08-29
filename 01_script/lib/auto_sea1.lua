@@ -1,8 +1,7 @@
 --[[
     Auto Teleport to Sea 1 / Private Server Library
-    Automatically executes homescreen -> Sea 1 private server teleport.
+    Robust state-checked pipeline from homescreen boot to Sea 1 private server.
     Place Guard: Only executes on GPO Homescreen (PlaceId: 1730877806).
-    Completely silent & safe if executed in Sea 1 or anywhere else.
 ]]
 
 local Players = game:GetService("Players")
@@ -49,7 +48,7 @@ function Sea1Teleport.Join(vipCode)
     end
 
     local code = vipCode or Sea1Teleport.DefaultVipCode
-    print(string.format("[AutoSea1] Homescreen detected. Waiting for loading screen to complete...", tostring(code)))
+    print(string.format("[AutoSea1] Starting homescreen sequence (VIP Code: %s)...", tostring(code)))
 
     task.spawn(function()
         local PlayerGui = LocalPlayer:WaitForChild("PlayerGui", 30)
@@ -57,60 +56,46 @@ function Sea1Teleport.Join(vipCode)
             return
         end
 
-        -- 1. Wait for actual LoadingGUI to disappear (inspected via MCP)
-        local loadingGui = PlayerGui:WaitForChild("LoadingGUI", 3)
-            or PlayerGui:FindFirstChild("LoadingScreen")
-            or PlayerGui:FindFirstChild("Loading")
-        if loadingGui then
-            print("[AutoSea1] LoadingGUI active, waiting for it to finish...")
-            while loadingGui.Parent == PlayerGui and loadingGui.Enabled do
-                task.wait(0.5)
-            end
-            task.wait(0.5)
-        end
-
-        -- Direct Shortcut: If chooseType is ALREADY open, fire immediately!
-        local chooseType = PlayerGui:FindFirstChild("chooseType")
-        if chooseType and chooseType.Enabled then
-            local chooseRemote = chooseType:FindFirstChild("Frame") and chooseType.Frame:FindFirstChild("RemoteEvent")
-            if chooseRemote then
-                pcall(function()
-                    chooseRemote:FireServer(true)
-                end)
-            end
-            local regBtn = chooseType:FindFirstChild("Frame")
-                and chooseType.Frame:FindFirstChild("Options")
-                and chooseType.Frame.Options:FindFirstChild("Regular")
-            if regBtn then
-                clickGuiButton(regBtn)
-                print("[AutoSea1] 🚀 chooseType already open! Teleporting directly to Regular VIP...")
-                return
-            end
-        end
-
-        -- 2. Dismiss "Click anywhere / Press any key" overlay
-        print("[AutoSea1] Dismissing splash screen...")
-        for _ = 1, 15 do
-            VIM:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
-            task.wait(0.05)
-            VIM:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
-
-            local startMenu = PlayerGui:FindFirstChild("Start")
-            if startMenu and startMenu:FindFirstChild("Menu") and startMenu.Menu.Visible then
+        -- Step 1: Wait for Loading Screen to completely finish
+        while true do
+            local loadingGui = PlayerGui:FindFirstChild("LoadingGUI")
+            if not loadingGui or not loadingGui.Enabled then
                 break
             end
             task.wait(0.3)
         end
 
+        -- Step 2: Wait for "Press any key to continue" / StartScreen UI to appear
+        print("[AutoSea1] Waiting for StartScreen / Press Any Key text...")
+        local startGui = PlayerGui:WaitForChild("Start", 30)
+        if not startGui then
+            warn("[AutoSea1] Start GUI not found!")
+            return
+        end
+
+        -- Step 3: Dismiss "Press any key to continue" by spamming space/click until Start.Menu is visible
+        print("[AutoSea1] Dismissing 'Press any key' title screen...")
+        while startGui.Parent == PlayerGui do
+            local menu = startGui:FindFirstChild("Menu")
+            if menu and menu.Visible then
+                break
+            end
+            VIM:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+            task.wait(0.05)
+            VIM:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+            task.wait(0.2)
+        end
+        print("[AutoSea1] Start Menu is now visible!")
+
+        -- Step 4: Fire Dash Remote (required by game anticheat/state)
         local events = ReplicatedStorage:WaitForChild("Events", 15)
-        local takeStamRemote = events and events:FindFirstChild("takestam")
-        local reservedRemote = events and events:FindFirstChild("reserved")
+        local takeStamRemote = events and events:WaitForChild("takestam", 5)
+        local reservedRemote = events and events:WaitForChild("reserved", 5)
 
         local char = LocalPlayer.Character
         local hrp = char and char:FindFirstChild("HumanoidRootPart")
         local cframe = hrp and hrp.CFrame or CFrame.new(307.57, 8.01, -11449.29, 0.05, 0, -0.99, 0, 1, 0, 0.99, 0, 0.05)
 
-        -- 3. Dash Remote
         if takeStamRemote then
             pcall(function()
                 takeStamRemote:FireServer(1, "dash", cframe)
@@ -119,7 +104,7 @@ function Sea1Teleport.Join(vipCode)
 
         task.wait(0.2)
 
-        -- 4. Submit custom VIP code if set
+        -- Step 5: Submit custom VIP code if set
         if code and code ~= "" and reservedRemote and reservedRemote:IsA("RemoteFunction") then
             pcall(function()
                 reservedRemote:InvokeServer(code)
@@ -139,27 +124,24 @@ function Sea1Teleport.Join(vipCode)
             end
         end
 
-        -- 5. Open Private Servers Menu with extended retry
-        for _ = 1, 40 do
-            local startMenu = PlayerGui:FindFirstChild("Start")
-            local privateBtn = startMenu
-                and startMenu:FindFirstChild("Menu")
-                and startMenu.Menu:FindFirstChild("Main")
-                and startMenu.Menu.Main:FindFirstChild("List")
-                and startMenu.Menu.Main.List:FindFirstChild("PrivateServersButton")
+        -- Step 6: Wait for and Click "PrivateServersButton"
+        print("[AutoSea1] Clicking PrivateServersButton...")
+        while true do
+            local menu = startGui:FindFirstChild("Menu")
+            local list = menu and menu:FindFirstChild("Main") and menu.Main:FindFirstChild("List")
+            local privateBtn = list and list:FindFirstChild("PrivateServersButton")
             if privateBtn and privateBtn.Visible then
                 clickGuiButton(privateBtn)
                 break
             end
-            task.wait(0.25)
+            task.wait(0.2)
         end
 
-        task.wait(0.25)
-
-        -- 6. Fire Regular Server Remote & click button with extended retry
-        for _ = 1, 40 do
-            local chooseType = PlayerGui:FindFirstChild("chooseType")
-            if chooseType and chooseType.Enabled then
+        -- Step 7: Wait for chooseType dialog and click "Regular"
+        print("[AutoSea1] Waiting for chooseType dialog...")
+        local chooseType = PlayerGui:WaitForChild("chooseType", 15)
+        if chooseType then
+            while chooseType.Parent == PlayerGui and chooseType.Enabled do
                 local chooseRemote = chooseType:FindFirstChild("Frame")
                     and chooseType.Frame:FindFirstChild("RemoteEvent")
                 if chooseRemote then
@@ -173,11 +155,11 @@ function Sea1Teleport.Join(vipCode)
                     and chooseType.Frame.Options:FindFirstChild("Regular")
                 if regBtn then
                     clickGuiButton(regBtn)
-                    print("[AutoSea1] 🚀 VIP Server selected! Teleporting...")
+                    print("[AutoSea1] 🚀 Selected Regular VIP server! Joining...")
                     break
                 end
+                task.wait(0.2)
             end
-            task.wait(0.25)
         end
     end)
 
