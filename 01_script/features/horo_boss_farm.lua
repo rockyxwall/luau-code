@@ -340,6 +340,11 @@ local function lockCameraToBoss(targetRoot)
                     targetRoot.Position + Vector3.new(0, HoroFarm.Config.CameraHeight, 0),
                     targetRoot.Position
                 )
+                -- Continuous live mouse lock on boss screen coordinates
+                local screenPos, onScreen = Camera:WorldToViewportPoint(targetRoot.Position)
+                if onScreen then
+                    VIM:SendMouseMoveEvent(screenPos.X, screenPos.Y, game)
+                end
             else
                 pcall(function()
                     RunService:UnbindFromRenderStep(BIND_NAME)
