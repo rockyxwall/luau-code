@@ -58,9 +58,9 @@ end
 Sandbox.Start()
 _G.Sandbox = Sandbox
 
--- Toggle hotkey '\'
+-- Toggle hotkey ']' (RightBracket)
 UserInputService.InputBegan:Connect(function(input, processed)
-    if not processed and input.KeyCode == Enum.KeyCode.BackSlash then
+    if not processed and input.KeyCode == Enum.KeyCode.RightBracket then
         if Sandbox.Enabled then
             Sandbox.Stop()
         else
