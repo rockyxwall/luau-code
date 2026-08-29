@@ -7,6 +7,7 @@
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local VIM = game:GetService("VirtualInputManager")
 local LocalPlayer = Players.LocalPlayer
 
 local Sea1Teleport = {
@@ -51,9 +52,21 @@ function Sea1Teleport.Join(vipCode)
     print(string.format("[AutoSea1] Homescreen detected. Auto-teleporting to Sea 1 PS (Code: %s)...", tostring(code)))
 
     task.spawn(function()
-        local PlayerGui = LocalPlayer:WaitForChild("PlayerGui", 10)
+        local PlayerGui = LocalPlayer:WaitForChild("PlayerGui", 15)
         if not PlayerGui then
             return
+        end
+
+        -- Step 0: Dismiss "Press Any Key / Click to Start" screen
+        for _ = 1, 5 do
+            VIM:SendKeyEvent(true, Enum.KeyCode.Space, false, game)
+            task.wait(0.05)
+            VIM:SendKeyEvent(false, Enum.KeyCode.Space, false, game)
+            task.wait(0.2)
+            local startMenu = PlayerGui:FindFirstChild("Start")
+            if startMenu and startMenu:FindFirstChild("Menu") then
+                break
+            end
         end
 
         local events = ReplicatedStorage:WaitForChild("Events", 10)
@@ -71,7 +84,7 @@ function Sea1Teleport.Join(vipCode)
             end)
         end
 
-        task.wait(0.1)
+        task.wait(0.2)
 
         -- Step 2: Submit custom VIP code if set
         if code and code ~= "" and reservedRemote and reservedRemote:IsA("RemoteFunction") then
@@ -93,35 +106,45 @@ function Sea1Teleport.Join(vipCode)
             end
         end
 
-        -- Step 3: Open Private Servers Menu
-        local startMenu = PlayerGui:FindFirstChild("Start")
-        local privateBtn = startMenu
-            and startMenu:FindFirstChild("Menu")
-            and startMenu.Menu:FindFirstChild("Main")
-            and startMenu.Menu.Main:FindFirstChild("List")
-            and startMenu.Menu.Main.List:FindFirstChild("PrivateServersButton")
-        if privateBtn then
-            clickGuiButton(privateBtn)
+        -- Step 3: Open Private Servers Menu with retry
+        local privateBtn = nil
+        for _ = 1, 20 do
+            local startMenu = PlayerGui:FindFirstChild("Start")
+            privateBtn = startMenu
+                and startMenu:FindFirstChild("Menu")
+                and startMenu.Menu:FindFirstChild("Main")
+                and startMenu.Menu.Main:FindFirstChild("List")
+                and startMenu.Menu.Main.List:FindFirstChild("PrivateServersButton")
+            if privateBtn and privateBtn.Visible then
+                clickGuiButton(privateBtn)
+                break
+            end
+            task.wait(0.2)
         end
 
-        task.wait(0.15)
+        task.wait(0.2)
 
-        -- Step 4: Fire Regular Server Remote & click button
-        local chooseType = PlayerGui:FindFirstChild("chooseType")
-        if chooseType then
-            local chooseRemote = chooseType:FindFirstChild("Frame") and chooseType.Frame:FindFirstChild("RemoteEvent")
-            if chooseRemote then
-                pcall(function()
-                    chooseRemote:FireServer(true)
-                end)
-            end
+        -- Step 4: Fire Regular Server Remote & click button with retry
+        for _ = 1, 20 do
+            local chooseType = PlayerGui:FindFirstChild("chooseType")
+            if chooseType and chooseType.Enabled then
+                local chooseRemote = chooseType:FindFirstChild("Frame")
+                    and chooseType.Frame:FindFirstChild("RemoteEvent")
+                if chooseRemote then
+                    pcall(function()
+                        chooseRemote:FireServer(true)
+                    end)
+                end
 
-            local regBtn = chooseType:FindFirstChild("Frame")
-                and chooseType.Frame:FindFirstChild("Options")
-                and chooseType.Frame.Options:FindFirstChild("Regular")
-            if regBtn then
-                clickGuiButton(regBtn)
+                local regBtn = chooseType:FindFirstChild("Frame")
+                    and chooseType.Frame:FindFirstChild("Options")
+                    and chooseType.Frame.Options:FindFirstChild("Regular")
+                if regBtn then
+                    clickGuiButton(regBtn)
+                    break
+                end
             end
+            task.wait(0.2)
         end
     end)
 
