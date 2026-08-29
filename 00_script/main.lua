@@ -1,8 +1,15 @@
 --[[
-    Offline Sandbox & Network Severing Module (Safe Testing Engine)
-    Intercepts and blocks outbound RemoteEvents, RemoteFunctions, and telemetry
-    to enable risk-free testing without sending packets to Roblox servers.
+    Offline Sandbox & Network Severing Tool
+    Single-file utility for safe, offline script testing.
+    
+    Controls:
+    - Press 'P' to toggle Offline Network Severing ON / OFF.
+    - _G.Sandbox.Start() / _G.Sandbox.Stop() via console.
+    - _G.Sandbox.DumpHistory() to inspect blocked remotes.
 ]]
+
+local UserInputService = game:GetService("UserInputService")
+
 local Sandbox = {
     Enabled = false,
     BlockAll = true,
@@ -11,17 +18,13 @@ local Sandbox = {
     History = {},
     MaxHistory = 100,
     OriginalNamecall = nil,
-    OriginalFireServer = nil,
-    OriginalInvokeServer = nil,
 }
 
 local get_genv = rawget(getfenv(), "getgenv") or function()
     return _G
 end
 local hook_metamethod = rawget(getfenv(), "hookmetamethod") or get_genv().hookmetamethod
-local hook_function = rawget(getfenv(), "hookfunction") or get_genv().hookfunction
 local new_cclosure = rawget(getfenv(), "newcclosure") or get_genv().newcclosure
-local check_caller = rawget(getfenv(), "checkcaller") or get_genv().checkcaller
 local get_namecall_method = rawget(getfenv(), "getnamecallmethod") or get_genv().getnamecallmethod
 
 local function logIntercept(method, remote, args)
@@ -53,7 +56,6 @@ function Sandbox.Start()
     Sandbox.Enabled = true
     print("[Offline Sandbox] 🛡️ Network severing active! All outbound remotes blocked.")
 
-    -- Metatable Namecall Interception
     if not Sandbox.OriginalNamecall then
         Sandbox.OriginalNamecall = hook_metamethod(
             game,
@@ -108,4 +110,20 @@ function Sandbox.DumpHistory()
     end
 end
 
+-- Start offline sandbox immediately on execution
+Sandbox.Start()
+_G.Sandbox = Sandbox
+
+-- Bind 'P' hotkey for instant toggling
+UserInputService.InputBegan:Connect(function(input, processed)
+    if not processed and input.KeyCode == Enum.KeyCode.P then
+        if Sandbox.Enabled then
+            Sandbox.Stop()
+        else
+            Sandbox.Start()
+        end
+    end
+end)
+
+print("[Offline Sandbox] Active! Press 'P' to toggle network severing.")
 return Sandbox
