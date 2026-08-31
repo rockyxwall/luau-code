@@ -340,7 +340,7 @@ local mazePath = {
     Vector3.new(1813.09, -83.45, -12326.49),
     Vector3.new(1803.26, -88.17, -12326.73),
     Vector3.new(1797.24, -91.06, -12326.90),
-    Vector3.new(1795.73, -92.27, -12326.95),
+    Vector3.new(1794.73, -92.27, -12326.95),
 }
 
 function FishmanMaze.Travel(hrp, isRunning)
