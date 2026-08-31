@@ -2900,33 +2900,90 @@ return EasyTravel
         pcall(EasyTravel.Cleanup)
     end
 
-    print("[Fishman Maze] Starting EasyTravel-based maze traversal...")
-
-    local nocollide = RunService.Stepped:Connect(function()
-        local c = LocalPlayer.Character
-        if c then
-            for _, part in ipairs(c:GetDescendants()) do
-                if part:IsA("BasePart") then
-                    part.CanCollide = false
-                end
-            end
-        end
-    end)
+    print("[Fishman Maze] Starting collision-aware maze traversal (NoClip OFF)...")
 
     EasyTravel.DisableRaycasting = true
     EasyTravel.DisableWallTouch = true
-    EasyTravel.Speed = 25 -- Safe movement velocity
+    EasyTravel.Speed = 25
 
-    for i, target in ipairs(mazePath) do
-        EasyTravel.TargetPosition = target
-        pcall(EasyTravel.Start)
+    local raycastParams = RaycastParams.new()
+    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+    raycastParams.IgnoreWater = true
+
+    local function getAvoidanceVector(origin, forwardUnit, char)
+        raycastParams.FilterDescendantsInstances = { char }
+        -- Check direct forward
+        local hit = workspace:Raycast(origin, forwardUnit * 3.5, raycastParams)
+        if not hit then
+            return forwardUnit
+        end
+
+        -- Collision detected: heavy raycast sweep to find open corridor heading
+        local angles = { 30, -30, 45, -45, 60, -60, 90, -90 }
+        local bestDir = nil
+        local maxClearDist = 0
+
+        for _, deg in ipairs(angles) do
+            local rad = math.rad(deg)
+            local cosA = math.cos(rad)
+            local sinA = math.sin(rad)
+            local probeDir = Vector3.new(
+                forwardUnit.X * cosA - forwardUnit.Z * sinA,
+                forwardUnit.Y,
+                forwardUnit.X * sinA + forwardUnit.Z * cosA
+            ).Unit
+
+            local probeHit = workspace:Raycast(origin, probeDir * 8, raycastParams)
+            local clearDist = probeHit and probeHit.Distance or 8
+            if clearDist > maxClearDist then
+                maxClearDist = clearDist
+                bestDir = probeDir
+            end
+        end
+
+        return bestDir or forwardUnit
+    end
+
+    for _, target in ipairs(mazePath) do
+        local lastPos = hrp.Position
+        local stuckFrames = 0
 
         while (hrp.Position - target).Magnitude > 4 do
             if isRunning and not isRunning() then
                 break
             end
+
+            local char = LocalPlayer.Character
+            if not char then
+                break
+            end
+
+            local curPos = hrp.Position
+            local delta = (curPos - lastPos).Magnitude
+            if delta < 0.15 then
+                stuckFrames = stuckFrames + 1
+            else
+                stuckFrames = 0
+            end
+            lastPos = curPos
+
+            local toTarget = target - curPos
+            local dist = toTarget.Magnitude
+            if dist > 0.01 then
+                local dir = toTarget.Unit
+                -- If stuck against a wall or approaching obstacle, steer with raycast avoidance
+                if stuckFrames > 3 then
+                    local steerDir = getAvoidanceVector(curPos, dir, char)
+                    EasyTravel.TargetPosition = curPos + (steerDir * math.min(dist, 6))
+                else
+                    EasyTravel.TargetPosition = target
+                end
+            end
+
+            pcall(EasyTravel.Start)
             RunService.Heartbeat:Wait()
         end
+
         if isRunning and not isRunning() then
             break
         end
@@ -2935,7 +2992,6 @@ return EasyTravel
     pcall(EasyTravel.Stop)
     EasyTravel.DisableRaycasting = false
     EasyTravel.DisableWallTouch = false
-    nocollide:Disconnect()
     print("[Fishman Maze] Complete.")
 end
 
