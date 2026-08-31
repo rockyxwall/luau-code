@@ -15,12 +15,11 @@ local MobCombat = (function()
     
 --[[
     ================================================================================
-    MOB COMBAT LIBRARY (Stepped CFrame Anchor & Dual-Layer Combat Engine)
+    MOB COMBAT LIBRARY (Pure Hover & Remote Combat Engine)
     ================================================================================
-    - Stepped CFrame Lock: Direct positional anchor (Hover/Behind) with zero physics drift.
-    - Anti-Ragdoll & Protection: Resets states, clears constraints, enforces noclip.
-    - Mob Neutralization: Freezes mob physics & strips body movers to prevent desync.
-    - Dual Combat Execution: Local PC_Activate + Server CombatRegister remote.
+    - Proportional Hover Lift: Keeps player strictly elevated above mob (no falling).
+    - Anti-Ragdoll & Protection: Resets states, clears constraints, noclipped.
+    - Pure Combat Engine: Calls Attack:PC_Activate() with natural 0.42s swing pacing.
     ================================================================================
 --]]
 
@@ -34,13 +33,11 @@ local MobCombat = {
     Enabled = false,
     CurrentTarget = nil,
     TargetName = nil,
-    Mode = "Hover", -- "Hover" or "Behind"
-    HoverHeight = 8.5,
-    BehindDistance = 7.0,
-    AttackRange = 12.0,
-    AttackDelay = 0.40,
-    MaxDistance = 350.0,
-    Combo = 0,
+    HoverHeight = 4.5,
+    Speed = 50.0,
+    AttackRange = 7.5,
+    AttackDelay = 0.42,
+    MaxDistance = 250.0,
     LoopConnection = nil,
     AttackThread = nil,
 }
@@ -51,6 +48,41 @@ local function getCharacterComponents()
         return nil, nil, nil
     end
     return char, char:FindFirstChildWhichIsA("Humanoid"), char:FindFirstChild("HumanoidRootPart")
+end
+
+local function getOrCreateForce(root)
+    local att = root:FindFirstChild("__MobCombatAtt") or Instance.new("Attachment")
+    att.Name = "__MobCombatAtt"
+    att.Parent = root
+
+    local force = root:FindFirstChild("__MobCombatForce")
+    if not force then
+        force = Instance.new("LinearVelocity")
+        force.Name = "__MobCombatForce"
+        force.Attachment0 = att
+        force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
+        force.RelativeTo = Enum.ActuatorRelativeTo.World
+        force.MaxForce = 10000000
+        force.VectorVelocity = Vector3.zero
+        force.Parent = root
+    end
+    return force
+end
+
+local function cleanupForce()
+    local _, _, root = getCharacterComponents()
+    if root then
+        local force = root:FindFirstChild("__MobCombatForce")
+        local att = root:FindFirstChild("__MobCombatAtt")
+        if force then
+            force:Destroy()
+        end
+        if att then
+            att:Destroy()
+        end
+        root.AssemblyLinearVelocity = Vector3.zero
+        root.AssemblyAngularVelocity = Vector3.zero
+    end
 end
 
 function MobCombat.Init()
@@ -202,19 +234,18 @@ end
 
 function MobCombat.AttackTarget(targetPart)
     local char, hum, root = getCharacterComponents()
-    if not char or not hum or not root or not targetPart or not targetPart.Parent then
+    if not char or not hum or not root then
         return
     end
 
     local weaponName = MobCombat.EquipWeapon() or "Melee"
 
-    -- Set required global combat flags
+    -- Set required combat flags
     _G.canuse = true
     _G.canM1 = true
     _G.blocking = false
     _G.midM1 = false
 
-    -- 1. Client M1 Activation (Punch & Swing Handler)
     local bp = LocalPlayer:FindFirstChild("Backpack")
     local ic = bp and bp:FindFirstChild("InputCallbacks")
     if ic then
@@ -226,10 +257,10 @@ function MobCombat.AttackTarget(targetPart)
         end
     end
 
-    -- 2. Direct Server Combat Register Invoke
+    -- Direct damage packet with table-wrapped targetPart
     local events = ReplicatedStorage:FindFirstChild("Events")
     local combatReg = events and events:FindFirstChild("CombatRegister")
-    if combatReg and combatReg:IsA("RemoteFunction") then
+    if combatReg and targetPart then
         MobCombat.Combo = (MobCombat.Combo % 5) + 1
         local comboNum = MobCombat.Combo
         pcall(function()
@@ -246,7 +277,7 @@ function MobCombat.AttackTarget(targetPart)
     end
 end
 
-function MobCombat.Start(targetName, mode)
+function MobCombat.Start(targetName)
     if MobCombat.Enabled then
         return
     end
@@ -264,15 +295,16 @@ function MobCombat.Start(targetName, mode)
     MobCombat.Init()
     MobCombat.Enabled = true
     MobCombat.TargetName = targetName
-    MobCombat.Mode = mode or MobCombat.Mode or "Hover"
+    cleanupForce()
 
-    -- Stepped CFrame Lock & Protection Loop
+    -- Hover & Protection Loop (Proportional Lift + Stable Tracking)
     MobCombat.LoopConnection = RunService.Heartbeat:Connect(function()
         if not MobCombat.Enabled then
             if MobCombat.LoopConnection then
                 MobCombat.LoopConnection:Disconnect()
                 MobCombat.LoopConnection = nil
             end
+            cleanupForce()
             return
         end
 
@@ -289,27 +321,34 @@ function MobCombat.Start(targetName, mode)
         MobCombat.ApplyNoClip()
         MobCombat.NeutralizeMob(mob)
 
-        -- Kill all physics velocity to prevent falling/sliding
-        currentRoot.AssemblyLinearVelocity = Vector3.zero
-        currentRoot.AssemblyAngularVelocity = Vector3.zero
-
+        local force = getOrCreateForce(currentRoot)
         if targetPart and targetPart.Parent then
             local targetPos = targetPart.Position
-            local anchorPos = nil
+            local desiredHoverPos = targetPos + Vector3.new(0, MobCombat.HoverHeight, 0)
+            local currentPos = currentRoot.Position
 
-            if MobCombat.Mode == "Behind" then
-                local mobLook = targetPart.CFrame.LookVector
-                anchorPos = targetPos - (mobLook * MobCombat.BehindDistance) + Vector3.new(0, 1.5, 0)
-                currentRoot.CFrame = CFrame.lookAt(anchorPos, targetPos)
-            else
-                -- Hover mode (default: 8.5 studs above target)
-                anchorPos = targetPos + Vector3.new(0, MobCombat.HoverHeight, 0)
-                currentRoot.CFrame = CFrame.lookAt(anchorPos, Vector3.new(targetPos.X, anchorPos.Y - 1, targetPos.Z))
+            -- Horizontal flight velocity
+            local hDiff = Vector3.new(desiredHoverPos.X - currentPos.X, 0, desiredHoverPos.Z - currentPos.Z)
+            local hDist = hDiff.Magnitude
+            local hVel = Vector3.zero
+            if hDist > 0.8 then
+                hVel = hDiff.Unit * math.min(MobCombat.Speed, hDist * 10)
             end
+
+            -- Proportional vertical lift to lock altitude without falling
+            local yDiff = desiredHoverPos.Y - currentPos.Y
+            local yVel = math.clamp(yDiff * 20.0, -MobCombat.Speed, MobCombat.Speed)
+
+            force.VectorVelocity = Vector3.new(hVel.X, yVel, hVel.Z)
+
+            -- Face toward target
+            currentRoot.CFrame = CFrame.lookAt(currentPos, Vector3.new(targetPos.X, currentPos.Y, targetPos.Z))
+        else
+            force.VectorVelocity = Vector3.zero
         end
     end)
 
-    -- Combat Attack Loop (Paced at 0.40s)
+    -- Combat Attack Loop (0.42s pacing, strictly within attack range)
     MobCombat.AttackThread = task.spawn(function()
         while MobCombat.Enabled do
             local _, _, currentRoot = getCharacterComponents()
@@ -341,11 +380,7 @@ function MobCombat.Stop()
         MobCombat.AttackThread = nil
     end
 
-    local _, _, root = getCharacterComponents()
-    if root then
-        root.AssemblyLinearVelocity = Vector3.zero
-        root.AssemblyAngularVelocity = Vector3.zero
-    end
+    cleanupForce()
 end
 
 return MobCombat
