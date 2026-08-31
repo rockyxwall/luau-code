@@ -5951,10 +5951,26 @@ return EasyTravel
         end
     end
 
-    pcall(EasyTravel.Stop)
+    EasyTravel.TargetPosition = nil
+    if EasyTravel.Cleanup then
+        pcall(EasyTravel.Cleanup)
+    else
+        pcall(EasyTravel.Stop)
+    end
     EasyTravel.DisableRaycasting = false
     EasyTravel.DisableWallTouch = false
+
     if hrp and hrp.Parent then
+        local force = hrp:FindFirstChild("__EasyTravelForce")
+        if force then
+            force:Destroy()
+        end
+        local att = hrp:FindFirstChild("__EasyTravelAtt")
+        if att then
+            att:Destroy()
+        end
+        hrp.AssemblyLinearVelocity = Vector3.zero
+        hrp.AssemblyAngularVelocity = Vector3.zero
         hrp.CFrame = CFrame.new(1793.63, -92.27, -12326.95)
     end
     print("[Fishman Maze] Complete.")
