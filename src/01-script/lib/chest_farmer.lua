@@ -9,7 +9,6 @@
 --]]
 
 local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 
 local ChestFarmer = {
@@ -331,7 +330,6 @@ function ChestFarmer.FarmUntilPeli(targetPeli, getPeliCallback, isRunningCallbac
 --]]
 
 local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
 local Core = (function()
@@ -747,7 +745,6 @@ local function runRaycastLoop()
             currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
             continue
         end
-        local currentPos = root.Position
         local raycastParams = RaycastParams.new()
         raycastParams.FilterType = Enum.RaycastFilterType.Exclude
         raycastParams.FilterDescendantsInstances = { char }

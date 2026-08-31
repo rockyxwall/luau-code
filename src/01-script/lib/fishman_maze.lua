@@ -360,7 +360,6 @@ function FishmanMaze.Travel(hrp, isRunning)
 --]]
 
 local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
 local Core = (function()
@@ -776,7 +775,6 @@ local function runRaycastLoop()
             currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
             continue
         end
-        local currentPos = root.Position
         local raycastParams = RaycastParams.new()
         raycastParams.FilterType = Enum.RaycastFilterType.Exclude
         raycastParams.FilterDescendantsInstances = { char }

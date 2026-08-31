@@ -8,7 +8,6 @@
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 
 local LevelGrinder = {
@@ -298,9 +297,6 @@ function LevelGrinder.Start()
         if not game:IsLoaded() then
             game.Loaded:Wait()
         end
-        local char = LocalPlayer.Character or LocalPlayer.CharacterAdded:Wait()
-        local hrp = char:WaitForChild("HumanoidRootPart", 10)
-        local hum = char:WaitForChild("Humanoid", 10)
         local stats = ReplicatedStorage:WaitForChild("Stats" .. LocalPlayer.Name, 30)
         if stats then
             stats:WaitForChild("Peli", 10)
@@ -351,7 +347,6 @@ function LevelGrinder.Start()
 --]]
 
 local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 
 local ChestFarmer = {
@@ -673,7 +668,6 @@ function ChestFarmer.FarmUntilPeli(targetPeli, getPeliCallback, isRunningCallbac
 --]]
 
 local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
 local Core = (function()
@@ -1089,7 +1083,6 @@ local function runRaycastLoop()
             currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
             continue
         end
-        local currentPos = root.Position
         local raycastParams = RaycastParams.new()
         raycastParams.FilterType = Enum.RaycastFilterType.Exclude
         raycastParams.FilterDescendantsInstances = { char }
@@ -1422,7 +1415,6 @@ return ChestFarmer
 --]]
 
 local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
 local Core = (function()
@@ -1838,7 +1830,6 @@ local function runRaycastLoop()
             currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
             continue
         end
-        local currentPos = root.Position
         local raycastParams = RaycastParams.new()
         raycastParams.FilterType = Enum.RaycastFilterType.Exclude
         raycastParams.FilterDescendantsInstances = { char }
@@ -2113,7 +2104,6 @@ return EasyTravel
 --]]
 
 local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
 local Core = (function()
@@ -2529,7 +2519,6 @@ local function runRaycastLoop()
             currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
             continue
         end
-        local currentPos = root.Position
         local raycastParams = RaycastParams.new()
         raycastParams.FilterType = Enum.RaycastFilterType.Exclude
         raycastParams.FilterDescendantsInstances = { char }
@@ -3148,7 +3137,6 @@ function FishmanMaze.Travel(hrp, isRunning)
 --]]
 
 local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RunService = game:GetService("RunService")
 
 local Core = (function()
@@ -3564,7 +3552,6 @@ local function runRaycastLoop()
             currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
             continue
         end
-        local currentPos = root.Position
         local raycastParams = RaycastParams.new()
         raycastParams.FilterType = Enum.RaycastFilterType.Exclude
         raycastParams.FilterDescendantsInstances = { char }
