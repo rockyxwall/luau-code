@@ -2945,12 +2945,45 @@ return EasyTravel
         return bestDir or forwardUnit
     end
 
+    local teleporterPart = workspace:FindFirstChild("AreaTeleporters")
+        and workspace.AreaTeleporters:FindFirstChild("FirstSea")
+        and workspace.AreaTeleporters.FirstSea:FindFirstChild("Fishman")
+        and workspace.AreaTeleporters.FirstSea.Fishman:FindFirstChild("Part")
+
+    local teleported = false
+    local touchConn = nil
+
+    local function emergencyStop()
+        teleported = true
+        pcall(EasyTravel.Stop)
+        if EasyTravel.Cleanup then
+            pcall(EasyTravel.Cleanup)
+        end
+        if touchConn then
+            touchConn:Disconnect()
+            touchConn = nil
+        end
+    end
+
+    if teleporterPart then
+        touchConn = teleporterPart.Touched:Connect(function(hit)
+            local char = LocalPlayer.Character
+            if char and hit and hit:IsDescendantOf(char) then
+                emergencyStop()
+            end
+        end)
+    end
+
     for _, target in ipairs(mazePath) do
+        if teleported then
+            break
+        end
+
         local lastPos = hrp.Position
         local stuckFrames = 0
 
         while (hrp.Position - target).Magnitude > 4 do
-            if isRunning and not isRunning() then
+            if (isRunning and not isRunning()) or teleported then
                 break
             end
 
@@ -2960,6 +2993,12 @@ return EasyTravel
             end
 
             local curPos = hrp.Position
+            -- If teleport occurred (Fishman Island is Y < -500), stop immediately
+            if curPos.Y < -500 then
+                emergencyStop()
+                break
+            end
+
             local delta = (curPos - lastPos).Magnitude
             if delta < 0.15 then
                 stuckFrames = stuckFrames + 1
@@ -2972,7 +3011,6 @@ return EasyTravel
             local dist = toTarget.Magnitude
             if dist > 0.01 then
                 local dir = toTarget.Unit
-                -- If stuck against a wall or approaching obstacle, steer with raycast avoidance
                 if stuckFrames > 3 then
                     local steerDir = getAvoidanceVector(curPos, dir, char)
                     EasyTravel.TargetPosition = curPos + (steerDir * math.min(dist, 6))
@@ -2985,12 +3023,12 @@ return EasyTravel
             RunService.Heartbeat:Wait()
         end
 
-        if isRunning and not isRunning() then
+        if (isRunning and not isRunning()) or teleported then
             break
         end
     end
 
-    pcall(EasyTravel.Stop)
+    emergencyStop()
     EasyTravel.DisableRaycasting = false
     EasyTravel.DisableWallTouch = false
     print("[Fishman Maze] Complete.")
