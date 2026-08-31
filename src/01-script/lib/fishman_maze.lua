@@ -1070,6 +1070,7 @@ return EasyTravel
         end
         hrp.AssemblyLinearVelocity = Vector3.zero
         hrp.AssemblyAngularVelocity = Vector3.zero
+        task.wait(0.1)
         hrp.CFrame = CFrame.new(1793.63, -92.27, -12326.95)
     end
     print("[Fishman Maze] Complete.")
