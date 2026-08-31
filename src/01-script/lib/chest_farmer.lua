@@ -835,7 +835,7 @@ function EasyTravel.Start()
     task.spawn(runRaycastLoop)
 
     loopConnection = RunService.Heartbeat:Connect(function(dt)
-        local char, _, currentRoot = getCharacterComponents()
+        local _, _, currentRoot = getCharacterComponents()
         if not currentRoot or not EasyTravel.Enabled then
             if loopConnection then
                 loopConnection:Disconnect()
