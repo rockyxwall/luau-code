@@ -8,6 +8,7 @@
 
 local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local RunService = game:GetService("RunService")
 local LocalPlayer = Players.LocalPlayer
 
 local LevelGrinder = {
@@ -270,72 +271,11 @@ return Core
 end)()
 local Safeguard = Core.GetSafeguard()
 
-function LevelGrinder.Stop()
-    LevelGrinder.Running = false
-    for _, conn in ipairs(LevelGrinder.Connections) do
-        conn:Disconnect()
-    end
-    LevelGrinder.Connections = {}
-    print("[Level Grinder] Stopped.")
-end
+local oldStandalone = _G.DisableStandalone
+_G.DisableStandalone = true
 
-function LevelGrinder.Start()
-    if LevelGrinder.Running then
-        warn("[Level Grinder] Already running!")
-        return
-    end
-    if not Safeguard then
-        warn("[Safeguard] Failed to load!")
-        return
-    end
-    if not Safeguard.RequirePlace(3978370137, "First Sea") then
-        return
-    end
-    LevelGrinder.Running = true
-
-    task.spawn(function()
-        if not game:IsLoaded() then
-            game.Loaded:Wait()
-        end
-        local stats = ReplicatedStorage:WaitForChild("Stats" .. LocalPlayer.Name, 30)
-        if stats then
-            stats:WaitForChild("Peli", 10)
-        end
-
-        local ChestFarmer = nil
-        local EasyTravel = nil
-
-        while LevelGrinder.Running do
-            local char = LocalPlayer.Character
-            local hrp = char and char:FindFirstChild("HumanoidRootPart")
-
-            local hasRifle = LocalPlayer.Backpack:FindFirstChild("Rifle") or (char and char:FindFirstChild("Rifle"))
-            if hasRifle then
-                break
-            end
-
-            local peli = Core.GetPeli()
-
-            print("[Level Grinder] Current Peli check:", peli)
-
-            local inTown = hrp
-                and hrp.Position.X >= -889
-                and hrp.Position.X <= -156
-                and hrp.Position.Z >= -3706
-                and hrp.Position.Z <= -3087
-            if not inTown then
-                warn(
-                    "[Level Grinder] Not at Town of Beginnings. Please travel there to farm chests while waiting for Rifle."
-                )
-                task.wait(2)
-                continue
-            end
-
-            if not ChestFarmer then
-                local old = _G.DisableStandalone
-                _G.DisableStandalone = true
-                ChestFarmer = (function()
-                    
+local ChestFarmer = (function()
+    
 --[[
     ============================================================
     LIBRARY: Peli Chest Farmer — Town of Beginnings
@@ -1383,28 +1323,10 @@ end)
 return ChestFarmer
 
 
-                end)()
-                _G.DisableStandalone = old
-            end
+end)()
 
-            if ChestFarmer then
-                if peli < 300 then
-                    print("[Level Grinder] Farming chests until 300 Peli... (Current: " .. tostring(peli) .. ")")
-                    ChestFarmer.FarmUntilPeli(300, function()
-                        local s = ReplicatedStorage:FindFirstChild("Stats" .. LocalPlayer.Name)
-                        local pObj = s and s:FindFirstChild("Peli")
-                        return pObj and (tonumber(pObj.Value) or 0) or 0
-                    end, function()
-                        local c = LocalPlayer.Character
-                        return LevelGrinder.Running
-                            and not (LocalPlayer.Backpack:FindFirstChild("Rifle") or (c and c:FindFirstChild("Rifle")))
-                    end)
-                else
-                    if not EasyTravel then
-                        local old = _G.DisableStandalone
-                        _G.DisableStandalone = true
-                        EasyTravel = (function()
-                            
+local EasyTravel = (function()
+    
 --[[
     ================================================================================
     EASY TRAVEL SUITE - WASD GROUND-FOLLOWING & HYPOTENUSE WALL-CLIMBING FLIGHT
@@ -2009,772 +1931,10 @@ end, Enum.KeyCode.P, true)
 return EasyTravel
 
 
-                        end)()
-                        _G.DisableStandalone = old
-                        if EasyTravel and EasyTravel.Cleanup then
-                            pcall(EasyTravel.Cleanup)
-                        end
-                    end
-
-                    local buyables = workspace:FindFirstChild("BuyableItems")
-                    local shopItem = buyables and buyables:FindFirstChild("Rifle")
-                    local shopPart = shopItem and shopItem:FindFirstChild("ShopPart")
-
-                    if EasyTravel and shopPart and hrp then
-                        print("[Level Grinder] Traveling to Rifle shop via EasyTravel...")
-
-                        local nocollide = game:GetService("RunService").Stepped:Connect(function()
-                            local c = LocalPlayer.Character
-                            if c then
-                                for _, part in ipairs(c:GetDescendants()) do
-                                    if part:IsA("BasePart") then
-                                        part.CanCollide = false
-                                    end
-                                end
-                            end
-                        end)
-
-                        EasyTravel.TargetPosition = shopPart.Position
-                        pcall(EasyTravel.Start)
-                        while LevelGrinder.Running and hrp do
-                            if (hrp.Position - EasyTravel.TargetPosition).Magnitude < 8 then
-                                break
-                            end
-                            task.wait(0.5)
-                        end
-                        pcall(EasyTravel.Stop)
-                        nocollide:Disconnect()
-                        task.wait(0.5)
-
-                        local shopEvent = ReplicatedStorage:FindFirstChild("Events")
-                            and ReplicatedStorage.Events:FindFirstChild("Shop")
-                        if shopEvent and shopEvent:IsA("RemoteFunction") then
-                            pcall(function()
-                                shopEvent:InvokeServer(shopItem, 1)
-                            end)
-                        end
-                        task.wait(1)
-
-                        print("[Level Grinder] Equipping Rifle...")
-                        local args = {
-                            [1] = "equip",
-                            [2] = "Rifle",
-                        }
-                        local toolsEvent = ReplicatedStorage:FindFirstChild("Events")
-                            and ReplicatedStorage.Events:FindFirstChild("Tools")
-                        if toolsEvent and toolsEvent:IsA("RemoteFunction") then
-                            pcall(function()
-                                toolsEvent:InvokeServer(unpack(args))
-                            end)
-                        end
-                        task.wait(1)
-                    end
-                end
-            end
-            task.wait(1)
-        end
-
-        if not LevelGrinder.Running then
-            return
-        end
-
-        local char = LocalPlayer.Character
-        local hum = char and char:FindFirstChild("Humanoid")
-        local hrp = char and char:FindFirstChild("HumanoidRootPart")
-
-        local rifle = LocalPlayer.Backpack:FindFirstChild("Rifle")
-        if rifle and hum then
-            hum:EquipTool(rifle)
-        end
-
-        print("[Level Grinder] Flying to Fishman Cave...")
-
-        if not EasyTravel then
-            local old = _G.DisableStandalone
-            _G.DisableStandalone = true
-            EasyTravel = (function()
-                
---[[
-    ================================================================================
-    EASY TRAVEL SUITE - WASD GROUND-FOLLOWING & HYPOTENUSE WALL-CLIMBING FLIGHT
-    ================================================================================
-    Provides coordinate-based flight (Start/Stop).
-    If run standalone (not loaded via hub or importLib), binds ']' to toggle flight.
-    ================================================================================
---]]
-
-local Players = game:GetService("Players")
-local RunService = game:GetService("RunService")
-
-local Core = (function()
-    
---[[
-    Core Utility Library
-    Provides standardized module loading and common helpers.
-]]
-local Core = {}
-
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local LocalPlayer = Players.LocalPlayer
-
-local statsFolder = nil
-local peliValueObj = nil
-local levelValueObj = nil
-local staminaValueObj = nil
-
-local function getStats()
-    if statsFolder and statsFolder.Parent then
-        return statsFolder
-    end
-    statsFolder = ReplicatedStorage:FindFirstChild("Stats" .. LocalPlayer.Name)
-    if statsFolder then
-        -- Find Peli
-        peliValueObj = statsFolder:FindFirstChild("Peli")
-        if not (peliValueObj and peliValueObj:IsA("ValueBase")) then
-            local nested = statsFolder:FindFirstChild("Stats")
-            peliValueObj = nested and nested:FindFirstChild("Peli")
-        end
-        -- Find Level
-        levelValueObj = statsFolder:FindFirstChild("Level")
-        if not (levelValueObj and levelValueObj:IsA("ValueBase")) then
-            local nested = statsFolder:FindFirstChild("Stats")
-            levelValueObj = nested and nested:FindFirstChild("Level")
-        end
-        -- Find Stamina
-        staminaValueObj = statsFolder:FindFirstChild("Stamina")
-    else
-        peliValueObj = nil
-        levelValueObj = nil
-        staminaValueObj = nil
-    end
-    return statsFolder
-end
-
-function Core.GetPeli()
-    getStats()
-    return peliValueObj and peliValueObj.Value or 0
-end
-
-function Core.GetLevel()
-    getStats()
-    return levelValueObj and levelValueObj.Value or 1
-end
-
-function Core.GetStamina()
-    getStats()
-    if staminaValueObj then
-        return staminaValueObj.Value, staminaValueObj.MaxValue
-    end
-    return 0, 0
-end
-
-function Core.GetHealth()
-    local char = LocalPlayer.Character
-    local hum = char and char:FindFirstChild("Humanoid")
-    if hum then
-        return hum.Health, hum.MaxHealth
-    end
-    return 0, 0
-end
-
-function Core.SetupStandalone(module, name, startCallback, stopCallback, checkCallback, toggleKey, noAutoStart)
-    if _G.DisableStandalone then
-        return
-    end
-    toggleKey = toggleKey or Enum.KeyCode.P
-
-    local cleanKey = "__Clean_" .. tostring(name)
-    if _G[cleanKey] then
-        pcall(_G[cleanKey])
-    end
-
-    local UserInputService = game:GetService("UserInputService")
-    local connection = UserInputService.InputBegan:Connect(function(input, processed)
-        if processed then
-            return
-        end
-        if input.KeyCode == toggleKey then
-            if checkCallback() then
-                stopCallback()
-            else
-                startCallback()
-            end
-        end
-    end)
-
-    _G[cleanKey] = function()
-        pcall(stopCallback)
-        if connection and connection.Connected then
-            connection:Disconnect()
-        end
-    end
-
-    if not noAutoStart then
-        task.spawn(function()
-            if not game:IsLoaded() then
-                game.Loaded:Wait()
-            end
-            startCallback()
-        end)
-    end
-
-    print("[" .. tostring(name) .. "] Standalone Mode: Press '" .. toggleKey.Name .. "' to toggle.")
-end
-
-function Core.GetRoot(player)
-    local char = player and player.Character
-    return char and char:FindFirstChild("HumanoidRootPart")
-end
-
-local Safeguard = (function()
-    
-local Safeguard = {
-    Config = {
-        PrivateServerCode = "Jk2JKTAKCf", -- Set your PS code here to auto-join from homescreen
-        TeleportLocation = "1stSea", -- "1stSea", "2ndSea", "TradeHub", "UniversalHub", "FishHub"
-    },
-}
-
-local GPO_UNIVERSE_ID = 648454481
-
--- List of places where scripts should NEVER run
-local BANNED_PLACES = {
-    [1730877806] = "First Sea Homescreen / Main Menu",
-    -- Add Second Sea homescreen here when known
-}
-
-function Safeguard.JoinPrivateServer()
-    local code = Safeguard.Config.PrivateServerCode
-
-    if type(code) == "string" and code ~= "" then
-        print(string.format("[Safeguard] Joining Private Server '%s'...", code))
-        task.spawn(function()
-            -- 1. Submit the private server code
-            local rs = game:GetService("ReplicatedStorage")
-            local reservedRemote = rs:WaitForChild("Events"):WaitForChild("reserved")
-
-            task.spawn(function()
-                pcall(function()
-                    reservedRemote:InvokeServer(code)
-                end)
-            end)
-
-            -- Wait for UI to load and remote to appear
-            local teleRemote = nil
-            for i = 1, 20 do
-                task.wait(0.5)
-                for _, v in next, getnilinstances() do
-                    if
-                        v:IsA("RemoteEvent") and (v.Name == "RemoteEvent" or v.Name == "tele" or v.Name == "Teleport")
-                    then
-                        teleRemote = v
-                        break
-                    end
-                end
-                if teleRemote then
-                    break
-                end
-            end
-
-            if teleRemote then
-                print("[Safeguard] Firing teleport remote: " .. teleRemote.Name)
-                teleRemote:FireServer(true)
-            else
-                warn("[Safeguard] Could not find RemoteEvent in nil. Printing all RemoteEvents in nil:")
-                for _, v in next, getnilinstances() do
-                    if v:IsA("RemoteEvent") then
-                        print(" - Name:", v.Name)
-                    end
-                end
-            end
-        end)
-        return true
-    end
-    return false
-end
-
-function Safeguard.IsSafe()
-    if game.GameId ~= GPO_UNIVERSE_ID then
-        warn("[Safeguard] Wrong game universe! Script is only for GPO.")
-        return false
-    end
-
-    if BANNED_PLACES[game.PlaceId] then
-        warn("[Safeguard] Script execution blocked on: " .. BANNED_PLACES[game.PlaceId])
-
-        if Safeguard.JoinPrivateServer() then
-            print("[Safeguard] Teleporting to Private Server... Please wait.")
-        else
-            warn("[Safeguard] PrivateServerCode is not set. Cannot auto-join.")
-        end
-        return false
-    end
-
-    return true
-end
-
-function Safeguard.RequirePlace(placeId, name)
-    if game.GameId ~= GPO_UNIVERSE_ID then
-        warn("[Safeguard] Wrong game universe! Script is only for GPO.")
-        return false
-    end
-
-    if game.PlaceId == placeId then
-        return true
-    end
-
-    if BANNED_PLACES[game.PlaceId] then
-        warn(string.format("[Safeguard] You are on the Homescreen. Script requires %s.", name or "a specific place"))
-
-        if Safeguard.JoinPrivateServer() then
-            print("[Safeguard] Teleporting to Private Server... Please wait.")
-        else
-            warn("[Safeguard] PrivateServerCode is not set. Cannot auto-join.")
-        end
-        return false
-    end
-
-    warn(
-        string.format(
-            "[Safeguard] Wrong place! Required: %s (%d), Current: %d",
-            name or "Unknown",
-            placeId,
-            game.PlaceId
-        )
-    )
-    return false
-end
-
-return Safeguard
-
-
 end)()
 
-function Core.GetSafeguard()
-    return Safeguard
-end
-
-return Core
-
-
-end)()
-local Safeguard = Core.GetSafeguard()
-
-local UserInputService = game:GetService("UserInputService")
-local Workspace = workspace
-
-local LocalPlayer = Players.LocalPlayer
-
-local EasyTravel = {
-    TargetPosition = nil,
-    DisableKeyboard = false,
-    Speed = 70.0,
-    Enabled = false,
-    DisableRaycasting = false,
-    DisableWallTouch = false,
-    Connections = {},
-}
-
--- Configurations
-local HEIGHT_OFFSET = 6.0
-local SEA_LEVEL_Y = -2.63
-local RAYCAST_COOLDOWN = 0.05
-local HOVER_LIFT_GAIN = 20.0
-local FORWARD_SCAN_DISTANCE = 50.0
-
--- Internal State
-local currentTargetY = 0
-local isClimbing = false
-local climbTargetY = 0
-local distanceToWall = 999
-local loopConnection = nil
-
-local function getCharacterComponents()
-    local char = LocalPlayer.Character
-    if not char then
-        return nil, nil, nil
-    end
-    return char, char:FindFirstChildWhichIsA("Humanoid"), char:FindFirstChild("HumanoidRootPart")
-end
-
-local function getOrCreateForce(root)
-    local att = root:FindFirstChild("__EasyTravelAtt") or Instance.new("Attachment")
-    att.Name = "__EasyTravelAtt"
-    att.Parent = root
-
-    local force = root:FindFirstChild("__EasyTravelForce")
-    if not force then
-        force = Instance.new("LinearVelocity")
-        force.Name = "__EasyTravelForce"
-        force.Attachment0 = att
-        force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
-        force.RelativeTo = Enum.ActuatorRelativeTo.World
-        force.MaxForce = 10000000
-        force.VectorVelocity = Vector3.zero
-        force.Parent = root
-    end
-    return force
-end
-
-local function cleanupForce()
-    local _, _, root = getCharacterComponents()
-    if root then
-        local force = root:FindFirstChild("__EasyTravelForce")
-        local att = root:FindFirstChild("__EasyTravelAtt")
-        if force then
-            force:Destroy()
-        end
-        if att then
-            att:Destroy()
-        end
-    end
-end
-
-function EasyTravel.GetSurfaceY(position, character)
-    local raycastParams = RaycastParams.new()
-    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-    raycastParams.FilterDescendantsInstances = { character }
-    raycastParams.IgnoreWater = true
-
-    local startPos = Vector3.new(position.X, position.Y + 2, position.Z)
-    local checkDepth = math.max((position.Y + 2) - SEA_LEVEL_Y, 30)
-    local direction = Vector3.new(0, -checkDepth, 0)
-
-    local result = Workspace:Raycast(startPos, direction, raycastParams)
-    local groundY = result and result.Position.Y or -100
-
-    return math.max(groundY, SEA_LEVEL_Y)
-end
-
-local function runRaycastLoop()
-    while EasyTravel.Enabled do
-        task.wait(RAYCAST_COOLDOWN)
-        local char, _, root = getCharacterComponents()
-        if not char or not root then
-            continue
-        end
-
-        local currentPos = root.Position
-        local inRoughWaters = currentPos.X >= 1002.01
-            and currentPos.X <= 3049.91
-            and currentPos.Z >= -11748.53
-            and currentPos.Z <= -9700.63
-
-        local moveDir = Vector3.zero
-        if EasyTravel.DisableRaycasting then
-            isClimbing = false
-            distanceToWall = 999
-            currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
-            task.wait(RAYCAST_COOLDOWN)
-            continue
-        end
-
-        if EasyTravel.TargetPosition then
-            local diff = EasyTravel.TargetPosition - root.Position
-            local flatDiff = Vector3.new(diff.X, 0, diff.Z)
-            if flatDiff.Magnitude > 2 then
-                moveDir = flatDiff.Unit
-            else
-                isClimbing = false
-                currentTargetY = EasyTravel.TargetPosition.Y
-                continue
-            end
-        else
-            local camera = Workspace.CurrentCamera
-            local look = camera.CFrame.LookVector
-            local right = camera.CFrame.RightVector
-            if not EasyTravel.DisableKeyboard then
-                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-                    moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-                    moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-                    moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-                    moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit
-                end
-            end
-        end
-
-        local hitCave = false
-        local cave = Workspace.Islands:FindFirstChild("Fishman Cave")
-        if cave and moveDir and moveDir.Magnitude > 0 then
-            local caveRayParams = RaycastParams.new()
-            caveRayParams.FilterType = Enum.RaycastFilterType.Include
-            caveRayParams.FilterDescendantsInstances = { cave }
-            local hit = Workspace:Raycast(currentPos, moveDir.Unit * FORWARD_SCAN_DISTANCE, caveRayParams)
-            if hit then
-                hitCave = true
-            end
-        end
-        EasyTravel.HitCave = hitCave
-
-        if hitCave or inRoughWaters then
-            isClimbing = false
-            distanceToWall = 999
-            currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
-            continue
-        end
-        local raycastParams = RaycastParams.new()
-        raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-        raycastParams.FilterDescendantsInstances = { char }
-        raycastParams.IgnoreWater = true
-
-        if moveDir.Magnitude > 0 then
-            local moveUnit = moveDir.Unit
-            local perpUnit = Vector3.new(-moveUnit.Z, 0, moveUnit.X).Unit
-
-            local forwardHit = Workspace:Raycast(currentPos, moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
-            if not forwardHit then
-                forwardHit =
-                    Workspace:Raycast(currentPos - (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
-            end
-            if not forwardHit then
-                forwardHit =
-                    Workspace:Raycast(currentPos + (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
-            end
-
-            if forwardHit then
-                distanceToWall = forwardHit.Distance
-                local clearanceY = nil
-                local currentScanDist = FORWARD_SCAN_DISTANCE
-                local heightOffset = 4
-
-                while heightOffset <= 100 do
-                    local scanOrigin = currentPos + Vector3.new(0, heightOffset, 0)
-                    local scanHit = Workspace:Raycast(scanOrigin, moveUnit * currentScanDist, raycastParams)
-
-                    if not scanHit then
-                        clearanceY = scanOrigin.Y
-                        local secondaryOrigin = scanOrigin + moveUnit * 10
-                        local secondaryHit = Workspace:Raycast(secondaryOrigin, moveUnit * 15, raycastParams)
-                        if secondaryHit then
-                            currentScanDist = currentScanDist + 15
-                        else
-                            break
-                        end
-                    end
-                    heightOffset = heightOffset + 4
-                end
-
-                if clearanceY then
-                    isClimbing = true
-                    climbTargetY = clearanceY + HEIGHT_OFFSET
-                else
-                    isClimbing = false
-                    currentTargetY = EasyTravel.GetSurfaceY(currentPos, char) + HEIGHT_OFFSET
-                end
-            else
-                distanceToWall = 999
-                isClimbing = false
-                local groundY = EasyTravel.GetSurfaceY(currentPos, char)
-                local aheadPos = currentPos + moveUnit * 4
-                local aheadY = EasyTravel.GetSurfaceY(aheadPos, char)
-                currentTargetY = math.max(groundY, aheadY) + HEIGHT_OFFSET
-            end
-        else
-            distanceToWall = 999
-            isClimbing = false
-            currentTargetY = EasyTravel.GetSurfaceY(currentPos, char) + HEIGHT_OFFSET
-        end
-    end
-end
-
-function EasyTravel.Start()
-    if EasyTravel.Enabled then
-        return
-    end
-    if not Safeguard then
-        warn("[Safeguard] Failed to load!")
-        return
-    end
-    if not Safeguard.IsSafe() then
-        return
-    end
-    EasyTravel.Enabled = true
-    cleanupForce()
-    local char, hum, root = getCharacterComponents()
-    if not root or not hum then
-        return
-    end
-
-    EasyTravel.Enabled = true
-    currentTargetY = EasyTravel.GetSurfaceY(root.Position, char) + HEIGHT_OFFSET
-    isClimbing = false
-
-    task.spawn(runRaycastLoop)
-
-    loopConnection = RunService.Heartbeat:Connect(function(dt)
-        local char, _, currentRoot = getCharacterComponents()
-        if not currentRoot or not EasyTravel.Enabled then
-            if loopConnection then
-                loopConnection:Disconnect()
-                loopConnection = nil
-            end
-            cleanupForce()
-            return
-        end
-
-        local force = getOrCreateForce(currentRoot)
-        local camera = Workspace.CurrentCamera
-        local look = camera.CFrame.LookVector
-        local right = camera.CFrame.RightVector
-        local moveDir = Vector3.zero
-        local finalTargetY = isClimbing and climbTargetY or currentTargetY
-
-        if EasyTravel.TargetPosition then
-            local diff = EasyTravel.TargetPosition - currentRoot.Position
-            local flatDiff = Vector3.new(diff.X, 0, diff.Z)
-            if flatDiff.Magnitude > 2 then
-                moveDir = flatDiff.Unit
-            end
-        else
-            if not EasyTravel.DisableKeyboard then
-                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-                    moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-                    moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-                    moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-                    moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit
-                end
-            end
-        end
-
-        local yError = finalTargetY - currentRoot.Position.Y
-        local targetVelocity = Vector3.zero
-        if moveDir.Magnitude > 0 then
-            local speedMultiplier = 1
-            if not EasyTravel.DisableWallTouch and isClimbing and yError > 3 and distanceToWall < 6 then
-                speedMultiplier = 0
-            end
-            targetVelocity = moveDir.Unit * (EasyTravel.Speed * speedMultiplier)
-        end
-
-        local verticalVel = math.clamp(yError * HOVER_LIFT_GAIN, -50, 30)
-        force.VectorVelocity = Vector3.new(targetVelocity.X, verticalVel, targetVelocity.Z)
-
-        if moveDir.Magnitude > 0 then
-            currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + moveDir)
-        end
-    end)
-    print("[Easy Travel] Flight enabled.")
-end
-
-function EasyTravel.Stop()
-    EasyTravel.Enabled = false
-    if loopConnection then
-        loopConnection:Disconnect()
-        loopConnection = nil
-    end
-    cleanupForce()
-    print("[Easy Travel] Flight disabled.")
-end
-
--- Completely shutdown everything
-function EasyTravel.Cleanup()
-    EasyTravel.Stop()
-    for _, conn in ipairs(EasyTravel.Connections) do
-        conn:Disconnect()
-    end
-    EasyTravel.Connections = {}
-end
-
--- ============================================================
--- STANDALONE BEHAVIOR
--- ============================================================
-Core.SetupStandalone(EasyTravel, "Easy Travel", EasyTravel.Start, EasyTravel.Stop, function()
-    return EasyTravel.Enabled
-end, Enum.KeyCode.P, true)
-
-return EasyTravel
-
-
-            end)()
-            _G.DisableStandalone = old
-            if EasyTravel and EasyTravel.Cleanup then
-                pcall(EasyTravel.Cleanup)
-            end
-        end
-
-        if EasyTravel and hrp then
-            -- Escape shop interior by flying straight up first with no-collide only if we are at the shop/town area
-            local wasAtShop = hrp.Position.X >= -889
-                and hrp.Position.X <= -156
-                and hrp.Position.Z >= -3706
-                and hrp.Position.Z <= -3087
-            if wasAtShop then
-                print("[Level Grinder] Escaping shop interior by flying straight up...")
-
-                local nocollide = game:GetService("RunService").Stepped:Connect(function()
-                    local c = LocalPlayer.Character
-                    if c then
-                        for _, part in ipairs(c:GetDescendants()) do
-                            if part:IsA("BasePart") then
-                                part.CanCollide = false
-                            end
-                        end
-                    end
-                end)
-
-                local targetY = hrp.Position.Y + 15
-                EasyTravel.TargetPosition = Vector3.new(hrp.Position.X, targetY, hrp.Position.Z)
-                pcall(EasyTravel.Start)
-                while LevelGrinder.Running and hrp do
-                    if hrp.Position.Y >= targetY - 2 then
-                        break
-                    end
-                    task.wait(0.5)
-                end
-                nocollide:Disconnect()
-            end
-
-            local runService = game:GetService("RunService")
-            local etMonitor = runService.Heartbeat:Connect(function()
-                if hrp then
-                    local distPos = hrp.Position
-                    local nearCave = distPos.X >= 1700
-                        and distPos.X <= 1973
-                        and distPos.Z >= -12403
-                        and distPos.Z <= -12114
-                    if nearCave then
-                        EasyTravel.DisableRaycasting = true
-                        EasyTravel.DisableWallTouch = true
-                    else
-                        EasyTravel.DisableRaycasting = false
-                        EasyTravel.DisableWallTouch = false
-                    end
-                end
-            end)
-
-            print("[Level Grinder] Flying to Fishman Cave...")
-            EasyTravel.TargetPosition = Vector3.new(1837.4, 4.1, -12181.6)
-            pcall(EasyTravel.Start)
-            while LevelGrinder.Running and hrp do
-                if (hrp.Position - EasyTravel.TargetPosition).Magnitude < 8 then
-                    break
-                end
-                task.wait(0.5)
-            end
-            pcall(EasyTravel.Stop)
-            etMonitor:Disconnect()
-            EasyTravel.DisableRaycasting = false
-            EasyTravel.DisableWallTouch = false
-
-            -- Verify player is in Fishman Cave bounds before running maze
-            local pos = hrp.Position
-            local inCave = pos.X >= 1750 and pos.X <= 1923 and pos.Z >= -12353 and pos.Z <= -12164
-            if inCave then
-                local FishmanMaze = (function()
-                    
+local FishmanMaze = (function()
+    
 --[[
     ================================================================================
     Fishman Maze Suite - EasyTravel-Powered Point-to-Point Traversal
@@ -3782,16 +2942,191 @@ end
 return FishmanMaze
 
 
-                end)()
-                if FishmanMaze then
-                    pcall(function()
-                        FishmanMaze.Travel(hrp, function()
-                            return LevelGrinder.Running
-                        end)
-                    end)
-                else
-                    warn("[Level Grinder] Failed to import FishmanMaze library!")
+end)()
+
+_G.DisableStandalone = oldStandalone
+
+if EasyTravel and EasyTravel.Cleanup then
+    pcall(EasyTravel.Cleanup)
+end
+
+local function getCharRoot()
+    local c = LocalPlayer.Character
+    return c, c and c:FindFirstChild("HumanoidRootPart")
+end
+
+local function hasRifle()
+    local c = LocalPlayer.Character
+    return LocalPlayer.Backpack:FindFirstChild("Rifle") ~= nil or (c and c:FindFirstChild("Rifle") ~= nil)
+end
+
+local function travelTo(targetPos, reachDist, noCollide, disableRaycast)
+    if not EasyTravel then
+        return false
+    end
+    reachDist = reachDist or 8
+    local conn = nil
+    if noCollide then
+        conn = RunService.Stepped:Connect(function()
+            local c = LocalPlayer.Character
+            if c then
+                for _, part in ipairs(c:GetDescendants()) do
+                    if part:IsA("BasePart") then
+                        part.CanCollide = false
+                    end
                 end
+            end
+        end)
+    end
+
+    if disableRaycast then
+        EasyTravel.DisableRaycasting = true
+        EasyTravel.DisableWallTouch = true
+    end
+
+    EasyTravel.TargetPosition = targetPos
+    pcall(EasyTravel.Start)
+
+    while LevelGrinder.Running do
+        local _, hrp = getCharRoot()
+        if hrp and (hrp.Position - targetPos).Magnitude <= reachDist then
+            break
+        end
+        task.wait(0.3)
+    end
+
+    pcall(EasyTravel.Stop)
+    if conn then
+        conn:Disconnect()
+    end
+    if disableRaycast then
+        EasyTravel.DisableRaycasting = false
+        EasyTravel.DisableWallTouch = false
+    end
+    return LevelGrinder.Running
+end
+
+function LevelGrinder.Stop()
+    LevelGrinder.Running = false
+    for _, conn in ipairs(LevelGrinder.Connections) do
+        conn:Disconnect()
+    end
+    LevelGrinder.Connections = {}
+    if EasyTravel then
+        pcall(EasyTravel.Stop)
+    end
+    print("[Level Grinder] Stopped.")
+end
+
+function LevelGrinder.Start()
+    if LevelGrinder.Running then
+        warn("[Level Grinder] Already running!")
+        return
+    end
+    if not Safeguard then
+        warn("[Safeguard] Failed to load!")
+        return
+    end
+    if not Safeguard.RequirePlace(3978370137, "First Sea") then
+        return
+    end
+    LevelGrinder.Running = true
+
+    task.spawn(function()
+        if not game:IsLoaded() then
+            game.Loaded:Wait()
+        end
+
+        local events = ReplicatedStorage:WaitForChild("Events", 10)
+        local shopEvent = events and events:FindFirstChild("Shop")
+        local toolsEvent = events and events:FindFirstChild("Tools")
+
+        -- Phase 1: Obtain Rifle
+        while LevelGrinder.Running and not hasRifle() do
+            local _, hrp = getCharRoot()
+            local inTown = hrp
+                and hrp.Position.X >= -889
+                and hrp.Position.X <= -156
+                and hrp.Position.Z >= -3706
+                and hrp.Position.Z <= -3087
+
+            if not inTown then
+                warn("[Level Grinder] Not at Town of Beginnings. Please travel there to farm chests for Rifle.")
+                task.wait(2)
+                continue
+            end
+
+            local peli = Core.GetPeli()
+            if peli < 300 and ChestFarmer then
+                print("[Level Grinder] Farming chests until 300 Peli... (Current: " .. tostring(peli) .. ")")
+                ChestFarmer.FarmUntilPeli(300, Core.GetPeli, function()
+                    return LevelGrinder.Running and not hasRifle()
+                end)
+            else
+                local buyables = workspace:FindFirstChild("BuyableItems")
+                local shopItem = buyables and buyables:FindFirstChild("Rifle")
+                local shopPart = shopItem and shopItem:FindFirstChild("ShopPart")
+
+                if shopPart and travelTo(shopPart.Position, 8, true) then
+                    task.wait(0.5)
+                    if shopEvent and shopEvent:IsA("RemoteFunction") then
+                        pcall(function()
+                            shopEvent:InvokeServer(shopItem, 1)
+                        end)
+                    end
+                    task.wait(1)
+
+                    if toolsEvent and toolsEvent:IsA("RemoteFunction") then
+                        pcall(function()
+                            toolsEvent:InvokeServer("equip", "Rifle")
+                        end)
+                    end
+                    task.wait(1)
+                end
+            end
+            task.wait(1)
+        end
+
+        if not LevelGrinder.Running then
+            return
+        end
+
+        -- Equip tool if in backpack
+        local char = LocalPlayer.Character
+        local hum = char and char:FindFirstChild("Humanoid")
+        local rifle = LocalPlayer.Backpack:FindFirstChild("Rifle")
+        if rifle and hum then
+            hum:EquipTool(rifle)
+        end
+
+        -- Phase 2: Escape shop interior if in town
+        local _, hrp = getCharRoot()
+        if hrp then
+            local wasAtShop = hrp.Position.X >= -889
+                and hrp.Position.X <= -156
+                and hrp.Position.Z >= -3706
+                and hrp.Position.Z <= -3087
+            if wasAtShop then
+                print("[Level Grinder] Escaping shop interior...")
+                travelTo(Vector3.new(hrp.Position.X, hrp.Position.Y + 15, hrp.Position.Z), 2, true)
+            end
+        end
+
+        -- Phase 3: Fly to Fishman Cave
+        print("[Level Grinder] Flying to Fishman Cave...")
+        travelTo(Vector3.new(1837.4, 4.1, -12181.6), 8, false, true)
+
+        -- Phase 4: Traverse Fishman Maze
+        local _, finalHrp = getCharRoot()
+        if finalHrp and FishmanMaze then
+            local pos = finalHrp.Position
+            local inCave = pos.X >= 1750 and pos.X <= 1923 and pos.Z >= -12353 and pos.Z <= -12164
+            if inCave then
+                pcall(function()
+                    FishmanMaze.Travel(finalHrp, function()
+                        return LevelGrinder.Running
+                    end)
+                end)
             else
                 warn("[Level Grinder] Outside Fishman Cave bounds, skipping maze.")
             end
