@@ -6143,7 +6143,7 @@ function LevelGrinder.Start()
 
         -- Phase 3: Fly to Fishman Cave
         print("[Level Grinder] Flying to Fishman Cave...")
-        travelTo(Vector3.new(1837.4, 4.1, -12181.6), 8, true)
+        travelTo(Vector3.new(1837.4, 4.1, -12181.6), 8, false)
 
         -- Phase 4: Traverse Fishman Maze
         local _, finalHrp = getCharRoot()
