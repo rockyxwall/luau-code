@@ -1195,7 +1195,7 @@ end
 -- ============================================================
 Core.SetupStandalone(EasyTravel, "Easy Travel", EasyTravel.Start, EasyTravel.Stop, function()
     return EasyTravel.Enabled
-end, Enum.KeyCode.P, true)
+end, Enum.KeyCode.RightBracket, true)
 
 return EasyTravel
 
@@ -1922,7 +1922,7 @@ end
 -- ============================================================
 Core.SetupStandalone(EasyTravel, "Easy Travel", EasyTravel.Start, EasyTravel.Stop, function()
     return EasyTravel.Enabled
-end, Enum.KeyCode.P, true)
+end, Enum.KeyCode.RightBracket, true)
 
 return EasyTravel
 
@@ -2880,7 +2880,7 @@ end
 -- ============================================================
 Core.SetupStandalone(EasyTravel, "Easy Travel", EasyTravel.Start, EasyTravel.Stop, function()
     return EasyTravel.Enabled
-end, Enum.KeyCode.P, true)
+end, Enum.KeyCode.RightBracket, true)
 
 return EasyTravel
 
@@ -3175,7 +3175,7 @@ function LevelGrinder.Start()
 
         -- Phase 3: Fly to Fishman Cave
         print("[Level Grinder] Flying to Fishman Cave...")
-        travelTo(Vector3.new(1837.4, 4.1, -12181.6), 8, false)
+        travelTo(Vector3.new(1837.4, 4.1, -12181.6), 8, true)
 
         -- Phase 4: Traverse Fishman Maze
         local _, finalHrp = getCharRoot()
