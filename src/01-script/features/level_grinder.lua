@@ -952,6 +952,9 @@ function EasyTravel.GetSurfaceY(position, character)
 end
 
 local function runRaycastLoop()
+    local startTime = tick()
+    local stuckFrames = 0
+
     while EasyTravel.Enabled do
         task.wait(RAYCAST_COOLDOWN)
         local char, _, root = getCharacterComponents()
@@ -960,28 +963,42 @@ local function runRaycastLoop()
         end
 
         local currentPos = root.Position
+        local target = EasyTravel.TargetPosition
+        local distToTarget = target and (target - currentPos).Magnitude or 999
+
+        -- Velocity-based stuck detection (deadzone: dist > 8, active for > 0.5s)
+        local isMovingToTarget = target ~= nil and distToTarget > 8 and (tick() - startTime) > 0.5
+        if isMovingToTarget and root.AssemblyLinearVelocity.Magnitude < 2.5 then
+            stuckFrames = stuckFrames + 1
+        else
+            stuckFrames = 0
+        end
+        local isStuck = stuckFrames >= 3
+
         local inRoughWaters = currentPos.X >= 1002.01
             and currentPos.X <= 3049.91
             and currentPos.Z >= -11748.53
             and currentPos.Z <= -9700.63
 
         local moveDir = Vector3.zero
-        if EasyTravel.DisableRaycasting then
+        -- In rough waters: raycasting OFF by default. If stuck, raycasting ON to climb/pathfind over obstacle
+        local skipRaycast = EasyTravel.DisableRaycasting or (inRoughWaters and not isStuck)
+
+        if skipRaycast then
             isClimbing = false
             distanceToWall = 999
-            currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
-            task.wait(RAYCAST_COOLDOWN)
+            currentTargetY = target and target.Y or currentPos.Y
             continue
         end
 
-        if EasyTravel.TargetPosition then
-            local diff = EasyTravel.TargetPosition - root.Position
+        if target then
+            local diff = target - currentPos
             local flatDiff = Vector3.new(diff.X, 0, diff.Z)
             if flatDiff.Magnitude > 2 then
                 moveDir = flatDiff.Unit
             else
                 isClimbing = false
-                currentTargetY = EasyTravel.TargetPosition.Y
+                currentTargetY = target.Y
                 continue
             end
         else
@@ -1004,25 +1021,6 @@ local function runRaycastLoop()
             end
         end
 
-        local hitCave = false
-        local cave = Workspace.Islands:FindFirstChild("Fishman Cave")
-        if cave and moveDir and moveDir.Magnitude > 0 then
-            local caveRayParams = RaycastParams.new()
-            caveRayParams.FilterType = Enum.RaycastFilterType.Include
-            caveRayParams.FilterDescendantsInstances = { cave }
-            local hit = Workspace:Raycast(currentPos, moveDir.Unit * FORWARD_SCAN_DISTANCE, caveRayParams)
-            if hit then
-                hitCave = true
-            end
-        end
-        EasyTravel.HitCave = hitCave
-
-        if hitCave or inRoughWaters then
-            isClimbing = false
-            distanceToWall = 999
-            currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
-            continue
-        end
         local raycastParams = RaycastParams.new()
         raycastParams.FilterType = Enum.RaycastFilterType.Exclude
         raycastParams.FilterDescendantsInstances = { char }
@@ -1042,13 +1040,13 @@ local function runRaycastLoop()
                     Workspace:Raycast(currentPos + (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
             end
 
-            if forwardHit then
-                distanceToWall = forwardHit.Distance
+            if forwardHit or isStuck then
+                distanceToWall = forwardHit and forwardHit.Distance or 0
                 local clearanceY = nil
                 local currentScanDist = FORWARD_SCAN_DISTANCE
                 local heightOffset = 4
 
-                while heightOffset <= 100 do
+                while heightOffset <= 120 do
                     local scanOrigin = currentPos + Vector3.new(0, heightOffset, 0)
                     local scanHit = Workspace:Raycast(scanOrigin, moveUnit * currentScanDist, raycastParams)
 
@@ -1681,6 +1679,9 @@ function EasyTravel.GetSurfaceY(position, character)
 end
 
 local function runRaycastLoop()
+    local startTime = tick()
+    local stuckFrames = 0
+
     while EasyTravel.Enabled do
         task.wait(RAYCAST_COOLDOWN)
         local char, _, root = getCharacterComponents()
@@ -1689,28 +1690,42 @@ local function runRaycastLoop()
         end
 
         local currentPos = root.Position
+        local target = EasyTravel.TargetPosition
+        local distToTarget = target and (target - currentPos).Magnitude or 999
+
+        -- Velocity-based stuck detection (deadzone: dist > 8, active for > 0.5s)
+        local isMovingToTarget = target ~= nil and distToTarget > 8 and (tick() - startTime) > 0.5
+        if isMovingToTarget and root.AssemblyLinearVelocity.Magnitude < 2.5 then
+            stuckFrames = stuckFrames + 1
+        else
+            stuckFrames = 0
+        end
+        local isStuck = stuckFrames >= 3
+
         local inRoughWaters = currentPos.X >= 1002.01
             and currentPos.X <= 3049.91
             and currentPos.Z >= -11748.53
             and currentPos.Z <= -9700.63
 
         local moveDir = Vector3.zero
-        if EasyTravel.DisableRaycasting then
+        -- In rough waters: raycasting OFF by default. If stuck, raycasting ON to climb/pathfind over obstacle
+        local skipRaycast = EasyTravel.DisableRaycasting or (inRoughWaters and not isStuck)
+
+        if skipRaycast then
             isClimbing = false
             distanceToWall = 999
-            currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
-            task.wait(RAYCAST_COOLDOWN)
+            currentTargetY = target and target.Y or currentPos.Y
             continue
         end
 
-        if EasyTravel.TargetPosition then
-            local diff = EasyTravel.TargetPosition - root.Position
+        if target then
+            local diff = target - currentPos
             local flatDiff = Vector3.new(diff.X, 0, diff.Z)
             if flatDiff.Magnitude > 2 then
                 moveDir = flatDiff.Unit
             else
                 isClimbing = false
-                currentTargetY = EasyTravel.TargetPosition.Y
+                currentTargetY = target.Y
                 continue
             end
         else
@@ -1733,25 +1748,6 @@ local function runRaycastLoop()
             end
         end
 
-        local hitCave = false
-        local cave = Workspace.Islands:FindFirstChild("Fishman Cave")
-        if cave and moveDir and moveDir.Magnitude > 0 then
-            local caveRayParams = RaycastParams.new()
-            caveRayParams.FilterType = Enum.RaycastFilterType.Include
-            caveRayParams.FilterDescendantsInstances = { cave }
-            local hit = Workspace:Raycast(currentPos, moveDir.Unit * FORWARD_SCAN_DISTANCE, caveRayParams)
-            if hit then
-                hitCave = true
-            end
-        end
-        EasyTravel.HitCave = hitCave
-
-        if hitCave or inRoughWaters then
-            isClimbing = false
-            distanceToWall = 999
-            currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
-            continue
-        end
         local raycastParams = RaycastParams.new()
         raycastParams.FilterType = Enum.RaycastFilterType.Exclude
         raycastParams.FilterDescendantsInstances = { char }
@@ -1771,13 +1767,13 @@ local function runRaycastLoop()
                     Workspace:Raycast(currentPos + (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
             end
 
-            if forwardHit then
-                distanceToWall = forwardHit.Distance
+            if forwardHit or isStuck then
+                distanceToWall = forwardHit and forwardHit.Distance or 0
                 local clearanceY = nil
                 local currentScanDist = FORWARD_SCAN_DISTANCE
                 local heightOffset = 4
 
-                while heightOffset <= 100 do
+                while heightOffset <= 120 do
                     local scanOrigin = currentPos + Vector3.new(0, heightOffset, 0)
                     local scanHit = Workspace:Raycast(scanOrigin, moveUnit * currentScanDist, raycastParams)
 
@@ -2278,7 +2274,7 @@ local mazePath = {
     Vector3.new(1803.26, -88.17, -12326.73),
     Vector3.new(1797.24, -91.06, -12326.90),
     Vector3.new(1794.73, -92.27, -12326.95),
-    Vector3.new(1791.73, -90.76, -12327.45),
+    Vector3.new(1793.73, -92.76, -12327.45),
 }
 
 function FishmanMaze.Travel(hrp, isRunning)
@@ -2642,6 +2638,9 @@ function EasyTravel.GetSurfaceY(position, character)
 end
 
 local function runRaycastLoop()
+    local startTime = tick()
+    local stuckFrames = 0
+
     while EasyTravel.Enabled do
         task.wait(RAYCAST_COOLDOWN)
         local char, _, root = getCharacterComponents()
@@ -2650,28 +2649,42 @@ local function runRaycastLoop()
         end
 
         local currentPos = root.Position
+        local target = EasyTravel.TargetPosition
+        local distToTarget = target and (target - currentPos).Magnitude or 999
+
+        -- Velocity-based stuck detection (deadzone: dist > 8, active for > 0.5s)
+        local isMovingToTarget = target ~= nil and distToTarget > 8 and (tick() - startTime) > 0.5
+        if isMovingToTarget and root.AssemblyLinearVelocity.Magnitude < 2.5 then
+            stuckFrames = stuckFrames + 1
+        else
+            stuckFrames = 0
+        end
+        local isStuck = stuckFrames >= 3
+
         local inRoughWaters = currentPos.X >= 1002.01
             and currentPos.X <= 3049.91
             and currentPos.Z >= -11748.53
             and currentPos.Z <= -9700.63
 
         local moveDir = Vector3.zero
-        if EasyTravel.DisableRaycasting then
+        -- In rough waters: raycasting OFF by default. If stuck, raycasting ON to climb/pathfind over obstacle
+        local skipRaycast = EasyTravel.DisableRaycasting or (inRoughWaters and not isStuck)
+
+        if skipRaycast then
             isClimbing = false
             distanceToWall = 999
-            currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
-            task.wait(RAYCAST_COOLDOWN)
+            currentTargetY = target and target.Y or currentPos.Y
             continue
         end
 
-        if EasyTravel.TargetPosition then
-            local diff = EasyTravel.TargetPosition - root.Position
+        if target then
+            local diff = target - currentPos
             local flatDiff = Vector3.new(diff.X, 0, diff.Z)
             if flatDiff.Magnitude > 2 then
                 moveDir = flatDiff.Unit
             else
                 isClimbing = false
-                currentTargetY = EasyTravel.TargetPosition.Y
+                currentTargetY = target.Y
                 continue
             end
         else
@@ -2694,25 +2707,6 @@ local function runRaycastLoop()
             end
         end
 
-        local hitCave = false
-        local cave = Workspace.Islands:FindFirstChild("Fishman Cave")
-        if cave and moveDir and moveDir.Magnitude > 0 then
-            local caveRayParams = RaycastParams.new()
-            caveRayParams.FilterType = Enum.RaycastFilterType.Include
-            caveRayParams.FilterDescendantsInstances = { cave }
-            local hit = Workspace:Raycast(currentPos, moveDir.Unit * FORWARD_SCAN_DISTANCE, caveRayParams)
-            if hit then
-                hitCave = true
-            end
-        end
-        EasyTravel.HitCave = hitCave
-
-        if hitCave or inRoughWaters then
-            isClimbing = false
-            distanceToWall = 999
-            currentTargetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
-            continue
-        end
         local raycastParams = RaycastParams.new()
         raycastParams.FilterType = Enum.RaycastFilterType.Exclude
         raycastParams.FilterDescendantsInstances = { char }
@@ -2732,13 +2726,13 @@ local function runRaycastLoop()
                     Workspace:Raycast(currentPos + (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
             end
 
-            if forwardHit then
-                distanceToWall = forwardHit.Distance
+            if forwardHit or isStuck then
+                distanceToWall = forwardHit and forwardHit.Distance or 0
                 local clearanceY = nil
                 local currentScanDist = FORWARD_SCAN_DISTANCE
                 local heightOffset = 4
 
-                while heightOffset <= 100 do
+                while heightOffset <= 120 do
                     local scanOrigin = currentPos + Vector3.new(0, heightOffset, 0)
                     local scanHit = Workspace:Raycast(scanOrigin, moveUnit * currentScanDist, raycastParams)
 
@@ -3017,7 +3011,7 @@ local function hasRifle()
     return LocalPlayer.Backpack:FindFirstChild("Rifle") ~= nil or (c and c:FindFirstChild("Rifle") ~= nil)
 end
 
-local function travelTo(targetPos, reachDist, noCollide, disableRaycast)
+local function travelTo(targetPos, reachDist, noCollide)
     if not EasyTravel then
         return false
     end
@@ -3036,11 +3030,6 @@ local function travelTo(targetPos, reachDist, noCollide, disableRaycast)
         end)
     end
 
-    if disableRaycast then
-        EasyTravel.DisableRaycasting = true
-        EasyTravel.DisableWallTouch = true
-    end
-
     EasyTravel.TargetPosition = targetPos
     pcall(EasyTravel.Start)
 
@@ -3055,10 +3044,6 @@ local function travelTo(targetPos, reachDist, noCollide, disableRaycast)
     pcall(EasyTravel.Stop)
     if conn then
         conn:Disconnect()
-    end
-    if disableRaycast then
-        EasyTravel.DisableRaycasting = false
-        EasyTravel.DisableWallTouch = false
     end
     return LevelGrinder.Running
 end
@@ -3171,7 +3156,7 @@ function LevelGrinder.Start()
 
         -- Phase 3: Fly to Fishman Cave
         print("[Level Grinder] Flying to Fishman Cave...")
-        travelTo(Vector3.new(1837.4, 4.1, -12181.6), 8, false, true)
+        travelTo(Vector3.new(1837.4, 4.1, -12181.6), 8, false)
 
         -- Phase 4: Traverse Fishman Maze
         local _, finalHrp = getCharRoot()
