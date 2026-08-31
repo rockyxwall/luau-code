@@ -341,6 +341,7 @@ local mazePath = {
     Vector3.new(1803.26, -88.17, -12326.73),
     Vector3.new(1797.24, -91.06, -12326.90),
     Vector3.new(1794.73, -92.27, -12326.95),
+    Vector3.new(1792.73, -92.76, -12327.45),
 }
 
 function FishmanMaze.Travel(hrp, isRunning)
@@ -1052,36 +1053,9 @@ return EasyTravel
         end
     end
 
-    -- Turn off EasyTravel and hover forces completely before touching teleporter
     pcall(EasyTravel.Stop)
-    if EasyTravel.Cleanup then
-        pcall(EasyTravel.Cleanup)
-    end
     EasyTravel.DisableRaycasting = false
     EasyTravel.DisableWallTouch = false
-
-    -- Final entry: Walk/swim directly into the orb center
-    local finalChar = LocalPlayer.Character
-    local finalHum = finalChar and finalChar:FindFirstChildWhichIsA("Humanoid")
-    local finalHrp = finalChar and finalChar:FindFirstChild("HumanoidRootPart")
-    local teleporterOrbPos = Vector3.new(1793.73, -92.76, -12327.45)
-
-    if finalHum and finalHrp then
-        print("[Fishman Maze] Entering teleporter orb naturally (forces OFF)...")
-        finalHum:MoveTo(teleporterOrbPos)
-        local startTime = tick()
-        while tick() - startTime < 4 do
-            if isRunning and not isRunning() then
-                break
-            end
-            local cur = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
-            if not cur or cur.Position.Y < -500 or (cur.Position - teleporterOrbPos).Magnitude < 1.5 then
-                break
-            end
-            RunService.Heartbeat:Wait()
-        end
-    end
-
     print("[Fishman Maze] Complete.")
 end
 
