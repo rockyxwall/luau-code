@@ -2,8 +2,10 @@
     ============================================================
     DEV TEST HARNESS: Easy Travel V2
     ============================================================
-    Tests the pure easy_travel_v2.lua library in Roblox.
-    Press ']' (RightBracket) to toggle flight on / off.
+    Tests the pure easy_travel_v2.lua navigation engine in Roblox.
+    Controls:
+      - Press ']' (RightBracket) to toggle Flight on / off.
+      - WASD for manual flight when no target is set.
     ============================================================
 --]]
 
@@ -456,7 +458,7 @@ return EasyTravel
 end)()
 
 if not EasyTravel then
-    warn("[Test EasyTravel] ERROR: Failed to load easy_travel_v2 library!")
+    warn("[Dev EasyTravel V2] ERROR: Failed to load easy_travel_v2 library!")
     return
 end
 
@@ -467,10 +469,14 @@ local function toggle()
     if enabled then
         EasyTravel.Speed = 60
         EasyTravel.Start()
-        print("[Test EasyTravel] 🟢 Flight STARTED. Press ']' to stop.")
+        print(
+            "[Dev EasyTravel V2] 🟢 Flight ENABLED (Speed: "
+                .. tostring(EasyTravel.Speed)
+                .. "). Press ']' to disable."
+        )
     else
         EasyTravel.Stop()
-        print("[Test EasyTravel] 🔴 Flight STOPPED. Press ']' to start.")
+        print("[Dev EasyTravel V2] 🔴 Flight DISABLED. Press ']' to enable.")
     end
 end
 
@@ -483,4 +489,4 @@ UserInputService.InputBegan:Connect(function(input, processed)
     end
 end)
 
-print("[Test EasyTravel] Loaded! Press ']' (Right Bracket) to toggle flight.")
+print("[Dev EasyTravel V2] Loaded successfully! Press ']' (Right Bracket) to toggle flight.")
