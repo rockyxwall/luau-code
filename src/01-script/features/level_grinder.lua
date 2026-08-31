@@ -600,15 +600,25 @@ function ChestFarmer.FarmUntilPeli(targetPeli, getPeliCallback, isRunningCallbac
         
 --[[
     ================================================================================
-    EASY TRAVEL SUITE - WASD GROUND-FOLLOWING & HYPOTENUSE WALL-CLIMBING FLIGHT
+    EASY TRAVEL LIBRARY (Ponytail Optimized)
     ================================================================================
-    Provides coordinate-based flight (Start/Stop).
-    If run standalone (not loaded via hub or importLib), binds ']' to toggle flight.
+    High-speed LinearVelocity travel engine with raycast obstacle climbing.
     ================================================================================
 --]]
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Workspace = workspace
+local LocalPlayer = Players.LocalPlayer
+
+local EasyTravel = {
+    Enabled = false,
+    TargetPosition = nil,
+    DisableRaycasting = false,
+    DisableKeyboard = false,
+    Speed = 150,
+}
 
 local Core = (function()
     
@@ -865,41 +875,19 @@ return Core
 end)()
 local Safeguard = Core.GetSafeguard()
 
-local UserInputService = game:GetService("UserInputService")
-local Workspace = workspace
+local SEA_LEVEL_Y = -8.5
+local BASE_HEIGHT_OFFSET = 10
+local FORWARD_SCAN_DIST = 35
 
-local LocalPlayer = Players.LocalPlayer
-
-local EasyTravel = {
-    TargetPosition = nil,
-    DisableKeyboard = false,
-    Speed = 70.0,
-    Enabled = false,
-    DisableRaycasting = false,
-    DisableWallTouch = false,
-    Connections = {},
-}
-
--- Configurations
-local HEIGHT_OFFSET = 6.0
-local SEA_LEVEL_Y = -2.63
-local RAYCAST_COOLDOWN = 0.05
-local HOVER_LIFT_GAIN = 20.0
-local FORWARD_SCAN_DISTANCE = 50.0
-
--- Internal State
-local currentTargetY = 0
-local isClimbing = false
-local climbTargetY = 0
-local distanceToWall = 999
 local loopConnection = nil
+local raycastParams = nil
+local targetY = SEA_LEVEL_Y + BASE_HEIGHT_OFFSET
 
-local function getCharacterComponents()
-    local char = LocalPlayer.Character
-    if not char then
-        return nil, nil, nil
-    end
-    return char, char:FindFirstChildWhichIsA("Humanoid"), char:FindFirstChild("HumanoidRootPart")
+local function getCharRoot()
+    local c = LocalPlayer.Character
+    local hum = c and c:FindFirstChildWhichIsA("Humanoid")
+    local root = c and c:FindFirstChild("HumanoidRootPart")
+    return c, hum, root
 end
 
 local function getOrCreateForce(root)
@@ -907,268 +895,40 @@ local function getOrCreateForce(root)
     att.Name = "__EasyTravelAtt"
     att.Parent = root
 
-    local force = root:FindFirstChild("__EasyTravelForce")
-    if not force then
-        force = Instance.new("LinearVelocity")
-        force.Name = "__EasyTravelForce"
-        force.Attachment0 = att
-        force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
-        force.RelativeTo = Enum.ActuatorRelativeTo.World
-        force.MaxForce = 10000000
-        force.VectorVelocity = Vector3.zero
-        force.Parent = root
-    end
+    local force = root:FindFirstChild("__EasyTravelForce") or Instance.new("LinearVelocity")
+    force.Name = "__EasyTravelForce"
+    force.Attachment0 = att
+    force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
+    force.RelativeTo = Enum.ActuatorRelativeTo.World
+    force.MaxForce = 1000000
+    force.VectorVelocity = Vector3.zero
+    force.Parent = root
+
     return force
 end
 
-local function cleanupForce()
-    local _, _, root = getCharacterComponents()
-    if root then
-        local force = root:FindFirstChild("__EasyTravelForce")
-        local att = root:FindFirstChild("__EasyTravelAtt")
-        if force then
-            force:Destroy()
-        end
-        if att then
-            att:Destroy()
-        end
+local function destroyForce(root)
+    if not root then
+        return
     end
+    local force = root:FindFirstChild("__EasyTravelForce")
+    if force then
+        force:Destroy()
+    end
+    local att = root:FindFirstChild("__EasyTravelAtt")
+    if att then
+        att:Destroy()
+    end
+    root.AssemblyLinearVelocity = Vector3.zero
+    root.AssemblyAngularVelocity = Vector3.zero
 end
 
-function EasyTravel.GetSurfaceY(position, character)
-    local raycastParams = RaycastParams.new()
-    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-    raycastParams.FilterDescendantsInstances = { character }
-    raycastParams.IgnoreWater = true
-
-    local startPos = Vector3.new(position.X, position.Y + 2, position.Z)
-    local checkDepth = math.max((position.Y + 2) - SEA_LEVEL_Y, 30)
-    local direction = Vector3.new(0, -checkDepth, 0)
-
-    local result = Workspace:Raycast(startPos, direction, raycastParams)
-    local groundY = result and result.Position.Y or -100
-
-    return math.max(groundY, SEA_LEVEL_Y)
-end
-
-local function runRaycastLoop()
-    local startTime = tick()
-    local stuckFrames = 0
-
-    while EasyTravel.Enabled do
-        task.wait(RAYCAST_COOLDOWN)
-        local char, _, root = getCharacterComponents()
-        if not char or not root then
-            continue
-        end
-
-        local currentPos = root.Position
-        local target = EasyTravel.TargetPosition
-        local distToTarget = target and (target - currentPos).Magnitude or 999
-
-        -- Velocity-based stuck detection (deadzone: dist > 8, active for > 0.5s)
-        local isMovingToTarget = target ~= nil and distToTarget > 8 and (tick() - startTime) > 0.5
-        if isMovingToTarget and root.AssemblyLinearVelocity.Magnitude < 2.5 then
-            stuckFrames = stuckFrames + 1
-        else
-            stuckFrames = 0
-        end
-        local isStuck = stuckFrames >= 3
-
-        local inRoughWaters = currentPos.X >= 1002.01
-            and currentPos.X <= 3049.91
-            and currentPos.Z >= -11748.53
-            and currentPos.Z <= -9700.63
-
-        local moveDir = Vector3.zero
-        -- In rough waters: raycasting OFF by default. If stuck, raycasting ON to climb/pathfind over obstacle
-        local skipRaycast = EasyTravel.DisableRaycasting or (inRoughWaters and not isStuck)
-
-        if skipRaycast then
-            isClimbing = false
-            distanceToWall = 999
-            currentTargetY = target and target.Y or currentPos.Y
-            continue
-        end
-
-        if target then
-            local diff = target - currentPos
-            local flatDiff = Vector3.new(diff.X, 0, diff.Z)
-            if flatDiff.Magnitude > 2 then
-                moveDir = flatDiff.Unit
-            else
-                isClimbing = false
-                currentTargetY = target.Y
-                continue
-            end
-        else
-            local camera = Workspace.CurrentCamera
-            local look = camera.CFrame.LookVector
-            local right = camera.CFrame.RightVector
-            if not EasyTravel.DisableKeyboard then
-                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-                    moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-                    moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-                    moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-                    moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit
-                end
-            end
-        end
-
-        local raycastParams = RaycastParams.new()
-        raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-        raycastParams.FilterDescendantsInstances = { char }
-        raycastParams.IgnoreWater = true
-
-        if moveDir.Magnitude > 0 then
-            local moveUnit = moveDir.Unit
-            local perpUnit = Vector3.new(-moveUnit.Z, 0, moveUnit.X).Unit
-
-            local forwardHit = Workspace:Raycast(currentPos, moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
-            if not forwardHit then
-                forwardHit =
-                    Workspace:Raycast(currentPos - (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
-            end
-            if not forwardHit then
-                forwardHit =
-                    Workspace:Raycast(currentPos + (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
-            end
-
-            if forwardHit or isStuck then
-                distanceToWall = forwardHit and forwardHit.Distance or 0
-                local clearanceY = nil
-                local currentScanDist = FORWARD_SCAN_DISTANCE
-                local heightOffset = 4
-
-                while heightOffset <= 120 do
-                    local scanOrigin = currentPos + Vector3.new(0, heightOffset, 0)
-                    local scanHit = Workspace:Raycast(scanOrigin, moveUnit * currentScanDist, raycastParams)
-
-                    if not scanHit then
-                        clearanceY = scanOrigin.Y
-                        local secondaryOrigin = scanOrigin + moveUnit * 10
-                        local secondaryHit = Workspace:Raycast(secondaryOrigin, moveUnit * 15, raycastParams)
-                        if secondaryHit then
-                            currentScanDist = currentScanDist + 15
-                        else
-                            break
-                        end
-                    end
-                    heightOffset = heightOffset + 4
-                end
-
-                if clearanceY then
-                    isClimbing = true
-                    climbTargetY = clearanceY + HEIGHT_OFFSET
-                else
-                    isClimbing = false
-                    currentTargetY = EasyTravel.GetSurfaceY(currentPos, char) + HEIGHT_OFFSET
-                end
-            else
-                distanceToWall = 999
-                isClimbing = false
-                local groundY = EasyTravel.GetSurfaceY(currentPos, char)
-                local aheadPos = currentPos + moveUnit * 4
-                local aheadY = EasyTravel.GetSurfaceY(aheadPos, char)
-                currentTargetY = math.max(groundY, aheadY) + HEIGHT_OFFSET
-            end
-        else
-            distanceToWall = 999
-            isClimbing = false
-            currentTargetY = EasyTravel.GetSurfaceY(currentPos, char) + HEIGHT_OFFSET
-        end
+function EasyTravel.Cleanup()
+    local _, hum, root = getCharRoot()
+    if hum then
+        hum.PlatformStand = false
     end
-end
-
-function EasyTravel.Start()
-    if EasyTravel.Enabled then
-        return
-    end
-    if not Safeguard then
-        warn("[Safeguard] Failed to load!")
-        return
-    end
-    if not Safeguard.IsSafe() then
-        return
-    end
-    EasyTravel.Enabled = true
-    cleanupForce()
-    local char, hum, root = getCharacterComponents()
-    if not root or not hum then
-        return
-    end
-
-    EasyTravel.Enabled = true
-    currentTargetY = EasyTravel.GetSurfaceY(root.Position, char) + HEIGHT_OFFSET
-    isClimbing = false
-
-    task.spawn(runRaycastLoop)
-
-    loopConnection = RunService.Heartbeat:Connect(function(dt)
-        local _, _, currentRoot = getCharacterComponents()
-        if not currentRoot or not EasyTravel.Enabled then
-            if loopConnection then
-                loopConnection:Disconnect()
-                loopConnection = nil
-            end
-            cleanupForce()
-            return
-        end
-
-        local force = getOrCreateForce(currentRoot)
-        local camera = Workspace.CurrentCamera
-        local look = camera.CFrame.LookVector
-        local right = camera.CFrame.RightVector
-        local moveDir = Vector3.zero
-        local finalTargetY = isClimbing and climbTargetY or currentTargetY
-
-        if EasyTravel.TargetPosition then
-            local diff = EasyTravel.TargetPosition - currentRoot.Position
-            local flatDiff = Vector3.new(diff.X, 0, diff.Z)
-            if flatDiff.Magnitude > 2 then
-                moveDir = flatDiff.Unit
-            end
-        else
-            if not EasyTravel.DisableKeyboard then
-                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-                    moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-                    moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-                    moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-                    moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit
-                end
-            end
-        end
-
-        local yError = finalTargetY - currentRoot.Position.Y
-        local targetVelocity = Vector3.zero
-        if moveDir.Magnitude > 0 then
-            local speedMultiplier = 1
-            if not EasyTravel.DisableWallTouch and isClimbing and yError > 3 and distanceToWall < 6 then
-                speedMultiplier = 0
-            end
-            targetVelocity = moveDir.Unit * (EasyTravel.Speed * speedMultiplier)
-        end
-
-        local verticalVel = math.clamp(yError * HOVER_LIFT_GAIN, -50, 30)
-        force.VectorVelocity = Vector3.new(targetVelocity.X, verticalVel, targetVelocity.Z)
-
-        if moveDir.Magnitude > 0 then
-            currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + moveDir)
-        end
-    end)
-    print("[Easy Travel] Flight enabled.")
+    destroyForce(root)
 end
 
 function EasyTravel.Stop()
@@ -1177,17 +937,131 @@ function EasyTravel.Stop()
         loopConnection:Disconnect()
         loopConnection = nil
     end
-    cleanupForce()
-    print("[Easy Travel] Flight disabled.")
+    EasyTravel.Cleanup()
 end
 
--- Completely shutdown everything
-function EasyTravel.Cleanup()
-    EasyTravel.Stop()
-    for _, conn in ipairs(EasyTravel.Connections) do
-        conn:Disconnect()
+local function updateRaycast(root, currentPos, moveDir)
+    if EasyTravel.DisableRaycasting then
+        targetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
+        return
     end
-    EasyTravel.Connections = {}
+
+    if not raycastParams then
+        raycastParams = RaycastParams.new()
+        raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+        raycastParams.IgnoreWater = true
+    end
+    local c = LocalPlayer.Character
+    raycastParams.FilterDescendantsInstances = c and { c } or {}
+
+    -- 1. Ground detection under character
+    local downHit = Workspace:Raycast(currentPos + Vector3.new(0, 2, 0), Vector3.new(0, -60, 0), raycastParams)
+    local floorY = downHit and downHit.Position.Y or SEA_LEVEL_Y
+    local baseTargetY = math.max(floorY, SEA_LEVEL_Y) + BASE_HEIGHT_OFFSET
+
+    if EasyTravel.TargetPosition then
+        baseTargetY = math.max(baseTargetY, EasyTravel.TargetPosition.Y)
+    end
+
+    -- 2. Forward obstacle detection & automatic clearance elevation
+    if moveDir.Magnitude > 0.1 then
+        local forwardHit = Workspace:Raycast(currentPos, moveDir.Unit * FORWARD_SCAN_DIST, raycastParams)
+        if forwardHit then
+            -- Scan upward in 5-stud increments for clearance over the obstacle
+            local clearanceY = forwardHit.Position.Y + BASE_HEIGHT_OFFSET
+            for offset = 4, 100, 5 do
+                local scanOrigin = currentPos + Vector3.new(0, offset, 0)
+                local hit = Workspace:Raycast(scanOrigin, moveDir.Unit * FORWARD_SCAN_DIST, raycastParams)
+                if not hit then
+                    clearanceY = scanOrigin.Y + BASE_HEIGHT_OFFSET
+                    break
+                end
+            end
+            baseTargetY = math.max(baseTargetY, clearanceY)
+        end
+    end
+
+    targetY = baseTargetY
+end
+
+function EasyTravel.Start()
+    if EasyTravel.Enabled then
+        return
+    end
+    if not Safeguard or not Safeguard.IsSafe() then
+        return
+    end
+
+    local char, hum, root = getCharRoot()
+    if not char or not root or not hum then
+        return
+    end
+
+    EasyTravel.Enabled = true
+    local force = getOrCreateForce(root)
+    targetY = root.Position.Y
+
+    local lastRaycastTick = 0
+
+    loopConnection = RunService.Heartbeat:Connect(function()
+        local c, h, r = getCharRoot()
+        if not r or not h or not EasyTravel.Enabled then
+            EasyTravel.Stop()
+            return
+        end
+
+        h.PlatformStand = true
+
+        local currentPos = r.Position
+        local moveDir = Vector3.zero
+        local target = EasyTravel.TargetPosition
+
+        if target then
+            local diff = target - currentPos
+            local flatDiff = Vector3.new(diff.X, 0, diff.Z)
+            if flatDiff.Magnitude > 1.5 then
+                moveDir = flatDiff.Unit
+            end
+        elseif not EasyTravel.DisableKeyboard then
+            local cam = Workspace.CurrentCamera
+            if cam then
+                local look = cam.CFrame.LookVector
+                local right = cam.CFrame.RightVector
+                local forwardFlat = Vector3.new(look.X, 0, look.Z).Unit
+                local rightFlat = Vector3.new(right.X, 0, right.Z).Unit
+
+                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+                    moveDir = moveDir + forwardFlat
+                end
+                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+                    moveDir = moveDir - forwardFlat
+                end
+                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+                    moveDir = moveDir + rightFlat
+                end
+                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+                    moveDir = moveDir - rightFlat
+                end
+                if moveDir.Magnitude > 0 then
+                    moveDir = moveDir.Unit
+                end
+            end
+        end
+
+        -- Periodic obstacle / terrain raycast (every 0.05s)
+        local now = tick()
+        if now - lastRaycastTick >= 0.05 then
+            lastRaycastTick = now
+            updateRaycast(r, currentPos, moveDir)
+        end
+
+        -- Proportional vertical smoothing toward targetY
+        local yDiff = targetY - currentPos.Y
+        local yVelocity = math.clamp(yDiff * 15, -EasyTravel.Speed, EasyTravel.Speed)
+        local hVelocity = moveDir * EasyTravel.Speed
+
+        force.VectorVelocity = Vector3.new(hVelocity.X, yVelocity, hVelocity.Z)
+    end)
 end
 
 -- ============================================================
@@ -1195,7 +1069,7 @@ end
 -- ============================================================
 Core.SetupStandalone(EasyTravel, "Easy Travel", EasyTravel.Start, EasyTravel.Stop, function()
     return EasyTravel.Enabled
-end, Enum.KeyCode.P, true)
+end, Enum.KeyCode.RightBracket, true)
 
 return EasyTravel
 
@@ -1327,15 +1201,25 @@ local EasyTravel = (function()
     
 --[[
     ================================================================================
-    EASY TRAVEL SUITE - WASD GROUND-FOLLOWING & HYPOTENUSE WALL-CLIMBING FLIGHT
+    EASY TRAVEL LIBRARY (Ponytail Optimized)
     ================================================================================
-    Provides coordinate-based flight (Start/Stop).
-    If run standalone (not loaded via hub or importLib), binds ']' to toggle flight.
+    High-speed LinearVelocity travel engine with raycast obstacle climbing.
     ================================================================================
 --]]
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Workspace = workspace
+local LocalPlayer = Players.LocalPlayer
+
+local EasyTravel = {
+    Enabled = false,
+    TargetPosition = nil,
+    DisableRaycasting = false,
+    DisableKeyboard = false,
+    Speed = 150,
+}
 
 local Core = (function()
     
@@ -1592,41 +1476,19 @@ return Core
 end)()
 local Safeguard = Core.GetSafeguard()
 
-local UserInputService = game:GetService("UserInputService")
-local Workspace = workspace
+local SEA_LEVEL_Y = -8.5
+local BASE_HEIGHT_OFFSET = 10
+local FORWARD_SCAN_DIST = 35
 
-local LocalPlayer = Players.LocalPlayer
-
-local EasyTravel = {
-    TargetPosition = nil,
-    DisableKeyboard = false,
-    Speed = 70.0,
-    Enabled = false,
-    DisableRaycasting = false,
-    DisableWallTouch = false,
-    Connections = {},
-}
-
--- Configurations
-local HEIGHT_OFFSET = 6.0
-local SEA_LEVEL_Y = -2.63
-local RAYCAST_COOLDOWN = 0.05
-local HOVER_LIFT_GAIN = 20.0
-local FORWARD_SCAN_DISTANCE = 50.0
-
--- Internal State
-local currentTargetY = 0
-local isClimbing = false
-local climbTargetY = 0
-local distanceToWall = 999
 local loopConnection = nil
+local raycastParams = nil
+local targetY = SEA_LEVEL_Y + BASE_HEIGHT_OFFSET
 
-local function getCharacterComponents()
-    local char = LocalPlayer.Character
-    if not char then
-        return nil, nil, nil
-    end
-    return char, char:FindFirstChildWhichIsA("Humanoid"), char:FindFirstChild("HumanoidRootPart")
+local function getCharRoot()
+    local c = LocalPlayer.Character
+    local hum = c and c:FindFirstChildWhichIsA("Humanoid")
+    local root = c and c:FindFirstChild("HumanoidRootPart")
+    return c, hum, root
 end
 
 local function getOrCreateForce(root)
@@ -1634,268 +1496,40 @@ local function getOrCreateForce(root)
     att.Name = "__EasyTravelAtt"
     att.Parent = root
 
-    local force = root:FindFirstChild("__EasyTravelForce")
-    if not force then
-        force = Instance.new("LinearVelocity")
-        force.Name = "__EasyTravelForce"
-        force.Attachment0 = att
-        force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
-        force.RelativeTo = Enum.ActuatorRelativeTo.World
-        force.MaxForce = 10000000
-        force.VectorVelocity = Vector3.zero
-        force.Parent = root
-    end
+    local force = root:FindFirstChild("__EasyTravelForce") or Instance.new("LinearVelocity")
+    force.Name = "__EasyTravelForce"
+    force.Attachment0 = att
+    force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
+    force.RelativeTo = Enum.ActuatorRelativeTo.World
+    force.MaxForce = 1000000
+    force.VectorVelocity = Vector3.zero
+    force.Parent = root
+
     return force
 end
 
-local function cleanupForce()
-    local _, _, root = getCharacterComponents()
-    if root then
-        local force = root:FindFirstChild("__EasyTravelForce")
-        local att = root:FindFirstChild("__EasyTravelAtt")
-        if force then
-            force:Destroy()
-        end
-        if att then
-            att:Destroy()
-        end
+local function destroyForce(root)
+    if not root then
+        return
     end
+    local force = root:FindFirstChild("__EasyTravelForce")
+    if force then
+        force:Destroy()
+    end
+    local att = root:FindFirstChild("__EasyTravelAtt")
+    if att then
+        att:Destroy()
+    end
+    root.AssemblyLinearVelocity = Vector3.zero
+    root.AssemblyAngularVelocity = Vector3.zero
 end
 
-function EasyTravel.GetSurfaceY(position, character)
-    local raycastParams = RaycastParams.new()
-    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-    raycastParams.FilterDescendantsInstances = { character }
-    raycastParams.IgnoreWater = true
-
-    local startPos = Vector3.new(position.X, position.Y + 2, position.Z)
-    local checkDepth = math.max((position.Y + 2) - SEA_LEVEL_Y, 30)
-    local direction = Vector3.new(0, -checkDepth, 0)
-
-    local result = Workspace:Raycast(startPos, direction, raycastParams)
-    local groundY = result and result.Position.Y or -100
-
-    return math.max(groundY, SEA_LEVEL_Y)
-end
-
-local function runRaycastLoop()
-    local startTime = tick()
-    local stuckFrames = 0
-
-    while EasyTravel.Enabled do
-        task.wait(RAYCAST_COOLDOWN)
-        local char, _, root = getCharacterComponents()
-        if not char or not root then
-            continue
-        end
-
-        local currentPos = root.Position
-        local target = EasyTravel.TargetPosition
-        local distToTarget = target and (target - currentPos).Magnitude or 999
-
-        -- Velocity-based stuck detection (deadzone: dist > 8, active for > 0.5s)
-        local isMovingToTarget = target ~= nil and distToTarget > 8 and (tick() - startTime) > 0.5
-        if isMovingToTarget and root.AssemblyLinearVelocity.Magnitude < 2.5 then
-            stuckFrames = stuckFrames + 1
-        else
-            stuckFrames = 0
-        end
-        local isStuck = stuckFrames >= 3
-
-        local inRoughWaters = currentPos.X >= 1002.01
-            and currentPos.X <= 3049.91
-            and currentPos.Z >= -11748.53
-            and currentPos.Z <= -9700.63
-
-        local moveDir = Vector3.zero
-        -- In rough waters: raycasting OFF by default. If stuck, raycasting ON to climb/pathfind over obstacle
-        local skipRaycast = EasyTravel.DisableRaycasting or (inRoughWaters and not isStuck)
-
-        if skipRaycast then
-            isClimbing = false
-            distanceToWall = 999
-            currentTargetY = target and target.Y or currentPos.Y
-            continue
-        end
-
-        if target then
-            local diff = target - currentPos
-            local flatDiff = Vector3.new(diff.X, 0, diff.Z)
-            if flatDiff.Magnitude > 2 then
-                moveDir = flatDiff.Unit
-            else
-                isClimbing = false
-                currentTargetY = target.Y
-                continue
-            end
-        else
-            local camera = Workspace.CurrentCamera
-            local look = camera.CFrame.LookVector
-            local right = camera.CFrame.RightVector
-            if not EasyTravel.DisableKeyboard then
-                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-                    moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-                    moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-                    moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-                    moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit
-                end
-            end
-        end
-
-        local raycastParams = RaycastParams.new()
-        raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-        raycastParams.FilterDescendantsInstances = { char }
-        raycastParams.IgnoreWater = true
-
-        if moveDir.Magnitude > 0 then
-            local moveUnit = moveDir.Unit
-            local perpUnit = Vector3.new(-moveUnit.Z, 0, moveUnit.X).Unit
-
-            local forwardHit = Workspace:Raycast(currentPos, moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
-            if not forwardHit then
-                forwardHit =
-                    Workspace:Raycast(currentPos - (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
-            end
-            if not forwardHit then
-                forwardHit =
-                    Workspace:Raycast(currentPos + (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
-            end
-
-            if forwardHit or isStuck then
-                distanceToWall = forwardHit and forwardHit.Distance or 0
-                local clearanceY = nil
-                local currentScanDist = FORWARD_SCAN_DISTANCE
-                local heightOffset = 4
-
-                while heightOffset <= 120 do
-                    local scanOrigin = currentPos + Vector3.new(0, heightOffset, 0)
-                    local scanHit = Workspace:Raycast(scanOrigin, moveUnit * currentScanDist, raycastParams)
-
-                    if not scanHit then
-                        clearanceY = scanOrigin.Y
-                        local secondaryOrigin = scanOrigin + moveUnit * 10
-                        local secondaryHit = Workspace:Raycast(secondaryOrigin, moveUnit * 15, raycastParams)
-                        if secondaryHit then
-                            currentScanDist = currentScanDist + 15
-                        else
-                            break
-                        end
-                    end
-                    heightOffset = heightOffset + 4
-                end
-
-                if clearanceY then
-                    isClimbing = true
-                    climbTargetY = clearanceY + HEIGHT_OFFSET
-                else
-                    isClimbing = false
-                    currentTargetY = EasyTravel.GetSurfaceY(currentPos, char) + HEIGHT_OFFSET
-                end
-            else
-                distanceToWall = 999
-                isClimbing = false
-                local groundY = EasyTravel.GetSurfaceY(currentPos, char)
-                local aheadPos = currentPos + moveUnit * 4
-                local aheadY = EasyTravel.GetSurfaceY(aheadPos, char)
-                currentTargetY = math.max(groundY, aheadY) + HEIGHT_OFFSET
-            end
-        else
-            distanceToWall = 999
-            isClimbing = false
-            currentTargetY = EasyTravel.GetSurfaceY(currentPos, char) + HEIGHT_OFFSET
-        end
+function EasyTravel.Cleanup()
+    local _, hum, root = getCharRoot()
+    if hum then
+        hum.PlatformStand = false
     end
-end
-
-function EasyTravel.Start()
-    if EasyTravel.Enabled then
-        return
-    end
-    if not Safeguard then
-        warn("[Safeguard] Failed to load!")
-        return
-    end
-    if not Safeguard.IsSafe() then
-        return
-    end
-    EasyTravel.Enabled = true
-    cleanupForce()
-    local char, hum, root = getCharacterComponents()
-    if not root or not hum then
-        return
-    end
-
-    EasyTravel.Enabled = true
-    currentTargetY = EasyTravel.GetSurfaceY(root.Position, char) + HEIGHT_OFFSET
-    isClimbing = false
-
-    task.spawn(runRaycastLoop)
-
-    loopConnection = RunService.Heartbeat:Connect(function(dt)
-        local _, _, currentRoot = getCharacterComponents()
-        if not currentRoot or not EasyTravel.Enabled then
-            if loopConnection then
-                loopConnection:Disconnect()
-                loopConnection = nil
-            end
-            cleanupForce()
-            return
-        end
-
-        local force = getOrCreateForce(currentRoot)
-        local camera = Workspace.CurrentCamera
-        local look = camera.CFrame.LookVector
-        local right = camera.CFrame.RightVector
-        local moveDir = Vector3.zero
-        local finalTargetY = isClimbing and climbTargetY or currentTargetY
-
-        if EasyTravel.TargetPosition then
-            local diff = EasyTravel.TargetPosition - currentRoot.Position
-            local flatDiff = Vector3.new(diff.X, 0, diff.Z)
-            if flatDiff.Magnitude > 2 then
-                moveDir = flatDiff.Unit
-            end
-        else
-            if not EasyTravel.DisableKeyboard then
-                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-                    moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-                    moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-                    moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-                    moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit
-                end
-            end
-        end
-
-        local yError = finalTargetY - currentRoot.Position.Y
-        local targetVelocity = Vector3.zero
-        if moveDir.Magnitude > 0 then
-            local speedMultiplier = 1
-            if not EasyTravel.DisableWallTouch and isClimbing and yError > 3 and distanceToWall < 6 then
-                speedMultiplier = 0
-            end
-            targetVelocity = moveDir.Unit * (EasyTravel.Speed * speedMultiplier)
-        end
-
-        local verticalVel = math.clamp(yError * HOVER_LIFT_GAIN, -50, 30)
-        force.VectorVelocity = Vector3.new(targetVelocity.X, verticalVel, targetVelocity.Z)
-
-        if moveDir.Magnitude > 0 then
-            currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + moveDir)
-        end
-    end)
-    print("[Easy Travel] Flight enabled.")
+    destroyForce(root)
 end
 
 function EasyTravel.Stop()
@@ -1904,17 +1538,131 @@ function EasyTravel.Stop()
         loopConnection:Disconnect()
         loopConnection = nil
     end
-    cleanupForce()
-    print("[Easy Travel] Flight disabled.")
+    EasyTravel.Cleanup()
 end
 
--- Completely shutdown everything
-function EasyTravel.Cleanup()
-    EasyTravel.Stop()
-    for _, conn in ipairs(EasyTravel.Connections) do
-        conn:Disconnect()
+local function updateRaycast(root, currentPos, moveDir)
+    if EasyTravel.DisableRaycasting then
+        targetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
+        return
     end
-    EasyTravel.Connections = {}
+
+    if not raycastParams then
+        raycastParams = RaycastParams.new()
+        raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+        raycastParams.IgnoreWater = true
+    end
+    local c = LocalPlayer.Character
+    raycastParams.FilterDescendantsInstances = c and { c } or {}
+
+    -- 1. Ground detection under character
+    local downHit = Workspace:Raycast(currentPos + Vector3.new(0, 2, 0), Vector3.new(0, -60, 0), raycastParams)
+    local floorY = downHit and downHit.Position.Y or SEA_LEVEL_Y
+    local baseTargetY = math.max(floorY, SEA_LEVEL_Y) + BASE_HEIGHT_OFFSET
+
+    if EasyTravel.TargetPosition then
+        baseTargetY = math.max(baseTargetY, EasyTravel.TargetPosition.Y)
+    end
+
+    -- 2. Forward obstacle detection & automatic clearance elevation
+    if moveDir.Magnitude > 0.1 then
+        local forwardHit = Workspace:Raycast(currentPos, moveDir.Unit * FORWARD_SCAN_DIST, raycastParams)
+        if forwardHit then
+            -- Scan upward in 5-stud increments for clearance over the obstacle
+            local clearanceY = forwardHit.Position.Y + BASE_HEIGHT_OFFSET
+            for offset = 4, 100, 5 do
+                local scanOrigin = currentPos + Vector3.new(0, offset, 0)
+                local hit = Workspace:Raycast(scanOrigin, moveDir.Unit * FORWARD_SCAN_DIST, raycastParams)
+                if not hit then
+                    clearanceY = scanOrigin.Y + BASE_HEIGHT_OFFSET
+                    break
+                end
+            end
+            baseTargetY = math.max(baseTargetY, clearanceY)
+        end
+    end
+
+    targetY = baseTargetY
+end
+
+function EasyTravel.Start()
+    if EasyTravel.Enabled then
+        return
+    end
+    if not Safeguard or not Safeguard.IsSafe() then
+        return
+    end
+
+    local char, hum, root = getCharRoot()
+    if not char or not root or not hum then
+        return
+    end
+
+    EasyTravel.Enabled = true
+    local force = getOrCreateForce(root)
+    targetY = root.Position.Y
+
+    local lastRaycastTick = 0
+
+    loopConnection = RunService.Heartbeat:Connect(function()
+        local c, h, r = getCharRoot()
+        if not r or not h or not EasyTravel.Enabled then
+            EasyTravel.Stop()
+            return
+        end
+
+        h.PlatformStand = true
+
+        local currentPos = r.Position
+        local moveDir = Vector3.zero
+        local target = EasyTravel.TargetPosition
+
+        if target then
+            local diff = target - currentPos
+            local flatDiff = Vector3.new(diff.X, 0, diff.Z)
+            if flatDiff.Magnitude > 1.5 then
+                moveDir = flatDiff.Unit
+            end
+        elseif not EasyTravel.DisableKeyboard then
+            local cam = Workspace.CurrentCamera
+            if cam then
+                local look = cam.CFrame.LookVector
+                local right = cam.CFrame.RightVector
+                local forwardFlat = Vector3.new(look.X, 0, look.Z).Unit
+                local rightFlat = Vector3.new(right.X, 0, right.Z).Unit
+
+                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+                    moveDir = moveDir + forwardFlat
+                end
+                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+                    moveDir = moveDir - forwardFlat
+                end
+                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+                    moveDir = moveDir + rightFlat
+                end
+                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+                    moveDir = moveDir - rightFlat
+                end
+                if moveDir.Magnitude > 0 then
+                    moveDir = moveDir.Unit
+                end
+            end
+        end
+
+        -- Periodic obstacle / terrain raycast (every 0.05s)
+        local now = tick()
+        if now - lastRaycastTick >= 0.05 then
+            lastRaycastTick = now
+            updateRaycast(r, currentPos, moveDir)
+        end
+
+        -- Proportional vertical smoothing toward targetY
+        local yDiff = targetY - currentPos.Y
+        local yVelocity = math.clamp(yDiff * 15, -EasyTravel.Speed, EasyTravel.Speed)
+        local hVelocity = moveDir * EasyTravel.Speed
+
+        force.VectorVelocity = Vector3.new(hVelocity.X, yVelocity, hVelocity.Z)
+    end)
 end
 
 -- ============================================================
@@ -1922,7 +1670,7 @@ end
 -- ============================================================
 Core.SetupStandalone(EasyTravel, "Easy Travel", EasyTravel.Start, EasyTravel.Stop, function()
     return EasyTravel.Enabled
-end, Enum.KeyCode.P, true)
+end, Enum.KeyCode.RightBracket, true)
 
 return EasyTravel
 
@@ -2285,15 +2033,25 @@ function FishmanMaze.Travel(hrp, isRunning)
         
 --[[
     ================================================================================
-    EASY TRAVEL SUITE - WASD GROUND-FOLLOWING & HYPOTENUSE WALL-CLIMBING FLIGHT
+    EASY TRAVEL LIBRARY (Ponytail Optimized)
     ================================================================================
-    Provides coordinate-based flight (Start/Stop).
-    If run standalone (not loaded via hub or importLib), binds ']' to toggle flight.
+    High-speed LinearVelocity travel engine with raycast obstacle climbing.
     ================================================================================
 --]]
 
 local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
+local UserInputService = game:GetService("UserInputService")
+local Workspace = workspace
+local LocalPlayer = Players.LocalPlayer
+
+local EasyTravel = {
+    Enabled = false,
+    TargetPosition = nil,
+    DisableRaycasting = false,
+    DisableKeyboard = false,
+    Speed = 150,
+}
 
 local Core = (function()
     
@@ -2550,41 +2308,19 @@ return Core
 end)()
 local Safeguard = Core.GetSafeguard()
 
-local UserInputService = game:GetService("UserInputService")
-local Workspace = workspace
+local SEA_LEVEL_Y = -8.5
+local BASE_HEIGHT_OFFSET = 10
+local FORWARD_SCAN_DIST = 35
 
-local LocalPlayer = Players.LocalPlayer
-
-local EasyTravel = {
-    TargetPosition = nil,
-    DisableKeyboard = false,
-    Speed = 70.0,
-    Enabled = false,
-    DisableRaycasting = false,
-    DisableWallTouch = false,
-    Connections = {},
-}
-
--- Configurations
-local HEIGHT_OFFSET = 6.0
-local SEA_LEVEL_Y = -2.63
-local RAYCAST_COOLDOWN = 0.05
-local HOVER_LIFT_GAIN = 20.0
-local FORWARD_SCAN_DISTANCE = 50.0
-
--- Internal State
-local currentTargetY = 0
-local isClimbing = false
-local climbTargetY = 0
-local distanceToWall = 999
 local loopConnection = nil
+local raycastParams = nil
+local targetY = SEA_LEVEL_Y + BASE_HEIGHT_OFFSET
 
-local function getCharacterComponents()
-    local char = LocalPlayer.Character
-    if not char then
-        return nil, nil, nil
-    end
-    return char, char:FindFirstChildWhichIsA("Humanoid"), char:FindFirstChild("HumanoidRootPart")
+local function getCharRoot()
+    local c = LocalPlayer.Character
+    local hum = c and c:FindFirstChildWhichIsA("Humanoid")
+    local root = c and c:FindFirstChild("HumanoidRootPart")
+    return c, hum, root
 end
 
 local function getOrCreateForce(root)
@@ -2592,268 +2328,40 @@ local function getOrCreateForce(root)
     att.Name = "__EasyTravelAtt"
     att.Parent = root
 
-    local force = root:FindFirstChild("__EasyTravelForce")
-    if not force then
-        force = Instance.new("LinearVelocity")
-        force.Name = "__EasyTravelForce"
-        force.Attachment0 = att
-        force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
-        force.RelativeTo = Enum.ActuatorRelativeTo.World
-        force.MaxForce = 10000000
-        force.VectorVelocity = Vector3.zero
-        force.Parent = root
-    end
+    local force = root:FindFirstChild("__EasyTravelForce") or Instance.new("LinearVelocity")
+    force.Name = "__EasyTravelForce"
+    force.Attachment0 = att
+    force.VelocityConstraintMode = Enum.VelocityConstraintMode.Vector
+    force.RelativeTo = Enum.ActuatorRelativeTo.World
+    force.MaxForce = 1000000
+    force.VectorVelocity = Vector3.zero
+    force.Parent = root
+
     return force
 end
 
-local function cleanupForce()
-    local _, _, root = getCharacterComponents()
-    if root then
-        local force = root:FindFirstChild("__EasyTravelForce")
-        local att = root:FindFirstChild("__EasyTravelAtt")
-        if force then
-            force:Destroy()
-        end
-        if att then
-            att:Destroy()
-        end
+local function destroyForce(root)
+    if not root then
+        return
     end
+    local force = root:FindFirstChild("__EasyTravelForce")
+    if force then
+        force:Destroy()
+    end
+    local att = root:FindFirstChild("__EasyTravelAtt")
+    if att then
+        att:Destroy()
+    end
+    root.AssemblyLinearVelocity = Vector3.zero
+    root.AssemblyAngularVelocity = Vector3.zero
 end
 
-function EasyTravel.GetSurfaceY(position, character)
-    local raycastParams = RaycastParams.new()
-    raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-    raycastParams.FilterDescendantsInstances = { character }
-    raycastParams.IgnoreWater = true
-
-    local startPos = Vector3.new(position.X, position.Y + 2, position.Z)
-    local checkDepth = math.max((position.Y + 2) - SEA_LEVEL_Y, 30)
-    local direction = Vector3.new(0, -checkDepth, 0)
-
-    local result = Workspace:Raycast(startPos, direction, raycastParams)
-    local groundY = result and result.Position.Y or -100
-
-    return math.max(groundY, SEA_LEVEL_Y)
-end
-
-local function runRaycastLoop()
-    local startTime = tick()
-    local stuckFrames = 0
-
-    while EasyTravel.Enabled do
-        task.wait(RAYCAST_COOLDOWN)
-        local char, _, root = getCharacterComponents()
-        if not char or not root then
-            continue
-        end
-
-        local currentPos = root.Position
-        local target = EasyTravel.TargetPosition
-        local distToTarget = target and (target - currentPos).Magnitude or 999
-
-        -- Velocity-based stuck detection (deadzone: dist > 8, active for > 0.5s)
-        local isMovingToTarget = target ~= nil and distToTarget > 8 and (tick() - startTime) > 0.5
-        if isMovingToTarget and root.AssemblyLinearVelocity.Magnitude < 2.5 then
-            stuckFrames = stuckFrames + 1
-        else
-            stuckFrames = 0
-        end
-        local isStuck = stuckFrames >= 3
-
-        local inRoughWaters = currentPos.X >= 1002.01
-            and currentPos.X <= 3049.91
-            and currentPos.Z >= -11748.53
-            and currentPos.Z <= -9700.63
-
-        local moveDir = Vector3.zero
-        -- In rough waters: raycasting OFF by default. If stuck, raycasting ON to climb/pathfind over obstacle
-        local skipRaycast = EasyTravel.DisableRaycasting or (inRoughWaters and not isStuck)
-
-        if skipRaycast then
-            isClimbing = false
-            distanceToWall = 999
-            currentTargetY = target and target.Y or currentPos.Y
-            continue
-        end
-
-        if target then
-            local diff = target - currentPos
-            local flatDiff = Vector3.new(diff.X, 0, diff.Z)
-            if flatDiff.Magnitude > 2 then
-                moveDir = flatDiff.Unit
-            else
-                isClimbing = false
-                currentTargetY = target.Y
-                continue
-            end
-        else
-            local camera = Workspace.CurrentCamera
-            local look = camera.CFrame.LookVector
-            local right = camera.CFrame.RightVector
-            if not EasyTravel.DisableKeyboard then
-                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-                    moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-                    moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-                    moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-                    moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit
-                end
-            end
-        end
-
-        local raycastParams = RaycastParams.new()
-        raycastParams.FilterType = Enum.RaycastFilterType.Exclude
-        raycastParams.FilterDescendantsInstances = { char }
-        raycastParams.IgnoreWater = true
-
-        if moveDir.Magnitude > 0 then
-            local moveUnit = moveDir.Unit
-            local perpUnit = Vector3.new(-moveUnit.Z, 0, moveUnit.X).Unit
-
-            local forwardHit = Workspace:Raycast(currentPos, moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
-            if not forwardHit then
-                forwardHit =
-                    Workspace:Raycast(currentPos - (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
-            end
-            if not forwardHit then
-                forwardHit =
-                    Workspace:Raycast(currentPos + (perpUnit * 2.5), moveUnit * FORWARD_SCAN_DISTANCE, raycastParams)
-            end
-
-            if forwardHit or isStuck then
-                distanceToWall = forwardHit and forwardHit.Distance or 0
-                local clearanceY = nil
-                local currentScanDist = FORWARD_SCAN_DISTANCE
-                local heightOffset = 4
-
-                while heightOffset <= 120 do
-                    local scanOrigin = currentPos + Vector3.new(0, heightOffset, 0)
-                    local scanHit = Workspace:Raycast(scanOrigin, moveUnit * currentScanDist, raycastParams)
-
-                    if not scanHit then
-                        clearanceY = scanOrigin.Y
-                        local secondaryOrigin = scanOrigin + moveUnit * 10
-                        local secondaryHit = Workspace:Raycast(secondaryOrigin, moveUnit * 15, raycastParams)
-                        if secondaryHit then
-                            currentScanDist = currentScanDist + 15
-                        else
-                            break
-                        end
-                    end
-                    heightOffset = heightOffset + 4
-                end
-
-                if clearanceY then
-                    isClimbing = true
-                    climbTargetY = clearanceY + HEIGHT_OFFSET
-                else
-                    isClimbing = false
-                    currentTargetY = EasyTravel.GetSurfaceY(currentPos, char) + HEIGHT_OFFSET
-                end
-            else
-                distanceToWall = 999
-                isClimbing = false
-                local groundY = EasyTravel.GetSurfaceY(currentPos, char)
-                local aheadPos = currentPos + moveUnit * 4
-                local aheadY = EasyTravel.GetSurfaceY(aheadPos, char)
-                currentTargetY = math.max(groundY, aheadY) + HEIGHT_OFFSET
-            end
-        else
-            distanceToWall = 999
-            isClimbing = false
-            currentTargetY = EasyTravel.GetSurfaceY(currentPos, char) + HEIGHT_OFFSET
-        end
+function EasyTravel.Cleanup()
+    local _, hum, root = getCharRoot()
+    if hum then
+        hum.PlatformStand = false
     end
-end
-
-function EasyTravel.Start()
-    if EasyTravel.Enabled then
-        return
-    end
-    if not Safeguard then
-        warn("[Safeguard] Failed to load!")
-        return
-    end
-    if not Safeguard.IsSafe() then
-        return
-    end
-    EasyTravel.Enabled = true
-    cleanupForce()
-    local char, hum, root = getCharacterComponents()
-    if not root or not hum then
-        return
-    end
-
-    EasyTravel.Enabled = true
-    currentTargetY = EasyTravel.GetSurfaceY(root.Position, char) + HEIGHT_OFFSET
-    isClimbing = false
-
-    task.spawn(runRaycastLoop)
-
-    loopConnection = RunService.Heartbeat:Connect(function(dt)
-        local _, _, currentRoot = getCharacterComponents()
-        if not currentRoot or not EasyTravel.Enabled then
-            if loopConnection then
-                loopConnection:Disconnect()
-                loopConnection = nil
-            end
-            cleanupForce()
-            return
-        end
-
-        local force = getOrCreateForce(currentRoot)
-        local camera = Workspace.CurrentCamera
-        local look = camera.CFrame.LookVector
-        local right = camera.CFrame.RightVector
-        local moveDir = Vector3.zero
-        local finalTargetY = isClimbing and climbTargetY or currentTargetY
-
-        if EasyTravel.TargetPosition then
-            local diff = EasyTravel.TargetPosition - currentRoot.Position
-            local flatDiff = Vector3.new(diff.X, 0, diff.Z)
-            if flatDiff.Magnitude > 2 then
-                moveDir = flatDiff.Unit
-            end
-        else
-            if not EasyTravel.DisableKeyboard then
-                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
-                    moveDir = moveDir + Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
-                    moveDir = moveDir - Vector3.new(look.X, 0, look.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
-                    moveDir = moveDir + Vector3.new(right.X, 0, right.Z).Unit
-                end
-                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
-                    moveDir = moveDir - Vector3.new(right.X, 0, right.Z).Unit
-                end
-            end
-        end
-
-        local yError = finalTargetY - currentRoot.Position.Y
-        local targetVelocity = Vector3.zero
-        if moveDir.Magnitude > 0 then
-            local speedMultiplier = 1
-            if not EasyTravel.DisableWallTouch and isClimbing and yError > 3 and distanceToWall < 6 then
-                speedMultiplier = 0
-            end
-            targetVelocity = moveDir.Unit * (EasyTravel.Speed * speedMultiplier)
-        end
-
-        local verticalVel = math.clamp(yError * HOVER_LIFT_GAIN, -50, 30)
-        force.VectorVelocity = Vector3.new(targetVelocity.X, verticalVel, targetVelocity.Z)
-
-        if moveDir.Magnitude > 0 then
-            currentRoot.CFrame = CFrame.lookAt(currentRoot.Position, currentRoot.Position + moveDir)
-        end
-    end)
-    print("[Easy Travel] Flight enabled.")
+    destroyForce(root)
 end
 
 function EasyTravel.Stop()
@@ -2862,17 +2370,131 @@ function EasyTravel.Stop()
         loopConnection:Disconnect()
         loopConnection = nil
     end
-    cleanupForce()
-    print("[Easy Travel] Flight disabled.")
+    EasyTravel.Cleanup()
 end
 
--- Completely shutdown everything
-function EasyTravel.Cleanup()
-    EasyTravel.Stop()
-    for _, conn in ipairs(EasyTravel.Connections) do
-        conn:Disconnect()
+local function updateRaycast(root, currentPos, moveDir)
+    if EasyTravel.DisableRaycasting then
+        targetY = EasyTravel.TargetPosition and EasyTravel.TargetPosition.Y or currentPos.Y
+        return
     end
-    EasyTravel.Connections = {}
+
+    if not raycastParams then
+        raycastParams = RaycastParams.new()
+        raycastParams.FilterType = Enum.RaycastFilterType.Exclude
+        raycastParams.IgnoreWater = true
+    end
+    local c = LocalPlayer.Character
+    raycastParams.FilterDescendantsInstances = c and { c } or {}
+
+    -- 1. Ground detection under character
+    local downHit = Workspace:Raycast(currentPos + Vector3.new(0, 2, 0), Vector3.new(0, -60, 0), raycastParams)
+    local floorY = downHit and downHit.Position.Y or SEA_LEVEL_Y
+    local baseTargetY = math.max(floorY, SEA_LEVEL_Y) + BASE_HEIGHT_OFFSET
+
+    if EasyTravel.TargetPosition then
+        baseTargetY = math.max(baseTargetY, EasyTravel.TargetPosition.Y)
+    end
+
+    -- 2. Forward obstacle detection & automatic clearance elevation
+    if moveDir.Magnitude > 0.1 then
+        local forwardHit = Workspace:Raycast(currentPos, moveDir.Unit * FORWARD_SCAN_DIST, raycastParams)
+        if forwardHit then
+            -- Scan upward in 5-stud increments for clearance over the obstacle
+            local clearanceY = forwardHit.Position.Y + BASE_HEIGHT_OFFSET
+            for offset = 4, 100, 5 do
+                local scanOrigin = currentPos + Vector3.new(0, offset, 0)
+                local hit = Workspace:Raycast(scanOrigin, moveDir.Unit * FORWARD_SCAN_DIST, raycastParams)
+                if not hit then
+                    clearanceY = scanOrigin.Y + BASE_HEIGHT_OFFSET
+                    break
+                end
+            end
+            baseTargetY = math.max(baseTargetY, clearanceY)
+        end
+    end
+
+    targetY = baseTargetY
+end
+
+function EasyTravel.Start()
+    if EasyTravel.Enabled then
+        return
+    end
+    if not Safeguard or not Safeguard.IsSafe() then
+        return
+    end
+
+    local char, hum, root = getCharRoot()
+    if not char or not root or not hum then
+        return
+    end
+
+    EasyTravel.Enabled = true
+    local force = getOrCreateForce(root)
+    targetY = root.Position.Y
+
+    local lastRaycastTick = 0
+
+    loopConnection = RunService.Heartbeat:Connect(function()
+        local c, h, r = getCharRoot()
+        if not r or not h or not EasyTravel.Enabled then
+            EasyTravel.Stop()
+            return
+        end
+
+        h.PlatformStand = true
+
+        local currentPos = r.Position
+        local moveDir = Vector3.zero
+        local target = EasyTravel.TargetPosition
+
+        if target then
+            local diff = target - currentPos
+            local flatDiff = Vector3.new(diff.X, 0, diff.Z)
+            if flatDiff.Magnitude > 1.5 then
+                moveDir = flatDiff.Unit
+            end
+        elseif not EasyTravel.DisableKeyboard then
+            local cam = Workspace.CurrentCamera
+            if cam then
+                local look = cam.CFrame.LookVector
+                local right = cam.CFrame.RightVector
+                local forwardFlat = Vector3.new(look.X, 0, look.Z).Unit
+                local rightFlat = Vector3.new(right.X, 0, right.Z).Unit
+
+                if UserInputService:IsKeyDown(Enum.KeyCode.W) then
+                    moveDir = moveDir + forwardFlat
+                end
+                if UserInputService:IsKeyDown(Enum.KeyCode.S) then
+                    moveDir = moveDir - forwardFlat
+                end
+                if UserInputService:IsKeyDown(Enum.KeyCode.D) then
+                    moveDir = moveDir + rightFlat
+                end
+                if UserInputService:IsKeyDown(Enum.KeyCode.A) then
+                    moveDir = moveDir - rightFlat
+                end
+                if moveDir.Magnitude > 0 then
+                    moveDir = moveDir.Unit
+                end
+            end
+        end
+
+        -- Periodic obstacle / terrain raycast (every 0.05s)
+        local now = tick()
+        if now - lastRaycastTick >= 0.05 then
+            lastRaycastTick = now
+            updateRaycast(r, currentPos, moveDir)
+        end
+
+        -- Proportional vertical smoothing toward targetY
+        local yDiff = targetY - currentPos.Y
+        local yVelocity = math.clamp(yDiff * 15, -EasyTravel.Speed, EasyTravel.Speed)
+        local hVelocity = moveDir * EasyTravel.Speed
+
+        force.VectorVelocity = Vector3.new(hVelocity.X, yVelocity, hVelocity.Z)
+    end)
 end
 
 -- ============================================================
@@ -2880,7 +2502,7 @@ end
 -- ============================================================
 Core.SetupStandalone(EasyTravel, "Easy Travel", EasyTravel.Start, EasyTravel.Stop, function()
     return EasyTravel.Enabled
-end, Enum.KeyCode.P, true)
+end, Enum.KeyCode.RightBracket, true)
 
 return EasyTravel
 
