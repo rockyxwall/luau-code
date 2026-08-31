@@ -998,7 +998,7 @@ end
 -- ============================================================
 Core.SetupStandalone(EasyTravel, "Easy Travel", EasyTravel.Start, EasyTravel.Stop, function()
     return EasyTravel.Enabled
-end, Enum.KeyCode.RightBracket, true)
+end, Enum.KeyCode.P, true)
 
 return EasyTravel
 
