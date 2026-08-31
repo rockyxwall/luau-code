@@ -1,327 +1,45 @@
 --[[
     ============================================================
-    FEATURE: Auto Open Peli Chests — Town of Beginnings
+    DEV TEST HARNESS: Chest Farmer
     ============================================================
-    Uses easy_travel.lua to fly to each Peli Chest and fires
-    the ProximityPrompt to open them automatically.
-    Headless module compatible with lazyhub or standalone execution.
+    Tests the pure chest_farmer.lua library in Town of Beginnings.
+    Press ']' (RightBracket) to toggle chest farm on / off.
+    ============================================================
+--]]
+
+local UserInputService = game:GetService("UserInputService")
+
+local ChestFarmer = (function()
+    
+--[[
+    ============================================================
+    LIBRARY: Peli Chest Farmer — Town of Beginnings
+    ============================================================
+    Provides reusable functions to farm chests within the XZ
+    bounds of Town of Beginnings.
+    If run standalone, farms chests indefinitely.
     ============================================================
 --]]
 
 local Players = game:GetService("Players")
-local UserInputService = game:GetService("UserInputService")
 local LocalPlayer = Players.LocalPlayer
 
-local OpenChests = {
+local ChestFarmer = {
     Running = false,
     Connections = {},
 }
 
 local ARRIVE_DIST = 6
-local TIMEOUT_PER_CHEST = 20
-local OPEN_WAIT = 2.5
 local TRAVEL_HEIGHT = 4
-local CHECK_HZ = 0.1
 
 local ISLAND_MIN_X = -889
 local ISLAND_MAX_X = -156
 local ISLAND_MIN_Z = -3706
 local ISLAND_MAX_Z = -3087
 
-local function isInsideTownOfBeginnings(position)
-    return position.X >= ISLAND_MIN_X
-        and position.X <= ISLAND_MAX_X
-        and position.Z >= ISLAND_MIN_Z
-        and position.Z <= ISLAND_MAX_Z
+local function isInsideTownOfBeginnings(pos)
+    return pos.X >= ISLAND_MIN_X and pos.X <= ISLAND_MAX_X and pos.Z >= ISLAND_MIN_Z and pos.Z <= ISLAND_MAX_Z
 end
-
-local function collectChests()
-    local chests = {}
-    for _, v in ipairs(workspace:GetDescendants()) do
-        if v:IsA("ProximityPrompt") then
-            local action = v.ActionText or ""
-            if action:find("Peli Chest") then
-                local part = v.Parent
-                if part and part:IsA("BasePart") then
-                    table.insert(chests, {
-                        prompt = v,
-                        position = part.Position,
-                        label = string.format("(%.0f, %.0f, %.0f)", part.Position.X, part.Position.Y, part.Position.Z),
-                    })
-                end
-            end
-        end
-    end
-    return chests
-end
-
-local function waitForRoot(timeout)
-    local t = 0
-    while t < timeout do
-        local r = Core.GetRoot(LocalPlayer)
-        if r then
-            return r
-        end
-        task.wait(0.1)
-        t = t + 0.1
-    end
-    return nil
-end
-
-local Core = (function()
-    
---[[
-    Core Utility Library
-    Provides standardized module loading and common helpers.
-]]
-local Core = {}
-
-local Players = game:GetService("Players")
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local LocalPlayer = Players.LocalPlayer
-
-local statsFolder = nil
-local peliValueObj = nil
-local levelValueObj = nil
-local staminaValueObj = nil
-
-local function getStats()
-    if statsFolder and statsFolder.Parent then
-        return statsFolder
-    end
-    statsFolder = ReplicatedStorage:FindFirstChild("Stats" .. LocalPlayer.Name)
-    if statsFolder then
-        -- Find Peli
-        peliValueObj = statsFolder:FindFirstChild("Peli")
-        if not (peliValueObj and peliValueObj:IsA("ValueBase")) then
-            local nested = statsFolder:FindFirstChild("Stats")
-            peliValueObj = nested and nested:FindFirstChild("Peli")
-        end
-        -- Find Level
-        levelValueObj = statsFolder:FindFirstChild("Level")
-        if not (levelValueObj and levelValueObj:IsA("ValueBase")) then
-            local nested = statsFolder:FindFirstChild("Stats")
-            levelValueObj = nested and nested:FindFirstChild("Level")
-        end
-        -- Find Stamina
-        staminaValueObj = statsFolder:FindFirstChild("Stamina")
-    else
-        peliValueObj = nil
-        levelValueObj = nil
-        staminaValueObj = nil
-    end
-    return statsFolder
-end
-
-function Core.GetPeli()
-    getStats()
-    return peliValueObj and peliValueObj.Value or 0
-end
-
-function Core.GetLevel()
-    getStats()
-    return levelValueObj and levelValueObj.Value or 1
-end
-
-function Core.GetStamina()
-    getStats()
-    if staminaValueObj then
-        return staminaValueObj.Value, staminaValueObj.MaxValue
-    end
-    return 0, 0
-end
-
-function Core.GetHealth()
-    local char = LocalPlayer.Character
-    local hum = char and char:FindFirstChild("Humanoid")
-    if hum then
-        return hum.Health, hum.MaxHealth
-    end
-    return 0, 0
-end
-
-function Core.SetupStandalone(module, name, startCallback, stopCallback, checkCallback, toggleKey, noAutoStart)
-    if _G.DisableStandalone then
-        return
-    end
-    toggleKey = toggleKey or Enum.KeyCode.P
-
-    local cleanKey = "__Clean_" .. tostring(name)
-    if _G[cleanKey] then
-        pcall(_G[cleanKey])
-    end
-
-    local UserInputService = game:GetService("UserInputService")
-    local connection = UserInputService.InputBegan:Connect(function(input, processed)
-        if processed then
-            return
-        end
-        if input.KeyCode == toggleKey then
-            if checkCallback() then
-                stopCallback()
-            else
-                startCallback()
-            end
-        end
-    end)
-
-    _G[cleanKey] = function()
-        pcall(stopCallback)
-        if connection and connection.Connected then
-            connection:Disconnect()
-        end
-    end
-
-    if not noAutoStart then
-        task.spawn(function()
-            if not game:IsLoaded() then
-                game.Loaded:Wait()
-            end
-            startCallback()
-        end)
-    end
-
-    print("[" .. tostring(name) .. "] Standalone Mode: Press '" .. toggleKey.Name .. "' to toggle.")
-end
-
-function Core.GetRoot(player)
-    local char = player and player.Character
-    return char and char:FindFirstChild("HumanoidRootPart")
-end
-
-local Safeguard = (function()
-    
-local Safeguard = {
-    Config = {
-        PrivateServerCode = "Jk2JKTAKCf", -- Set your PS code here to auto-join from homescreen
-        TeleportLocation = "1stSea", -- "1stSea", "2ndSea", "TradeHub", "UniversalHub", "FishHub"
-    },
-}
-
-local GPO_UNIVERSE_ID = 648454481
-
--- List of places where scripts should NEVER run
-local BANNED_PLACES = {
-    [1730877806] = "First Sea Homescreen / Main Menu",
-    -- Add Second Sea homescreen here when known
-}
-
-function Safeguard.JoinPrivateServer()
-    local code = Safeguard.Config.PrivateServerCode
-
-    if type(code) == "string" and code ~= "" then
-        print(string.format("[Safeguard] Joining Private Server '%s'...", code))
-        task.spawn(function()
-            -- 1. Submit the private server code
-            local rs = game:GetService("ReplicatedStorage")
-            local reservedRemote = rs:WaitForChild("Events"):WaitForChild("reserved")
-
-            task.spawn(function()
-                pcall(function()
-                    reservedRemote:InvokeServer(code)
-                end)
-            end)
-
-            -- Wait for UI to load and remote to appear
-            local teleRemote = nil
-            for i = 1, 20 do
-                task.wait(0.5)
-                for _, v in next, getnilinstances() do
-                    if
-                        v:IsA("RemoteEvent") and (v.Name == "RemoteEvent" or v.Name == "tele" or v.Name == "Teleport")
-                    then
-                        teleRemote = v
-                        break
-                    end
-                end
-                if teleRemote then
-                    break
-                end
-            end
-
-            if teleRemote then
-                print("[Safeguard] Firing teleport remote: " .. teleRemote.Name)
-                teleRemote:FireServer(true)
-            else
-                warn("[Safeguard] Could not find RemoteEvent in nil. Printing all RemoteEvents in nil:")
-                for _, v in next, getnilinstances() do
-                    if v:IsA("RemoteEvent") then
-                        print(" - Name:", v.Name)
-                    end
-                end
-            end
-        end)
-        return true
-    end
-    return false
-end
-
-function Safeguard.IsSafe()
-    if game.GameId ~= GPO_UNIVERSE_ID then
-        warn("[Safeguard] Wrong game universe! Script is only for GPO.")
-        return false
-    end
-
-    if BANNED_PLACES[game.PlaceId] then
-        warn("[Safeguard] Script execution blocked on: " .. BANNED_PLACES[game.PlaceId])
-
-        if Safeguard.JoinPrivateServer() then
-            print("[Safeguard] Teleporting to Private Server... Please wait.")
-        else
-            warn("[Safeguard] PrivateServerCode is not set. Cannot auto-join.")
-        end
-        return false
-    end
-
-    return true
-end
-
-function Safeguard.RequirePlace(placeId, name)
-    if game.GameId ~= GPO_UNIVERSE_ID then
-        warn("[Safeguard] Wrong game universe! Script is only for GPO.")
-        return false
-    end
-
-    if game.PlaceId == placeId then
-        return true
-    end
-
-    if BANNED_PLACES[game.PlaceId] then
-        warn(string.format("[Safeguard] You are on the Homescreen. Script requires %s.", name or "a specific place"))
-
-        if Safeguard.JoinPrivateServer() then
-            print("[Safeguard] Teleporting to Private Server... Please wait.")
-        else
-            warn("[Safeguard] PrivateServerCode is not set. Cannot auto-join.")
-        end
-        return false
-    end
-
-    warn(
-        string.format(
-            "[Safeguard] Wrong place! Required: %s (%d), Current: %d",
-            name or "Unknown",
-            placeId,
-            game.PlaceId
-        )
-    )
-    return false
-end
-
-return Safeguard
-
-
-end)()
-
-function Core.GetSafeguard()
-    return Safeguard
-end
-
-return Core
-
-
-end)()
-local Safeguard = Core.GetSafeguard()
 
 local EasyTravel = (function()
     
@@ -769,158 +487,170 @@ return EasyTravel
 
 end)()
 
-function OpenChests.Stop()
-    OpenChests.Running = false
-    for _, conn in ipairs(OpenChests.Connections) do
-        conn:Disconnect()
+function ChestFarmer.CollectChests()
+    local chests = {}
+    local env = workspace:FindFirstChild("Env") or workspace
+    for _, v in ipairs(env:GetDescendants()) do
+        if v:IsA("ProximityPrompt") then
+            local action = v.ActionText or ""
+            if action:find("Peli Chest") then
+                local part = v.Parent
+                if part and part:IsA("BasePart") and isInsideTownOfBeginnings(part.Position) then
+                    table.insert(chests, {
+                        prompt = v,
+                        position = part.Position,
+                        label = string.format("(%.0f, %.0f, %.0f)", part.Position.X, part.Position.Y, part.Position.Z),
+                    })
+                end
+            end
+        end
     end
-    OpenChests.Connections = {}
-    print("[OpenChests] Stopped.")
+    return chests
 end
 
-function OpenChests.Start()
-    if OpenChests.Running then
-        warn("[OpenChests] Already running!")
-        return
+function ChestFarmer.Stop()
+    ChestFarmer.Running = false
+    for _, conn in ipairs(ChestFarmer.Connections) do
+        conn:Disconnect()
     end
-    if not Safeguard then
-        warn("[Safeguard] Failed to load!")
-        return
-    end
-    if not Safeguard.IsSafe() then
-        return
-    end
-    OpenChests.Running = true
+    ChestFarmer.Connections = {}
+    print("[ChestFarmer] Stopped.")
+end
 
-    task.spawn(function()
-        local allChests = collectChests()
-        print(string.format("[OpenChests] Found %d Peli Chests total in workspace.", #allChests))
+function ChestFarmer.FarmUntilPeli(targetPeli, getPeliCallback, isRunningCallback)
+    print("[ChestFarmer] Started chest farm. Target Peli: " .. tostring(targetPeli))
 
-        if #allChests == 0 then
-            warn("[OpenChests] No chests found — are you in the right area?")
-            OpenChests.Stop()
-            return
-        end
-
-        local startRoot = waitForRoot(5)
-        if not startRoot then
-            warn("[OpenChests] Could not find character root! Aborting.")
-            OpenChests.Stop()
-            return
-        end
-
-        local playerStartPos = startRoot.Position
-        local playerStartY = playerStartPos.Y
-        local filtered = {}
-        local skippedIsland = 0
-        local skippedY = 0
-
-        for _, c in ipairs(allChests) do
-            if not isInsideTownOfBeginnings(c.position) then
-                skippedIsland = skippedIsland + 1
-            elseif c.position.Y > playerStartY + 20 then
-                skippedY = skippedY + 1
-            else
-                table.insert(filtered, c)
-            end
-        end
-
-        table.sort(filtered, function(a, b)
-            return (a.position - playerStartPos).Magnitude < (b.position - playerStartPos).Magnitude
-        end)
-
-        local chests = filtered
-        print(
-            string.format(
-                "[OpenChests] %d chests queued | %d outside island | %d too high.",
-                #chests,
-                skippedIsland,
-                skippedY
-            )
-        )
+    while isRunningCallback() and getPeliCallback() < targetPeli do
+        local chests = ChestFarmer.CollectChests()
 
         if #chests == 0 then
-            warn("[OpenChests] No reachable chests after filtering.")
-            OpenChests.Stop()
-            return
-        end
-
-        if not EasyTravel then
-            error("[OpenChests] Failed to load easy_travel_v2.lua")
-        end
-
-        EasyTravel.Start()
-        print("[OpenChests] Easy Travel started.")
-
-        for i, chest in ipairs(chests) do
-            if not OpenChests.Running then
-                break
+            print("[ChestFarmer] No chests found. Waiting 20 seconds for spawn...")
+            local waited = 0
+            while isRunningCallback() and waited < 20 do
+                task.wait(1)
+                waited = waited + 1
+                if getPeliCallback() >= targetPeli then
+                    return true
+                end
             end
-            print(string.format("[OpenChests] [%d/%d] Travelling to chest at %s", i, #chests, chest.label))
+        else
+            local root = Core.GetRoot(LocalPlayer)
+            if root then
+                local startPos = root.Position
+                table.sort(chests, function(a, b)
+                    return (a.position - startPos).Magnitude < (b.position - startPos).Magnitude
+                end)
+            end
 
-            EasyTravel.TargetPosition = chest.position + Vector3.new(0, TRAVEL_HEIGHT, 0)
+            for _, chest in ipairs(chests) do
+                if not isRunningCallback() or getPeliCallback() >= targetPeli then
+                    break
+                end
 
-            local elapsed = 0
-            while OpenChests.Running and elapsed < TIMEOUT_PER_CHEST do
-                task.wait(CHECK_HZ)
-                elapsed = elapsed + CHECK_HZ
-
-                local root = Core.GetRoot(LocalPlayer)
-                if not root then
-                    warn("[OpenChests] Lost character — pausing.")
-                    task.wait(1)
-                    root = waitForRoot(5)
-                    if not root then
-                        break
+                if EasyTravel then
+                    EasyTravel.TargetPosition = chest.position + Vector3.new(0, TRAVEL_HEIGHT, 0)
+                    if not EasyTravel.Enabled then
+                        pcall(EasyTravel.Start)
                     end
                 end
 
-                local dist = (root.Position - chest.position).Magnitude
-                if dist <= ARRIVE_DIST then
-                    break
+                local elapsed = 0
+                local reached = false
+                while isRunningCallback() and elapsed < 20 do
+                    task.wait(0.1)
+                    elapsed = elapsed + 0.1
+
+                    local myRoot = Core.GetRoot(LocalPlayer)
+                    if myRoot then
+                        local dist = (myRoot.Position - chest.position).Magnitude
+                        if dist <= ARRIVE_DIST then
+                            reached = true
+                            break
+                        end
+                    else
+                        task.wait(1)
+                    end
+                end
+
+                if reached and isRunningCallback() then
+                    if EasyTravel then
+                        local myRoot = Core.GetRoot(LocalPlayer)
+                        if myRoot then
+                            EasyTravel.TargetPosition = myRoot.Position
+                        end
+                    end
+
+                    if chest.prompt and chest.prompt.Parent then
+                        local holdTime = chest.prompt.HoldDuration or 0
+                        if holdTime > 0 then
+                            task.wait(holdTime + 0.1)
+                        end
+                        if fireproximityprompt then
+                            pcall(fireproximityprompt, chest.prompt)
+                        else
+                            pcall(function()
+                                chest.prompt.Triggered:Fire(LocalPlayer)
+                            end)
+                        end
+                        task.wait(2.5)
+                    end
                 end
             end
-
-            if not OpenChests.Running then
-                break
-            end
-
-            local currentRoot = Core.GetRoot(LocalPlayer)
-            if currentRoot then
-                EasyTravel.TargetPosition = currentRoot.Position
-            end
-
-            if chest.prompt and chest.prompt.Parent then
-                local ok, err = pcall(function()
-                    fireproximityprompt(chest.prompt)
-                end)
-                if not ok then
-                    pcall(function()
-                        chest.prompt.Triggered:Fire(LocalPlayer)
-                    end)
-                end
-            end
-
-            task.wait(OPEN_WAIT)
         end
+        task.wait(0.2)
+    end
 
-        if EasyTravel then
-            EasyTravel.TargetPosition = nil
-            pcall(EasyTravel.Stop)
-        end
+    if EasyTravel then
+        EasyTravel.TargetPosition = nil
+        pcall(EasyTravel.Stop)
+    end
 
-        if OpenChests.Running then
-            print("[OpenChests] All chests processed!")
-            OpenChests.Stop()
-        end
+    return getPeliCallback() >= targetPeli
+end
+
+function ChestFarmer.Start(targetPeli, getPeliCallback)
+    if ChestFarmer.Running then
+        return
+    end
+    ChestFarmer.Running = true
+    targetPeli = targetPeli or 9999999
+    getPeliCallback = getPeliCallback or function()
+        return 0
+    end
+    task.spawn(function()
+        ChestFarmer.FarmUntilPeli(targetPeli, getPeliCallback, function()
+            return ChestFarmer.Running
+        end)
     end)
 end
 
--- ============================================================
--- STANDALONE BEHAVIOR
--- ============================================================
-Core.SetupStandalone(OpenChests, "OpenChests", OpenChests.Start, OpenChests.Stop, function()
-    return OpenChests.Running
+return ChestFarmer
+
+
+end)()
+
+if not ChestFarmer then
+    warn("[Test ChestFarmer] ERROR: Failed to load chest_farmer library!")
+    return
+end
+
+local function toggle()
+    if ChestFarmer.Running then
+        ChestFarmer.Stop()
+        print("[Test ChestFarmer] 🔴 Chest farm STOPPED. Press ']' to start.")
+    else
+        ChestFarmer.Start()
+        print("[Test ChestFarmer] 🟢 Chest farm STARTED. Press ']' to stop.")
+    end
+end
+
+UserInputService.InputBegan:Connect(function(input, processed)
+    if processed then
+        return
+    end
+    if input.KeyCode == Enum.KeyCode.RightBracket then
+        toggle()
+    end
 end)
 
-return OpenChests
+print("[Test ChestFarmer] Loaded! Press ']' (Right Bracket) to toggle chest farm.")
