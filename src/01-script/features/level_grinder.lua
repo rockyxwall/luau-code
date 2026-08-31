@@ -2278,7 +2278,6 @@ local mazePath = {
     Vector3.new(1803.26, -88.17, -12326.73),
     Vector3.new(1797.24, -91.06, -12326.90),
     Vector3.new(1794.73, -92.27, -12326.95),
-    Vector3.new(1792.73, -92.76, -12327.45),
 }
 
 function FishmanMaze.Travel(hrp, isRunning)
@@ -2945,45 +2944,12 @@ return EasyTravel
         return bestDir or forwardUnit
     end
 
-    local teleporterPart = workspace:FindFirstChild("AreaTeleporters")
-        and workspace.AreaTeleporters:FindFirstChild("FirstSea")
-        and workspace.AreaTeleporters.FirstSea:FindFirstChild("Fishman")
-        and workspace.AreaTeleporters.FirstSea.Fishman:FindFirstChild("Part")
-
-    local teleported = false
-    local touchConn = nil
-
-    local function emergencyStop()
-        teleported = true
-        pcall(EasyTravel.Stop)
-        if EasyTravel.Cleanup then
-            pcall(EasyTravel.Cleanup)
-        end
-        if touchConn then
-            touchConn:Disconnect()
-            touchConn = nil
-        end
-    end
-
-    if teleporterPart then
-        touchConn = teleporterPart.Touched:Connect(function(hit)
-            local char = LocalPlayer.Character
-            if char and hit and hit:IsDescendantOf(char) then
-                emergencyStop()
-            end
-        end)
-    end
-
     for _, target in ipairs(mazePath) do
-        if teleported then
-            break
-        end
-
         local lastPos = hrp.Position
         local stuckFrames = 0
 
         while (hrp.Position - target).Magnitude > 4 do
-            if (isRunning and not isRunning()) or teleported then
+            if isRunning and not isRunning() then
                 break
             end
 
@@ -2993,12 +2959,6 @@ return EasyTravel
             end
 
             local curPos = hrp.Position
-            -- If teleport occurred (Fishman Island is Y < -500), stop immediately
-            if curPos.Y < -500 then
-                emergencyStop()
-                break
-            end
-
             local delta = (curPos - lastPos).Magnitude
             if delta < 0.15 then
                 stuckFrames = stuckFrames + 1
@@ -3011,6 +2971,7 @@ return EasyTravel
             local dist = toTarget.Magnitude
             if dist > 0.01 then
                 local dir = toTarget.Unit
+                -- If stuck against a wall or approaching obstacle, steer with raycast avoidance
                 if stuckFrames > 3 then
                     local steerDir = getAvoidanceVector(curPos, dir, char)
                     EasyTravel.TargetPosition = curPos + (steerDir * math.min(dist, 6))
@@ -3023,14 +2984,41 @@ return EasyTravel
             RunService.Heartbeat:Wait()
         end
 
-        if (isRunning and not isRunning()) or teleported then
+        if isRunning and not isRunning() then
             break
         end
     end
 
-    emergencyStop()
+    -- Turn off EasyTravel and hover forces completely before touching teleporter
+    pcall(EasyTravel.Stop)
+    if EasyTravel.Cleanup then
+        pcall(EasyTravel.Cleanup)
+    end
     EasyTravel.DisableRaycasting = false
     EasyTravel.DisableWallTouch = false
+
+    -- Final entry: Walk/swim directly into the orb center
+    local finalChar = LocalPlayer.Character
+    local finalHum = finalChar and finalChar:FindFirstChildWhichIsA("Humanoid")
+    local finalHrp = finalChar and finalChar:FindFirstChild("HumanoidRootPart")
+    local teleporterOrbPos = Vector3.new(1793.73, -92.76, -12327.45)
+
+    if finalHum and finalHrp then
+        print("[Fishman Maze] Entering teleporter orb naturally (forces OFF)...")
+        finalHum:MoveTo(teleporterOrbPos)
+        local startTime = tick()
+        while tick() - startTime < 4 do
+            if isRunning and not isRunning() then
+                break
+            end
+            local cur = LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart")
+            if not cur or cur.Position.Y < -500 or (cur.Position - teleporterOrbPos).Magnitude < 1.5 then
+                break
+            end
+            RunService.Heartbeat:Wait()
+        end
+    end
+
     print("[Fishman Maze] Complete.")
 end
 
