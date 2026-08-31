@@ -333,7 +333,7 @@ local EasyTravel = {
 }
 
 -- Configurations
-local HEIGHT_OFFSET = 4.0
+local HEIGHT_OFFSET = 6.0
 local SEA_LEVEL_Y = -2.63
 local RAYCAST_COOLDOWN = 0.05
 local HOVER_LIFT_GAIN = 20.0
@@ -618,13 +618,6 @@ end
 
 function EasyTravel.Start()
     if EasyTravel.Enabled then
-        return
-    end
-    if not Safeguard then
-        warn("[Safeguard] Failed to load!")
-        return
-    end
-    if not Safeguard.IsSafe() then
         return
     end
 
@@ -921,7 +914,7 @@ local EasyTravel = {
 }
 
 -- Configurations
-local HEIGHT_OFFSET = 4.0
+local HEIGHT_OFFSET = 6.0
 local SEA_LEVEL_Y = -2.63
 local RAYCAST_COOLDOWN = 0.05
 local HOVER_LIFT_GAIN = 20.0
@@ -1206,13 +1199,6 @@ end
 
 function EasyTravel.Start()
     if EasyTravel.Enabled then
-        return
-    end
-    if not Safeguard then
-        warn("[Safeguard] Failed to load!")
-        return
-    end
-    if not Safeguard.IsSafe() then
         return
     end
 
@@ -1379,7 +1365,7 @@ local EasyTravel = {
 }
 
 -- Configurations
-local HEIGHT_OFFSET = 4.0
+local HEIGHT_OFFSET = 6.0
 local SEA_LEVEL_Y = -2.63
 local RAYCAST_COOLDOWN = 0.05
 local HOVER_LIFT_GAIN = 20.0
@@ -1664,13 +1650,6 @@ end
 
 function EasyTravel.Start()
     if EasyTravel.Enabled then
-        return
-    end
-    if not Safeguard then
-        warn("[Safeguard] Failed to load!")
-        return
-    end
-    if not Safeguard.IsSafe() then
         return
     end
 
