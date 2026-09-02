@@ -1,6 +1,6 @@
 --[[
-    Horo Horo Z-Skill Loop Farm - v0.0.3
-    Automates skills on a selected boss using reliable camera alignment and viewport targeting.
+    Horo Horo Z-Skill Loop Farm - v0.0.4
+    Automates skills on a selected boss using reliable camera alignment and humanized inputs.
     Headless module compatible with hub or standalone execution.
 ]]
 
@@ -13,7 +13,6 @@ local Camera = Workspace.CurrentCamera
 
 local HoroFarm = {
     Running = false,
-    Connections = {},
     Config = {
         SelectedBoss = "Juzo the Diamondback", -- Default boss
         UseE = true,
@@ -22,7 +21,6 @@ local HoroFarm = {
         UseR = true,
         CameraHeight = 30.0,
         LoopDelay = 10.5,
-        CameraLock = true, -- true = visual bird's eye view; false = pure virtual in-memory camera (free player camera)
     },
 }
 
@@ -287,19 +285,31 @@ local savedCameraCF = nil
 local savedCameraType = nil
 local BIND_NAME = "HoroCameraLock"
 
--- In-memory virtual camera for when CameraLock = false
-local VirtualCamera = Instance.new("Camera")
-VirtualCamera.FieldOfView = Camera.FieldOfView
+local function pressKey(key, hold)
+    hold = hold or (0.05 + math.random() * 0.03)
+    VIM:SendKeyEvent(true, key, false, game)
+    task.wait(hold)
+    VIM:SendKeyEvent(false, key, false, game)
+end
+
+local function humanWait(base, jitter)
+    task.wait(base + math.random() * (jitter or 0.04))
+end
 
 local function equipHoroTool()
-    local bp = LocalPlayer:FindFirstChild("Backpack")
     local char = LocalPlayer.Character
     if not char then
         return nil
     end
 
-    local tool = char:FindFirstChild("Horo-Horo") or (bp and bp:FindFirstChild("Horo-Horo"))
-    if tool and tool.Parent ~= char then
+    local tool = char:FindFirstChild("Horo-Horo")
+    if tool then
+        return tool
+    end
+
+    local bp = LocalPlayer:FindFirstChild("Backpack")
+    tool = bp and bp:FindFirstChild("Horo-Horo")
+    if tool then
         local hum = char:FindFirstChildWhichIsA("Humanoid")
         if hum then
             hum:EquipTool(tool)
@@ -308,133 +318,72 @@ local function equipHoroTool()
     return tool
 end
 
+local function isAlive(model)
+    if not model or not model.Parent then
+        return false
+    end
+    local hum = model:FindFirstChildWhichIsA("Humanoid")
+    return hum and hum.Health > 0
+end
+
 local function getBossPart(name)
-    local npts = Workspace:FindFirstChild("NPCs")
-    if not npts then
+    local npcs = Workspace:FindFirstChild("NPCs")
+    if not npcs then
         return nil
     end
 
     if name and name ~= "" then
-        local boss = npts:FindFirstChild(name)
-        if boss then
-            local root = boss:FindFirstChild("HumanoidRootPart")
-            local hum = boss:FindFirstChildWhichIsA("Humanoid")
-            if root and hum and hum.Health > 0 then
+        local boss = npcs:FindFirstChild(name)
+        if boss and isAlive(boss) then
+            return boss:FindFirstChild("HumanoidRootPart")
+        end
+    end
+
+    -- Fallback: any alive boss (MaxHealth > 1000)
+    for _, npc in ipairs(npcs:GetChildren()) do
+        if isAlive(npc) then
+            local hum = npc:FindFirstChildWhichIsA("Humanoid")
+            local root = npc:FindFirstChild("HumanoidRootPart")
+            if root and hum.MaxHealth > 1000 then
                 return root
             end
         end
     end
-
-    -- Auto-fallback to any alive boss in NPCs if selectedBoss not found
-    for _, npc in ipairs(npts:GetChildren()) do
-        local root = npc:FindFirstChild("HumanoidRootPart")
-        local hum = npc:FindFirstChildWhichIsA("Humanoid")
-        if root and hum and hum.Health > 0 and hum.MaxHealth > 1000 then
-            return root
-        end
-    end
-
     return nil
 end
 
-local smoothedFloorY = nil
-local rayParams = RaycastParams.new()
-rayParams.FilterType = Enum.RaycastFilterType.Exclude
-
-local function calculateSafeCameraCFrame(targetRoot)
-    local bossPos = targetRoot.Position
-
-    if not smoothedFloorY then
-        smoothedFloorY = bossPos.Y
+local function aimAt(targetPos)
+    local screenPos, onScreen = Camera:WorldToViewportPoint(targetPos)
+    if onScreen then
+        local jitterX = screenPos.X + math.random(-2, 2)
+        local jitterY = screenPos.Y + math.random(-2, 2)
+        VIM:SendMouseMoveEvent(jitterX, jitterY, game)
     end
-
-    if math.abs(bossPos.Y - smoothedFloorY) > 25 then
-        smoothedFloorY = bossPos.Y
-    else
-        smoothedFloorY = smoothedFloorY + (bossPos.Y - smoothedFloorY) * 0.05
-    end
-
-    local filterList = {}
-    if LocalPlayer.Character then
-        table.insert(filterList, LocalPlayer.Character)
-    end
-    if targetRoot.Parent then
-        table.insert(filterList, targetRoot.Parent)
-    end
-    rayParams.FilterDescendantsInstances = filterList
-
-    local idealCamPos = Vector3.new(bossPos.X, smoothedFloorY + HoroFarm.Config.CameraHeight, bossPos.Z)
-    local losRay = Workspace:Raycast(bossPos, idealCamPos - bossPos, rayParams)
-    local safeCamPos = idealCamPos
-
-    if losRay then
-        local hitDist = (losRay.Position - bossPos).Magnitude
-        if hitDist > 3 then
-            safeCamPos = bossPos + (idealCamPos - bossPos).Unit * (hitDist - 1.5)
-        else
-            safeCamPos = losRay.Position + (bossPos - losRay.Position).Unit * 1.5
-        end
-    end
-
-    return CFrame.lookAt(safeCamPos, bossPos)
 end
 
 local function lockCameraToBoss(targetRoot)
-    if not savedCameraCF and HoroFarm.Config.CameraLock then
+    if not savedCameraCF then
         savedCameraCF = Camera.CFrame
         savedCameraType = Camera.CameraType
     end
 
     if not cameraBound then
         cameraBound = true
-        smoothedFloorY = targetRoot.Position.Y
+        Camera.CameraType = Enum.CameraType.Scriptable
 
         RunService:BindToRenderStep(BIND_NAME, Enum.RenderPriority.Camera.Value + 1, function()
-            if
-                targetRoot
-                and targetRoot.Parent
-                and targetRoot.Parent:FindFirstChildWhichIsA("Humanoid")
-                and targetRoot.Parent:FindFirstChildWhichIsA("Humanoid").Health > 0
-            then
+            if targetRoot and isAlive(targetRoot.Parent) then
                 local bossPos = targetRoot.Position
-                local targetCF = calculateSafeCameraCFrame(targetRoot)
-
-                local activeCam = Camera
-                if HoroFarm.Config.CameraLock then
-                    Camera.CameraType = Enum.CameraType.Scriptable
-                    Camera.CFrame = targetCF
-                    activeCam = Camera
-                else
-                    VirtualCamera.ViewportSize = Camera.ViewportSize
-                    VirtualCamera.FieldOfView = Camera.FieldOfView
-                    VirtualCamera.CFrame = targetCF
-                    activeCam = VirtualCamera
-                end
-
-                -- Continuous live mouse lock on boss screen coordinates
-                local screenPos, onScreen = activeCam:WorldToViewportPoint(bossPos)
-                if onScreen then
-                    VIM:SendMouseMoveEvent(screenPos.X, screenPos.Y, game)
-                end
+                local camPos = bossPos + Vector3.new(0, HoroFarm.Config.CameraHeight, 0)
+                Camera.CFrame = CFrame.lookAt(camPos, bossPos)
             else
-                pcall(function()
-                    RunService:UnbindFromRenderStep(BIND_NAME)
-                end)
-                cameraBound = false
-                if savedCameraType and savedCameraCF then
-                    Camera.CameraType = savedCameraType
-                    Camera.CFrame = savedCameraCF
-                    savedCameraType = nil
-                    savedCameraCF = nil
-                else
-                    Camera.CameraType = Enum.CameraType.Custom
-                end
+                HoroFarm.UnlockCamera()
             end
         end)
     end
 end
 
-local function unlockCamera()
+function HoroFarm.UnlockCamera()
     if cameraBound then
         pcall(function()
             RunService:UnbindFromRenderStep(BIND_NAME)
@@ -453,7 +402,7 @@ end
 
 function HoroFarm.Stop()
     HoroFarm.Running = false
-    unlockCamera()
+    HoroFarm.UnlockCamera()
     print("[HoroFarm] Stopped.")
 end
 
@@ -461,12 +410,7 @@ function HoroFarm.Start()
     if HoroFarm.Running then
         return
     end
-
-    if not Safeguard then
-        warn("[Safeguard] Failed to load!")
-        return
-    end
-    if not Safeguard.IsSafe() then
+    if Safeguard and not Safeguard.IsSafe() then
         return
     end
 
@@ -477,77 +421,59 @@ function HoroFarm.Start()
         while HoroFarm.Running do
             local targetRoot = getBossPart(HoroFarm.Config.SelectedBoss)
             if not targetRoot then
-                unlockCamera()
-                task.wait(5)
+                HoroFarm.UnlockCamera()
+                task.wait(3 + math.random())
             else
                 lockCameraToBoss(targetRoot)
                 local tool = equipHoroTool()
 
-                if tool and getBossPart(HoroFarm.Config.SelectedBoss) then
+                if tool and isAlive(targetRoot.Parent) then
                     local comboStart = tick()
                     local hollowsAttached = false
 
                     -- Step 1: Attach Hollows (C or Z)
                     if HoroFarm.Config.UseC and (tick() - lastC >= 60) then
-                        VIM:SendKeyEvent(true, Enum.KeyCode.C, false, game)
-                        task.wait(0.05)
-                        VIM:SendKeyEvent(false, Enum.KeyCode.C, false, game)
+                        aimAt(targetRoot.Position)
+                        pressKey(Enum.KeyCode.C)
                         lastC = tick()
                         hollowsAttached = true
                     elseif HoroFarm.Config.UseZ then
                         -- Summon hollows
-                        VIM:SendKeyEvent(true, Enum.KeyCode.Z, false, game)
-                        task.wait(0.05)
-                        VIM:SendKeyEvent(false, Enum.KeyCode.Z, false, game)
-                        task.wait(0.3)
+                        pressKey(Enum.KeyCode.Z)
+                        humanWait(0.3, 0.05)
 
-                        -- Aim cursor at boss via viewport projection
-                        local currentTarget = getBossPart(HoroFarm.Config.SelectedBoss)
-                        if currentTarget then
-                            local screenPos, onScreen = Camera:WorldToViewportPoint(currentTarget.Position)
-                            if onScreen then
-                                VIM:SendMouseMoveEvent(screenPos.X, screenPos.Y, game)
-                                task.wait(0.1)
-
-                                -- Launch hollows
-                                VIM:SendKeyEvent(true, Enum.KeyCode.Z, false, game)
-                                task.wait(0.05)
-                                VIM:SendKeyEvent(false, Enum.KeyCode.Z, false, game)
-                                hollowsAttached = true
-                            end
+                        -- Aim & fire hollows
+                        if isAlive(targetRoot.Parent) then
+                            aimAt(targetRoot.Position)
+                            humanWait(0.08, 0.03)
+                            pressKey(Enum.KeyCode.Z)
+                            hollowsAttached = true
                         end
                     end
 
                     -- Step 2: Stun (E)
-                    if HoroFarm.Config.UseE and getBossPart(HoroFarm.Config.SelectedBoss) then
-                        task.wait(0.2)
-                        VIM:SendKeyEvent(true, Enum.KeyCode.E, false, game)
-                        task.wait(0.05)
-                        VIM:SendKeyEvent(false, Enum.KeyCode.E, false, game)
+                    if HoroFarm.Config.UseE and isAlive(targetRoot.Parent) then
+                        humanWait(0.18, 0.04)
+                        aimAt(targetRoot.Position)
+                        pressKey(Enum.KeyCode.E)
                     end
 
                     -- Step 3: Detonation (R)
-                    if HoroFarm.Config.UseR and hollowsAttached then
-                        task.wait(2.0)
-                        VIM:SendKeyEvent(true, Enum.KeyCode.R, false, game)
-                        task.wait(0.05)
-                        VIM:SendKeyEvent(false, Enum.KeyCode.R, false, game)
+                    if HoroFarm.Config.UseR and hollowsAttached and isAlive(targetRoot.Parent) then
+                        humanWait(1.95, 0.1)
+                        pressKey(Enum.KeyCode.R)
                     end
 
-                    local baseCD = HoroFarm.Config.LoopDelay
-                    if HoroFarm.Config.UseE then
-                        baseCD = 17
-                    end
-
+                    local baseCD = HoroFarm.Config.UseE and 17 or HoroFarm.Config.LoopDelay
                     local elapsed = tick() - comboStart
-                    local finalSleep = math.max(baseCD - elapsed, 1)
+                    local finalSleep = math.max(baseCD - elapsed, 1) + (math.random() * 0.3)
                     task.wait(finalSleep)
                 else
                     task.wait(1)
                 end
             end
         end
-        unlockCamera()
+        HoroFarm.UnlockCamera()
     end)
 end
 
