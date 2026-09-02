@@ -19,8 +19,7 @@ local HoroFarm = {
         UseZ = true,
         UseC = true,
         UseR = true,
-        CameraHeight = 30.0,
-        LoopDelay = 10.5,
+        CameraHeight = 15.0,
     },
 }
 
@@ -285,11 +284,17 @@ local savedCameraCF = nil
 local savedCameraType = nil
 local BIND_NAME = "HoroCameraLock"
 
-local function pressKey(key, hold)
-    hold = hold or (0.05 + math.random() * 0.03)
-    VIM:SendKeyEvent(true, key, false, game)
-    task.wait(hold)
-    VIM:SendKeyEvent(false, key, false, game)
+local function pressKey(key, hold, count)
+    count = count or 1
+    hold = hold or 0.12
+    for i = 1, count do
+        VIM:SendKeyEvent(true, key, false, game)
+        task.wait(hold)
+        VIM:SendKeyEvent(false, key, false, game)
+        if i < count then
+            task.wait(0.08)
+        end
+    end
 end
 
 local function humanWait(base, jitter)
@@ -352,15 +357,6 @@ local function getBossPart(name)
     return nil
 end
 
-local function aimAt(targetPos)
-    local screenPos, onScreen = Camera:WorldToViewportPoint(targetPos)
-    if onScreen then
-        local jitterX = screenPos.X + math.random(-2, 2)
-        local jitterY = screenPos.Y + math.random(-2, 2)
-        VIM:SendMouseMoveEvent(jitterX, jitterY, game)
-    end
-end
-
 local function lockCameraToBoss(targetRoot)
     if not savedCameraCF then
         savedCameraCF = Camera.CFrame
@@ -376,6 +372,12 @@ local function lockCameraToBoss(targetRoot)
                 local bossPos = targetRoot.Position
                 local camPos = bossPos + Vector3.new(0, HoroFarm.Config.CameraHeight, 0)
                 Camera.CFrame = CFrame.lookAt(camPos, bossPos)
+
+                -- Continuous mouse hover on boss hitbox
+                local screenPos, onScreen = Camera:WorldToViewportPoint(bossPos)
+                if onScreen then
+                    VIM:SendMouseMoveEvent(screenPos.X, screenPos.Y, game)
+                end
             else
                 HoroFarm.UnlockCamera()
             end
@@ -428,46 +430,54 @@ function HoroFarm.Start()
                 local tool = equipHoroTool()
 
                 if tool and isAlive(targetRoot.Parent) then
-                    local comboStart = tick()
-                    local hollowsAttached = false
-
-                    -- Step 1: Attach Hollows (C or Z)
-                    if HoroFarm.Config.UseC and (tick() - lastC >= 60) then
-                        aimAt(targetRoot.Position)
-                        pressKey(Enum.KeyCode.C)
+                    -- Step 0: C Swarm (if 60s cooldown passed)
+                    if tick() - lastC >= 60 then
+                        pressKey(Enum.KeyCode.C, 0.12, 1)
                         lastC = tick()
-                        hollowsAttached = true
-                    elseif HoroFarm.Config.UseZ then
-                        -- Summon hollows
-                        pressKey(Enum.KeyCode.Z)
-                        humanWait(0.3, 0.05)
-
-                        -- Aim & fire hollows
-                        if isAlive(targetRoot.Parent) then
-                            aimAt(targetRoot.Position)
-                            humanWait(0.08, 0.03)
-                            pressKey(Enum.KeyCode.Z)
-                            hollowsAttached = true
-                        end
+                        task.wait(1.0)
                     end
 
-                    -- Step 2: Stun (E)
-                    if HoroFarm.Config.UseE and isAlive(targetRoot.Parent) then
-                        humanWait(0.18, 0.04)
-                        aimAt(targetRoot.Position)
-                        pressKey(Enum.KeyCode.E)
+                    -- Step 1: Z Summon & Fire
+                    if not isAlive(targetRoot.Parent) then
+                        HoroFarm.UnlockCamera()
+                        continue
                     end
 
-                    -- Step 3: Detonation (R)
-                    if HoroFarm.Config.UseR and hollowsAttached and isAlive(targetRoot.Parent) then
-                        humanWait(1.95, 0.1)
-                        pressKey(Enum.KeyCode.R)
+                    pressKey(Enum.KeyCode.Z, 0.12, 1)
+                    task.wait(2.5) -- 2.5s wait after Z1
+
+                    if not isAlive(targetRoot.Parent) then
+                        HoroFarm.UnlockCamera()
+                        continue
                     end
 
-                    local baseCD = HoroFarm.Config.UseE and 17 or HoroFarm.Config.LoopDelay
-                    local elapsed = tick() - comboStart
-                    local finalSleep = math.max(baseCD - elapsed, 1) + (math.random() * 0.3)
-                    task.wait(finalSleep)
+                    pressKey(Enum.KeyCode.Z, 0.12, 2)
+                    task.wait(2.5) -- 2.5s wait after Z2
+
+                    -- Step 2: E Prep & Fire
+                    if not isAlive(targetRoot.Parent) then
+                        HoroFarm.UnlockCamera()
+                        continue
+                    end
+
+                    pressKey(Enum.KeyCode.E, 0.12, 1)
+                    task.wait(1.0)
+
+                    if not isAlive(targetRoot.Parent) then
+                        HoroFarm.UnlockCamera()
+                        continue
+                    end
+
+                    pressKey(Enum.KeyCode.E, 0.12, 2)
+                    task.wait(1.0)
+
+                    -- Step 3: R Detonate
+                    if isAlive(targetRoot.Parent) then
+                        pressKey(Enum.KeyCode.R, 0.12, 2)
+                    end
+
+                    -- Step 4: Simple Full Cooldown Sleep (16.0s + 1.0s E wait = full 17.0s for E)
+                    task.wait(16.0)
                 else
                     task.wait(1)
                 end
